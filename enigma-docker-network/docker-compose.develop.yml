@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  contract:
+    build: 
+      context: enigma-contract
+      dockerfile: Dockerfile.ganache-cli.develop
+    volumes:
+      - ${GIT_FOLDER_CONTRACT}:/home/node/enigma-contract
+    cap_add:
+      - DAC_OVERRIDE
+
+  surface:
+    volumes:
+       - ${GIT_FOLDER_CONTRACT}/build/contracts:/var/lib/built_contracts
