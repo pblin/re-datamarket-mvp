@@ -1,6 +1,0 @@
-version: '3'
-
-services:
-  core:
-    devices:
-      - "/dev/isgx:/dev/isgx"
