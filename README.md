@@ -94,7 +94,7 @@ _this is a work in progress_
 **0.0 _CONTRACT DEPLOYMENT_**
 
 	0.1 Deploy an ExecuteDataSale Contract as a .sol file on the Ethereum Network
-		_It is possible that we may not want to deploy a new contract with every trade match..._
+		In the MVP a new contract will not be deployed with each trade match 
 
 
 
