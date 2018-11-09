@@ -80,7 +80,7 @@ Key technical/design assumptions are as follows:
 The below logic references code-level build and components ... this is a work in progress
 
 
-[Smart Contract Logic Visualization](docs/images/SmartContractLogic.png)
+![Smart Contract Logic Visualization](docs/images/SmartContractLogic.png)
 
 
 ORDER BOOK  << ASK: askPrice >>  ORDER MATCH  << BUY: buyPrice >>
