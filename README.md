@@ -23,7 +23,7 @@ Launch test-net in development mode“./launch.bash -s -t -d”
 
 
 
-MVP DAPP
+**MVP DAPP**
 
 Clone the repo —->>> git clone https://github.com/...
 Run “npm i” at project root
@@ -35,7 +35,7 @@ When new contracts are created or modified run: “ sudo darq-truffle migrate --
 
 
 
-I. SCOPE:
+**I. SCOPE:**
 
 ORDER BOOK   --->>>   TRADE MATCHING  --- >>>   ETHEREUM CONTRACT EXECUTION on ENIGMA NETWORK
 
@@ -50,7 +50,7 @@ The first iteration of this work is to deliver a basic front-end to do the follo
 
 
 
-II. KEY ASSUMPTIONS:
+**II. KEY ASSUMPTIONS:**
 
 Key technical/design assumptions are as follows:
 
@@ -62,7 +62,7 @@ Key technical/design assumptions are as follows:
 [ Insert Diagram Here ]
 
 
-III. CAVEATS - DESIGN & TECHNICAL CHALLENGES:
+**III. CAVEATS - DESIGN & TECHNICAL CHALLENGES:**
 
 (1)  Deploying a unique Contract for each Order Book match adds the deploying time to each attempt of a Data Sale Transaction workflow
 
@@ -75,7 +75,7 @@ III. CAVEATS - DESIGN & TECHNICAL CHALLENGES:
 (5)  In the Event of Trade Cancellation due to data validation failure on the Enigma Network, the Dynamic Staking algorithm must _NOT_ be engaged to calculate the fees owed by the Seller and Trade must be marked as _Validation Failed_ and not transaction record marked as _Not Successfully Validated_
 
 
-IV. CONTRACT-LEVEL TECHNICAL LOGIC
+**IV. CONTRACT-LEVEL TECHNICAL LOGIC**
 
 The below logic references code-level build and components ... this is a work in progress
 
@@ -88,29 +88,29 @@ ORDER BOOK  << ASK: askPrice >>  ORDER MATCH  << BUY: buyPrice >>
 GAME ON!
 
 
-0.0 _CONTRACT DEPLOYMENT_
+**0.0 _CONTRACT DEPLOYMENT_**
 0.1 Deploy an ExecuteDataSale Contract as a .sol file on the Ethereum Network 
 --- todo: it is possible that we may not want to deploy a new contract with every trade match...
 
 
-1.0 _DATA VALIDATION_
+**1.0 _DATA VALIDATION_**
 1.1 Execute contract function "validate Data"  -- this function is only callable from an Enigma address
 
 DECISION RESULT: DATA NOT VALID --->>> Proceed to 2.0 TRADE CANCELLATION
 DECISION RESULT: DATA VALID --->>> Proceed to 3.0 TRADE EXECUTION
 
 
-2.0 _TRADE CANCELLATION_
+**2.0 _TRADE CANCELLATION_**
 2.1 Charge Seller Stake Fees and PROCEED to 4.0 TRADE SETTLEMENT
 --- todo: the implementation of a staking algorithm to calculate fees
 
 
-3.0 _TRADE EXECUTION_
+**3.0 _TRADE EXECUTION_**
 3.1 Deliver Data to Buyer
 3.2 Deliver Payment to Seller
 
 
-4.0 _TRADE SETTLEMENT_
+**4.0 _TRADE SETTLEMENT_**
 4.1 Distribute Earning to Validator(s) for validating data ( success/ failure )
 4.2 Send Transaction Notifications ( detailed )
 4.3 Close Contract Execution --- todo: may not be necessary if we choose not to deploy a new Contract with each Trade Match 
