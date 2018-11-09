@@ -87,36 +87,40 @@ _this is a work in progress_
 
 **0.0 _CONTRACT DEPLOYMENT_**
 
-0.1 Deploy an ExecuteDataSale Contract as a .sol file on the Ethereum Network
+**0.1** Deploy an ExecuteDataSale Contract as a .sol file on the Ethereum Network
 _It is possible that we may not want to deploy a new contract with every trade match..._
+
 
 
 **1.0 _DATA VALIDATION_**
 
-1.1 Execute contract function "Validate Data" _this function is only callable from an Enigma address_
+	**1.1** Execute contract function "Validate Data" _this function is only callable from an Enigma address_
 
-DECISION RESULT: DATA NOT VALID --->>> Proceed to 2.0 TRADE CANCELLATION
+		**DECISION RESULT: DATA NOT VALID --->>>** Proceed to 2.0 TRADE CANCELLATION
 
-DECISION RESULT: DATA VALID --->>> Proceed to 3.0 TRADE EXECUTION
+		**DECISION RESULT: DATA VALID --->>>** Proceed to 3.0 TRADE EXECUTION
+
 
 
 **2.0 _TRADE CANCELLATION_**
 
-2.1 Charge Seller Stake Fees and PROCEED to 4.0 TRADE SETTLEMENT
+	**2.1** Charge Seller Stake Fees and PROCEED to 4.0 TRADE SETTLEMENT
+
 
 
 
 **3.0 _TRADE EXECUTION_**
 
-3.1 Deliver Data to Buyer
+	**3.1** Deliver Data to Buyer
 
-3.2 Deliver Payment to Seller
+	**3.2** Deliver Payment to Seller
+
 
 
 **4.0 _TRADE SETTLEMENT_**
 
-4.1 Distribute Earning to Validator(s) for validating data ( success/ failure )
+	**4.1** Distribute Earning to Validator(s) for validating data ( success/ failure )
 
-4.2 Send Transaction Notifications ( detailed )
+	**4.2** Send Transaction Notifications ( detailed )
 
-4.3 Close Contract Execution --- todo: may not be necessary if we choose not to deploy a new Contract with each Trade Match 
+	**4.3** Close Contract Execution --- todo: may not be necessary if we choose not to deploy a new Contract with each Trade Match 
