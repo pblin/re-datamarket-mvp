@@ -23,7 +23,7 @@ Launch test-net in development mode“./launch.bash -s -t -d”
 
 
 
-POC DAPP
+MVP DAPP
 
 Clone the repo —->>> git clone https://github.com/...
 Run “npm i” at project root
@@ -37,15 +37,16 @@ When new contracts are created or modified run: “ sudo darq-truffle migrate --
 
 I. SCOPE:
 
-ORDER BOOK   --->>>   TRADE MATCHING  --- >>>   ETHEREUM CONTRACT EXECUTION / ENIGMA NETWORK
+ORDER BOOK   --->>>   TRADE MATCHING  --- >>>   ETHEREUM CONTRACT EXECUTION on ENIGMA NETWORK
 
 
-The first iteration of this work is to deliver a basic front-end for passing Data Trade information to and Ethereum Contract.
+The first iteration of this work is to deliver a basic front-end to do the following:
 
-The Ethereum Contract ( ExecuteDataSale.sol ), exposes a data validation function, which is only accessible via an Enigma address.
+(1) Pass TradeData information to and Ethereum Contract.
 
-Based on the results of the validation algorithm that is returned from the Enigma network, the Trade will be either executed or cancelled.  
-Either way Fees will be charged per platform policy.
+(2) Have the Ethereum Contract ( ExecuteDataSale.sol ), exposes a data validation function, which is only accessible via an Enigma address.
+
+(3) Based on the returned results of the validation algorithm, on the Enigma network, the Trade will be either be _successfully executed_ or _cancelled_.  Either way Fees will be charged per platform policy.
 
 
 
@@ -54,19 +55,21 @@ II. KEY ASSUMPTIONS:
 Key technical/design assumptions are as follows:
 
 
-++ A unique contract will be deployed for each match from the Order Book
-++ The Validation function/algorithm of the Contract will be accessible only from an Enigma specific address
-++ After the successful validation of Trade Data, the contract will be closed/destructed
+(1) A unique contract will _NOT_ be deployed for each match from the Order Book
+(2) The Validation function/algorithm of the Contract will be accessible only from an Enigma specific address
+(3) After the successful validation of Trade Data, the Trade Transaction will be marked _Closed_
+
+[ Insert Diagram Here ]
 
 
 III. CAVEATS - DESIGN & TECHNICAL CHALLENGES:
 
-++ Deploying a unique Contract for each Order Book match adds the deploying time to each attempt of a Data Sale Transaction workflow
-++ Processing data in "chunks" will now include the Contract deployment step
-++ Processing asynchronous request through an "eternally deployed" contract could minimize the compute time of each transaction 
-++ Wether "eternally deployed" or not, a Contract will still have to be destructible in the event the system gets hacked, it is recommended that it has an "auto termination" function built in
-++ Even an eternally deployed Contract can have multiple instances across multiple servers to account for distributed compute power
-++  In the Event of Trade Cancellation due to data validation failure the Dynamic Staking algorithm must be engaged to calculate the fees owed by the Seller 
+(1)  Deploying a unique Contract for each Order Book match adds the deploying time to each attempt of a Data Sale Transaction workflow
+(2)  Processing asynchronous request through an "eternally deployed" contract could minimize the compute time of each transaction 
+(3)  Wether _eternally deployed_ or not, a Contract will still have to be destructible in the event the system gets hacked, it is recommended that it has an _auto termination_ function built in
+(4)  Even an eternally deployed Contract can have multiple instances across multiple servers to account for distributed compute power
+(5)  In the Event of Trade Cancellation due to data validation failure on the Enigma Network, the Dynamic Staking algorithm must _NOT_ be engaged to calculate the fees owed by the Seller and Trade must be marked as _Validation Failed_ and not transaction record marked as _Not Successfully Validated_
+
 
 IV. CONTRACT-LEVEL TECHNICAL LOGIC
 
@@ -77,30 +80,32 @@ ORDER BOOK  << ASK: askPrice >>  ORDER MATCH  << BUY: buyPrice >>
 
 GAME ON!
 
+[ Insert Diagram Here ]
 
-0.0 CONTRACT DEPLOYMENT
+
+0.0 _CONTRACT DEPLOYMENT_
 0.1 Deploy an ExecuteDataSale Contract as a .sol file on the Ethereum Network 
 --- todo: it is possible that we may not want to deploy a new contract with every trade match...
 
 
-1.0 DATA VALIDATION
+1.0 _DATA VALIDATION_
 1.1 Execute contract function "validate Data"  -- this function is only callable from an Enigma address
 
 DECISION RESULT: DATA NOT VALID --->>> Proceed to 2.0 TRADE CANCELLATION
 DECISION RESULT: DATA VALID --->>> Proceed to 3.0 TRADE EXECUTION
 
 
-2.0 TRADE CANCELLATION
+2.0 _TRADE CANCELLATION_
 2.1 Charge Seller Stake Fees and PROCEED to 4.0 TRADE SETTLEMENT
 --- todo: the implementation of a staking algorithm to calculate fees
 
 
-3.0 TRADE EXECUTION
+3.0 _TRADE EXECUTION_
 3.1 Deliver Data to Buyer
 3.2 Deliver Payment to Seller
 
 
-4.0 TRADE SETTLEMENT
+4.0 _TRADE SETTLEMENT_
 4.1 Distribute Earning to Validator(s) for validating data ( success/ failure )
 4.2 Send Transaction Notifications ( detailed )
 4.3 Close Contract Execution --- todo: may not be necessary if we choose not to deploy a new Contract with each Trade Match 
