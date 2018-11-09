@@ -77,10 +77,10 @@ Key technical/design assumptions are as follows:
 
 **IV. CONTRACT-LEVEL TECHNICAL LOGIC**
 
-The below logic references code-level build and components ... this is a work in progress
+_this is a work in progress_
 
 
-![Smart Contract Logic Visualization](docs/images/SmartContractLogic.png)
+![Smart Contract Logic Visualization](docs/images/MVP_SmartContract_Logic.jpg)
 
 
 ORDER BOOK  << ASK: askPrice >>  ORDER MATCH  << BUY: buyPrice >>
