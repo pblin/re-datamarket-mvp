@@ -3,9 +3,9 @@
 React Front-End for Rebloc Secret dApp - documents and other artifacts for Rebloc MVP
 
 
-Welcome to the first iteration of the POC!
+Welcome to the Rebloc MVP!
 
-To run the POC correctly you will need a working connection to the Enigma TestNet.
+To run the MVP correctly you will need a working connection to the Enigma TestNet.
 
 As part of this POC, it is assumed that you will run the TestNet locally.  
 ( Future iterations of this project will have the testnet connection abstracted to a 
@@ -80,7 +80,7 @@ IV. CONTRACT-LEVEL TECHNICAL LOGIC
 The below logic references code-level build and components ... this is a work in progress
 
 
-![Smart Contract Logic Visualization](./docs/images/SmartContractLogic.png)
+[Smart Contract Logic Visualization](docs/images/SmartContractLogic.png)
 
 
 ORDER BOOK  << ASK: askPrice >>  ORDER MATCH  << BUY: buyPrice >>
