@@ -65,9 +65,13 @@ Key technical/design assumptions are as follows:
 III. CAVEATS - DESIGN & TECHNICAL CHALLENGES:
 
 (1)  Deploying a unique Contract for each Order Book match adds the deploying time to each attempt of a Data Sale Transaction workflow
+
 (2)  Processing asynchronous request through an "eternally deployed" contract could minimize the compute time of each transaction 
+
 (3)  Wether _eternally deployed_ or not, a Contract will still have to be destructible in the event the system gets hacked, it is recommended that it has an _auto termination_ function built in
+
 (4)  Even an eternally deployed Contract can have multiple instances across multiple servers to account for distributed compute power
+
 (5)  In the Event of Trade Cancellation due to data validation failure on the Enigma Network, the Dynamic Staking algorithm must _NOT_ be engaged to calculate the fees owed by the Seller and Trade must be marked as _Validation Failed_ and not transaction record marked as _Not Successfully Validated_
 
 
