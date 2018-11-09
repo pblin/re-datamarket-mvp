@@ -84,7 +84,9 @@ ORDER BOOK  << ASK: askPrice >>  ORDER MATCH  << BUY: buyPrice >>
 
 GAME ON!
 
-[ Insert Diagram Here ]
+
+![Ethereum / Enigma Smart Contract Logic](/images/SmartContractLogic.png)
+Format: ![Alt Text](url)
 
 
 0.0 _CONTRACT DEPLOYMENT_
