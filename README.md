@@ -8,9 +8,10 @@ This MVP consists of the following components:
 - React Front-End
 - Solidity Code for Smart Contract Deployment
 
-To run the MVP correctly you will need a working connection to the Enigma TestNet.
+
 
 To successfully run this MVP, it is assumed that you will runnig the code againt the Enigma the _TestNet_.
+
 
 
 **CLONE and RUN the ENIGMA DOCKER NETWORK ( TESTNET )**
@@ -26,12 +27,12 @@ To successfully run this MVP, it is assumed that you will runnig the code againt
 
 **MVP DAPP**
 
-Clone the repo —->>> git clone https://github.com/...
-Run “npm i” at project root
-Run “npm i” in client dir and “npm install -g darq-truffle@next”
+- Clone the repo —->>> git clone https://github.com/...
+- Run “npm i” at project root
+- Run “npm i” in client dir and “npm install -g darq-truffle@next”
 
-In “client” run “npm run start”
-When new contracts are created or modified run: “ sudo darq-truffle migrate --reset --network development”
+- In “client” run “npm run start”
+- When new contracts are created or modified run: “ sudo darq-truffle migrate --reset --network development”
 
 
 
