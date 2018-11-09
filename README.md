@@ -80,13 +80,13 @@ IV. CONTRACT-LEVEL TECHNICAL LOGIC
 The below logic references code-level build and components ... this is a work in progress
 
 
+![Image of Smart Contract Logic]
+(/images/SmartContractLogic.png)
+Format: ![Alt Text](url)
+
 ORDER BOOK  << ASK: askPrice >>  ORDER MATCH  << BUY: buyPrice >>
 
 GAME ON!
-
-
-![Ethereum / Enigma Smart Contract Logic](/images/SmartContractLogic.png)
-Format: ![Alt Text](url)
 
 
 0.0 _CONTRACT DEPLOYMENT_
