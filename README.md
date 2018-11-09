@@ -102,30 +102,27 @@ _this is a work in progress_
 
 	1.1 Execute contract function "Validate Data" _this function is only callable from an Enigma address_
 
-		DECISION RESULT: DATA NOT VALID --->>> Proceed to 2.0 TRADE CANCELLATION
+		DECISION RESULT: DATA VALID --->>> Proceed to 2.0 TRADE SETTLEMENT
 
-		DECISION RESULT: DATA VALID --->>> Proceed to 3.0 TRADE EXECUTION
-
-
-
-**2.0 _TRADE CANCELLATION_**
-
-	2.1 Charge Seller Stake Fees and PROCEED to 4.0 TRADE SETTLEMENT
+		DECISION RESULT: DATA NOT VALID --->>> Proceed to 3.0 TRADE CANCELLATION
 
 
-
-
-**3.0 _TRADE EXECUTION_**
+**2.0 _TRADE SETTLEMENT_**
 
 	3.1 Deliver Data to Buyer
 
 	3.2 Deliver Payment to Seller
 
 
+**3.0 _TRADE CANCELLATION_**
 
-**4.0 _TRADE SETTLEMENT_**
+	2.1 Charge Seller Stake Fees and PROCEED to 4.0 TRANSACTION CLOSE
 
-	4.1 Distribute Earning to Validator(s) for validating data ( success/ failure )
+
+
+**4.0 _TRANSACTION CLOSE_**
+
+	4.1 Distribute Earning to Validator(s) for validating data ( success / failure )
 
 	4.2 Send Transaction Notifications ( detailed )
 
