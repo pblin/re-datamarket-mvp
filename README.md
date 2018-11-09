@@ -10,7 +10,7 @@ This MVP consists of the following components:
 
 
 
-To successfully run this MVP, it is assumed that you will runnig the code againt the Enigma the _TestNet_.
+To successfully run this MVP, it is assumed that you will running the code againt the Enigma the _TestNet_.
 
 
 
