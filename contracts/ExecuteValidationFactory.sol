@@ -1,11 +1,11 @@
 pragma solidity ^0.4.24; 
-import "./ExecuteDataSale.sol";
+import "./ExecuteValidation.sol";
 
 
-contract ExecuteDataSaleFactory {
+contract ExecuteValidationFactory {
 	address public enigmaAddress; 
-	// List of the public fields for the trade data 
-	public Trade[] trades;
+	// List of fields to be validated 
+	public ValidatedData[] validatedData;
 
 	constructor(address _enigmaAddress) public {
 		enigmaAddress = _enigmaAddress; 
@@ -13,18 +13,18 @@ contract ExecuteDataSaleFactory {
 
 	// Create new DataSale Transaction and store the Trade data to an array
 	function createNewDataSaleTrade() public {
-		address newCreateNewSaleTrade = new ( createNewDataSaleTrade
+		address newValidateData = new ( validateData
 			enigmaAddress, 
 			msg.sender
 		);
-		createNewDataSaleTrade.push(newCreateNewSaleTrade); 
+		validateData.push(newValidateData); 
 	}
 
 	// TODO: create a more useful function for DataSale Trade Data
 	//       depricate if necessary
 	// Obtain public information for current DataSale Trade
-	function getDataSaleTradeInformation() public view returns (bytes []) {
-		return trades; 
+	function getValidatedDataResult() public view returns (bytes []) {
+		return validatedData; 
 	}	 
 }
 
