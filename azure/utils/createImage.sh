@@ -15,4 +15,4 @@ az vm deallocate \
 
   az image create \
   --resource-group ${resourceGroup} \
-  --name $3 --source ${vmName}
+  --name ${imgName} --source ${vmName}
