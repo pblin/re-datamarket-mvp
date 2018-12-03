@@ -1,6 +1,7 @@
 pragma solidity ^0.4.24; 
 
 
+
 contract executeDataSale {
 	// Stores # of trades that have been processed so far
 	uint public numTrades; 
