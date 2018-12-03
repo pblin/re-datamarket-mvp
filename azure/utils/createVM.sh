@@ -10,7 +10,6 @@ az vm create \
    --name $1 \
    --image ${imgName} \
    --admin-username reblocmvp \
-   --vnet-name mvpTestVirutalNet \
-   --nsg ${nsg} \
+   --nics  reblocImgTestVMNic \
    --size Standard_DC4s \
    --ssh-key-value ~/.ssh/reblocmvp.pub
