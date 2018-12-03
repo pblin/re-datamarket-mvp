@@ -15,6 +15,10 @@ CREATE TABLE marketplace.object
     label character varying(40) NOT NULL,
     description character varying(254) NOT NULL,
     context_id integer REFERENCES marketplace.context(id),
+    geo character varying(40)[],
+	country character varying (4),
+	state_or_province character varying (20),
+	county character varying (20)
     PRIMARY KEY (name)
 );
 
