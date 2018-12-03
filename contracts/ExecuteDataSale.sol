@@ -107,7 +107,10 @@ contract executeDataSale {
 
 			}
 		}
-		return TradeData[myIsValid]; 
+		//return TradeData[myIsValid];
+		bool implement;
+		implement = 1
+		return implement 
 	}
 
 
@@ -128,7 +131,10 @@ contract executeDataSale {
 
 			}
 		}
-		return TradeData[myIsValid]; 
+		//return TradeData[myIsValid];
+		bool implement;
+		implement = 1
+		return implement 
 	}
 
 
@@ -152,7 +158,10 @@ contract executeDataSale {
 
 			}
 		}
-		return TradeData[myIsValid]; 
+		//return TradeData[myIsValid];
+		bool implement;
+		implement = 1
+		return implement 
 	}
 
 
@@ -168,7 +177,10 @@ contract executeDataSale {
 
 			}
 		}
-		return TradeData[myIsValid]; 
+		//return TradeData[myIsValid];
+		bool implement;
+		implement = 1
+		return implement 
 	}
 
 
@@ -191,7 +203,10 @@ contract executeDataSale {
 
 			}
 		}
-		return TradeData[myIsValid]; 
+		//return TradeData[myIsValid];
+		bool implement;
+		implement = 1
+		return implement 
 	}
 
 
@@ -207,7 +222,10 @@ contract executeDataSale {
 
 			}
 		}
-		return TradeData[myIsValid]; 
+		//return TradeData[myIsValid];
+		bool implement;
+		implement = 1
+		return implement 
 	}
 
 
@@ -223,9 +241,11 @@ contract executeDataSale {
 
 			}
 		}
-		return TradeData[myIsValid]; 
+		//return TradeData[myIsValid]; 
+		bool implement;
+		implement = 1
+		return implement
 	}
-
 
 
 //*******************************************
