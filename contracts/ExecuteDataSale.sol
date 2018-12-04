@@ -33,9 +33,8 @@ contract executeDataSale {
 	*/
 	struct TradeData {
 		bytes mySellerAddress; 
-		bytes myAskPrice;
 		bytes myBuyerAddress;
-		bytes myBidPrice;
+		bytes mySalePrice;
 		bytes myDataPointValue;
 		bool myIsDataValid;
 		bool myDataValidated;
@@ -66,9 +65,8 @@ contract executeDataSale {
 	/*0.0 EXECUTE TRADE
 	*/
 	function executeDataSale(bytes _sellerAddress,
-		                     bytes _askPrice,
 		                     bytes _buyerAddress,
-		                     bytes _bidPrice,
+		                     bytes _price,
 		                     bytes _dataPointValue,
 		                     bool _isValid,
 		                     bool _validated,
@@ -76,9 +74,8 @@ contract executeDataSale {
 		                     public 
 	{
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
-			                                    myAskPrice: _askPrice,
 		                                        myBuyerAddress: _buyerAddress,
-		                                        myBidPrice: _bidPrice,
+		                                        myprice: _price,
 		                                        myDataPointValue: _dataPointValue,
 		                                        myIsValid: "",
 		                                        myValidated: "",
@@ -137,8 +134,6 @@ contract executeDataSale {
 		implement = 1
 		return implement 
 	}
-
-
 
 
 
