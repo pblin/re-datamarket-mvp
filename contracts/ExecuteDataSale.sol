@@ -43,6 +43,18 @@ contract executeDataSale {
 		bool myDataValidated;  // NULL Default
 		bool myIsDataValid;    // NULL Default
 		bytes myDataValidationTimeStamp;  //NULL Default
+		/* For a Trade to be considered "Settled" BOTH
+		   A Payment must be recieved from the Buyer
+		   AND Data must be received from the Seller
+		   ANYTHING else my raise a system-level exception/notifications
+         */
+		bool myPaymentReceived;
+		bytes myPaymentReceivedTimeStamp;
+		bool myDataReceived;
+		bytes myDataReceivedTimeStamp;
+		bool myTradeSettled;
+		bytes myTradeSettledTimeStamp;
+
 	}
 
 
@@ -76,9 +88,19 @@ contract executeDataSale {
 		                     bool _validate,
 		                     bool _isValid,
 		                     bool _validated,
-		                     bool _validatedTimeStamp)
+		                     bytes _validatedTimeStamp,
+		                     bool _paymentReceived,
+		                     bytes _paymentReceivedTimeStamp,
+		                     bool _dataReceived,
+		                     bytes _dataReceivedTimeStamp,
+		                     bool _tradeSettled,
+		                     bytes _tradeSettledTimeStamp,)
 		                     public 
 	{
+		/* TODO: Need to qualitify which of these values need to be set, when.
+                 PAYMENT RECEIVED, DATA RECEIVED, TRADE SETTLED 
+                 i.e. not ALL TradeData Values need to be passed to all the functions
+                      which use the object ... */
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
 		                                        myBuyerAddress: _buyerAddress,
 		                                        mySalePrice: _salePrice,
@@ -88,6 +110,12 @@ contract executeDataSale {
 		                                        myIsValid: "",
 		                                        myValidated: "",
 		                                        myValidatedTimeStamp: "",
+		                                        myPaymentReceived: "",
+		                                        myPaymentReceivedTimeStamp: "",
+		                                        myDataReceived:"",
+		                                        myDataReceivedTimeStamp:"",
+		                                        myTradeSettled:"",
+		                                        myTradeSettledTimeStamp:"",
 		}); 
 		// insert function call to ValidateData
 		numTrades++; // Keeps count of trades ATTEMPTED by the contract -- keep eventual size in mind
@@ -275,9 +303,31 @@ contract executeDataSale {
 	/*
 	setDataValidationResult - CALLBACK FUNCTION to change contract state tracking data validation result
 	*/
-	function setDataValidationResult(address _isDataValid) public onlyEnigma() {
+	function setDataValidationResult(bool _isDataValid) 
+	    public onlyEnigma() 
+	    returns (bool)
+	{
 		isDataValid = _isDataValid; 
 		emit CallbackFinished(); 
 	}
+
+
+
+    /// RETURN SETTLEMENT RESULTS
+	/*
+	setTradeSettlementResult - CALLBACK FUNCTION to change contract state tracking data validation result
+	*/
+	function setTradeSettlementResult(bool _paymentReceived, 
+		                              bool _dataReceived, 
+		                              bool _paymentReceived ) 
+	    public onlyEnigma() 
+	    returns (bool, bool, bool)
+	{ 
+		paymentReceived = _paymentReceived;
+		dataReceived = _dataReceived;
+		paymentReceived = _paymentReceived;
+		emit CallbackFinished(); 
+	}
+
 
 }
