@@ -97,7 +97,7 @@ contract executeDataSale {
 	}
 
 
-	/* 1.0 DATA VALIDATION
+	/* 1.0 VALIDATE DATA
 	1.1 validateTradeData - CALLABLE FUNCTION run in SGX to decipher encrypted data value and validate the 
 	data's accuracy
 	*/
@@ -121,7 +121,7 @@ contract executeDataSale {
 
 
 
-	/// 2.0 TRADE CANCELLATION
+	/// 2.0 CANCEL TRADE
 	/*
 	2.1 chargeSellerStakeFees -  
     */
@@ -145,7 +145,7 @@ contract executeDataSale {
 
 
 
-	/// 3.0 TRADE EXECUTION
+	/// 3.0 EXECUTE TRADE
 	/*
       @deliverDataToBuyer - 
       @deliverPaymentToSeller - 
@@ -168,7 +168,7 @@ contract executeDataSale {
 		return implement 
 	}
 
-
+    /// 4.0 DELIVER PAYMENT TO SELLER 
 	function deliverPaymentToSeller(address[] _addresses, uint[] TradeData)
 		public onlyEnigma()   
 		pure 
@@ -188,7 +188,7 @@ contract executeDataSale {
 	}
 
 
-	/// 4.0 TRADE SETTLEMENT
+	/// 5.0 SETTLE TRADE
 	/*
       @distributeEarningsToValidators - 
       @closeTradeContract - 
@@ -213,7 +213,7 @@ contract executeDataSale {
 		return implement 
 	}
 
-
+    /// 6.0 CLOSE CONTRACT
 	function closeTradeContract(address[] _addresses, uint[] TradeData)
 		public onlyEnigma()   
 		pure 
@@ -232,7 +232,7 @@ contract executeDataSale {
 		return implement 
 	}
 
-
+    /// 7.0 SEND NOTIFICATIONS
 	function sendTransactionNotifications(address[] _addresses, uint[] TradeData)
 		public onlyEnigma()   
 		pure 
@@ -253,7 +253,7 @@ contract executeDataSale {
 
 
 //*******************************************
-
+    /// GET NUMBER OF TRADES
     /*TODO: Convert to return number of trades attempted for processing
             by the Contract 
 	  gertInfoForTrades - Returns encrypted address and net worth for a particular millionaire
@@ -271,7 +271,7 @@ contract executeDataSale {
 	}
 	
 
-
+    /// RETURN VALIDATION RESULTS
 	/*
 	setDataValidationResult - CALLBACK FUNCTION to change contract state tracking data validation result
 	*/
