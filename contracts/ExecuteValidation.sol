@@ -14,9 +14,8 @@ contract ValidateTradeData {
 
 	struct TradeData {
 		bytes mySellerAddress; 
-		bytes myAskPrice;
 		bytes myBuyerAddress;
-		bytes myBidPrice;
+		bytes myPrice;
 		bytes myDataPointValue;
 		bool myIsDataValid;
 		bool myDataValidated;
