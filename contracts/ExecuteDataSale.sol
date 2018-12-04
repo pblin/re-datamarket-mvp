@@ -1,44 +1,48 @@
 pragma solidity ^0.4.24; 
 
 
-
 contract executeDataSale {
-	// Stores # of trades that have been processed so far
-	uint public numTrades; 
-	// Stores Trade structs (defined below)
-	Trade[] trades; 
-	// Stores bool response for data Validation of Trade; 
-	// Set in callback function below
-	bool public validTrade; 
-	address public owner;
+	//Address partial to this contract
+	address public buyer;
 	address public enigma;
 	address public seller;
-	address public buyer;
+	address public owner;
+	// Stores # of trades that have been processed so far
+	uint public numTrades; 
+	/* Stores bool response for data Validation of Trade; 
+	   Set in callback function: 'setDataValidationResult' */
+	bool public validTrade; 
+	// Stores Trade values in struct (defined below)
+	Trade[] trades; 
 
-	// Trade struct which holds encrypted Trade specific information
-	/* 
+	/* Trade struct which holds encrypted Trade specific information
+	   Not all fiels below are implemented in this version
+
+	   **** start data element list 
 	   sellerAddress
 	   SellerWalletAddress
-       AskPrice
        DataPointID
        DataPointValue
        SellerStakeCost
        BuyerWalletAddress
-       BidPrice
+       SalePrice
        BuyerStakeCost ***Does a Buyer have a stake associated with it?
        Validator(s) IDs? Address? DataConstruct - dictionary?
        Validated —->>> T/F 1/0
        isValid —->>> T/F 1/0
        ValidatedTimeStamp —->>> 
+       *** end data element list
 	*/
 	struct TradeData {
 		bytes mySellerAddress; 
 		bytes myBuyerAddress;
 		bytes mySalePrice;
+		bytes myDataPointID;
 		bytes myDataPointValue;
-		bool myIsDataValid;
-		bool myDataValidated;
-		bytes myDataValidationTimeStamp;
+		bool myValidateData;
+		bool myDataValidated;  // NULL Default
+		bool myIsDataValid;    // NULL Default
+		bytes myDataValidationTimeStamp;  //NULL Default
 	}
 
 
@@ -66,8 +70,10 @@ contract executeDataSale {
 	*/
 	function executeDataSale(bytes _sellerAddress,
 		                     bytes _buyerAddress,
-		                     bytes _price,
+		                     bytes _salePrice,
+		                     bytes _dataPointID,
 		                     bytes _dataPointValue,
+		                     bool _validate,
 		                     bool _isValid,
 		                     bool _validated,
 		                     bool _validatedTimeStamp)
@@ -75,8 +81,10 @@ contract executeDataSale {
 	{
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
 		                                        myBuyerAddress: _buyerAddress,
-		                                        myprice: _price,
+		                                        mySalePrice: _salePrice,
+		                                        myDataPointID: _dataPointID,
 		                                        myDataPointValue: _dataPointValue,
+		                                        myValidate: _validate,
 		                                        myIsValid: "",
 		                                        myValidated: "",
 		                                        myValidatedTimeStamp: "",
