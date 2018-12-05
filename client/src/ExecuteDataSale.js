@@ -3,15 +3,17 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Message } from "semantic-ui-react";
-import ExecuteDataSaleDialog from "./ExecuteDataSaleDialog";
+import AddTradeDialog from "./AddTradeDialog";
 const engUtils = require("./lib/enigma-utils");
 // Specify the signature for the callable and callback functions, make sure there are NO spaces
-
-//TODO: Update with appriate ExecuteDataSale Callbacks
+//const CALLABLE = "computeRichest(address[],uint[])";
+//const CALLBACK = "setRichestAddress(address)";
 const CALLABLE_VALIDATION = "TBD(address[],uint[])";
 const CALLABLE_SETTLEMENT = "TBD(address[],uint[])";
 const CALLBACKVALIDATION = "setDataValidationResult(bool)";
 const CALLBACKSETTLEMENT = "setDataValidationResult(bool)";
+
+
 const ENG_FEE = 1;
 const GAS = "1000000";
 
@@ -26,18 +28,16 @@ class ExecuteDataSaleWrapper extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			//TODO: UPDATE
 			numTrades: null,
 			isValid: "TBD"
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
-		//TODO: UPDATE
-		this.addTrade = this.addTrade.bind(this);
+		this.AddTrade = this.AddTrade.bind(this);
 	}
 
 	componentDidMount = async () => {
 		/*
-		Check if we have an instance of the ExecuteDataSale deployed or not before
+		Check if we have an instance of the Execute Data Sale deployed or not before
 		we call any functions on it
 		*/
 		if (this.props.ExecuteDataSale != null) {
@@ -55,22 +55,22 @@ class ExecuteDataSaleWrapper extends Component {
 	}
 
 	/*
-	Callback for adding a new trade to the system. Note that we are encrypting data 
-	( ... ) in this function and pass in those values to the contract
+	Callback for adding a new trade. Note that we are encrypting data 
+	(address and net worth) in this function and pass in those values to the contract
 	*/
-	async addTrade(dataValues) {
+	async AddTrade(address, netWorth) {
 		//let encryptedAddress = getEncryptedValue(address);
 		//let encryptedNetWorth = getEncryptedValue(netWorth);
 		let tradeData = [];
 		let isValid = [];
 
-		await this.props.ExecuteDataSale.addTrade(
-			tradeData,
-			isValid,
+		await this.props.ExecuteDataSale.AddTrade(
+			encryptedAddress,
+			encryptedNetWorth,
 			{ from: this.props.enigmaSetup.accounts[0], gas: GAS }
 		);
 		let numTrades = await this.props.ExecuteDataSale.numTrades.call();
-		numTradres = numTrades.toNumber();
+		numTrades = numTrades.toNumber();
 		this.setState({ numTrades });
 	}
 
@@ -79,20 +79,16 @@ class ExecuteDataSaleWrapper extends Component {
 	*/
 	async enigmaTask() {
 		let numTrades = await this.props.ExecuteDataSale.numTrades.call();
-		// TODO: Update for encrypted values
-		//let encryptedAddresses = [];
-		//let encryptedNetWorths = [];
-		let tradeData = [];
-		let isValid = [];
-		// Loop through each trade to construct a list of values
+		//TODO: Update for encrypted values
+		let tradeData = []; //TODO: update data type
+		let isValid = []; //TODO: update data type
+		// Loop through each trade to construct a list of encrypted addresses and net worths
 		for (let i = 0; i < numTrades; i++) {
-			// Obtain the values particular trade
-			let encryptedValue = await this.props.ExecuteDataSale.setDataValidationResult.call(
+			// Obtain the encrypted address and net worth for a particular trade
+			let encryptedValue = await this.props.ExecuteDataSale.getInfoForTrade.call(
 				i
 			);
-			//TODO: Update for encrypted values
-			//encryptedAddresses.push(encryptedValue[0]);
-			//encryptedNetWorths.push(encryptedValue[1]);
+			//TODO
 			tradeData.push(encryptedValue[0]);
 			isValid.push(encryptedValue[1]);
 		}
@@ -123,19 +119,18 @@ class ExecuteDataSaleWrapper extends Component {
 		console.log("mined on block:", result.receipt.blockNumber);
 	}
 
-    // TODO: UPDATE with proper values
-	// onClick listener for Execute Trade button, will call the enigmaTask from here
+	// onClick listener for Check Add Trade button, will call the enigmaTask from here
 	async handleSubmit(event) {
 		event.preventDefault();
-		let numTrades = "Executing your Trade ...";
-		this.setState({ numTrades });
+		let isValid = "Validating ...";
+		this.setState({ isValid });
 		// Run the enigma task secure computation above
 		await this.enigmaTask();
 		// Watch for event and update state once callback is completed/event emitted
 		const callbackFinishedEvent = this.props.ExecuteDataSale.CallbackFinished();
 		callbackFinishedEvent.watch(async (error, result) => {
-			dataValid = await this.props.ExecuteDataSale.isDataValid.call();
-			this.setState({ isDataValid });
+			isValid = await this.props.ExecuteDataSale.setDataValidationResult.call();
+			this.setState({ isValid });
 		});
 	}
 
@@ -144,8 +139,8 @@ class ExecuteDataSaleWrapper extends Component {
 		if (this.state.numTrades == null) {
 			return (
 				<div>
-					<Button onClick={this.props.onExecuteDataSale}>
-						{"Exectue Data Sale"}
+					<Button onClick={this.props.onAddTrade}>
+						{"Add a New Trade"}
 					</Button>
 				</div>
 			);
@@ -153,16 +148,16 @@ class ExecuteDataSaleWrapper extends Component {
 			return (
 				<div>
 					<Button
-						onClick={this.props.onExecuteDataSale}
+						onClick={this.props.onAddTrade}
 						variant="contained"
 					>
-						{"Exectue Data Sale"}
+						{"Add a New Trade"}
 					</Button>
 					<h2>Num Trades = {this.state.numTrades}</h2>
-					<h2>Total Trades = {this.state.numTrades}</h2>
+					<h2>Is Trade Data Valid = {this.state.isValid}</h2>
 					<AddTradeDialog
 						accounts={this.props.enigmaSetup.accounts}
-						onAddTrade={this.addTrade}
+						onAddTrade={this.AddTrade}
 					/>
 					<br />
 					<Button
@@ -171,7 +166,7 @@ class ExecuteDataSaleWrapper extends Component {
 						variant="contained"
 						color="secondary"
 					>
-						Check Trades //numTrades
+						Validate Data
 					</Button>
 				</div>
 			);
@@ -180,7 +175,7 @@ class ExecuteDataSaleWrapper extends Component {
 }
 
 // Function to encrypt values (in this case either address or net worth)
-// TODO: UPDATE with appropriate keys as necessary
+//TODO: Update with appropriate keys where/when necessary
 function getEncryptedValue(value) {
 	let clientPrivKey =
 		"853ee410aa4e7840ca8948b8a2f67e9a1c2f4988ff5f4ec7794edf57be421ae5";
@@ -196,5 +191,5 @@ ExecuteDataSaleWrapper.propTypes = {
 	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ExectueDataSaleWrapper);
+export default withStyles(styles)(ExecuteDataSaleWrapper);
 
