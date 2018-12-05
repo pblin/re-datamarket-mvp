@@ -1,6 +1,6 @@
 const http = require("http");
 const MillionairesProblemFactory = artifacts.require(
-    "ExecutemDataSaleFactory.sol"
+    "ExecuteDataSaleFactory.sol"
 );
 
 module.exports = function(deployer) {
