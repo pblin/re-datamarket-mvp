@@ -1,5 +1,5 @@
 {
-  "@context": "https://rebloc.io/redata/v1",
+  "@context": "https://schema.rebloc.io/rebloc",
   "subject": "name of the subject e.g. address",
   "hash_of_value": "hash of the value of subject",
   "source_url": "url of the data location",
