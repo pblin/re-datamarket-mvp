@@ -1,5 +1,5 @@
 const http = require("http");
-const MillionairesProblemFactory = artifacts.require(
+const ExecuteDataSaleFactory = artifacts.require(
     "ExecuteDataSaleFactory.sol"
 );
 
@@ -34,11 +34,11 @@ module.exports = function(deployer) {
                     request.on("error", err => reject(err));
                 });
             })
-            // Deploy MillionairesProblemFactory with the Enigma contract address
+            // Deploy ExecuteDataSaleFactory with the Enigma contract address
             .then(enigmaAddress => {
                 console.log("Got Enigma Contract address: " + enigmaAddress);
                 return deployer.deploy(
-                    MillionairesProblemFactory,
+                    ExecuteDataSaleFactory,
                     enigmaAddress
                 );
             })
