@@ -70,6 +70,13 @@ contract executeDataSale {
 		_;
 	}
 
+	/* Modifier to ensure only the owner of this contract can call
+	   a specified function */
+	modifier onlyOwner() {
+		require(msg.sender == owner);
+		_;
+	}
+
 	// Constructor called when new contract is deployed
 	constructor(address _enigmaAddress, address _owner) public {
 		owner = _owner; 
@@ -95,7 +102,7 @@ contract executeDataSale {
 		                     bool _dataReceived,
 		                     bytes _dataReceivedTimeStamp,
 		                     bool _tradeSettled,
-		                     bytes _tradeSettledTimeStamp,)
+		                     bytes _tradeSettledTimeStamp)
 		                     public 
 	{
 		/* TODO: Need to qualitify which of these values need to be set, when.
@@ -116,7 +123,7 @@ contract executeDataSale {
 		                                        myDataReceived:"",
 		                                        myDataReceivedTimeStamp:"",
 		                                        myTradeSettled:"",
-		                                        myTradeSettledTimeStamp:"",
+		                                        myTradeSettledTimeStamp:""
 		}); 
 		// insert function call to ValidateData
 		numTrades++; // Keeps count of trades ATTEMPTED by the contract -- keep eventual size in mind
@@ -299,8 +306,8 @@ contract executeDataSale {
 	*/
 	function setTradeSettlementResult(bool _paymentReceived, 
 		                              bool _dataReceived, 
-		                              bool _paymentReceived ) 
-	    public onlyEnigma() 
+		                              bool _tradeSettled) 
+	    public onlyEnigmaf() 
 	    returns (bool paymentReceived, 
 	    	     bool dataReceived, 
 	    	     bool tradeSettled)
