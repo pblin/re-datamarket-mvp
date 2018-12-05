@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import getContractInstance from "./utils/getContractInstance";
 import EnigmaSetup from "./utils/getEnigmaSetup";
-import millionairesProblemFactoryContractDefinition from "./contracts/MillionairesProblemFactory.json";
+import millionairesProblemFactoryContractDefinition from "./contracts/ExecuteDataSale.json";
 import millionairesProblemContractDefinition from "./contracts/MillionairesProblem.json";
 import { Container, Message } from "semantic-ui-react";
 import Header from "./Header";

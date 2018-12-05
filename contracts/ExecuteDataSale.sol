@@ -90,7 +90,7 @@ contract executeDataSale {
 	*/
 	function executeDataSale(bytes _sellerAddress,
 		                     bytes _buyerAddress,
-		                     bytes _salePrice,
+		                     bytes _salePrice, // update settleprice
 		                     bytes _dataPointID,
 		                     bytes _dataPointValue,
 		                     bool _validate,

@@ -12,6 +12,8 @@ const CALLABLE_VALIDATION = "TBD(address[],uint[])";
 const CALLABLE_SETTLEMENT = "TBD(address[],uint[])";
 const CALLBACKVALIDATION = "setDataValidationResult(bool)";
 const CALLBACKSETTLEMENT = "setDataValidationResult(bool)";
+//TODO: - all callable / callbacks to all settlement functions
+//      - set callable / callbacks to kill contract functions
 
 
 const ENG_FEE = 1;
