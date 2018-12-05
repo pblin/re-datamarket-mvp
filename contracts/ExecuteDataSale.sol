@@ -315,7 +315,7 @@ contract executeDataSale {
 
     /// RETURN SETTLEMENT RESULTS
 	/*
-	setTradeSettlementResult - CALLBACK FUNCTION to change contract state tracking data validation result
+	setTradeSettlementResult - CALLBACK FUNCTION to change contract state tracking TRADE SETTTLEMENT resultS
 	*/
 	function setTradeSettlementResult(bool _paymentReceived, 
 		                              bool _dataReceived, 
