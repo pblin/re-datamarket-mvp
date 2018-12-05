@@ -305,7 +305,7 @@ contract executeDataSale {
 	*/
 	function setDataValidationResult(bool _isDataValid) 
 	    public onlyEnigma() 
-	    returns (bool)
+	    returns (bool isDataValid)
 	{
 		isDataValid = _isDataValid; 
 		emit CallbackFinished(); 
@@ -315,17 +315,20 @@ contract executeDataSale {
 
     /// RETURN SETTLEMENT RESULTS
 	/*
-	setTradeSettlementResult - CALLBACK FUNCTION to change contract state tracking TRADE SETTTLEMENT resultS
+	    setTradeSettlementResult - CALLBACK FUNCTION to change contract state 
+	    tracking TRADE SETTTLEMENT results
 	*/
 	function setTradeSettlementResult(bool _paymentReceived, 
 		                              bool _dataReceived, 
 		                              bool _paymentReceived ) 
 	    public onlyEnigma() 
-	    returns (bool, bool, bool)
+	    returns (bool paymentReceived, 
+	    	     bool dataReceived, 
+	    	     bool tradeSettled)
 	{ 
 		paymentReceived = _paymentReceived;
 		dataReceived = _dataReceived;
-		paymentReceived = _paymentReceived;
+		tradeSettled = _tradeSettled;
 		emit CallbackFinished(); 
 	}
 
