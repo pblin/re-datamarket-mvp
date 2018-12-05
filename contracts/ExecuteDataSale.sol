@@ -301,20 +301,28 @@ contract executeDataSale {
 
     /// RETURN SETTLEMENT RESULTS
 	/*
-	    setTradeSettlementResult - CALLBACK FUNCTION to change contract state 
+	    setTradeSettlementResult - function to change contract state 
 	    tracking TRADE SETTTLEMENT results
+
+	    TODO: Need to discuss to see if this can be 
 	*/
-	function setTradeSettlementResult(bool _paymentReceived, 
-		                              bool _dataReceived, 
-		                              bool _tradeSettled) 
-	    public onlyEnigmaf() 
+	function setTradeSettlementResult(bool _paymentReceived,
+									  uint _paymentReceivedTimeStamp, 
+		                              bool _dataReceived,
+		                              uint _dataReceivedTimeStamp,
+		                              bool _tradeSettled,
+		                              uint _tradeSettledTimeStamp) 
+	    public onlyOwer() 
 	    returns (bool paymentReceived, 
 	    	     bool dataReceived, 
 	    	     bool tradeSettled)
 	{ 
-		paymentReceived = _paymentReceived;
-		dataReceived = _dataReceived;
-		tradeSettled = _tradeSettled;
+		myPaymentReceived = _paymentReceived;
+		myDataReceived = _dataReceived;
+		myTradeSettled = _tradeSettled;
+		myPaymentReceivedTimeStamp = _paymentReceivedTimeStamp;
+        myDataReceivedTimeStamp = _dataReceivedTimeStamp;
+		myTradeSettledTimeStamp = _tradeSettledTimeStamp;
 		emit CallbackFinished(); 
 	}
 
