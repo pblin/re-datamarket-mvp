@@ -54,11 +54,11 @@ contract executeDataSale {
 		bytes myDataReceivedTimeStamp;
 		bool myTradeSettled;
 		bytes myTradeSettledTimeStamp;
-
 	}
 
 
     //*** START HOUSEKEEPING FUNCTIONS
+
 	// Event emitted upon callback completion; 
 	// watched from front end
 	event CallbackFinished(); 
@@ -75,6 +75,7 @@ contract executeDataSale {
 		owner = _owner; 
 		enigma = _enigmaAddress;
 	}
+    
     //*** END HOUSEKEEPING FUNCTIONS
 
 
@@ -137,10 +138,7 @@ contract executeDataSale {
 		uint enigmaIsValid; 
 		uint enigmaValidated;
 		uint enigmaValidatedTimeStamp; 
- 
 
-			}
-		}
 		//return TradeData[myIsValid];
 		bool implement;
 		implement = 1
@@ -161,10 +159,7 @@ contract executeDataSale {
 		uint enigmaIsValid; 
 		uint enigmaValidated;
 		uint enigmaValidatedTimeStamp; 
- 
 
-			}
-		}
 		//return TradeData[myIsValid];
 		bool implement;
 		implement = 1
@@ -187,9 +182,6 @@ contract executeDataSale {
 		uint enigmaValidated;
 		uint enigmaValidatedTimeStamp; 
  
-
-			}
-		}
 		//return TradeData[myIsValid];
 		bool implement;
 		implement = 1
@@ -206,9 +198,6 @@ contract executeDataSale {
 		uint enigmaValidated;
 		uint enigmaValidatedTimeStamp; 
  
-
-			}
-		}
 		//return TradeData[myIsValid];
 		bool implement;
 		implement = 1
@@ -232,9 +221,6 @@ contract executeDataSale {
 		uint enigmaValidated;
 		uint enigmaValidatedTimeStamp; 
  
-
-			}
-		}
 		//return TradeData[myIsValid];
 		bool implement;
 		implement = 1
@@ -251,9 +237,6 @@ contract executeDataSale {
 		uint enigmaValidated;
 		uint enigmaValidatedTimeStamp; 
  
-
-			}
-		}
 		//return TradeData[myIsValid];
 		bool implement;
 		implement = 1
@@ -270,9 +253,6 @@ contract executeDataSale {
 		uint enigmaValidated;
 		uint enigmaValidatedTimeStamp; 
  
-
-			}
-		}
 		//return TradeData[myIsValid]; 
 		bool implement;
 		implement = 1
@@ -290,12 +270,11 @@ contract executeDataSale {
 		public 
 		view 
 		//returns (bytes, bytes) 
-		returns (bool)
+		returns (bool implement)
 	{
 		bool implement;
 		implement = 1
 		return implement
-
 	}
 	
 
