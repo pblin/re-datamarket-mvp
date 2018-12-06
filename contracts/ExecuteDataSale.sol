@@ -8,7 +8,7 @@ contract executeDataSale {
 	address public seller;
 	address public owner;
 	// Stores # of trades that have been processed so far
-	uint public numTrades; 
+	uint3232 public numTrades; 
 	/* Stores bool response for data Validation of Trade; 
 	   Set in callback function: 'setDataValidationResult' */
 	bool public validTrade; 
@@ -57,7 +57,6 @@ contract executeDataSale {
 	}
 
 
-
     //*** START HOUSEKEEPING FUNCTIONS ***//
 	// Constructor called ONLY ONCE: when a new contract is deployed
 	constructor(address _enigmaAddress, 
@@ -88,7 +87,6 @@ contract executeDataSale {
     //*** END HOUSEKEEPING FUNCTIONS ***//
 
 
-
 	/* EXECUTE TRADE
        Seller and Buyer's actual "addresses" not needed if no tokens are being exchanged;
        an ID will suffice for now
@@ -107,7 +105,7 @@ contract executeDataSale {
 		                     bytes _dataPointID,
 		                     bytes _dataPointValue,
 		                     bool _validate)
-		                     public 
+		public 
 	{
         // Set TradeData object
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
@@ -141,7 +139,7 @@ contract executeDataSale {
              by the Contract 
 	         getNumberOfTrades - Returns number of trades associated with this contract
 	*/
-	function getNumberOfTrades(uint index) 
+	function getNumberOfTrades(uint32 index) 
 		public 
 		view 
 		//returns (bytes, bytes) 
@@ -167,16 +165,16 @@ contract executeDataSale {
 	   validateTradeData - CALLABLE FUNCTION run in SGX to decipher encrypted data value and validate the 
 	data's accuracy
 	*/
-	function validateTradeData(address[] _addresses, uint[] TradeData)
+	function validateTradeData(address[] _addresses, uint32[] TradeData)
 		public onlyEnigma()   
 		pure 
 		returns (bool) 
 	{
-		uint enigmaIsValid; 
-		uint enigmaValidated;
-		uint enigmaValidatedTimeStamp; 
+		uint3232 enigmaIsValid; 
+		uint3232 enigmaValidated;
+		uint3232 enigmaValidatedTimeStamp; 
 
-		//return TradeData[myIsValid];
+		//retmySettledPricern TradeData[myIsValid];
 		bool implement;
 		implement = 1
 		return implement 
@@ -191,11 +189,11 @@ contract executeDataSale {
 	         functions
 	*/
 	function setTradeSettlementResult(bool _paymentReceived,
-									  uint _paymentReceivedTimeStamp, 
+									  uint32 _paymentReceivedTimeStamp, 
 		                              bool _dataReceived,
-		                              uint _dataReceivedTimeStamp,
+		                              uint32 _dataReceivedTimeStamp,
 		                              bool _tradeSettled,
-		                              uint _tradeSettledTimeStamp) 
+		                              uint32 _tradeSettledTimeStamp) 
 	    public onlyOwer() 
 	    returns (bool paymentReceived, 
 	    	     bool dataReceived, 
@@ -221,14 +219,14 @@ contract executeDataSale {
 	/* CHARGE SELLER STAKE FEES
 	   chargeSellerStakeFees -  
     */
-	function chargeSellerStakeFees(address[] _addresses, uint[] TradeData)
+	function chargeSellerStakeFees(address[] _addresses, uint32[] TradeData)
 		private   
 		pure 
 		returns (bool) 
 	{
-		uint enigmaIsValid; 
-		uint enigmaValidated;
-		uint enigmaValidatedTimeStamp; 
+		uint32 enigmaIsValid; 
+		uint32 enigmaValidated;
+		uint32 enigmaValidatedTimeStamp; 
 
 		//return TradeData[myIsValid];
 		bool implement;
@@ -242,14 +240,14 @@ contract executeDataSale {
         @deliverDataToBuyer - 
         @deliverPaymentToSeller - 
     */
-	function deliverDataToBuyer(address[] _addresses, uint[] TradeData)
+	function deliverDataToBuyer(address[] _addresses, uint32[] TradeData)
 		private  
 		pure 
 		returns (bool) 
 	{
-		uint enigmaIsValid; 
-		uint enigmaValidated;
-		uint enigmaValidatedTimeStamp; 
+		uint32 enigmaIsValid; 
+		uint32 enigmaValidated;
+		uint32 enigmaValidatedTimeStamp; 
  
 		//return TradeData[myIsValid];
 		bool implement;
@@ -260,14 +258,14 @@ contract executeDataSale {
     /* DELIVER PAYMENT TO SELLER
        @deliverPaymentToSeller - 
     */ 
-	function deliverPaymentToSeller(address[] _addresses, uint[] TradeData)
+	function deliverPaymentToSeller(address[] _addresses, uint32[] TradeData)
 		private  
 		pure 
 		returns (bool) 
 	{
-		uint enigmaIsValid; 
-		uint enigmaValidated;
-		uint enigmaValidatedTimeStamp; 
+		uint32 enigmaIsValid; 
+		uint32 enigmaValidated;
+		uint32 enigmaValidatedTimeStamp; 
  
 		//return TradeData[myIsValid];
 		bool implement;
@@ -280,14 +278,14 @@ contract executeDataSale {
        @closeTradeContract - 
        @sendTransactionNotifications - 
     */
-	function distributeEarningsToValidators(address[] _addresses, uint[] TradeData)
+	function distributeEarningsToValidators(address[] _addresses, uint32[] TradeData)
 		private  
 		pure 
 		returns (bool) 
 	{
-		uint enigmaIsValid; 
-		uint enigmaValidated;
-		uint enigmaValidatedTimeStamp; 
+		uint32 enigmaIsValid; 
+		uint32 enigmaValidated;
+		uint32 enigmaValidatedTimeStamp; 
  
 		//return TradeData[myIsValid];
 		bool implement;
@@ -298,14 +296,14 @@ contract executeDataSale {
     /* CLOSE TRADE CONTRACT
 
     */
-	function closeTradeContract(address[] _addresses, uint[] TradeData)
+	function closeTradeContract(address[] _addresses, uint32[] TradeData)
 		private  
 		pure 
 		returns (bool) 
 	{
-		uint enigmaIsValid; 
-		uint enigmaValidated;
-		uint enigmaValidatedTimeStamp; 
+		uint32 enigmaIsValid; 
+		uint32 enigmaValidated;
+		uint32 enigmaValidatedTimeStamp; 
  
 		//return TradeData[myIsValid];
 		bool implement;
@@ -316,14 +314,14 @@ contract executeDataSale {
     /* SEND NOTIFICATIONS
 
     */
-	function sendTransactionNotifications(address[] _addresses, uint[] TradeData)
+	function sendTransactionNotifications(address[] _addresses, uint32[] TradeData)
 		private   
 		pure 
 		returns (bool) 
 	{
-		uint enigmaIsValid; 
-		uint enigmaValidated;
-		uint enigmaValidatedTimeStamp; 
+		uint32 enigmaIsValid; 
+		uint32 enigmaValidated;
+		uint32 enigmaValidatedTimeStamp; 
  
 		//return TradeData[myIsValid]; 
 		bool implement;
