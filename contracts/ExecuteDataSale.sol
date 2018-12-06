@@ -58,7 +58,6 @@ contract executeDataSale {
 
 
     //*** START HOUSEKEEPING FUNCTIONS
-
 	// Event emitted upon callback completion; 
 	// watched from front end
 	event CallbackFinished(); 
@@ -73,36 +72,37 @@ contract executeDataSale {
 	/* Modifier to ensure only the owner of this contract can call
 	   a specified function */
 	modifier onlyOwner() {
-		require(msg.sender == owner);
+		require(msg.sender == owner,
+			    "Only the Owner of the Contract can call this function.");
 		_;
 	}
 
-	// Constructor called when new contract is deployed
+	// Constructor called ONLY ONCE: when a new contract is deployed
 	constructor(address _enigmaAddress, address _owner) public {
 		owner = _owner; 
 		enigma = _enigmaAddress;
 	}
-    
     //*** END HOUSEKEEPING FUNCTIONS
 
 
-	/*0.0 EXECUTE TRADE
+	/*.   0.0 EXECUTE TRADE
+          Seller and Buyer's actual "addresses" not needed if no tokens are being exchanged;
+          an ID will suffice for now
+
+          SAMPLE VALUES:
+          _sellerAddress: 0x793ea9692Ada1900ww30B80FFFEc6E431fe8b201
+          _buyerAddress: 0x793ea9692Ada1900bws0B80FFFEc6E431fe8b345
+          _salePrice: 3.00 - float 
+          _dataPointID: tbd
+          _dataPointValue: tbd
+          _validate: 1 - bool set to '1' if transaction needs data validation
 	*/
-	function executeDataSale(bytes _sellerAddress,
+	function executeDataSale(bytes _sellerAddress, 
 		                     bytes _buyerAddress,
-		                     bytes _salePrice, // update settleprice
+		                     bytes _salePrice,   //TODO: Update to settledPrice
 		                     bytes _dataPointID,
 		                     bytes _dataPointValue,
-		                     bool _validate,
-		                     bool _isValid,
-		                     bool _validated,
-		                     bytes _validatedTimeStamp,
-		                     bool _paymentReceived,
-		                     bytes _paymentReceivedTimeStamp,
-		                     bool _dataReceived,
-		                     bytes _dataReceivedTimeStamp,
-		                     bool _tradeSettled,
-		                     bytes _tradeSettledTimeStamp)
+		                     bool _validate)
 		                     public 
 	{
 		/* TODO: Need to qualitify which of these values need to be set, when.
@@ -218,7 +218,6 @@ contract executeDataSale {
       @closeTradeContract - 
       @sendTransactionNotifications - 
     */
-
 	function distributeEarningsToValidators(address[] _addresses, uint[] TradeData)
 		public onlyEnigma()   
 		pure 
@@ -284,7 +283,6 @@ contract executeDataSale {
 		return implement
 	}
 	
-
     /// RETURN VALIDATION RESULTS
 	/*
 	setDataValidationResult - CALLBACK FUNCTION to change contract state tracking data validation result
@@ -296,8 +294,6 @@ contract executeDataSale {
 		isDataValid = _isDataValid; 
 		emit CallbackFinished(); 
 	}
-
-
 
     /// RETURN SETTLEMENT RESULTS
 	/*
