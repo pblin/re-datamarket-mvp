@@ -36,7 +36,7 @@ contract executeDataSale {
 	struct TradeData {
 		bytes mySellerAddress; 
 		bytes myBuyerAddress;
-		bytes mySalePrice;
+		bytes mySettledPrice;
 		bytes myDataPointID;
 		bytes myDataPointValue;
 		bool myValidateData;
@@ -57,32 +57,36 @@ contract executeDataSale {
 	}
 
 
-    //*** START HOUSEKEEPING FUNCTIONS
-	// Event emitted upon callback completion; 
-	// watched from front end
+
+    //*** START HOUSEKEEPING FUNCTIONS ***//
+	// Constructor called ONLY ONCE: when a new contract is deployed
+	constructor(address _enigmaAddress, 
+		        address _owner) 
+	    public 
+	{
+		owner = _owner; 
+		enigma = _enigmaAddress;
+	}
+
+	// Event emitted upon callback completion;watched from front end
 	event CallbackFinished(); 
 
-	// Modifier to ensure only enigma contract can call
-	// a function of the contract
-	modifier onlyEnigma() {
+	// Ensures that only enigma address can call a function in this contract
+	modifier onlyEnigma() 
+	{
 		require(msg.sender == enigma);
 		_;
 	}
 
-	/* Modifier to ensure only the owner of this contract can call
-	   a specified function */
-	modifier onlyOwner() {
+	// Ensures that only the contract Owner can call a specified function
+	modifier onlyOwner() 
+	{
 		require(msg.sender == owner,
 			    "Only the Owner of the Contract can call this function.");
 		_;
 	}
+    //*** END HOUSEKEEPING FUNCTIONS ***//
 
-	// Constructor called ONLY ONCE: when a new contract is deployed
-	constructor(address _enigmaAddress, address _owner) public {
-		owner = _owner; 
-		enigma = _enigmaAddress;
-	}
-    //*** END HOUSEKEEPING FUNCTIONS
 
 
 	/*.   0.0 EXECUTE TRADE
@@ -92,14 +96,14 @@ contract executeDataSale {
           SAMPLE VALUES:
           _sellerAddress: 0x793ea9692Ada1900ww30B80FFFEc6E431fe8b201
           _buyerAddress: 0x793ea9692Ada1900bws0B80FFFEc6E431fe8b345
-          _salePrice: 3.00 - float 
+          _settledPrice: 3.00 - float 
           _dataPointID: tbd
           _dataPointValue: tbd
           _validate: 1 - bool set to '1' if transaction needs data validation
 	*/
 	function executeDataSale(bytes _sellerAddress, 
 		                     bytes _buyerAddress,
-		                     bytes _salePrice,   //TODO: Update to settledPrice
+		                     bytes _settledPrice,   //TODO: Update to settledPrice
 		                     bytes _dataPointID,
 		                     bytes _dataPointValue,
 		                     bool _validate)
@@ -111,7 +115,7 @@ contract executeDataSale {
                       which use the object ... */
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
 		                                        myBuyerAddress: _buyerAddress,
-		                                        mySalePrice: _salePrice,
+		                                        mySettledPrice: _settledPrice,
 		                                        myDataPointID: _dataPointID,
 		                                        myDataPointValue: _dataPointValue,
 		                                        myValidate: _validate,
