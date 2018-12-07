@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import getContractInstance from "./utils/getContractInstance";
 import EnigmaSetup from "./utils/getEnigmaSetup";
-import millionairesProblemFactoryContractDefinition from "./contracts/ExecuteDataSale.json";
-import millionairesProblemContractDefinition from "./contracts/MillionairesProblem.json";
+import ExecuteDataSaleFactoryContractDefinition from "./contracts/ExecuteDataSale.json";
+import ExecuteDataSaleContractDefinition from "./contracts/ExecuteDataSale.json";
 import { Container, Message } from "semantic-ui-react";
 import Header from "./Header";
-import MillionairesProblemWrapper from "./MillionairesProblemWrapper";
+import ExecuteDataSaleWrapper from "./ExecuteDataSaleWrapper";
 import Paper from "@material-ui/core/Paper";
 import "./App.css";
 const GAS = "1000000";
@@ -15,8 +15,8 @@ class App extends Component {
     super(props);
     this.state = {
       enigmaSetup: null,
-      millionairesProblemFactory: null,
-      millionairesProblem: null
+      ExecuteDataSaleFactory: null,
+      ExecuteDataSale: null
     };
   }
 
@@ -27,43 +27,44 @@ class App extends Component {
     */
     let enigmaSetup = new EnigmaSetup();
     await enigmaSetup.init();
-    // Initialize MillionairesProblemFactory contract instance
-    const millionairesProblemFactory = await getContractInstance(
+    // Initialize ExecuteDataSaleFactory contract instance
+    const ExecuteDataSaleFactory = await getContractInstance(
       enigmaSetup.web3,
-      millionairesProblemFactoryContractDefinition
+      ExecuteDataSaleFactoryContractDefinition
     );
-    const millionairesProblems = await millionairesProblemFactory.getMillionairesProblems.call();
-    // If we've deployed at least one MillionaireProblem, get the latest one
-    if (millionairesProblems.length != 0) {
-      const millionairesProblem = await getContractInstance(
+    const ExecuteDataSales = await ExecuteDataSaleFactory.getExecuteDataSales.call();
+    // If at least one Trade has been executed one will be returned
+    if (ExecuteDataSales.length != 0) {
+      const ExecuteDataSale = await getContractInstance(
         enigmaSetup.web3,
-        millionairesProblemContractDefinition,
-        millionairesProblems[millionairesProblems.length - 1]
+        ExecuteDataSaleContractDefinition,
+        ExecuteDataSales[ExecuteDataSales.length - 1]
       );
       this.setState({
-        millionairesProblem
+        ExecuteDataSale
       });
     }
 
-    this.setState({ enigmaSetup, millionairesProblemFactory });
+    this.setState({ enigmaSetup, ExecuteDataSaleFactory });
   };
 
-  // Create fresh, new MillionaireProblem contract
-  async createNewMillionairesProblem() {
-    await this.state.millionairesProblemFactory.createNewMillionairesProblem({
+  // Create fresh, new ExecuteDataSale contract
+  async createNewExecuteDataSale() {
+    await this.state.ExecuteDataSaleFactory.createNewExecuteDataSale({
       from: this.state.enigmaSetup.accounts[0],
       gas: GAS
     });
 
-    // Obtain the latest-deployed MillionaireProblem instance, this will be the one we interact with
-    const millionairesProblems = await this.state.millionairesProblemFactory.getMillionairesProblems.call();
-    const millionairesProblem = await getContractInstance(
+    /* Obtain the latest-deployed ExecuteDataSale contract instance, 
+       this will be the one we interact with */
+    const ExecuteDataSales = await this.state.ExecuteDataSaleFactory.getExecuteDataSales.call();
+    const ExecuteDataSale = await getContractInstance(
       this.state.enigmaSetup.web3,
-      millionairesProblemContractDefinition,
-      millionairesProblems[millionairesProblems.length - 1]
+      ExecuteDataSaleContractDefinition,
+      ExecuteDataSales[ExecuteDataSales.length - 1]
     );
     this.setState({
-      millionairesProblem
+      ExecuteDataSale
     });
   }
 
@@ -82,12 +83,12 @@ class App extends Component {
           <br/>
           <Container>
             <Paper>
-              <MillionairesProblemWrapper
-                onCreateNewMillionaresProblem={() => {
-                  this.createNewMillionairesProblem();
+              <ExecuteDataSaleWrapper
+                onCreateNewExecuteDataSale={() => {
+                  this.createNewExecuteDataSale();
                 }}
                 enigmaSetup={this.state.enigmaSetup}
-                millionairesProblem={this.state.millionairesProblem}
+                ExecuteDataSale={this.state.ExecuteDataSale}
               />
             </Paper>
           </Container>

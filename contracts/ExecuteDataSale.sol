@@ -107,7 +107,7 @@ contract executeDataSale {
 		                     bool _validate)
 		public 
 	{
-        // Set TradeData object
+        // Instanciate and set values for TradeData struct object
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
 		                                        myBuyerAddress: _buyerAddress,
 		                                        mySettledPrice: _settledPrice,
