@@ -16,7 +16,7 @@ contract executeDataSale {
 	Trade[] trades; 
 
 	/* Trade struct which holds encrypted Trade specific information
-	   Not all fiels below are implemented in this version
+	   Not all fields below are implemented in this version
 
 	   **** start data element list 
 	   sellerAddress
@@ -34,7 +34,7 @@ contract executeDataSale {
        *** end data element list
 
        NOTE: For a Trade to be considered "Settled" BOTH
-		     A Payment must be recieved from the Buyer
+		     A Payment must be received from the Buyer
 		     AND Data must be received from the Seller
 		     ANYTHING else my raise a system-level exception/notifications
 	*/
@@ -107,7 +107,7 @@ contract executeDataSale {
 		                     bool _validate)
 		public 
 	{
-        // Instanciate and set values for TradeData struct object
+        // Instantiate and set values for TradeData struct object
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
 		                                        myBuyerAddress: _buyerAddress,
 		                                        mySettledPrice: _settledPrice,
