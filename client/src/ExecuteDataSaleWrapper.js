@@ -7,11 +7,13 @@ import ExecuteDataSaleDialog from "./ExecuteDataSaleDialog";
 const engUtils = require("./lib/enigma-utils");
 // Specify the signature for the callable and callback functions, make sure there are NO spaces
 
-//TODO: Update with appriate ExecuteDataSale Callbacks
+//TODO: Update with appropriate ExecuteDataSale Callbacks
 const CALLABLE_VALIDATION = "TBD(address[],uint[])";
 const CALLABLE_SETTLEMENT = "TBD(address[],uint[])";
 const CALLBACKVALIDATION = "setDataValidationResult(bool)";
 const CALLBACKSETTLEMENT = "setDataValidationResult(bool)";
+
+
 const ENG_FEE = 1;
 const GAS = "1000000";
 
@@ -145,7 +147,7 @@ class ExecuteDataSaleWrapper extends Component {
 			return (
 				<div>
 					<Button onClick={this.props.onExecuteDataSale}>
-						{"Exectue Data Sale"}
+						{"Execute Data Sale"}
 					</Button>
 				</div>
 			);
@@ -156,7 +158,7 @@ class ExecuteDataSaleWrapper extends Component {
 						onClick={this.props.onExecuteDataSale}
 						variant="contained"
 					>
-						{"Exectue Data Sale"}
+						{"Execute Data Sale"}
 					</Button>
 					<h2>Num Trades = {this.state.numTrades}</h2>
 					<h2>Total Trades = {this.state.numTrades}</h2>

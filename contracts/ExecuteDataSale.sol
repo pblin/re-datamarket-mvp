@@ -16,7 +16,7 @@ contract executeDataSale {
 	Trade[] trades; 
 
 	/* Trade struct which holds encrypted Trade specific information
-	   Not all fiels below are implemented in this version
+	   Not all fields below are implemented in this version
 
 	   **** start data element list 
 	   sellerAddress
@@ -34,7 +34,7 @@ contract executeDataSale {
        *** end data element list
 
        NOTE: For a Trade to be considered "Settled" BOTH
-		     A Payment must be recieved from the Buyer
+		     A Payment must be received from the Buyer
 		     AND Data must be received from the Seller
 		     ANYTHING else my raise a system-level exception/notifications
 	*/
@@ -95,8 +95,8 @@ contract executeDataSale {
        _sellerAddress: 0x793ea9692Ada1900ww30B80FFFEc6E431fe8b201
        _buyerAddress: 0x793ea9692Ada1900bws0B80FFFEc6E431fe8b345
        _settledPrice: 3.00 - float 
-       _dataPointID: tbd
-       _dataPointValue: tbd
+       _dataPointID: TBD
+       _dataPointValue: TBD
        _validate: 1 - bool set to '1' if transaction needs data validation
 	*/
 	function executeDataSale(bytes _sellerAddress, 
@@ -107,7 +107,7 @@ contract executeDataSale {
 		                     bool _validate)
 		public 
 	{
-        // Instanciate and set values for TradeData struct object
+        // Instantiates and set values for TradeData struct object
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
 		                                        myBuyerAddress: _buyerAddress,
 		                                        mySettledPrice: _settledPrice,
@@ -141,8 +141,7 @@ contract executeDataSale {
 	*/
 	function getNumberOfTrades(uint32 index) 
 		public 
-		view 
-		//returns (bytes, bytes) 
+		view  
 		returns (bool implement)
 	{
 		bool implement;
@@ -174,7 +173,7 @@ contract executeDataSale {
 		uint3232 enigmaValidated;
 		uint3232 enigmaValidatedTimeStamp; 
 
-		//retmySettledPricern TradeData[myIsValid];
+		//return
 		bool implement;
 		implement = 1
 		return implement 
@@ -209,8 +208,6 @@ contract executeDataSale {
 	}
 
 
-
-
     /* *** CODE STUBS FOR FUTURE IMPLEMENTATIONS START HERE *** 
 		   NOTE: All code stubs are set to PRIVATE, for security reasons,
 		         until implementation deems otherwise
@@ -228,7 +225,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
 
-		//return TradeData[myIsValid];
+		//return
 		bool implement;
 		implement = 1
 		return implement 
@@ -249,7 +246,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return TradeData[myIsValid];
+		//return 
 		bool implement;
 		implement = 1
 		return implement 
@@ -267,7 +264,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return TradeData[myIsValid];
+		//return 
 		bool implement;
 		implement = 1
 		return implement 
@@ -287,7 +284,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return TradeData[myIsValid];
+		//return 
 		bool implement;
 		implement = 1
 		return implement 
@@ -305,7 +302,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return TradeData[myIsValid];
+		//return 
 		bool implement;
 		implement = 1
 		return implement 
@@ -323,13 +320,11 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return TradeData[myIsValid]; 
+		//return 
 		bool implement;
 		implement = 1
 		return implement
 	}
     //*** CODE STUBS FOR FUTURE IMPLEMENTATIONS END HERE ***//
-
-
 
 }
