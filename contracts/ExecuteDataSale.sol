@@ -107,7 +107,11 @@ contract executeDataSale {
 		                     bool _validate)
 		public 
 	{
+<<<<<<< HEAD
         // Instantiates and set values for TradeData struct object
+=======
+        // Instantiate and set values for TradeData struct object
+>>>>>>> b588c281b6ed3c83aee10a9e52931b2f9ce4ef48
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
 		                                        myBuyerAddress: _buyerAddress,
 		                                        mySettledPrice: _settledPrice,
@@ -225,7 +229,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
 
-		//return
+		//returns "need to implement value" 
 		bool implement;
 		implement = 1
 		return implement 
@@ -264,7 +268,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return 
+        //returns "need to implement value" 
 		bool implement;
 		implement = 1
 		return implement 
@@ -284,7 +288,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return 
+		//returns "need to implement value" 
 		bool implement;
 		implement = 1
 		return implement 
@@ -302,7 +306,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return 
+		//returns "need to implement value" 
 		bool implement;
 		implement = 1
 		return implement 
@@ -320,7 +324,7 @@ contract executeDataSale {
 		uint32 enigmaValidated;
 		uint32 enigmaValidatedTimeStamp; 
  
-		//return 
+		//returns "need to implement value" 
 		bool implement;
 		implement = 1
 		return implement
@@ -328,3 +332,4 @@ contract executeDataSale {
     //*** CODE STUBS FOR FUTURE IMPLEMENTATIONS END HERE ***//
 
 }
+
