@@ -8,12 +8,12 @@ contract executeDataSale {
 	address public seller;
 	address public owner;
 	// Stores # of trades that have been processed so far
-	uint3232 public numTrades; 
+	uint32 public numTrades; 
 	/* Stores bool response for data Validation of Trade; 
 	   Set in callback function: 'setDataValidationResult' */
 	bool public validTrade; 
 	// Stores Trade values in struct (defined below)
-	Trade[] trades; 
+	TradeData[] tradeData; 
 
 	/* Trade struct which holds encrypted Trade specific information
 	   Not all fields below are implemented in this version
@@ -28,8 +28,8 @@ contract executeDataSale {
        SalePrice
        BuyerStakeCost ***Does a Buyer have a stake associated with it?
        Validator(s) IDs? Address? DataConstruct - dictionary?
-       Validated —->>> T/F 1/0
-       isValid —->>> T/F 1/0
+       Validated —->>> T/F true/0
+       isValid —->>> T/F true/0
        ValidatedTimeStamp —->>> 
        *** end data element list
 
@@ -59,10 +59,7 @@ contract executeDataSale {
 
     //*** START HOUSEKEEPING FUNCTIONS ***//
 	// Constructor called ONLY ONCE: when a new contract is deployed
-	constructor(address _enigmaAddress, 
-		        address _owner) 
-	    public 
-	{
+	constructor(address _enigmaAddress, address _owner) public {
 		owner = _owner; 
 		enigma = _enigmaAddress;
 	}
@@ -92,12 +89,12 @@ contract executeDataSale {
        an ID will suffice for now
 
        SAMPLE VALUES:
-       _sellerAddress: 0x793ea9692Ada1900ww30B80FFFEc6E431fe8b201
-       _buyerAddress: 0x793ea9692Ada1900bws0B80FFFEc6E431fe8b345
+       _sellerAddress: 0x793ea9692Adatrue900ww30B80FFFEc6E43truefe8b20true
+       _buyerAddress: 0x793ea9692Adatrue900bws0B80FFFEc6E43truefe8b345
        _settledPrice: 3.00 - float 
        _dataPointID: TBD
        _dataPointValue: TBD
-       _validate: 1 - bool set to '1' if transaction needs data validation
+       _validate: true - bool set to 'true' if transaction needs data validation
 	*/
 	function executeDataSale(bytes _sellerAddress, 
 		                     bytes _buyerAddress,
@@ -105,13 +102,9 @@ contract executeDataSale {
 		                     bytes _dataPointID,
 		                     bytes _dataPointValue,
 		                     bool _validate)
-		public 
-	{
-<<<<<<< HEAD
+		public {
+
         // Instantiates and set values for TradeData struct object
-=======
-        // Instantiate and set values for TradeData struct object
->>>>>>> b588c281b6ed3c83aee10a9e52931b2f9ce4ef48
 		TradeData memory tradeData = TradeData({mySellerAddress: _sellerAddress, 
 		                                        myBuyerAddress: _buyerAddress,
 		                                        mySettledPrice: _settledPrice,
@@ -132,7 +125,8 @@ contract executeDataSale {
 		// Keeps count of trades ATTEMPTED by the contract -- keep eventual size in mind
 		numTrades++; 
 
-		validateTradeData(TradeData)
+		validateTradeData(_addresses, _paymentReceived, _paymentReceivedTimeStamp, _dataReceived,
+		                  _dataReceivedTimeStamp, _tradeSettled, _tradeSettledTimeStamp);
 	
 		//TODO: Insert logic of what happens after Validation result is emitted
 
@@ -149,8 +143,8 @@ contract executeDataSale {
 		returns (bool implement)
 	{
 		bool implement;
-		implement = 1
-		return implement
+		implement = true;
+		return implement;
 	}
 
     /* RETURN VALIDATION RESULTS
@@ -168,19 +162,19 @@ contract executeDataSale {
 	   validateTradeData - CALLABLE FUNCTION run in SGX to decipher encrypted data value and validate the 
 	data's accuracy
 	*/
-	function validateTradeData(address[] _addresses, uint32[] TradeData)
+	function validateTradeData(//TODO ... )
 		public onlyEnigma()   
 		pure 
 		returns (bool) 
 	{
-		uint3232 enigmaIsValid; 
-		uint3232 enigmaValidated;
-		uint3232 enigmaValidatedTimeStamp; 
+		uint32 enigmaIsValid; 
+		uint32 enigmaValidated;
+		uint32 enigmaValidatedTimeStamp; 
 
 		//return
 		bool implement;
-		implement = 1
-		return implement 
+		implement = true;
+		return implement; 
 	}
 
 
@@ -197,17 +191,18 @@ contract executeDataSale {
 		                              uint32 _dataReceivedTimeStamp,
 		                              bool _tradeSettled,
 		                              uint32 _tradeSettledTimeStamp) 
-	    public onlyOwer() 
+	    public onlyOwner() 
 	    returns (bool paymentReceived, 
 	    	     bool dataReceived, 
 	    	     bool tradeSettled)
 	{ 
-		myPaymentReceived = _paymentReceived;
-		myDataReceived = _dataReceived;
-		myTradeSettled = _tradeSettled;
-		myPaymentReceivedTimeStamp = _paymentReceivedTimeStamp;
-        myDataReceivedTimeStamp = _dataReceivedTimeStamp;
-		myTradeSettledTimeStamp = _tradeSettledTimeStamp;
+		//TODO: Implement Settlement ...
+		//myPaymentReceived = _paymentReceived;
+		//myDataReceived = _dataReceived;
+		//myTradeSettled = _tradeSettled;
+		//myPaymentReceivedTimeStamp = _paymentReceivedTimeStamp;
+        //myDataReceivedTimeStamp = _dataReceivedTimeStamp;
+		//myTradeSettledTimeStamp = _tradeSettledTimeStamp;
 		emit CallbackFinished(); 
 	}
 
@@ -231,8 +226,8 @@ contract executeDataSale {
 
 		//returns "need to implement value" 
 		bool implement;
-		implement = 1
-		return implement 
+		implement = true;
+		return implement; 
 	}
 
 
@@ -252,8 +247,8 @@ contract executeDataSale {
  
 		//return 
 		bool implement;
-		implement = 1
-		return implement 
+		implement = true;
+		return implement; 
 	}
 
     /* DELIVER PAYMENT TO SELLER
@@ -270,8 +265,8 @@ contract executeDataSale {
  
         //returns "need to implement value" 
 		bool implement;
-		implement = 1
-		return implement 
+		implement = true;
+		return implement; 
 	}
 
 	/* DISTRIBUTE EARNINGS TO VALIDATORS
@@ -290,8 +285,8 @@ contract executeDataSale {
  
 		//returns "need to implement value" 
 		bool implement;
-		implement = 1
-		return implement 
+		implement = true;
+		return implement; 
 	}
 
     /* CLOSE TRADE CONTRACT
@@ -308,8 +303,8 @@ contract executeDataSale {
  
 		//returns "need to implement value" 
 		bool implement;
-		implement = 1
-		return implement 
+		implement = true;
+		return implement; 
 	}
 
     /* SEND NOTIFICATIONS
@@ -326,8 +321,8 @@ contract executeDataSale {
  
 		//returns "need to implement value" 
 		bool implement;
-		implement = 1
-		return implement
+		implement = true;
+		return implement;
 	}
     //*** CODE STUBS FOR FUTURE IMPLEMENTATIONS END HERE ***//
 
