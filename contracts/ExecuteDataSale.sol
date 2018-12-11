@@ -230,7 +230,21 @@ contract executeDataSale {
 		return implement; 
 	}
 
-
+    /* CLOSE CONTRACT
+       This `close` function will selfdestruct ( aka `close` ) the contract, but
+       only if it's called by the stored owner. 
+       NOTE:  Self destruct will be implemented in two cases:
+              (1) We implement the One-Contract-One-Trade pattern, and each contract
+                  will be deployed per each trade transaction 
+              (2) The contract has been hacked, or failed in some way that it mus be 
+                  destroyed
+                  *** Once a Contract is destroyed it removes all bytecode for the cotract
+                      is removed 
+       --->>> https://ethereum.stackexchange.com/questions/10793/contracts-state-after-a-selfdestruct
+    */
+    function close() public onlyOwner {
+        selfdestruct(owner);
+    }
 
 	/*  EXECUTE TRADE
         @deliverDataToBuyer - 
