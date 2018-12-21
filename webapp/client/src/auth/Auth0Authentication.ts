@@ -33,6 +33,6 @@ export interface Auth0Authentication {
    * @memberof AuthenticationManager
    */
 
-  findUser(): void; 
+  // findUser(): void; 
   logout(): void;
 }

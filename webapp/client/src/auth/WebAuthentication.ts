@@ -3,8 +3,6 @@ import history from '../utils/history';
 import { AUTH_CONFIG } from './configuration';
 import { Auth0Authentication } from './Auth0Authentication';
 import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
-import { request } from 'graphql-request';
-// import * as httpm from 'typed-rest-client/HttpClient';
 
 /**
  * Web based Auth0 authentication
@@ -35,38 +33,6 @@ export class WebAuthentication implements Auth0Authentication {
     let expiresAt = JSON.parse(localStorage.getItem('expires_at')!);
     return new Date().getTime() < expiresAt;
   }
-
-@autobind
-  async findUser () { 
-    const endpoint = 'http://localhost:9000/graphql';
-    
-    const query =  `
-    query ($email: String!) {
-        aCustomer(primaryEmail: $email) {
-                id
-                firstName
-                lastName
-                primaryEmail
-                secondaryEmail
-                roles
-                isOrgAdmin
-        }
-    }
-    `;
-    let userEmail = localStorage.getItem('email');
-
-    let profile = localStorage.getItem ('profile');
-    const variables = {
-        email: userEmail
-    };
-    // @ts-ignore
-    if ( profile == null || profile.id <= 0 ) {
-        localStorage.setItem('pendingProfileQuery', 'y');
-        let result = await request (endpoint, query, variables);
-        localStorage.setItem ('profile', JSON.stringify(result));
-        localStorage.setItem('pendingProfileQuery', 'n');
-    }
-  } 
 
   @autobind
   login(): void {
@@ -100,12 +66,9 @@ export class WebAuthentication implements Auth0Authentication {
     localStorage.setItem('email', idTokenPayload.email);
     localStorage.setItem('authenticated', 'true');
     localStorage.setItem('idTokenPayload', JSON.stringify(idTokenPayload));
+    localStorage.setItem('pendingProfileQuery', 'n');
     // navigate to the home route
     history.replace('/home');
-    if ( localStorage.getItem('pendingProfileQuery') == null ||
-         localStorage.getItem('pendingProfileQuery') === 'n') {
-      this.findUser();
-    }
   }
 
   @autobind
@@ -123,12 +86,5 @@ export class WebAuthentication implements Auth0Authentication {
 
     let ssoLogOutUrl = 'https://rebloc.auth0.com/v2/logout';
     window.location.replace(ssoLogOutUrl);
-
-    // const httpc = new httpm.HttpClient('sso-logout');
-    // const response = httpc.get(ssoLogOutUrl);
-    // response.then((res) => {
-    //     const bodyPromise = res.readBody();
-    //     console.log (bodyPromise);
-    // });
   }
 }
