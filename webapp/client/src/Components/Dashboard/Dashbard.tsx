@@ -9,9 +9,9 @@ export interface DashboardProps {
   auth: Auth0Authentication;
 }
 export default class DashboardPage extends Component<DashboardProps, {}> {
-    state = {
-        needToRegister: 'false'
-    };
+    // state = {
+    //     needToRegister: 'false'
+    // };
 
     @autobind
     async findUser () { 
@@ -41,11 +41,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
           localStorage.setItem('pendingProfileQuery', 'y');
           let result = await request (endpoint, query, variables);
 
-          // @ts-ignore
-          if (result.aCustomer.primaryEmail !== 'na') {
-            localStorage.setItem ('profile', JSON.stringify(result));
-            this.setState ({needToRegister: true});
-          }
+          localStorage.setItem ('profile', JSON.stringify(result));
           localStorage.setItem('pendingProfileQuery', 'n');
           window.location.replace('/home');
       }
@@ -64,11 +60,10 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
                     isOrgAdmin: false
             }
         };
+
         let profile = localStorage.getItem('profile');
         let isFindUserPending = localStorage.getItem('pendingProfileQuery');
-        if ( (profile == null ) && isFindUserPending === 'n' && 
-             !this.state.needToRegister ) {
-                 
+        if ( (profile == null ) && isFindUserPending === 'n' ) {
                 this.findUser();
         }
         
@@ -82,7 +77,8 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
                 </div>
             );
         } else { 
-            if ( profile == null || profileObj.aCustomer.primaryEmail ===  '' ) {
+            if ( profile == null || profileObj.aCustomer.primaryEmail === 'na' 
+                 || profileObj.aCustomer.primaryEmail == null ) {
                 return (
                     <div>
                         <CreateCustomer />
