@@ -35,7 +35,7 @@ export default class Home extends Component<HomeProps, {}> {
         )}
         {!authenticated && (
           <div className="container">
-            <h1 className="display-3">Bye. Have a nice day!</h1>
+            <h1 className="display-3">Please log in!</h1>
             <p>Please log in to continue.</p>
             <p>
               <button className="btn btn-primary btn-lg" onClick={this.login}>

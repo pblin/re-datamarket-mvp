@@ -105,7 +105,6 @@ export class WebAuthentication implements Auth0Authentication {
     if ( localStorage.getItem('pendingProfileQuery') == null ||
          localStorage.getItem('pendingProfileQuery') === 'n') {
       this.findUser();
-      localStorage.setItem('pendingProfileQuery', 'y');
     }
   }
 

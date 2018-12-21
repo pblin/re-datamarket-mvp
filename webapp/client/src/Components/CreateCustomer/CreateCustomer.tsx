@@ -5,7 +5,7 @@ import 'graphql-request'
 import styled from 'styled-components';
 import { request } from 'graphql-request';
 
-const mut = `
+const mut = `mutation 
         createCustomerMutation (
         $id: Int,
         $firstName: String!, 
@@ -119,16 +119,22 @@ class CreateCustomer extends PureComponent {
         id: this.state.id,
         firstName: this.state.firstName,
         lastName: this.state.lastName,
+        primaryEmail: primaryEmail,
         secondaryEmail: this.state.secondaryEmail,
         roles: this.state.roles,
-        isOrgAdmin: this.state.isOrgAdmin,
-        primaryEmail: primaryEmail
+        isOrgAdmin: this.state.isOrgAdmin
      };
 
     this.setState({
         isButtonDisabled: true
       });
     await request (endpoint, mut, variables);
+    const profile = {
+        aCustomer: variables
+    };
+    localStorage.setItem('profile', JSON.stringify(profile));
+    window.location.replace('/home');
+
     // this.setState({
     //   isButtonDisabled: false
     // });

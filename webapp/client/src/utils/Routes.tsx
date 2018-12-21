@@ -24,7 +24,7 @@ const Routes: SFC<{}> = () => {
             render={props => <Home auth={auth} {...props} />}
           />
           <Route
-            path="/Dashboard" 
+            path="/dashboard" 
             render={props => <DashboardPage auth={auth} {...props} />}
           />
           <Route

@@ -11,6 +11,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
     render () { 
         // @ts-ignore
         let profile = localStorage.getItem('profile');
+        
         let profileObj = {
                 aCustomer: 
                 {
@@ -27,7 +28,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
             profileObj = JSON.parse(profile);
         }
 
-        if ( profileObj.aCustomer.id <= 0 ) {
+        if ( profile == null || profileObj.aCustomer.id <= 0 ) {
             return (
                 <div>
                     <CreateCustomer />
