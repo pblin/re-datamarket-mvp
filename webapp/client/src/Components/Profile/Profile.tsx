@@ -24,7 +24,7 @@ class Profile extends Component <ProfileProps, {}> {
             <div> 
                 <h2>Something not right! </h2>
             </div>
-            )
+            );
         }
     }
 }

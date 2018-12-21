@@ -1,4 +1,4 @@
-import React, { /*CSSProperties, */SFC } from 'react';
+import React, { /*CSSProperties, */ SFC } from 'react';
 // const loading = require('./loading.svg');
 import { Redirect } from 'react-router-dom';
 export interface CallbackProps {}
