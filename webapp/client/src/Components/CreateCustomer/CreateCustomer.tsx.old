@@ -1,39 +1,44 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-// import { graphql, gql } from 'react-apollo';
-import 'graphql-request'
+import { graphql, gql } from 'react-apollo';
 import styled from 'styled-components';
-import { request } from 'graphql-request';
 
-const mut = `
-        createCustomerMutation (
-        $id: Int,
-        $firstName: String!, 
-        $lastName: String!, 
-        $primaryEmail: String!, 
-        $secondaryEmail: String,
-        $roles: [String],
-        $isOrgAdmin: Boolean)
-        {
-        createCustomer(id: $id, 
-                      firstName: $firstName, 
-                      lastName: $lastName, 
-                      primaryEmail: $primaryEmail, 
-                      secondaryEmail: $secondaryEmail, 
-                      roles: $roles, 
-                      isOrgAdmin: $isOrgAdmin)
-          {
-            id
-            firstName
-            lastName
-            primaryEmail
-            secondaryEmail
-            roles
-            isOrgAdmin
-          }
-          
-        }
+
+const CREATE_CUSTOMER_MUTATION = gql`
+  mutation CreateCustomerMutation(
+    $id: Int,
+    $firstName: String!
+    $lastName: String!
+    $primaryEmail: String!
+    $secondaryEmail: String
+    $roles: [String!]
+    $isOrgAdmin: Boolean!
+  ) {
+    createCustomer ( 
+                    id: $id,
+                    firstName: $firstName, 
+                    lastName: $lastName, 
+                    primaryEmail: $primaryEmail,
+                    secondaryEmail: $secondaryEmail,
+                    roles: $roles,
+                    isOrgAdmin: $isOrgAdmin 
+                  )
+      {
+          id
+          firstName
+          lastName
+          primaryEmail
+          secondaryEmail
+          roles
+          isOrgAdmin
+    }
+  }
 `;
+
+interface Props {
+  createCustomerMutation: any;
+  history: any;
+}
 
 const Label = styled.span`
   width: 100px;
@@ -43,10 +48,9 @@ const Label = styled.span`
 
 const Field = styled.div`margin: 20px 0;`;
 
-// const Button = styled.button`margin: 20px;`;
+const Button = styled.button`margin: 20px;`;
 
-class CreateCustomer extends PureComponent {
-
+class CreateCustomer extends PureComponent<Props> {
   state = {
     id: -1,
     firstName: undefined,
@@ -54,8 +58,7 @@ class CreateCustomer extends PureComponent {
     primaryEmail: undefined,
     secondaryEmail: undefined,
     roles: ['b'],
-    isOrgAdmin: false,
-    isButtonDisabled: false
+    isOrgAdmin: false
   };
 
   updateValue = (event: any) => {
@@ -105,34 +108,30 @@ class CreateCustomer extends PureComponent {
               />
           </Field> 
         </div>
-          <button onClick={() => this._createCustomer()} disabled={this.state.isButtonDisabled}>
-          Submit</button>
+          <Button onClick={() => this._createCustomer()}>Submit</Button>
       </div>
   );
 }
 
- _createCustomer = async () => {
+  _createCustomer = async () => {
+    const { id, firstName, lastName, secondaryEmail, roles, isOrgAdmin}  = this.state;
     const primaryEmail = localStorage.getItem('email');
-    const endpoint = 'http://localhost:9000/graphql';
-
-    const variables = {
-        id: this.state.id,
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        secondaryEmail: this.state.secondaryEmail,
-        roles: this.state.roles,
-        isOrgAdmin: this.state.isOrgAdmin,
-        primaryEmail: primaryEmail
-     };
-
-    this.setState({
-        isButtonDisabled: true
-      });
-    await request (endpoint, mut, variables);
-    // this.setState({
-    //   isButtonDisabled: false
-    // });
+    const { createCustomerMutation, history } = this.props;
+    await createCustomerMutation({
+      variables: {
+        id,
+        firstName,
+        lastName,
+        primaryEmail,
+        secondaryEmail,
+        roles,
+        isOrgAdmin
+      }
+    });
+    history.push(`/`);
   }
 }
 
-export default CreateCustomer;
+export default graphql(CREATE_CUSTOMER_MUTATION, {
+  name: 'createCustomerMutation'
+})(CreateCustomer as any);

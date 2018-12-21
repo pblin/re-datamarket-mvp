@@ -1,9 +1,9 @@
-import history from './history';
 import React, { SFC } from 'react';
-import { App, Callback, Home } from '../Components';
+import { App, Callback, Home, DashboardPage } from '../Components';
 import { Route, RouteComponentProps } from 'react-router';
 import { Router } from 'react-router-dom';
 import { WebAuthentication } from '../auth/WebAuthentication';
+import history from './history';
 
 const auth = new WebAuthentication();
 
@@ -17,11 +17,15 @@ const Routes: SFC<{}> = () => {
   return (
     <Router history={history}>
       <div>
-        <Route path="/" render={props => <App auth={auth} {...props} />} />
+        <Route path="/" exact={true} render={props => <App auth={auth} {...props} />} />
         <main role="main">
           <Route
             path="/home"
             render={props => <Home auth={auth} {...props} />}
+          />
+          <Route
+            path="/Dashboard" 
+            render={props => <DashboardPage auth={auth} {...props} />}
           />
           <Route
             path="/callback"

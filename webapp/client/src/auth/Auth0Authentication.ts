@@ -32,5 +32,7 @@ export interface Auth0Authentication {
    * Destroy session
    * @memberof AuthenticationManager
    */
+
+  findUser(): void; 
   logout(): void;
 }

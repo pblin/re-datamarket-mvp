@@ -23,7 +23,7 @@ class App extends Component<AppProps, {}> {
     return (
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <NavLink className="navbar-brand" to="/">
-          Auth0 - React
+          Rebloc Data Marketplace
         </NavLink>
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
