@@ -9,6 +9,10 @@ export interface DashboardProps {
   auth: Auth0Authentication;
 }
 export default class DashboardPage extends Component<DashboardProps, {}> {
+    state = {
+        needToRegister: 'false'
+    };
+
     @autobind
     async findUser () { 
       const endpoint = 'http://localhost:9000/graphql';
@@ -36,7 +40,12 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
       if ( profile == null || profile.id <= 0 ) {
           localStorage.setItem('pendingProfileQuery', 'y');
           let result = await request (endpoint, query, variables);
-          localStorage.setItem ('profile', JSON.stringify(result));
+
+          // @ts-ignore
+          if (result.aCustomer.primaryEmail !== 'na') {
+            localStorage.setItem ('profile', JSON.stringify(result));
+            this.setState ({needToRegister: true});
+          }
           localStorage.setItem('pendingProfileQuery', 'n');
           window.location.replace('/home');
       }
@@ -57,7 +66,9 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
         };
         let profile = localStorage.getItem('profile');
         let isFindUserPending = localStorage.getItem('pendingProfileQuery');
-        if ( (profile == null ) && isFindUserPending === 'n' ) {
+        if ( (profile == null ) && isFindUserPending === 'n' && 
+             !this.state.needToRegister ) {
+                 
                 this.findUser();
         }
         
