@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 // import { graphql, gql } from 'react-apollo';
-import 'graphql-request'
+import 'graphql-request';
 import styled from 'styled-components';
 import { request } from 'graphql-request';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const mut = `mutation 
         createCustomerMutation (
@@ -49,31 +52,36 @@ class CreateCustomer extends PureComponent {
 
   state = {
     id: -1,
-    firstName: undefined,
-    lastName: undefined,
-    primaryEmail: undefined,
-    secondaryEmail: undefined,
-    roles: ['b'],
+    firstName: '',
+    lastName: '',
+    primaryEmail: '',
+    secondaryEmail: '',
+    roles: ['', '', ''],
     isOrgAdmin: false,
-    isButtonDisabled: false
+    isButtonDisabled: false,
+    checkBuyer: false, 
+    checkSeller: false, 
+    checkValidator: false
   };
 
+  // @ts-ignore
   updateValue = (event: any) => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   }
+  // @ts-ignore
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  }
+
   render() {
-    // let loginEmail = localStorage.getItem('email');
     return (
       <div>
         <div>
           <h1>Please Sign up!</h1>
           <p/>
-          {/* <Field>
-              <label> Primary Email (SSO login id): {{loginEmail}} </label>
-          </Field> */}
           <Field>
               <Label>First Name</Label>
                 <input
@@ -104,6 +112,41 @@ class CreateCustomer extends PureComponent {
                 placeholder="Seconcary Email"
               />
           </Field> 
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                  <Checkbox
+                      checked={this.state.checkBuyer}
+                      onChange={this.handleChange('checkBuyer')}
+                      value="checkBuyer"
+                      color="primary"
+                  />
+              }
+              label="Buyer"
+            />
+            <FormControlLabel
+              control={
+                  <Checkbox
+                        checked={this.state.checkValidator}
+                        onChange={this.handleChange('checkSeller')}
+                        value="checkSeller"
+                        color="primary"
+                  />
+              }
+              label="Seller"
+            />
+            <FormControlLabel
+              control={
+                  <Checkbox
+                        checked={this.state.checkValidator}
+                        onChange={this.handleChange('checkValidator')}
+                        value="checkValidator"
+                        color="primary"
+                  />
+              }
+              label="Validator"
+            />
+          </FormGroup>
         </div>
           <button onClick={() => this._createCustomer()} disabled={this.state.isButtonDisabled}>
           Submit</button>
@@ -112,9 +155,27 @@ class CreateCustomer extends PureComponent {
 }
 
  _createCustomer = async () => {
-    const primaryEmail = localStorage.getItem('email');
+
+    let primaryEmail = localStorage.getItem('email');
     const endpoint = 'http://localhost:9000/graphql';
 
+    if (this.state.checkBuyer) { 
+      this.state.roles[0] = 'b';
+    } else {
+      this.state.roles[0] = '';
+    }
+
+    if (this.state.checkSeller) { 
+      this.state.roles[1] = 's';
+    } else {
+      this.state.roles[1] = '';
+    }
+
+    if (this.state.checkValidator) { 
+      this.state.roles[2] = 'v';
+    } else {
+      this.state.roles[2] = '';
+    }
     const variables = {
         id: this.state.id,
         firstName: this.state.firstName,

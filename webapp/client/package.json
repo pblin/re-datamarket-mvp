@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.7.1",
     "@types/enzyme": "^3.1.15",
     "@types/jest": "^21.1.6",
     "@types/styled-components": "^4.1.4",

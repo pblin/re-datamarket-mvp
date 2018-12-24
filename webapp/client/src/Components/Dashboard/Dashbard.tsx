@@ -43,7 +43,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
 
           localStorage.setItem ('profile', JSON.stringify(result));
           localStorage.setItem('pendingProfileQuery', 'n');
-          window.location.replace('/home');
+          this.forceUpdate();
       }
     } 
   
