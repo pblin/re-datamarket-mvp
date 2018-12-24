@@ -1,5 +1,4 @@
-# React Node GraphQL TypeScript 
-Rebloc app framework
+# Rebloc app framework
 
 ## To get started
 Set DB environment in .env: copy the template .env-template and assign values. 
@@ -43,8 +42,3 @@ Following libraries / utilities have been used in the repo:
 8. prettier: 1.5.3
 9. mocha: 3.5.0
 10. chai: 4.1.1
-
-References:
-1. https://github.com/Microsoft/TypeScript-React-Starter
-2. https://github.com/Microsoft/TypeScript-Node-Starter
-3. https://github.com/facebook/jest/blob/master/examples/typescript
