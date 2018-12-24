@@ -2,7 +2,7 @@
  
 Welcome to the Rebloc MVP!  And most importantly _Don't Panic_.
 
-# Architecture 
+## Architecture 
 ![](https://github.com/iLookaboutlodge/rebloc-mvp/blob/master/doc/ReblocArch%20-%20MVP%20Components-2.png)
 
 This MVP consists of the following components:
