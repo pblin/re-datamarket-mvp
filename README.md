@@ -3,13 +3,17 @@
 Welcome to the Rebloc MVP!  And most importantly _Don't Panic_.
 
 ## Architecture 
-![](https://github.com/iLookaboutlodge/rebloc-mvp/blob/master/doc/ReblocArch%20-%20MVP%20Components-2.png)
+![(https://github.com/iLookaboutlodge/rebloc-mvp/blob/master/doc/ReblocArch%20-%20MVP%20Components-2.png)
+
+## Data Architecture
+see data_architecture folder
+
+## Infrastructure 
+see asure folder
 
 This MVP consists of the following components:
-- React Front-End
+- React Front-End (webapp folder)
 - Solidity Code for Smart Contract Deployment
-
-
 
 To successfully run this MVP, it is assumed that you will running the code againt the Enigma the _TestNet_.
 
@@ -22,8 +26,6 @@ To successfully run this MVP, it is assumed that you will running the code again
 - Clone the “enigma-docker-network” repo —->>> git clone https://github.com/enigmampc/enigma-docker-network.git
 - Modify “.env” file 
 - Launch test-net in development mode“./launch.bash -s -t -d”
-
-
 
 
 **MVP DAPP**
