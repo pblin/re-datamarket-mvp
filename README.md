@@ -1,6 +1,5 @@
 # Rebloc DApp - Minimal Viable Product ( MVP )
-
-
+ 
 Welcome to the Rebloc MVP!  And most importantly _Don't Panic_.
 
 ## Architecture 
