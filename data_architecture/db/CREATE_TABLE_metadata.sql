@@ -25,13 +25,13 @@ CREATE TABLE marketplace.object
 -- DROP TABLE marketplace.field
 CREATE TABLE marketplace.field
 (
-    name character varying(100)  NOT NULL,
-    type character varying(30)  NOT NULL,
-    label character varying(200) NOT NULL,
-    description character varying(2048),
-    is_part_of character varying(30) REFERENCES marketplace.object(name),
+    name TEXT not null,
+    type TEXT not null,
+    label TEXT  NOT NULL,
+    description TEXT,
+	category TEXT,
     context_id integer REFERENCES marketplace.context(id),
-    PRIMARY KEY (name)
+    PRIMARY KEY (name, category)
 );
 
 
