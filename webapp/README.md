@@ -1,7 +1,13 @@
 # Rebloc app framework
 
 ## To get started
+## Server side
 Set DB environment in .env: copy the template .env-template and assign values. 
+PostgresSQL on Azure requires a SSL cert in order to connect 
+So modify  the config inside server/src/database/index.ts to point to the SSL cert location. 
+
+## Client side
+Copy configuration.ts.example to configuration.ts and set the values for Auth0 configuration. 
 
 To get started using the kit follow following steps:
 ##### Repo cloning and setup:
