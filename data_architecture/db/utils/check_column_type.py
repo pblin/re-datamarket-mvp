@@ -7,7 +7,7 @@ from configparser import ConfigParser
 
 def get_field_name_type (conn):
     cursor = conn.cursor()
-    cursor.execute ('SELECT name, type from marketplace.field')
+    cursor.execute ('SELECT distinct name, type from marketplace.field order by name')
     rows = cursor.fetchall()
     fieldType = dict()
     for row in rows:
