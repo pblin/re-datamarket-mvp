@@ -119,7 +119,7 @@ class CreateCustomer extends PureComponent {
             <FormControlLabel
               control={
                   <Checkbox
-                        checked={this.state.checkValidator}
+                        checked={this.state.checkSeller}
                         onChange={this.handleChange('checkSeller')}
                         value="checkSeller"
                         color="primary"
@@ -151,7 +151,7 @@ class CreateCustomer extends PureComponent {
     let primaryEmail = localStorage.getItem('email');
     // const endpoint = 'http://localhost:8080/v1alpha1/graphql';
 
-    let endpoint = 'http://localhost:8080/v1alpha1/graphql';
+    let endpoint = 'http://localhost:8081/v1alpha1/graphql';
 
     if (GRAPHQL !== undefined) {
       endpoint = GRAPHQL;
@@ -186,10 +186,11 @@ class CreateCustomer extends PureComponent {
       this.state.roles[2] = '';
     }
     let savedRoles = this.state.roles;
-    savedRoles.map( element => { return '\'' + element + '\''; } );
-    const roleStr = '{' + this.state.roles[0] + ',' +
-                     this.state.roles[1] + ',' +
-                     this.state.roles[2] + 
+    let quote = '\'';
+    savedRoles = savedRoles.map ( x => { return quote + x + quote; } );
+    const roleStr = '{' + savedRoles[0] + ',' +
+                     quote + savedRoles[1] + quote + ',' +
+                     quote + savedRoles[2] + quote +
                      '}';
     const variables = {
       objects: [
@@ -210,7 +211,8 @@ class CreateCustomer extends PureComponent {
     
     let returnData = await client.request(mut, variables);
 
-    localStorage.setItem('profile', JSON.stringify(returnData));
+    // @ts-ignore
+    localStorage.setItem('profile', JSON.stringify(returnData.insert_marketplace_customer.returning[0]));
     window.location.replace('/home');
 
     // this.setState({

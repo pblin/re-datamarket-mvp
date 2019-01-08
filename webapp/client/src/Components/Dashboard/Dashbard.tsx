@@ -18,52 +18,50 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
 
     @autobind
     async findUser () { 
-      // const endpoint = 'http://localhost:9000/graphql';
-      let endpoint = 'http://localhost:8080/v1alpha1/graphql';
-     
-      if (GRAPHQL !== undefined) {
-        endpoint = GRAPHQL;
-      }
-      let apiKey = '3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587';
-      if (APIKEY !== undefined ) {
-           apiKey= APIKEY;
-      }
+        // const endpoint = 'http://localhost:9000/graphql';
+        let endpoint = 'http://localhost:8081/v1alpha1/graphql';
+        
+        if (GRAPHQL !== undefined) {
+            endpoint = GRAPHQL;
+        }
+        let apiKey = '3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587';
+        if (APIKEY !== undefined ) {
+            apiKey= APIKEY;
+        }
 
-      const query =  `
-      query customer ($email: String ) {
-        marketplace_customer (where:{primary_email:{ _eq : $email }})
-        {
-            id
-            primary_email
-            secondary_email
-            first_name
-            last_name
-            roles
-            is_org_admin
-          }
-      }
-      `;
-      const client = new GraphQLClient (endpoint, {
-        headers: {
-          'X-Hasura-Access-Key': apiKey,
-        },
-      });
+        const query =  `
+        query customer ($email: String ) {
+            marketplace_customer (where:{primary_email:{ _eq : $email }})
+            {
+                id
+                primary_email
+                secondary_email
+                first_name
+                last_name
+                roles
+                is_org_admin
+            }
+        }
+        `;
+        const client = new GraphQLClient (endpoint, {
+            headers: {
+            'X-Hasura-Access-Key': apiKey,
+            },
+        });
 
-      let userEmail = localStorage.getItem('email');
-  
-      let profile = localStorage.getItem ('profile');
-      const variables = {
-          email: userEmail
-      };
-      // @ts-ignore
-      if ( profile == null || profile.id <= 0 ) {
-          localStorage.setItem('pendingProfileQuery', 'y');
-          let result = await client.request (query, variables);
-
-          localStorage.setItem ('profile', JSON.stringify(result[0]));
-          localStorage.setItem('pendingProfileQuery', 'n');
-          this.forceUpdate();
-      }
+        let userEmail = localStorage.getItem('email');
+        const variables = {
+            email: userEmail
+        };
+        // @ts-ignore
+      
+        localStorage.setItem('pendingProfileQuery', 'y');
+        let result = await client.request (query, variables);
+        
+        // @ts-ignore
+        localStorage.setItem ('profile', JSON.stringify(result.marketplace_customer[0]));
+        localStorage.setItem('pendingProfileQuery', 'n');
+        this.forceUpdate();
     } 
   
     render () { 
@@ -71,7 +69,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
 
         let profile = localStorage.getItem('profile');
         let isFindUserPending = localStorage.getItem('pendingProfileQuery');
-        if ( (profile == null ) && isFindUserPending === 'n' ) {
+        if ( (profile == null ) && (isFindUserPending === 'n' || isFindUserPending == null)) {
                 this.findUser();
         }
         
