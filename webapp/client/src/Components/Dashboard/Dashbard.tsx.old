@@ -3,11 +3,8 @@ import CreateCustomer from '../CreateCustomer/CreateCustomer';
 import Profile from '../Profile/Profile';
 // import { CustomerIntf } from '../Customer/Customer';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
-// import { request } from 'graphql-request';
-import { GraphQLClient } from 'graphql-request';
+import { request } from 'graphql-request';
 import autobind from 'autobind-decorator';
-import { APIKEY, GRAPHQL } from '../Config';
-
 export interface DashboardProps {
   auth: Auth0Authentication;
 }
@@ -19,36 +16,28 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
     @autobind
     async findUser () { 
       // const endpoint = 'http://localhost:9000/graphql';
-      let endpoint = 'http://localhost:8080/v1alpha1/graphql';
-     
-      if (GRAPHQL !== undefined) {
-        endpoint = GRAPHQL;
-      }
-      let apiKey = '3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587';
-      if (APIKEY !== undefined ) {
-           apiKey= APIKEY;
-      }
+      const endpoint = 'http://localhost:8080/v1alpha1/graphql';
 
+      const apiKey = process.env.apiKey;
+      const client = new GraphQLClient (endpoint, {
+        headers: {
+          Authorization: 'Bearer ' + apiKey,
+        },
+      });
+      
       const query =  `
-      query customer ($email: String ) {
-        marketplace_customer (where:{primary_email:{ _eq : $email }})
-        {
-            id
-            primary_email
-            secondary_email
-            first_name
-            last_name
-            roles
-            is_org_admin
+      query ($email: String!) {
+          aCustomer(primaryEmail: $email) {
+                  id
+                  firstName
+                  lastName
+                  primaryEmail
+                  secondaryEmail
+                  roles
+                  isOrgAdmin
           }
       }
       `;
-      const client = new GraphQLClient (endpoint, {
-        headers: {
-          'X-Hasura-Access-Key': apiKey,
-        },
-      });
-
       let userEmail = localStorage.getItem('email');
   
       let profile = localStorage.getItem ('profile');
@@ -58,16 +47,27 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
       // @ts-ignore
       if ( profile == null || profile.id <= 0 ) {
           localStorage.setItem('pendingProfileQuery', 'y');
-          let result = await client.request (query, variables);
+          let result = await request (endpoint, query, variables);
 
-          localStorage.setItem ('profile', JSON.stringify(result[0]));
+          localStorage.setItem ('profile', JSON.stringify(result));
           localStorage.setItem('pendingProfileQuery', 'n');
           this.forceUpdate();
       }
     } 
   
     render () { 
-        let profileObj = null;
+        let profileObj = {
+            aCustomer: 
+            {
+                    id: -1,
+                    firstName: '',
+                    lastName: '',
+                    primaryEmail: '',
+                    secondaryEmail: '',
+                    roles: ['b'],
+                    isOrgAdmin: false
+            }
+        };
 
         let profile = localStorage.getItem('profile');
         let isFindUserPending = localStorage.getItem('pendingProfileQuery');
@@ -75,7 +75,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
                 this.findUser();
         }
         
-        if (profile !== 'undefined' && profile != null ) {
+        if (profile != null ) {
             profileObj = JSON.parse(profile);
         }
         if (isFindUserPending === 'y' ) { 
@@ -85,7 +85,8 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
                 </div>
             );
         } else { 
-            if ( profile === 'undefined' || profileObj == null ) {
+            if ( profile == null || profileObj.aCustomer.primaryEmail === 'na' 
+                 || profileObj.aCustomer.primaryEmail == null ) {
                 return (
                     <div>
                         <CreateCustomer />
@@ -94,7 +95,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
                 } else {
                     return (
                         <div>
-                            <Profile userData={profileObj}/>
+                            <Profile userData={profileObj.aCustomer}/>
                         </div>
                     );
             }

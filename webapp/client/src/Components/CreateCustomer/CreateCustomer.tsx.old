@@ -3,31 +3,39 @@ import { PureComponent } from 'react';
 // import { graphql, gql } from 'react-apollo';
 import 'graphql-request';
 import styled from 'styled-components';
-// import { request } from 'graphql-request';
+import { request } from 'graphql-request';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { GraphQLClient } from 'graphql-request';
-import { APIKEY, GRAPHQL } from '../Config';
-// import { element } from 'prop-types';
 
-const mut = 
-`mutation insert_marketplace_customer ($objects:[marketplace_customer_insert_input!]!)
- {
-  insert_marketplace_customer ( 
-    objects:$objects
-  ) {
-    returning {
-      id
-      primary_email
-      secondary_email
-      first_name
-      last_name
-      roles
-      is_org_admin
-    }
-  }
-} 
+const mut = `mutation 
+        createCustomerMutation (
+        $id: Int,
+        $firstName: String!, 
+        $lastName: String!, 
+        $primaryEmail: String!, 
+        $secondaryEmail: String,
+        $roles: [String],
+        $isOrgAdmin: Boolean)
+        {
+        createCustomer(id: $id, 
+                      firstName: $firstName, 
+                      lastName: $lastName, 
+                      primaryEmail: $primaryEmail, 
+                      secondaryEmail: $secondaryEmail, 
+                      roles: $roles, 
+                      isOrgAdmin: $isOrgAdmin)
+          {
+            id
+            firstName
+            lastName
+            primaryEmail
+            secondaryEmail
+            roles
+            isOrgAdmin
+          }
+          
+        }
 `;
 
 const Label = styled.span`
@@ -149,24 +157,7 @@ class CreateCustomer extends PureComponent {
  _createCustomer = async () => {
 
     let primaryEmail = localStorage.getItem('email');
-    // const endpoint = 'http://localhost:8080/v1alpha1/graphql';
-
-    let endpoint = 'http://localhost:8080/v1alpha1/graphql';
-
-    if (GRAPHQL !== undefined) {
-      endpoint = GRAPHQL;
-    }
-    let apiKey = '3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587';
-    if (APIKEY !== undefined ) {
-         apiKey= APIKEY;
-    }
-
-
-    const client = new GraphQLClient (endpoint, {
-      headers: {
-        'X-Hasura-Access-Key': apiKey,
-      },
-    });
+    const endpoint = 'http://localhost:9000/graphql';
 
     if (this.state.checkBuyer) { 
       this.state.roles[0] = 'b';
@@ -185,32 +176,24 @@ class CreateCustomer extends PureComponent {
     } else {
       this.state.roles[2] = '';
     }
-    let savedRoles = this.state.roles;
-    savedRoles.map( element => { return '\'' + element + '\''; } );
-    const roleStr = '{' + this.state.roles[0] + ',' +
-                     this.state.roles[1] + ',' +
-                     this.state.roles[2] + 
-                     '}';
     const variables = {
-      objects: [
-        {
-          first_name: this.state.firstName,
-          last_name: this.state.lastName,
-          primary_email: primaryEmail,
-          secondary_email: this.state.secondaryEmail,
-          roles: roleStr,
-          is_org_admin: this.state.isOrgAdmin
-        }
-      ]
+        id: this.state.id,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        primaryEmail: primaryEmail,
+        secondaryEmail: this.state.secondaryEmail,
+        roles: this.state.roles,
+        isOrgAdmin: this.state.isOrgAdmin
      };
 
     this.setState({
         isButtonDisabled: true
       });
-    
-    let returnData = await client.request(mut, variables);
-
-    localStorage.setItem('profile', JSON.stringify(returnData));
+    await request (endpoint, mut, variables);
+    const profile = {
+        aCustomer: variables
+    };
+    localStorage.setItem('profile', JSON.stringify(profile));
     window.location.replace('/home');
 
     // this.setState({

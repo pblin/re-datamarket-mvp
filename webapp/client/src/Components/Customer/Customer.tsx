@@ -3,14 +3,14 @@ import styled from 'styled-components';
 
 export interface CustomerIntf {
   id: number;
-  firstName: string;
-  lastName: string;
-  primaryEmail: string;
-  secondaryEmail: string;
+  first_name: string;
+  last_name: string;
+  primary_email: string;
+  secondary_email: string;
   
   roles: string[];
-  
-  isOrgAdmin: boolean;
+
+  is_org_admin: boolean;
 }
 
 interface Props {
@@ -37,12 +37,12 @@ class Customer extends React.Component<Props> {
     const { customer } = this.props;
     return (
       <tr>
-        <Cell>{customer.firstName}</Cell>
-        <Cell>{customer.lastName}</Cell>
-        <Cell>{customer.primaryEmail}</Cell>
-        <Cell>{customer.secondaryEmail}</Cell>
+        <Cell>{customer.first_name}</Cell>
+        <Cell>{customer.last_name}</Cell>
+        <Cell>{customer.primary_email}</Cell>
+        <Cell>{customer.primary_email}</Cell>
         <Cell>{customer.roles}</Cell>
-        <Cell>{customer.isOrgAdmin}</Cell>
+        <Cell>{customer.is_org_admin}</Cell>
       </tr>
     );
   }
