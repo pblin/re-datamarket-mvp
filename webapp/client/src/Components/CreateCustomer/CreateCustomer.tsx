@@ -151,7 +151,8 @@ class CreateCustomer extends PureComponent {
     let primaryEmail = localStorage.getItem('email');
     // const endpoint = 'http://localhost:8080/v1alpha1/graphql';
 
-    let endpoint = 'http://localhost:8081/v1alpha1/graphql';
+    // let endpoint = 'http://localhost:8081/v1alpha1/graphql';
+    let endpoint = 'http://demo-app.rebloc.io:8081/v1alpha1/graphql';
 
     if (GRAPHQL !== undefined) {
       endpoint = GRAPHQL;

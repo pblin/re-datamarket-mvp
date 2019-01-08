@@ -8,15 +8,15 @@ services:
   graphql-engine:
     image: hasura/graphql-engine:v1.0.0-alpha33
     ports:
-    - "8080:8080"
+    - "8081:8080"
     depends_on:
     - "postgres"
     restart: always
     environment:
       # HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
-      HASURA_GRAPHQL_DATABASE_URL:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://reblocadmin%40rebloc-sql:Rebl0cWe1c0me@rebloc-sql.postgres.database.azure.com:5432/rebloc_data
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## uncomment next line to set an access key
-      HASURA_GRAPHQL_ACCESS_KEY: 
+      HASURA_GRAPHQL_ACCESS_KEY: 3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587
 volumes:
   db_data:
