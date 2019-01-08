@@ -15,7 +15,7 @@ def get_field_name_type (conn):
     rows = cursor.fetchall()
     fieldType = dict()
     for row in rows:
-        fieldType[row[0]] = row[1]
+        fieldType[row[0]] = row[1].lower()
 
     return fieldType
 

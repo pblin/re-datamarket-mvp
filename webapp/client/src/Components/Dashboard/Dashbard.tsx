@@ -3,8 +3,11 @@ import CreateCustomer from '../CreateCustomer/CreateCustomer';
 import Profile from '../Profile/Profile';
 // import { CustomerIntf } from '../Customer/Customer';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
-import { request } from 'graphql-request';
+// import { request } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
 import autobind from 'autobind-decorator';
+import { APIKEY, GRAPHQL } from '../Config';
+
 export interface DashboardProps {
   auth: Auth0Authentication;
 }
@@ -15,21 +18,37 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
 
     @autobind
     async findUser () { 
-      const endpoint = 'http://localhost:9000/graphql';
-      
+      // const endpoint = 'http://localhost:9000/graphql';
+      let endpoint = 'http://localhost:8080/v1alpha1/graphql';
+     
+      if (GRAPHQL !== undefined) {
+        endpoint = GRAPHQL;
+      }
+      let apiKey = '3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587';
+      if (APIKEY !== undefined ) {
+           apiKey= APIKEY;
+      }
+
       const query =  `
-      query ($email: String!) {
-          aCustomer(primaryEmail: $email) {
-                  id
-                  firstName
-                  lastName
-                  primaryEmail
-                  secondaryEmail
-                  roles
-                  isOrgAdmin
+      query customer ($email: String ) {
+        marketplace_customer (where:{primary_email:{ _eq : $email }})
+        {
+            id
+            primary_email
+            secondary_email
+            first_name
+            last_name
+            roles
+            is_org_admin
           }
       }
       `;
+      const client = new GraphQLClient (endpoint, {
+        headers: {
+          'X-Hasura-Access-Key': apiKey,
+        },
+      });
+
       let userEmail = localStorage.getItem('email');
   
       let profile = localStorage.getItem ('profile');
@@ -39,27 +58,16 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
       // @ts-ignore
       if ( profile == null || profile.id <= 0 ) {
           localStorage.setItem('pendingProfileQuery', 'y');
-          let result = await request (endpoint, query, variables);
+          let result = await client.request (query, variables);
 
-          localStorage.setItem ('profile', JSON.stringify(result));
+          localStorage.setItem ('profile', JSON.stringify(result[0]));
           localStorage.setItem('pendingProfileQuery', 'n');
           this.forceUpdate();
       }
     } 
   
     render () { 
-        let profileObj = {
-            aCustomer: 
-            {
-                    id: -1,
-                    firstName: '',
-                    lastName: '',
-                    primaryEmail: '',
-                    secondaryEmail: '',
-                    roles: ['b'],
-                    isOrgAdmin: false
-            }
-        };
+        let profileObj = null;
 
         let profile = localStorage.getItem('profile');
         let isFindUserPending = localStorage.getItem('pendingProfileQuery');
@@ -67,7 +75,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
                 this.findUser();
         }
         
-        if (profile != null ) {
+        if (profile !== 'undefined' && profile != null ) {
             profileObj = JSON.parse(profile);
         }
         if (isFindUserPending === 'y' ) { 
@@ -77,8 +85,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
                 </div>
             );
         } else { 
-            if ( profile == null || profileObj.aCustomer.primaryEmail === 'na' 
-                 || profileObj.aCustomer.primaryEmail == null ) {
+            if ( profile === 'undefined' || profileObj == null ) {
                 return (
                     <div>
                         <CreateCustomer />
@@ -87,7 +94,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
                 } else {
                     return (
                         <div>
-                            <Profile userData={profileObj.aCustomer}/>
+                            <Profile userData={profileObj}/>
                         </div>
                     );
             }
