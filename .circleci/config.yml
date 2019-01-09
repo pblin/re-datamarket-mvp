@@ -2,38 +2,39 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-#version: 2
-#jobs:
-#  build:
-#    docker:
+version: 2
+jobs:
+  build:
+    docker:
       # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:10.15.0
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-#    working_directory: ~/repo
+    working_directory: ~/demo
 
-#    steps:
-#      - checkout
+    steps:
+      - checkout
 
-      # Download and cache dependencies
-#     - restore_cache:
-#          keys:
-#          - v1-dependencies-{{ checksum "package.json" }}
-#          # fallback to using the latest cache if no exact match is found
-#         - v1-dependencies-
-
-#      - run: yarn install
-
-#     - save_cache:
-#          paths:
-#           - node_modules
-#         key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
-#      - run: yarn test
-
-
+  deploy:
+    machine: true
+    production:
+    branch: master
+    steps:
+      - checkout
+      - run:
+          name: push file to server 
+          command: |
+            rsh  mvp@demo-app.rebloc.io "if [ ! -d 'wepapp' ]; then mkdir webapp ; fi"
+            scp -r ./rebloc-mvp/webapp/client/* mvp@demo-app.rebloc.io:/home/mvp/webapp/client
+            rsh mvp@demo-app.rebloc.io "cd webapp/client && yarn install"
+            rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env webapp/client && cp /var/local/democonfig/client/configuration.ts webapp/client/webapp/client/src/auth/"
+ #          rsh mvp@demo-app.reblocl.io "cd webapp/client && nohup yarn start 2> app.log &"
+workflows:
+  version: 2
+  just_deploy:
+    jobs:
+      - deploy
