@@ -32,7 +32,7 @@ jobs:
             scp -r ./webapp/client/* mvp@demo-app.rebloc.io:/home/mvp/webapp/client
             rsh mvp@demo-app.rebloc.io "cd webapp/client && yarn install"
             rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/client && cp /var/local/democonfig/client/configuration.ts ./webapp/client/src/auth"
- #          rsh mvp@demo-app.reblocl.io "cd webapp/client && nohup yarn start 2> app.log &"
+            rsh mvp@demo-app.rebloc.io "/var/local/check-n-restart.sh"
 workflows:
   version: 2
   just_deploy:
