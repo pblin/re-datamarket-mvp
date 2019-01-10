@@ -159,9 +159,8 @@ class CreateCustomer extends PureComponent {
     }
     let apiKey = '3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587';
     if (APIKEY !== undefined ) {
-         apiKey= APIKEY;
+         apiKey = APIKEY;
     }
-
 
     const client = new GraphQLClient (endpoint, {
       headers: {
