@@ -17,9 +17,6 @@ jobs:
 
     working_directory: ~/demo
 
-    steps:
-      - checkout
-
   deploy:
     machine: true
     production:
@@ -29,14 +26,13 @@ jobs:
       - run:
           name: push file to server 
           command: |
-            rsh  mvp@rebloc-mvp.eastus.cloudapp.azure.com "if [ ! -d 'wepapp' ]; then mkdir webapp ; fi"
-            scp -r ./rebloc-mvp/webapp/client/* mvp@rebloc-mvp.eastus.cloudapp.azure.com:/home/mvp/webapp/client
-            rsh mvp@rebloc-mvp.eastus.cloudapp.azure.com "cd webapp/client && yarn"
-            rsh mvp@rebloc-mvp.eastus.cloudapp.azure.com "cp /var/local/democonfig/client/.env webapp/client && cp /var/local/democonfig/client/configuration.ts webapp/client/webapp/client/src/auth/"
- #          rsh mvp@rebloc-mvp.eastus.cloudapp.azure.com "cd webapp/client && nohup yarn start 2> app.log &"
+            rsh  mvp@demo-app.rebloc.io "if [ ! -d 'webapp' ]; then mkdir -p webapp/client ; fi"
+            scp -r ./webapp/client/* mvp@demo-app.rebloc.io:/home/mvp/webapp/client
+            rsh mvp@demo-app.rebloc.io "cd webapp/client && yarn install"
+            rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/client && cp /var/local/democonfig/client/configuration.ts ./webapp/client/src/auth"
+            rsh mvp@demo-app.rebloc.io "/var/local/democonfig/check-n-restart.sh"
 workflows:
   version: 2
   just_deploy:
     jobs:
       - deploy
-
