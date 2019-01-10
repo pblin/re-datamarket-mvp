@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import CreateCustomer from '../CreateCustomer/CreateCustomer';
 import Profile from '../Profile/Profile';
 // import { CustomerIntf } from '../Customer/Customer';
@@ -7,6 +8,8 @@ import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import { GraphQLClient } from 'graphql-request';
 import autobind from 'autobind-decorator';
 import { APIKEY, GRAPHQL } from '../Config';
+import { Redirect } from 'auth0-js';
+import SearchBar from 'material-ui-search-bar';
 
 export interface DashboardProps {
   auth: Auth0Authentication;
@@ -18,7 +21,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
 
     @autobind
     async findUser () { 
-        // const endpoint = 'http://localhost:9000/graphql';
+        
         // let endpoint = 'http://localhost:8081/v1alpha1/graphql';
         let endpoint = 'http://demo-app.rebloc.io:8081/v1alpha1/graphql';
         
@@ -27,7 +30,7 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
         }
         let apiKey = '3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587';
         if (APIKEY !== undefined ) {
-            apiKey= APIKEY;
+            apiKey = APIKEY;
         }
 
         const query =  `
@@ -66,37 +69,53 @@ export default class DashboardPage extends Component<DashboardProps, {}> {
     } 
   
     render () { 
-        let profileObj = null;
+        const { authenticated } = this.props.auth;
+        if (authenticated) {
+                let profileObj = null;
 
-        let profile = localStorage.getItem('profile');
-        let isFindUserPending = localStorage.getItem('pendingProfileQuery');
-        if ( (profile == null ) && (isFindUserPending === 'n' || isFindUserPending == null)) {
-                this.findUser();
-        }
-        
-        if (profile !== 'undefined' && profile != null ) {
-            profileObj = JSON.parse(profile);
-        }
-        if (isFindUserPending === 'y' ) { 
-            return ( 
-                <div>
-                    <h3> One Moment ... </h3>
-                </div>
-            );
-        } else { 
-            if ( profile === 'undefined' || profileObj == null ) {
-                return (
-                    <div>
-                        <CreateCustomer />
-                    </div>
-                );
-                } else {
-                    return (
+                let profile = localStorage.getItem('profile');
+                let isFindUserPending = localStorage.getItem('pendingProfileQuery');
+                if ( (profile == null ) && (isFindUserPending === 'n' || isFindUserPending == null)) {
+                        this.findUser();
+                }
+                
+                if (profile !== 'undefined' && profile != null ) {
+                    profileObj = JSON.parse(profile);
+                }
+                if (isFindUserPending === 'y' ) { 
+                    return ( 
                         <div>
-                            <Profile userData={profileObj}/>
+                            <h3> One Moment ... </h3>
                         </div>
                     );
+                } else { 
+                    if ( profile === 'undefined' || profileObj == null ) {
+                        return (
+                            <div>
+                                <CreateCustomer />
+                            </div>
+                        );
+                        } else {
+                            return (
+                                <div>
+                                    <Profile userData={profileObj}/>
+                                    <br/>
+                                    <SearchBar
+                                        onChange={() => console.log('onChange')}
+                                        onRequestSearch={() => console.log('onRequestSearch')}
+                                        style={{
+                                        margin: '0 auto',
+                                        maxWidth: 800
+                                        }}
+                                    />
+                                
+                                </div>
+                            );
+                    }
+                }
+            } else { 
+                // @ts-ignore
+                return <Redirect to = "/home" />;
             }
-        }
     }
 }

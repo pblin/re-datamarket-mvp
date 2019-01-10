@@ -2,6 +2,7 @@ import autobind from 'autobind-decorator';
 import React, { Component } from 'react';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import DashboardPage  from '../Dashboard/Dashbard';
+import App from '../App/App';
 
 export interface HomeProps {
   auth: Auth0Authentication;
@@ -22,12 +23,7 @@ export default class Home extends Component<HomeProps, {}> {
       <div className="jumbotron">
         {authenticated && (
           <div className="container">
-            <h1 className="display-3">Welcome!</h1>
-            <p>
-              <button className="btn btn-primary btn-lg" onClick={this.logout}>
-                Log Out
-              </button>
-            </p>
+            <App auth={this.props.auth} {...this.props} />
             <div>
               <DashboardPage auth={this.props.auth} {...this.props}/>
             </div>
@@ -35,12 +31,9 @@ export default class Home extends Component<HomeProps, {}> {
         )}
         {!authenticated && (
           <div className="container">
-            <h1 className="display-3">Please log in!</h1>
-            <p>Please log in to continue.</p>
+           <App auth={this.props.auth} {...this.props} />
             <p>
-              <button className="btn btn-primary btn-lg" onClick={this.login}>
-                Log In
-              </button>
+              <h3>Please log in to continue.</h3>
             </p>
           </div>
         )}

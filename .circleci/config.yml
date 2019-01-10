@@ -1,3 +1,4 @@
+
 # Javascript Node CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
@@ -15,9 +16,6 @@ jobs:
       # - image: circleci/mongo:3.4.4
 
     working_directory: ~/demo
-
-    steps:
-      - checkout
 
   deploy:
     machine: true
