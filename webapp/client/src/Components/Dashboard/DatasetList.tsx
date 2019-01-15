@@ -12,7 +12,7 @@ const styles = theme => ({
     root: {
       width: 300,
       left: 400,
-      backgroundColor: theme.palette.background.paper
+      backgroundColor: 'lightblue'
     }
   });
 type datasetNameType = {

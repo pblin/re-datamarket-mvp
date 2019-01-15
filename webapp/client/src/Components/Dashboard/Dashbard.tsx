@@ -172,8 +172,17 @@ export default class DashboardPage extends Component<DashboardProps> {
         //     fields: this.state.multiValue
         // };
         // const variables = this.state.inputValue;
-        const variables  = {
-            fields: $('input[name="fields-select"]' ).val()
+
+        // @ts-ignore
+        let selectedOptions = [];
+        $('input[name="fields-select"]' ).each(function(i, item) {
+            // @ts-ignore
+            selectedOptions.push($(item).val());
+        });
+
+        const variables = {
+            // @ts-ignore
+            fields: selectedOptions
         };
 
         let result = '';
