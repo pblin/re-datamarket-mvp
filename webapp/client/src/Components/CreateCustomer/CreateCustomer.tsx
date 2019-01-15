@@ -8,8 +8,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { GraphQLClient } from 'graphql-request';
-import { APIKEY, GRAPHQL } from '../Config';
-// import { element } from 'prop-types';
+// import dotenv from 'dotenv';
+import { APIKEY, GRAPHQL } from '../ConfigEnv';
 
 const mut = 
 `mutation insert_marketplace_customer ($objects:[marketplace_customer_insert_input!]!)
@@ -149,22 +149,17 @@ class CreateCustomer extends PureComponent {
  _createCustomer = async () => {
 
     let primaryEmail = localStorage.getItem('email');
-    // const endpoint = 'http://localhost:8080/v1alpha1/graphql';
 
-    // let endpoint = 'http://localhost:8081/v1alpha1/graphql';
-    let endpoint = 'http://demo-app.rebloc.io:8081/v1alpha1/graphql';
-
-    if (GRAPHQL !== undefined) {
-      endpoint = GRAPHQL;
-    }
-    let apiKey = '3b177bc7c2484aba11a5277f5ce3aa3b884bbd19660e2a452eb1f593d9cf2587';
-    if (APIKEY !== undefined ) {
-         apiKey = APIKEY;
-    }
-
-    const client = new GraphQLClient (endpoint, {
+    // dotenv.config({ path: '.env' });
+    // let endpoint = process.env.REACT_APP_GRAPHQL;
+   
+    // console.log(endpoint);
+    // let apiKey = process.env.REACT_APP_APIKEY;
+ 
+    // @ts-ignore
+    const client = new GraphQLClient (GRAPHQL, {
       headers: {
-        'X-Hasura-Access-Key': apiKey,
+        'X-Hasura-Access-Key': APIKEY,
       },
     });
 

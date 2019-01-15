@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+
 import './App.css';
 
 export interface AppProps {
@@ -41,7 +42,7 @@ class App extends Component<AppProps, {}> {
             }
             {authenticated && ( 
               <Button color="inherit" type="submit" onClick={this.logout}>Logout</Button> 
-              )
+              ) 
           }
           </Toolbar>
         </AppBar>
