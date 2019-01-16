@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export type AuthContextType = {
-  authenticated: boolean;  //to check if authenticated or not
+  authenticated: boolean;  // to check if authenticated or not
   user: object; // store all the user details
   accessToken: string;  // accessToken of user for Auth0
   initiateLogin: any; // to start the login process
