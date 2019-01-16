@@ -98,7 +98,7 @@ export default class DashboardPage extends Component<DashboardProps> {
 
         let userEmail = localStorage.getItem('email');
         const variables = {
-            fields: userEmail
+            email: userEmail
         };
         // @ts-ignore
       
