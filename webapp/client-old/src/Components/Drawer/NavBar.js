@@ -7,15 +7,16 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
-import { NavDrawer } from "./NavDrawer";
+import NavDrawer from "./NavDrawer";
 
-export class NavBar extends React.Component {
+export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       drawerOpened: false
     };
   }
+    
   toggleDrawer = booleanValue => () => {
     this.setState({
       drawerOpened: booleanValue
