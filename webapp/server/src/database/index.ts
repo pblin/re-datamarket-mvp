@@ -16,7 +16,7 @@ const config = {
   // this object will be passed to the TLSSocket constructor
   ssl : {
     rejectUnauthorized : false,
-    cert  : fs.readFileSync("/Users/bernardlin/Downloads/root.crt").toString()
+    cert  : fs.readFileSync("/Users/claudiaexmachina/Downloads/root.crt").toString()
   }
 };
 
