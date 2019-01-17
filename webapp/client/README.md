@@ -1,8 +1,8 @@
 ## Description
-This is a boilerplate for React using Typescript, Material UI and Redux, React Router.
+This React App uses Typescript, Material UI and Redux, React Router.
 
 ## Demo
-*Visit [Demo link](https://material-ui-admin.herokuapp.com/)*
+*Visit [Demo link](https://...)*
 #### Login credentials
 * username/email: *anything*
 * password: *anything*
