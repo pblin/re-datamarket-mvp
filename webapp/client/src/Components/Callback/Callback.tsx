@@ -18,7 +18,7 @@ const Callback: SFC<CallbackProps> = props => {
   // };
 
   return (
-    <Redirect to="/Dashbard" />
+    <Redirect to="/home" />
   );
 };
 export default Callback;

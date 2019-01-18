@@ -15,6 +15,7 @@ import Grid from '@material-ui/core/Grid';
 // import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import { List, Typography } from '@material-ui/core';
+import App from '../App/App';
 
 export interface DashboardProps {
   auth: Auth0Authentication;
@@ -112,7 +113,7 @@ export default class DashboardPage extends Component<DashboardProps> {
     } 
 
     componentDidMount() {
-        this.getDataFieldList()
+        this.getDataFieldList();
     }
     @autobind
     async getDataFieldList() {
@@ -149,7 +150,6 @@ export default class DashboardPage extends Component<DashboardProps> {
     }
     @autobind
     async findDataSets() {
-
         const query =  `
             query getTables ($fields: [String]) {
                 marketplace_field_in_table ( 
@@ -228,6 +228,7 @@ export default class DashboardPage extends Component<DashboardProps> {
                             return (
                                 // @ts-ignore  
                                 <div>
+                                    <App auth={this.props.auth} {...this.props} />
                                     <Grid container alignItems="center" spacing={24}>
                                         <Grid item xs={2}>
                                             <Typography variant="subtitle1" align="right">
