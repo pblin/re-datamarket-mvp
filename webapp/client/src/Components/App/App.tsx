@@ -1,6 +1,5 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -19,6 +18,9 @@ import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import Button from '@material-ui/core/Button';
 import ProfileAvator from '../Profile/ProfileAvator';
+// import { Redirect } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -112,7 +114,19 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   handleDrawerClose = () => {
     this.setState({ open: false });
   }
-
+  // @ts-ignore
+  handleClick ( id ) {
+      console.log (id.text);
+      if ( id.text === 'Data Explorer' ) {
+          window.location.assign( '/dataexplorer' );
+      }
+      if ( id.text === 'Data Sources' ) {
+          window.location.assign( '/dashboard' );
+      } 
+      if ( id.text === 'Profile' ) {
+        window.location.assign( '/profile' );
+    } 
+  }
   render() {
     const { classes, theme } = this.props;
     const { open } = this.state;
@@ -146,7 +160,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             <Typography variant="h6" color="inherit"  style={{ borderRight: '0.1em solid white', padding: '0.5em' }}>
               Rebloc  
             </Typography>
-            { (profileObj !== null) && (<ProfileAvator initial={initial}/> )}
+            { (profileObj !== '') && (<ProfileAvator initial={initial}/> )}
             {!authenticated && ( 
                 <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
               )
@@ -173,16 +187,16 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
           </div>
           <Divider />
           <List>
-            {['Market Place', 'Data Explorer', 'Data Sources', 'News'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+              {['Market Place', 'Data Explorer', 'Data Sources', 'News'].map((text, index) => (
+                  <ListItem button key={text} onClick={this.handleClick.bind(this, {text})}>
+                    <ListItemText primary={text} />
+                  </ListItem>
+              ))}
           </List>
           <Divider />
           <List>
             {['Profile', 'Message'].map((text, index) => (
-              <ListItem button key={text}>
+              <ListItem button key={text} onClick={this.handleClick.bind(this, {text})}>
                 <ListItemText primary={text} />
               </ListItem>
             ))}

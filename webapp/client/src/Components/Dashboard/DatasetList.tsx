@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 import { Component } from 'react';
 import DataSourceCard from './DataSourceCard';
-import { Typography } from '@material-ui/core';
 
 // @ts-ignore
 const styles = theme => ({
@@ -26,10 +25,7 @@ render() {
     return (
     // @ts-ignore
     <div>
-        <Grid container spacing={16} justify={'flex-start'} direction={'row'}>
-             <Grid item xs={8}> 
-                <Typography variant="subtitle1" align="right">Data Sources:</Typography>
-             </Grid> 
+        <Grid container spacing={8} justify={'flex-start'} direction={'row'}>
              { (this.props.datasetNames[0].table_name !== '') && this.props.datasetNames.map( 
                  (source) => 
                     <Grid item xs={6} key={source.table_name}>

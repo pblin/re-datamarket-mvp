@@ -1,6 +1,7 @@
 import React, { SFC } from 'react';
-import { Callback, DashboardPage } from '../Components';
+import { Callback, DashboardPage, Customer } from '../Components';
 import Home from '../pages/Home';
+import DataMap from '../pages/DatasetExplorer';
 import { Route, RouteComponentProps } from 'react-router';
 import { Router } from 'react-router-dom';
 import { WebAuthentication } from '../auth/WebAuthentication';
@@ -27,6 +28,14 @@ const Routes: SFC<{}> = () => {
           <Route
             path="/dashboard" 
             render={(props) => <DashboardPage auth={auth} {...props} />}
+          />    
+          <Route
+            path="/dataexplorer" 
+            render={(props) => <DataMap auth={auth} />}
+          />
+          <Route
+            path="/profile" 
+            render={(props) => <Customer auth={auth} {...props} />}
           />
           <Route
             path="/callback"
