@@ -1,9 +1,8 @@
 import autobind from 'autobind-decorator';
 import React, { Component } from 'react';
-import { Auth0Authentication } from '../../auth/Auth0Authentication';
-import DashboardPage  from '../Dashboard/Dashbard';
-import App from '../App/App';
-
+import { Auth0Authentication } from '..//auth/Auth0Authentication';
+import DashboardPage  from '../Components/Dashboard/Dashbard';
+import App from '../Components/App/App';
 export interface HomeProps {
   auth: Auth0Authentication;
 }
@@ -32,9 +31,6 @@ export default class Home extends Component<HomeProps, {}> {
         {!authenticated && (
           <div className="container">
            <App auth={this.props.auth} {...this.props} />
-            <p>
-              <h3>Please log in to continue.</h3>
-            </p>
           </div>
         )}
       </div>

@@ -1,7 +1,13 @@
 import autobind from 'autobind-decorator';
 import React, { Component } from 'react';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
-import { NavLink } from 'react-router-dom';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+
 import './App.css';
 
 export interface AppProps {
@@ -20,43 +26,26 @@ class App extends Component<AppProps, {}> {
 
   render() {
     const { authenticated } = this.props.auth;
+
     return (
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <NavLink className="navbar-brand" to="/">
-          Rebloc Data Marketplace
-        </NavLink>
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/home" activeClassName="active">
-              Home
-            </NavLink>
-          </li>
-        </ul>
-        <ul className="navbar-nav ml-auto">
-          {!authenticated && (
-            <li className="nav-item">
-              <button
-                className="btn btn-outline-primary my-2 my-sm-0"
-                type="submit"
-                onClick={this.login}
-              >
-                Log In
-              </button>
-            </li>
-          )}
-          {authenticated && (
-            <li className="nav-item">
-              <button
-                className="btn btn-outline-primary my-2 my-sm-0"
-                type="submit"
-                onClick={this.logout}
-              >
-                Log Out
-              </button>
-            </li>
-          )}
-        </ul>
-      </nav>
+          <AppBar position="static">
+          <Toolbar>
+            <IconButton color="inherit" aria-label="Menu">
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" >
+              Datasets
+            </Typography>
+            {!authenticated && ( 
+                <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
+              )
+            }
+            {authenticated && ( 
+              <Button color="inherit" type="submit" onClick={this.logout}>Logout</Button> 
+              ) 
+          }
+          </Toolbar>
+        </AppBar>
     );
   }
 }
