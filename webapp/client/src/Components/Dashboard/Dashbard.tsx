@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import CreateCustomer from '../CreateCustomer/CreateCustomer';
-import Profile from '../Profile/Profile';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import { Redirect } from 'auth0-js';
@@ -15,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 // import ReactDOM from 'react-dom';
 import $ from 'jquery';
+import { List, Typography } from '@material-ui/core';
 
 export interface DashboardProps {
   auth: Auth0Authentication;
@@ -27,8 +27,8 @@ const customStyles = {
       // color: state.isSelected ? 'red' : 'blue',
       padding: 20,
     }),
-    // @ts-ignorets-ignore
-    control: styles => ({ ...styles, left: 100, width: '80%', backgroundColor: 'white' })
+    // @ts-ignore
+    control: styles => ({ ...styles, width: '100%', backgroundColor: 'white' })
   };
 export default class DashboardPage extends Component<DashboardProps> {
     state = {
@@ -228,13 +228,13 @@ export default class DashboardPage extends Component<DashboardProps> {
                             return (
                                 // @ts-ignore  
                                 <div>
-                                    <Grid container spacing={24}>
-                                        <Grid item xs={10}>
-                                            <Profile userData={profileObj}/>
+                                    <Grid container alignItems="center" spacing={24}>
+                                        <Grid item xs={2}>
+                                            <Typography variant="subtitle1" align="right">
+                                                Data Fields:
+                                            </Typography>
                                         </Grid>
-                                    </Grid>
-                                    <Grid container spacing={24}>
-                                        <Grid item xs={8} >
+                                        <Grid item xs={6}>
                                             <AsyncSelect
                                                 ref="fields"
                                                 name="fields-select"
@@ -246,17 +246,25 @@ export default class DashboardPage extends Component<DashboardProps> {
                                                 onInputChange={this.handleInputChange}
                                             />
                                         </Grid>
-                                        <Grid item xs>
+                                        <Grid item>
                                             <Button variant="contained" color="primary"
                                              disabled={this.state.pendingSearch}
                                              onClick={() => { this.findDataSets(); }}> 
-                                                Search 
+                                                Find
+                                            </Button>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button variant="contained" color="primary"> 
+                                                Save
                                             </Button>
                                         </Grid>
                                         </Grid>   
                                         <Grid container spacing={24}>
-                                            <Grid item>
+                                            <Grid item xs={3}>
                                                 <DatasetList datasetNames={this.state.datasets} />
+                                            </Grid>
+                                            <Grid item xs={3}>
+                                                <List />
                                             </Grid>
                                         </Grid>
                                 </div>

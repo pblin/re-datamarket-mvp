@@ -1,5 +1,6 @@
 import React, { SFC } from 'react';
-import { Callback, Home, DashboardPage } from '../Components';
+import { Callback, DashboardPage } from '../Components';
+import Home from '../pages/Home';
 import { Route, RouteComponentProps } from 'react-router';
 import { Router } from 'react-router-dom';
 import { WebAuthentication } from '../auth/WebAuthentication';
