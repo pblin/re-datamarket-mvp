@@ -2,14 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "build/dist",
-    "module": "esnext",
     "target": "es6",
-    "lib": ["es6", "dom", "esnext.asynciterable"],
+    "module": "esnext",
+    "lib": ["es6", "dom", "es7", "es2017", "es2018","esnext.asynciterable"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDirs": ["src","stories"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -21,6 +21,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
+  "include": ["src/**/*"],
   "exclude": [
     "node_modules",
     "build",

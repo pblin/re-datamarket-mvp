@@ -1,14 +1,13 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-// import { createMuiTheme } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import App from '../../Components/App/App';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import { Theme, withStyles, createStyles} from '@material-ui/core/styles';
 import { Redirect } from 'auth0-js';
+import App from '../../components/App/App';
 
 // @ts-ignore
 const styles = (theme: Theme ) => createStyles ({
