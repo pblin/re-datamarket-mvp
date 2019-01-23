@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap } from 'react-google-maps';
-import DatasetList from '../Components/Dashboard/DatasetList';
-import { APIKEY, GRAPHQL } from '../Components/ConfigEnv';
 import { GraphQLClient } from 'graphql-request';
 import autobind from 'autobind-decorator';
 import {} from 'googlemaps';
-import App from '../Components/App/App';
 import { Auth0Authentication } from '..//auth/Auth0Authentication';
 import Grid from '@material-ui/core/Grid';
+import { App, DatasetList} from '../components';
+import { APIKEY, GRAPHQL } from '../components/ConfigEnv';
+
 export interface MapProps {
   auth: Auth0Authentication;
 }

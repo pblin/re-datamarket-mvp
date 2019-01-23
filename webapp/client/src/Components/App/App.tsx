@@ -18,7 +18,6 @@ import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import Button from '@material-ui/core/Button';
 import ProfileAvator from '../Profile/ProfileAvator';
-// import { Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core';
 
@@ -126,6 +125,9 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
       if ( id.text === 'Profile' ) {
         window.location.assign( '/profile' );
     } 
+      // if (id.text === 'News') {
+      //   window.location.assign( '/news');
+      // }
   }
   render() {
     const { classes, theme } = this.props;
@@ -195,7 +197,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
           </List>
           <Divider />
           <List>
-            {['Profile', 'Message'].map((text, index) => (
+            {['Profile', 'Order History', 'Message'].map((text, index) => (
               <ListItem button key={text} onClick={this.handleClick.bind(this, {text})}>
                 <ListItemText primary={text} />
               </ListItem>

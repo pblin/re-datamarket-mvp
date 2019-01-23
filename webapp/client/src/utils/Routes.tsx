@@ -1,5 +1,5 @@
 import React, { SFC } from 'react';
-import { Callback, DashboardPage, Customer } from '../Components';
+import { Callback, DashboardPage, Customer } from '../components';
 import Home from '../pages/Home';
 import DataMap from '../pages/DatasetExplorer';
 import { Route, RouteComponentProps } from 'react-router';

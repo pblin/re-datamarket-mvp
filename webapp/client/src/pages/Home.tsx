@@ -1,9 +1,7 @@
 import autobind from 'autobind-decorator';
 import React, { Component } from 'react';
 import { Auth0Authentication } from '..//auth/Auth0Authentication';
-// import DashboardPage  from '../Components/Dashboard/Dashbard';
-// import DataMap from '../pages/DatasetExplorer';
-import App from '../Components/App/App';
+import App from '../components/App/App';
 export interface HomeProps {
   auth: Auth0Authentication;
 }
