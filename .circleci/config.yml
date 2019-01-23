@@ -16,6 +16,8 @@ jobs:
       # - image: circleci/mongo:3.4.4
 
     working_directory: ~/demo
+    steps:
+      - checkout
 
   deploy:
     machine: true

@@ -11,11 +11,9 @@ see data_architecture folder
 ## Infrastructure 
 see asure folder
 
+## Rebloc App
 This MVP consists of the following components:
 - React Front-End (webapp folder)
-- Solidity Code for Smart Contract Deployment
-
-To successfully run this MVP, it is assumed that you will running the code againt the Enigma the _TestNet_.
 
 ## Webapp Configration 
 need .env file setup in webapp/client directory
