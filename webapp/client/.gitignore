@@ -24,3 +24,6 @@ yarn-error.log*
 
 #old file
 .old
+
+#vs-code workspace
+*.code-workspace
