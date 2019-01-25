@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withGoogleMap, GoogleMap } from 'react-google-maps';
 import { GraphQLClient } from 'graphql-request';
 import autobind from 'autobind-decorator';
-import {} from 'googlemaps';
 import { Auth0Authentication } from '..//auth/Auth0Authentication';
 import Grid from '@material-ui/core/Grid';
 import { App, DatasetList} from '../components';
