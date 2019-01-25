@@ -41,6 +41,7 @@ export class WebAuthentication implements Auth0Authentication {
 
   @autobind
   handleAuthentication(): void {
+    //TODO: ADD TYPES BACK(moving to react-scripts broke this)
     this.auth0.parseHash({},( e: any, result: any) => {
       if (result && result.accessToken && result.idToken) {
         this.setSession(result);
