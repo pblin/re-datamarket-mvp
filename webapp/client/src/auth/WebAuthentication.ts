@@ -2,7 +2,7 @@ import autobind from 'autobind-decorator';
 import history from '../utils/history';
 import { AUTH_CONFIG } from './configuration';
 import { Auth0Authentication } from './Auth0Authentication';
-import { Auth0DecodedHash, Auth0Error, WebAuth } from 'auth0-js';
+import {Auth0DecodedHash, WebAuth} from 'auth0-js';
 
 /**
  * Web based Auth0 authentication
@@ -41,7 +41,8 @@ export class WebAuthentication implements Auth0Authentication {
 
   @autobind
   handleAuthentication(): void {
-    this.auth0.parseHash((e: Auth0Error, result: Auth0DecodedHash) => {
+    //TODO: ADD TYPES BACK(moving to react-scripts broke this)
+    this.auth0.parseHash({},( e: any, result: any) => {
       if (result && result.accessToken && result.idToken) {
         this.setSession(result);
         history.replace('/home');
