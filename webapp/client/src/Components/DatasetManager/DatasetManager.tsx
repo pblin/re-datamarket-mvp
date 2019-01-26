@@ -37,9 +37,12 @@ class DatasetManager extends React.Component<ComponentProps> {
     console.log(file);
 
     //TODO: NOW HOOK THIS ALL UP WITH REDUX and REDUX SAGA
-    let result = await this.fileManager.readFile(file);
-    console.log('made it here');
-    console.log(result);
+    //let result = await this.fileManager.readFile(file);
+    //console.log('made it here');
+    //console.log(result);
+    //TODO: USE REAL TYPES
+    //console.log(this.props);
+    (this.props as any).onFileUpload(file);
   }
 
   render() {
@@ -58,7 +61,9 @@ function mapStateToProps(state: any, ownProps: any) {
 }
 
 function mapDispatchToProps(dispatch: any) {
-  return {};
+  return {
+    onFileUpload: (file: File) => dispatch({ type: "FILE_UPLOADED", value: file }),
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatasetManager);

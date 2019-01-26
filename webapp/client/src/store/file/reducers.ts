@@ -11,6 +11,7 @@ const reducer = function(state=defaultState, action: any) {
   switch(action.type) {
     case FILE_ACTIONS.FILE_UPLOAD_ASYNC:
       console.log('Made it to file upload async');
+      console.log(action);
       break;
     default:
       return state;
