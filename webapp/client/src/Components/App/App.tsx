@@ -12,14 +12,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-// import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import Button from '@material-ui/core/Button';
 import ProfileAvator from '../Profile/ProfileAvator';
 import { withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core';
+import {Link} from "react-router-dom";
+import {AppLink} from "./AppLink";
 
 const drawerWidth = 240;
 //TODO: REPLACE LINKING WITH ROUTER LINK TAGS (PREVENT PAGE REFRESH)
@@ -98,6 +98,20 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     open: false,
   };
 
+  appLinks: AppLink[] = [
+    new AppLink('Market Place', '/marketplace'),
+    new AppLink('Data Explorer', '/dataexplorer'),
+    new AppLink('Dataset Manager', '/dataset-manager'),
+    new AppLink('Data Sources', '/dashboard'),
+    new AppLink('News', '/news')
+  ];
+
+  userAppLinks: AppLink[] = [
+    new AppLink('Profie', '/profile'),
+    new AppLink('Order History', '/orders'),
+    new AppLink('Message', '/message')
+  ];
+
   @autobind
   login() {
     this.props.auth.login();
@@ -109,31 +123,12 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   }
   handleDrawerOpen = () => {
     this.setState({ open: true });
-  }
+  };
 
   handleDrawerClose = () => {
     this.setState({ open: false });
-  }
-  // @ts-ignore
-  handleClick ( id ) {
-      console.log (id.text);
-      if ( id.text === 'Data Explorer' ) {
-          window.location.assign( '/dataexplorer' );
-      }
-      if ( id.text === 'Data Sources' ) {
-          window.location.assign( '/dashboard' );
-      } 
-      if ( id.text === 'Profile' ) {
-        window.location.assign('/profile');
-      }
-      if ( id.text === 'Dataset Manager') {
-        window.location.assign('dataset-manager');
-      }
+  };
 
-      // if (id.text === 'News') {
-      //   window.location.assign( '/news');
-      // }
-  }
   render() {
     const { classes, theme } = this.props;
     const { open } = this.state;
@@ -194,17 +189,17 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
           </div>
           <Divider />
           <List>
-              {['Market Place', 'Data Explorer', 'Dataset Manager', 'Data Sources', 'News'].map((text, index) => (
-                  <ListItem button key={text} onClick={this.handleClick.bind(this, {text})}>
-                    <ListItemText primary={text} />
+              {this.appLinks.map((link, index) => (
+                  <ListItem button key={link.title}>
+                    <Link to={link.url}>{link.title}</Link>
                   </ListItem>
               ))}
           </List>
           <Divider />
           <List>
-            {['Profile', 'Order History', 'Message'].map((text, index) => (
-              <ListItem button key={text} onClick={this.handleClick.bind(this, {text})}>
-                <ListItemText primary={text} />
+            {this.userAppLinks.map((link, index) => (
+              <ListItem button key={link.title}>
+                <Link to={link.url}>{link.title}</Link>
               </ListItem>
             ))}
           </List>
