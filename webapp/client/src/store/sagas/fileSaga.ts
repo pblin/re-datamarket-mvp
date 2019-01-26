@@ -13,6 +13,9 @@ export function* watchFileUpload() {
 
 export function* fileSaga() {
   yield all([
-
+    watchFileUpload(),
+    FileUploadAsync()
   ]);
 }
+
+//TODO: Try to implement this https://github.com/redux-saga/redux-saga/issues/160

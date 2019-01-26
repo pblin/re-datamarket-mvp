@@ -22,6 +22,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core';
 
 const drawerWidth = 240;
+//TODO: REPLACE LINKING WITH ROUTER LINK TAGS (PREVENT PAGE REFRESH)
 
 // @ts-ignore
 const styles = (theme: Theme) => ({
@@ -123,8 +124,12 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
           window.location.assign( '/dashboard' );
       } 
       if ( id.text === 'Profile' ) {
-        window.location.assign( '/profile' );
-    } 
+        window.location.assign('/profile');
+      }
+      if ( id.text === 'Dataset Manager') {
+        window.location.assign('dataset-manager');
+      }
+
       // if (id.text === 'News') {
       //   window.location.assign( '/news');
       // }
@@ -189,7 +194,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
           </div>
           <Divider />
           <List>
-              {['Market Place', 'Data Explorer', 'Data Sources', 'News'].map((text, index) => (
+              {['Market Place', 'Data Explorer', 'Dataset Manager', 'Data Sources', 'News'].map((text, index) => (
                   <ListItem button key={text} onClick={this.handleClick.bind(this, {text})}>
                     <ListItemText primary={text} />
                   </ListItem>
