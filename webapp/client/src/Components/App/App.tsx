@@ -22,7 +22,6 @@ import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
 
 const drawerWidth = 240;
-//TODO: REPLACE LINKING WITH ROUTER LINK TAGS (PREVENT PAGE REFRESH)
 
 // @ts-ignore
 const styles = (theme: Theme) => ({
