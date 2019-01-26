@@ -1,8 +1,8 @@
 import {FILE_ACTIONS} from './actions';
 
 const defaultState: any = {
-  sources: [],
-  search: ''
+  files: {},
+  datasetFormFile: undefined
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -10,8 +10,10 @@ const reducer = function(state=defaultState, action: any) {
 
   switch(action.type) {
     case FILE_ACTIONS.FILE_UPLOAD_ASYNC:
-      console.log('Made it to file upload async');
-      console.log(action);
+      newState.files[action.name] = action.value;
+      break;
+    case FILE_ACTIONS.DATASET_FILE_CHANGE:
+      newState.datasetFormFile = action.file;
       break;
     default:
       return state;

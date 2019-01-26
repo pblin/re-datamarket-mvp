@@ -1,12 +1,11 @@
 // @ts-ignore
 import {combineReducers, createStore, applyMiddleware} from "redux";
 import createSagaMiddleware from 'redux-saga';
-
-//TODO: BREAK UP SAGAS
-import {fileSaga} from "./sagas/fileSaga";
+import {all} from 'redux-saga/effects';
+import {fileSagas} from "./file/fileSaga";
 
 //Reducers
-import FileReducer from "./file/reducers";
+import FileState from "./file/reducers";
 
 export class AppStore {
   private static instance: AppStore;
@@ -34,15 +33,21 @@ export class AppStore {
 
     //Allows the store to be broken into different states
     const rootReducer = combineReducers({
-      FileReducer
+      FileState
     });
+
+    //Set up sagas
+    function* rootSaga() {
+      yield all([
+        ...fileSagas()
+      ])
+    }
 
     this.store = createStore(
       rootReducer,
       applyMiddleware(sagaMiddleware)
     );
 
-    //TODO: Turn this into a true root saga
-    sagaMiddleware.run(fileSaga);
+    sagaMiddleware.run(rootSaga);
   }
 }
