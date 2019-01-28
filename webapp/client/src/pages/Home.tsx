@@ -1,7 +1,6 @@
 import autobind from 'autobind-decorator';
 import React, { Component } from 'react';
 import { Auth0Authentication } from '..//auth/Auth0Authentication';
-import App from '../components/App/App';
 export interface HomeProps {
   auth: Auth0Authentication;
 }
@@ -19,7 +18,6 @@ export default class Home extends Component<HomeProps, {}> {
    
     return (
       <div className="jumbotron">
-        <App auth={this.props.auth} {...this.props} />
         {authenticated && (
           <div className="container">
             <div>
