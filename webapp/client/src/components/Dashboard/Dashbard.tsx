@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Component } from 'react';
-import CreateCustomer from '../CreateCustomer/CreateCustomer';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import { Redirect } from 'auth0-js';
@@ -62,56 +61,6 @@ export default class DashboardPage extends Component<DashboardProps> {
         this.setState({ newValue });
         return inputValue;
     }
-    // @ts-ignore
-    // handleChange(evt) {
-    //     this.setState({multiValue: [...evt.target.SelectedOtions].map(o => o.value)}); 
-    //   }
-
-    @autobind
-    async findUser () { 
-        
-        // dotenv.config({ path: '.env' });
-        // let endpoint = process.env.REACT_APP_GRAPHQL;
-       
-        // console.log(endpoint);
-        // let apiKey = process.env.REACT_APP_APIKEY;
-
-        const query =  `
-        query customer ($email: String ) {
-            marketplace_customer (where:{primary_email:{ _eq : $email }})
-            {
-                id
-                primary_email
-                secondary_email
-                first_name
-                last_name
-                roles
-                is_org_admin
-            }
-        }
-        `;
-        // @ts-ignore
-        const client = new GraphQLClient (GRAPHQL, {
-            headers: {
-            'X-Hasura-Access-Key': APIKEY,
-            },
-        });
-
-        let userEmail = localStorage.getItem('email');
-        const variables = {
-            email: userEmail
-        };
-        // @ts-ignore
-      
-        localStorage.setItem('pendingProfileQuery', 'y');
-        let result = await client.request (query, variables);
-        
-        // @ts-ignore
-        localStorage.setItem ('profile', JSON.stringify(result.marketplace_customer[0]));
-        localStorage.setItem('pendingProfileQuery', 'n');
-        this.forceUpdate();
-    } 
-
     componentDidMount() {
         this.getDataFieldList();
     }
@@ -197,81 +146,54 @@ export default class DashboardPage extends Component<DashboardProps> {
     render () { 
         const { authenticated } = this.props.auth;
         if (authenticated) {
-                let profileObj = null;
-
-                let profile = localStorage.getItem('profile');
-                let isFindUserPending = localStorage.getItem('pendingProfileQuery');
-                if ( (profile == null ) && (isFindUserPending === 'n' || isFindUserPending == null)) {
-                        this.findUser();
-                }
-                
-                if (profile !== 'undefined' && profile != null ) {
-                    profileObj = JSON.parse(profile);
-                }
-                if (isFindUserPending === 'y' ) { 
-                    return ( 
-                        <div>
-                            <h3> One Moment ... </h3>
-                        </div>
-                    );
-                } else { 
-                    if ( profile === 'undefined' || profileObj == null ) {
-                        return (
-                            <div>
-                                <CreateCustomer />
-                            </div>
-                        );
-                        } else {
-                            if ( this.state.fieldList.length < 2) {
-                               this.getDataFieldList();
-                            }
-                            return (
-                                // @ts-ignore  
-                                <div>
-                                    <App auth={this.props.auth} {...this.props} />
-                                    <Grid container alignItems="center" spacing={24}>
-                                        <Grid item xs={2}>
-                                            <Typography variant="subtitle1" align="right">
-                                                Data Fields:
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <AsyncSelect
-                                                ref="fields"
-                                                name="fields-select"
-                                                isMulti
-                                                cacheOptions 
-                                                defaultOptions
-                                                loadOptions={this.promiseOptions} 
-                                                styles={customStyles}
-                                                onInputChange={this.handleInputChange}
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <Button variant="contained" color="primary"
-                                             disabled={this.state.pendingSearch}
-                                             onClick={() => { this.findDataSets(); }}> 
-                                                Find
-                                            </Button>
-                                        </Grid>
-                                        <Grid item>
-                                            <Button variant="contained" color="primary"> 
-                                                Save
-                                            </Button>
-                                        </Grid>
-                                        </Grid>   
-                                        <Grid container spacing={24}>
-                                            <Grid item xs={3}>
-                                                <DatasetList datasetNames={this.state.datasets} />
-                                            </Grid>
-                                            <Grid item xs={3}>
-                                                <List />
-                                            </Grid>
-                                        </Grid>
-                                </div>
-                            );
-                    }
-                }
+            if ( this.state.fieldList.length < 2) {
+                this.getDataFieldList();
+            }
+            return (
+                // @ts-ignore  
+                <div>
+                    <App auth={this.props.auth} {...this.props} />
+                    <Grid container alignItems="center" spacing={24}>
+                        <Grid item xs={2}>
+                            <Typography variant="subtitle1" align="right">
+                                Data Fields:
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <AsyncSelect
+                                ref="fields"
+                                name="fields-select"
+                                isMulti
+                                cacheOptions 
+                                defaultOptions
+                                loadOptions={this.promiseOptions} 
+                                styles={customStyles}
+                                onInputChange={this.handleInputChange}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" color="primary"
+                                disabled={this.state.pendingSearch}
+                                onClick={() => { this.findDataSets(); }}> 
+                                Find
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" color="primary"> 
+                                Save
+                            </Button>
+                        </Grid>
+                        </Grid>   
+                        <Grid container spacing={24}>
+                            <Grid item xs={3}>
+                                <DatasetList datasetNames={this.state.datasets} />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <List />
+                            </Grid>
+                        </Grid>
+                </div>
+            );
             } else { 
                 // @ts-ignore
                 return <Redirect to = "/home" />;
