@@ -2,12 +2,17 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {FileManager} from "../../services/FileManager";
 import {datasetFileChange} from "../../store/file/actions";
+import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
+import {nextStep, prevStep} from "../../store/datasetForm/actions";
 
 interface ComponentProps {
   file: any[];
   fileName: string;
   datasetFileChange: any;
   onFileUpload: any;
+  wizard: any,
+  nextStep: any,
+  prevStep: any
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -15,9 +20,12 @@ class DatasetManager extends React.Component<ComponentProps> {
   constructor(props: any, fileManager: FileManager) {
     super(props);
 
+    //TODO: Autobind
     this.handleClick = this.handleClick.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.upload = this.upload.bind(this);
+    this.onWizardNext = this.onWizardNext.bind(this);
+    this.onWizardPrev = this.onWizardPrev.bind(this);
     this.fileManager = new FileManager();
   }
 
@@ -55,9 +63,22 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.onFileUpload(file);
   }
 
+  onWizardNext() {
+    console.log('On wizard next');
+    this.props.nextStep();
+  }
+
+  onWizardPrev() {
+    console.log('On wizard prev');
+    this.props.prevStep();
+  }
+
   render() {
     return <div>
       <h1>Create Schema Form</h1>
+      <DatasetWizard steps={this.props.wizard.steps} onNext={this.onWizardNext} onPrev={this.onWizardPrev} currentStep={this.props.wizard.currentStep}>
+        <div> I am transcluded</div>
+      </DatasetWizard>
       <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
       <button type="button" onClick={this.upload}>Upload</button>
       {this.props.file.map( (f, index) => <p key={`schema_${index}`}>{f.name}</p>)}
@@ -71,15 +92,20 @@ function mapStateToProps(state: any, ownProps: any) {
     fileName = state.FileState.datasetFormFile.name;
   }
   console.log(state.FileState);
+  console.log('Here is the state');
+  console.log(state);
   return {
-    file: state.FileState.files[fileName] || []
+    file: state.FileState.files[fileName] || [],
+    wizard: state.DatasetFormState.wizard
   }
 }
 
 function mapDispatchToProps(dispatch: any) {
   return {
     onFileUpload: (file: File) => dispatch({ type: "FILE_UPLOADED", file: file }),
-    datasetFileChange: (file: File) => dispatch(datasetFileChange(file))
+    datasetFileChange: (file: File) => dispatch(datasetFileChange(file)),
+    nextStep: () => dispatch(nextStep()),
+    prevStep: () => dispatch(prevStep())
   };
 }
 
