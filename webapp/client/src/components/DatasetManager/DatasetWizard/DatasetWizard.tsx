@@ -19,14 +19,17 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
     this.state = {value: ''};
   }
 
-  goToStep() {
-
-  }
-
   render() {
     return (
       <div>
-        <DatasetStepper wizardSteps={this.props.steps} currentStep={this.props.currentStep}/> Form Wizard {this.props.children}
+        <DatasetStepper
+          wizardSteps={this.props.steps}
+          currentStep={this.props.currentStep}/>
+          {(this.props.children as any).map((child, index, arr) => {
+            if(index == this.props.currentStep) {
+              return (arr[index])
+            }
+          })}
         <button onClick={this.props.onPrev}>Previous</button>
         <button onClick={this.props.onNext}>Next</button>
       </div>
