@@ -1,16 +1,30 @@
--- Table: marketplace.source_of_field
+-- Table: marketplace.data_source_detail
 
--- DROP TABLE marketplace.source_of_field;
+-- DROP TABLE marketplace.data_source_detail;
 
-CREATE TABLE marketplace.source_of_field
+CREATE TABLE marketplace.data_source_detail
 (
-    field__name character varying(30) COLLATE pg_catalog."default" NOT NULL,
-    field_val_hash character varying(384) COLLATE pg_catalog."default" NOT NULL,
-    source_id text COLLATE pg_catalog."default" NOT NULL,
-    field_type text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT source_of_field_pkey PRIMARY KEY (source_id, field__name),
-    CONSTRAINT source_id_fkey FOREIGN KEY (source_id)
-        REFERENCES marketplace.data_source_detail (id) MATCH SIMPLE
+    enc_data_key character varying(256) COLLATE pg_catalog."default",
+    access_url character varying(256) COLLATE pg_catalog."default",
+    api_key character varying(256) COLLATE pg_catalog."default",
+    parameters character varying(40)[] COLLATE pg_catalog."default",
+    description text COLLATE pg_catalog."default",
+    dataset_owner_id integer NOT NULL,
+    delivery_method text COLLATE pg_catalog."default",
+    id text COLLATE pg_catalog."default" NOT NULL,
+    search_terms text[] COLLATE pg_catalog."default",
+    country text COLLATE pg_catalog."default",
+    state_province text COLLATE pg_catalog."default",
+    date_created timestamp with time zone NOT NULL,
+    date_modified timestamp with time zone,
+    name text COLLATE pg_catalog."default",
+    num_of_records integer NOT NULL,
+    price_low numeric,
+    price_high numeric,
+    json_schema text COLLATE pg_catalog."default",
+    CONSTRAINT data_source_detail_pkey PRIMARY KEY (id),
+    CONSTRAINT data_source_owner_fkey FOREIGN KEY (dataset_owner_id)
+        REFERENCES marketplace.organization (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
@@ -19,18 +33,21 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE marketplace.source_of_field
+ALTER TABLE marketplace.data_source_detail
     OWNER to reblocadmin;
 
-GRANT ALL ON TABLE marketplace.source_of_field TO app;
+GRANT ALL ON TABLE marketplace.data_source_detail TO app;
 
-GRANT ALL ON TABLE marketplace.source_of_field TO reblocadmin;
+GRANT ALL ON TABLE marketplace.data_source_detail TO reblocadmin;
 
--- Index: fki_source_id_fkey
+COMMENT ON COLUMN marketplace.data_source_detail.id
+    IS 'uuid';
 
--- DROP INDEX marketplace.fki_source_id_fkey;
+-- Index: fki_data_source_owner_fkey
 
-CREATE INDEX fki_source_id_fkey
-    ON marketplace.source_of_field USING btree
-    (source_id COLLATE pg_catalog."default")
+-- DROP INDEX marketplace.fki_data_source_owner_fkey;
+
+CREATE INDEX fki_data_source_owner_fkey
+    ON marketplace.data_source_detail USING btree
+    (dataset_owner_id)
     TABLESPACE pg_default;
