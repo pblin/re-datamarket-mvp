@@ -1807,6 +1807,13 @@
     "@types/react-dom" "*"
     "@types/react-transition-group" "*"
 
+"@types/react-table@^6.7.21":
+  version "6.7.21"
+  resolved "https://registry.yarnpkg.com/@types/react-table/-/react-table-6.7.21.tgz#c07bc5680a2c6c85beaff7a7e671b6814b270a76"
+  integrity sha512-XiYCcn/CBajrj18vLA3kO79AHr5yZTCJe2kl87ZNTRxLO14y9D0IGeGZ3xLsqhfYrJSkkVzAJV8v+bQ4nuKCRQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@*", "@types/react-transition-group@^2.0.8":
   version "2.0.15"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.0.15.tgz#e5ee3fe558832e141cc6041bdd54caea7b787af8"
@@ -3507,6 +3514,11 @@ boom@2.x.x:
   integrity sha1-OciRjO/1eZ+D+UkqhI9iWt0Mdm8=
   dependencies:
     hoek "2.x.x"
+
+bootstrap-sass@^3.3.7:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.4.0.tgz#b1c330a56782347f626d31d497fa4aea16b3f99b"
+  integrity sha512-qdUyw4KmNNPSIdBadn+eyuuQFH0LsZlRCs6tor1zN8sQas7mnY5JNfemauraOdNPiFQd2gFeeo3gZjZZCuohZg==
 
 bootstrap@4.0.0-beta.2:
   version "4.0.0-beta.2"
@@ -6510,6 +6522,11 @@ follow-redirects@^1.0.0:
   integrity sha512-t2JCjbzxQpWvbhts3l6SH1DKzSrx8a+SsaVf4h6bG4kOXUuPYS/kg2Lr4gQSb7eemaHqJkOThF1BGyjlUkO1GQ==
   dependencies:
     debug "=3.1.0"
+
+font-awesome@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
+  integrity sha1-j6jPBBGhoxr9B7BtKQK7n8gVoTM=
 
 for-in@^0.1.3:
   version "0.1.8"
@@ -12564,6 +12581,14 @@ react-select@^2.2.0:
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
 
+react-sort-search-table@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/react-sort-search-table/-/react-sort-search-table-0.1.3.tgz#3d55bc1ae6e71e1a02c896dd2cb30c4284c12a80"
+  integrity sha512-uu/SopTO5wOIjcYN6F7MWyT5QR8hPOS1T/iAhUkMxmEpp8BmuYiCA11JRZJfrvbz+LcBRVUuAuksnDdxTbk3rQ==
+  dependencies:
+    bootstrap-sass "^3.3.7"
+    font-awesome "^4.7.0"
+
 react-split-pane@^0.1.84:
   version "0.1.85"
   resolved "https://registry.yarnpkg.com/react-split-pane/-/react-split-pane-0.1.85.tgz#64819946a99b617ffa2d20f6f45a0056b6ee4faa"
@@ -12581,6 +12606,13 @@ react-style-proptype@^3.0.0:
   integrity sha512-ywYLSjNkxKHiZOqNlso9PZByNEY+FTyh3C+7uuziK0xFXu9xzdyfHwg4S9iyiRRoPCR4k2LqaBBsWVmSBwCWYQ==
   dependencies:
     prop-types "^15.5.4"
+
+react-table@^6.8.6:
+  version "6.8.6"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.8.6.tgz#a0ad8b4839319052d5befc012603fb161e52ede3"
+  integrity sha1-oK2LSDkxkFLVvvwBJgP7Fh5S7eM=
+  dependencies:
+    classnames "^2.2.5"
 
 react-test-renderer@^16.0.0-0:
   version "16.7.0"

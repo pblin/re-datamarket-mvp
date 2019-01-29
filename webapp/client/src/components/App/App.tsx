@@ -15,7 +15,7 @@ import ListItem from '@material-ui/core/ListItem';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import Button from '@material-ui/core/Button';
-import ProfileAvator from '../Profile/ProfileAvator';
+import ProfileAvatar from '../Profile/ProfileAvatar';
 import { withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core';
 import {Link} from "react-router-dom";
@@ -161,7 +161,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             <Typography variant="h6" color="inherit"  style={{ borderRight: '0.1em solid white', padding: '0.5em' }}>
               Rebloc  
             </Typography>
-            { (profileObj !== '') && (<ProfileAvator initial={initial}/> )}
+            { (profileObj !== '') && (<ProfileAvatar initial={initial}/> )}
             {!authenticated && ( 
                 <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
               )

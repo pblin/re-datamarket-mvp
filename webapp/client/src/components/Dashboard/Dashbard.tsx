@@ -16,6 +16,7 @@ import $ from 'jquery';
 import { List, Typography } from '@material-ui/core';
 import App from '../App/App';
 
+
 export interface DashboardProps {
   auth: Auth0Authentication;
 }
@@ -30,6 +31,8 @@ const customStyles = {
     // @ts-ignore
     control: styles => ({ ...styles, width: '100%', backgroundColor: 'white' })
   };
+
+
 export default class DashboardPage extends Component<DashboardProps> {
     state = {
         fieldList: [ {label: '', value: ''} ],
@@ -38,6 +41,8 @@ export default class DashboardPage extends Component<DashboardProps> {
         // newValue: '',
         pendingSearch: false
     };
+
+ 
     filterFields = (inputValue: string) => {
         if (inputValue) {
           
@@ -149,6 +154,7 @@ export default class DashboardPage extends Component<DashboardProps> {
             if ( this.state.fieldList.length < 2) {
                 this.getDataFieldList();
             }
+        
             return (
                 // @ts-ignore  
                 <div>
