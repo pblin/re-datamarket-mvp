@@ -24,7 +24,7 @@ interface MapState {
     datasets: dataField[],
     dialogVisible: boolean,
     markerTitle: string,
-    draggableMarker: false,
+    draggableMarker: any,
     overlays: any,
     selectedPosition: any,
     infoWindow: any,
@@ -40,7 +40,7 @@ class DataMap extends Component<MapProps, MapState> {
             pendingSearch: false,
             dialogVisible: false,
             markerTitle: '',
-            draggableMarker: false,
+            draggableMarker: null,
             overlays: null,
             selectedPosition: null,
             infoWindow: null,
@@ -174,7 +174,7 @@ class DataMap extends Component<MapProps, MapState> {
                         <Dialog header="New Location" visible={this.state.dialogVisible}  modal={true} footer={footer} onHide={this.onHide}>
                             <div className="p-grid p-fluid">
                                 <div className="p-col-2" style={{paddingTop:'.75em'}}><label htmlFor="title">Label</label></div>
-                                <div className="p-col-10"><InputText type="text" id="title" value={this.state.markerTitle} onChange={(e) => this.setState({markerTitle: (<HTMLTextAreaElement>)e.target.value})} /></div>
+                                <div className="p-col-10"><InputText type="text" id="title" value={this.state.markerTitle} onChange={(e) => this.setState({markerTitle: e.currentTarget.value})} /></div>
                                 
                                 <div className="p-col-2" style={{paddingTop:'.75em'}}>Lat</div>
                                 <div className="p-col-10"><InputText readOnly value={this.state.selectedPosition ? this.state.selectedPosition.lat() : ''} /></div>
