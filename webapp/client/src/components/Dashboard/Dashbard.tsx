@@ -3,190 +3,257 @@ import { Component } from 'react';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import { Redirect } from 'auth0-js';
-import { APIKEY, GRAPHQL } from '../ConfigEnv';
-import { GraphQLClient } from 'graphql-request';
+// import { APIKEY, GRAPHQL } from '../ConfigEnv';
+// import { GraphQLClient } from 'graphql-request';
+// import './Dashboard.css';
 import App from '../App/App';
-import JsonTable from 'ts-react-json-table';
-import './Dashboard.css';
+import {Dialog} from 'primereact/dialog';
+import {Panel} from 'primereact/panel';
+import {DataView, DataViewLayoutOptions} from "primereact/dataview";
+import {Button} from "primereact/button";
+import {Dropdown} from "primereact/dropdown";
 
 export interface DashboardProps {
   auth: Auth0Authentication;
 }
 
-
-export default class DashboardPage extends Component<DashboardProps> {
+class DashboardPage extends Component<DashboardProps> {
     state = {
-        fieldList: [ {label: '', value: ''} ],
-        // inputValue: '',
-        datasets: [ {table_name: ''} ],
-        // newValue: '',
-        pendingSearch: false
+        pendingSearch: false,
+        selectedSet: null,
+        visible: false,
+        sortKey: null,
+        sortOrder: null,
+        sortField: null,
+        layout: 'list',
+        datasets: [{}]
     };
 
- 
-    filterFields = (inputValue: string) => {
-        if (inputValue) {
-          
-          return this.state.fieldList.filter(i =>
-              i.label.toLowerCase().includes(inputValue.toLowerCase())
-            );
-        }
-        return this.state.fieldList;
-      }
-
-    promiseOptions = (inputValue: string) =>
-      new Promise(resolve => {
-       setTimeout(() => {
-          resolve(this.filterFields(inputValue));
-          }, 1000);
-    })
-  
-    handleInputChange = (newValue: string) => {
-        console.log(newValue);
-        const inputValue = newValue.replace(/\W/g, '');
-        this.setState({ newValue });
-        return inputValue;
-    }
+    @autobind
     componentDidMount() {
-        this.getDataFieldList();
-    }
-    @autobind
-    async getDataFieldList() {
-
-        const query =  `
-            query {
-                marketplace_available_fields (
-                order_by: { label: asc }
-                ) {
-                    name
-                    label
-                    type
-                }
-            }
-        `;
-        // @ts-ignore
-        const client = new GraphQLClient (GRAPHQL, {
-            headers: {
-            'X-Hasura-Access-Key': APIKEY,
-            },
-        });
-        let result = await client.request (query);
-        // @ts-ignore
-        this.state.fieldList.pop();
-        for (var i = 0; i < result.marketplace_available_fields.length; i++) {
-            let suggestionItem = {
-                label: result.marketplace_available_fields[i].label,
-                value: result.marketplace_available_fields[i].name
-            };
-            // @ts-ignore 
-            this.state.fieldList.push(suggestionItem);
-        }
-        localStorage.setItem('fieldList', JSON.stringify(this.state.fieldList));
-    }
-    @autobind
-    async findDataSets() {
-        const query =  `
-            query getTables ($fields: [String]) {
-                marketplace_field_in_table ( 
-                    distinct_on: [table_name]
-                    where:{field_name: { _in: $fields} } 
-                )
-                {
-                    table_name
-                }
-            }
-        `;
-        // @ts-ignore
-        const client = new GraphQLClient (GRAPHQL, {
-            headers: {
-            'X-Hasura-Access-Key': APIKEY,
-            },
-        });
-
-        // const variables = {
-        //     fields: this.state.multiValue
-        // };
-        // const variables = this.state.inputValue;
-
-        // @ts-ignore
-        let selectedOptions = [];
-        $('input[name="fields-select"]' ).each(function(i, item) {
-            // @ts-ignore
-            selectedOptions.push($(item).val());
-        });
-
-        const variables = {
-            // @ts-ignore
-            fields: selectedOptions
-        };
-
-        let result = '';
-        this.state.pendingSearch = true;
-        result = await client.request (query, variables);
-        // @ts-ignore
-        this.state.datasets = result.marketplace_field_in_table;
-        this.state.pendingSearch = false;
-        this.forceUpdate();
-    }
-    @autobind
-    render () { 
-       // mock data  
-       let datasetList = [
+        this.state.datasets = [
             {
                 "id": "5fe63ef68edf4f969cc9db158c299b18",
                 "name": "cherre_nyc_lot",
                 "description": "Cherre NY Lot",
+                "delivery_method": "API",
                 "num_of_records": 10000,
+                "state_province": "NY",
+                "country": "USA",
                 "price_low": "300",
                 "price_high": "400",
-                "num_verifiers": 3
+                "num_verifiers": 3,
+                "date_created": "Mon Jan 28 22:50:05 2019",
+                "date_modified": "Mon Jan 28 22:50:05 2019"
             },
             {
                 "id": "5fe63ef68edf4f969cc9db158c309b18",
                 "name": "cherre_nyc_building",
                 "description": "Cherre NYC Building",
+                "delivery_method": "API",
+                "state_province": "NY",
+                "country": "USA",
                 "num_of_records": 1000,
                 "price_low": "50",
                 "price_high": "75",
-                "num_of_verifiers": 2
+                "num_of_verifiers": 2,
+                "date_created": "Mon Jan 2 10:50:05 2019",
+                "date_modified": "Mon Jan 2 10:50:05 2019"
             },
             {
                 "id": "5fe63ef68edf4f969cc9db158c309b17",
                 "name": "cherre_acris_simple",
                 "description": "Cherre ACRIS Simple data",
+                "delivery_method": "API",
+                "state_province": "NY",
+                "country": "USA",
                 "num_of_records": 14046,
                 "price_low": "600",
                 "price_high": "650",
-                "num_of_verifiers": 5
+                "num_of_verifiers": 5,
+                "date_created": "Mon Jan 10 21:50:05 2019",
+                "date_modified": "Mon Jan 10 21:50:05 2019"
             },
         ];
+    }
+    @autobind
+    renderListItem(ds) {
+        return (
+            <div className="p-col-12" style={{padding: '2em', borderBottom: '1px solid #d9d9d9'}}>
+                <div className="p-col-12 p-md-8 car-details">
+                    <div className="p-grid">
+                        <div className="p-col-2 p-sm-6">ID:</div>
+                        <div className="p-col-10 p-sm-6">{ds.id}</div>
 
-        let columns = [
-            {key:"id", label:"Dataset ID", cell:"id"},
-            {key:"name", label:"Dataset Name", cell:"name"},
-            {key:"description", label:"Description", cell:"description"},
-            {key:"num_of_records", label:"# of Records", cell:"num_of_records"},
-            {key:"price_low", label:"Quote (L)", cell:"price_low"},
-            {key:"price_high", label:"Quote (H)", cell:"price_high"},
-            {key:"num_of_verifiers", label:"Available Verifiers", cell:"num_of_verifiers"},
-        ]
-        const { authenticated } = this.props.auth;
-        if (authenticated) {
-            if ( this.state.fieldList.length < 2) {
-                this.getDataFieldList();
-            }
-        
+                        <div className="p-col-2 p-sm-6">Name:</div>
+                        <div className="p-col-10 p-sm-6">{ds.name}</div>
+
+                        <div className="p-col-2 p-sm-6">Description:</div>
+                        <div className="p-col-10 p-sm-6">{ds.description}</div>
+
+                        <div className="p-col-2 p-sm-6">No of Records:</div>
+                        <div className="p-col-10 p-sm-6">{ds.num_of_records}</div>
+
+                        <div className="p-col-2 p-sm-6">Region:</div>
+                        <div className="p-col-10 p-sm-6">{ds.state_province}</div>
+
+                        <div className="p-col-2 p-sm-6">Country</div>
+                        <div className="p-col-10 p-sm-6">{ds.country}</div>
+                    </div>
+                </div>
+
+                <div className="p-col-12 p-md-1 search-icon" style={{marginTop:'40px'}}>
+                    <Button icon="pi pi-search" onClick={(e) => this.setState({ selectedSet: ds, visible: true })}></Button>
+                </div>
+            </div>
+        );
+    }
+
+    @autobind
+    onSortChange(event) {
+        const value = event.value;
+
+        if (value.indexOf('!') === 0) {
+            this.setState({
+                sortOrder: -1, 
+                sortField: value.substring(1, value.length), 
+                sortKey: value
+            });
+        }
+        else {
+            this.setState({
+                sortOrder: 1, 
+                sortField: value, 
+                sortKey: value
+            });
+        }
+    }
+
+    @autobind
+    renderGridItem(ds) {
+        return (
+            <div style={{ padding: '.5em' }} className="p-col-12 p-md-3">
+                <Panel header={ds.id} style={{ textAlign: 'center' }}>
+                    <div className="ddataset-name">{ds.name}</div>
+                    <div className="ddataset-detail">{ds.description}</div>
+                    <div className="ddataset-records">{ds.num_of_records}</div>
+                    <div className="ddataset-region">{ds.state_province}</div>
+                    <div className="ddataset-country">{ds.country}</div>
+                    <hr className="ui-widget-content" style={{ borderTop: 0 }} />
+                    <Button icon="pi pi-search" onClick={(e) => this.setState({ selectedSet: ds, visible: true })}></Button>
+                </Panel>
+            </div>
+        );
+    }
+    @autobind
+    itemTemplate(ds, layout) {
+        if (!ds) {
+            return;
+        }
+        if (layout === 'grid')
+            return this.renderGridItem(ds);
+        else 
+            return this.renderListItem(ds);
+    }   
+
+    @autobind
+    renderDatasetDialogContent() {
+
+        if (this.state.selectedSet) {
             return (
+                <div className="p-grid" style={{fontSize: '16px', textAlign: 'center', padding: '20px'}}>
 
-                // @ts-ignore  
+                    <div className="p-col-4">ID: </div>
+                    <div className="p-col-8">{this.state.selectedSet.id}</div>
+
+                    <div className="p-col-4">Name: </div>
+                    <div className="p-col-8">{this.state.selectedSet.name}</div>
+                        
+                    <div className="p-col-4">Delivery Method: </div>
+                    <div className="p-col-8">{this.state.selectedSet.delivery_method}</div>
+                    
+                    <div className="p-col-4">Number of Records: </div>
+                    <div className="p-col-8">{this.state.selectedSet.num_of_records}</div>
+
+                     <div className="p-col-4">Number of Verifiers: </div>
+                    <div className="p-col-8">{this.state.selectedSet.num_of_verifiers}</div>
+
+                    <div className="p-col-4">Region: </div>
+                    <div className="p-col-8">{this.state.selectedSet.state_province}</div>
+
+                    <div className="p-col-4">Price Range: </div>
+                    <div className="p-col-8">{this.state.selectedSet.price_low} - {this.state.selectedSet.price_high}</div>
+
+                    <div className="p-col-4">Date Created: </div>
+                    <div className="p-col-8">{this.state.selectedSet.date_created}</div>
+                    
+                    <div className="p-col-4">Last Modified Date: </div>
+                    <div className="p-col-8">{this.state.selectedSet.date_modified}</div>
+
+                    <div className="p-col-4">Detail Schema: </div>
+                    <div className="p-col-8">This Link</div>   
+                </div>
+            );
+        }
+        else {
+            return null;
+        }
+    }
+
+    renderHeader() {
+        const sortOptions = [
+            {label: 'Newest First', value: '!date_created'},
+            {label: 'Oldest First', value: 'date_created'},
+            {label: 'name', value: 'name'}
+        ];
+
+        return (
+            <div className="p-grid">
+                <div className="p-col-6" style={{textAlign: 'left'}}>
+                    <Dropdown options={sortOptions} value={this.state.sortKey} placeholder="Sort By" onChange={this.onSortChange} />
+                </div>
+                <div className="p-col-6" style={{textAlign: 'right'}}>
+                    <DataViewLayoutOptions layout={this.state.layout} onChange={(e) => this.setState({layout: e.value})} />
+                </div>
+            </div>
+        );
+    }
+
+    @autobind
+    setToHid ()
+    {
+        this.setState({visible: false});
+    }
+
+    @autobind
+    render () { 
+        const header = this.renderHeader();
+        const { authenticated } = this.props.auth;
+        console.log( authenticated )
+        if (authenticated) {
+            return (
                 <div>
                     <div>
                         <App auth={this.props.auth} {...this.props} />
                     </div>
-                    <JsonTable className="table" 
-                               rows={datasetList}
-                               columns={columns} />
-                </div>
+                    <div className="content-section introduction">
+                        <div className="feature-intro">
+                            <h1>Dataset View</h1>
+                            <p>DataView displays data in grid or list layout with pagination, sorting and filtering features.</p>
+                        </div>
+                    </div>
+
+                    <div className="content-section implementation">
+                        <DataView value={this.state.datasets} layout={this.state.layout} header={header} 
+                                itemTemplate={this.itemTemplate} paginatorPosition={'both'} paginator={true} rows={20} 
+                                sortOrder={this.state.sortOrder} sortField={this.state.sortField} />
+
+                        <Dialog header="Dataset Details" visible={this.state.visible} modal={true} onHide={this.setToHid}>
+                            {this.renderDatasetDialogContent()}
+                        </Dialog>
+                    </div>
+
+                    </div>
             );
             } else { 
                 // @ts-ignore
@@ -194,3 +261,5 @@ export default class DashboardPage extends Component<DashboardProps> {
             }
     }
 }
+
+export default DashboardPage;

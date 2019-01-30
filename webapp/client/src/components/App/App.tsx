@@ -15,11 +15,11 @@ import ListItem from '@material-ui/core/ListItem';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import Button from '@material-ui/core/Button';
-import ProfileAvatar from '../Profile/ProfileAvatar';
 import { withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
+import ProfileAvatar from '../Profile/ProfileAvatar';
 
 const drawerWidth = 240;
 
@@ -56,13 +56,7 @@ const styles = (theme: Theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
+
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,

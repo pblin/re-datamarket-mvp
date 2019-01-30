@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 export interface ProfileProps {
     initial: string;
   }
-class ProfileAvator extends Component <ProfileProps, {}> {
+class ProfileAvatar extends Component <ProfileProps, {}> {
 
     render () {
         if (this.props.initial !== null) { 
@@ -23,4 +23,4 @@ class ProfileAvator extends Component <ProfileProps, {}> {
         }
     }
 }
-export default ProfileAvator;
+export default ProfileAvatar;

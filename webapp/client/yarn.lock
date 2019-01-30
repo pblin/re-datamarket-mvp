@@ -11889,6 +11889,11 @@ pretty-hrtime@^1.0.3:
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
   integrity sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=
 
+primereact@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/primereact/-/primereact-3.0.0.tgz#b49d66fe1f13e4ad860d8931a84e34c09c923c49"
+  integrity sha512-6cjTE/TaAbgMkqnmHBCB7FeVp4RbE9tr8BXRnauheRIbBvBE3JUV1sZnySeeFBHmHmOp9E4B88i6/c/Rm3qyEQ==
+
 private@^0.1.6, private@^0.1.8, private@~0.1.5:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"
