@@ -181,9 +181,6 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
     }
 
     itemTemplate(ds, layout) {
-        if (!ds) {
-            return;
-        }
         if (layout === 'grid')
             return this.renderGridItem(ds);
         else 
