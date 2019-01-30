@@ -1,16 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
-<<<<<<< HEAD
-// import autobind from 'autobind-decorator';
-import { Redirect } from 'auth0-js';
-=======
-import autobind from 'autobind-decorator';
-//import { Redirect } from 'auth0-js';
->>>>>>> 4da04c9417c1bd66e9cd8791cf72c94c3fa5a7f9
-// import { APIKEY, GRAPHQL } from '../ConfigEnv';
-// import { GraphQLClient } from 'graphql-request';
-//import './Dashboard.css';
 import App from '../App/App';
 import {Dialog} from 'primereact/dialog';
 import {Panel} from 'primereact/panel';
