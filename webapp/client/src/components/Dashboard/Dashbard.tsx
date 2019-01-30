@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
-import { Redirect } from 'auth0-js';
+//import { Redirect } from 'auth0-js';
 // import { APIKEY, GRAPHQL } from '../ConfigEnv';
 // import { GraphQLClient } from 'graphql-request';
 //import './Dashboard.css';
@@ -258,7 +258,7 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
     @autobind
     render () { 
         const { authenticated } = this.props.auth;
-        console.log( authenticated )
+        console.log( authenticated );
         if (authenticated) {
             const header = this.renderHeader();
             return (
@@ -286,7 +286,12 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
             );
             } else { 
                 // @ts-ignore
-                return <Redirect to = "/home" />;
+                //TODO: Move this logic into the router
+                return (
+                  <div>
+                    Please Login
+                  </div>
+                );
             }
     }
 }

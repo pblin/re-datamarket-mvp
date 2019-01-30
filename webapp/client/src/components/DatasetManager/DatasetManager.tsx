@@ -4,6 +4,9 @@ import {FileManager} from "../../services/FileManager";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {nextStep, prevStep, datasetFileChange} from "../../store/datasetForm/actions";
 import SchemaList from './SchemaList/SchemaList';
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 interface ComponentProps {
   file: any[];
