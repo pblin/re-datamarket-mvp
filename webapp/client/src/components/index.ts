@@ -1,9 +1,7 @@
 import App from './App/App';
-import Callback from './Callback/Callback';
-import CreateCustomer from './CreateCustomer/CreateCustomer';
-import ProfileAvator from './Profile/ProfileAvator';
 import Customer from './Profile/Customer'; 
 import DatasetList from './Dashboard/DatasetList';
 import DashboardPage from './Dashboard/Dashbard';
+import Callback from './Callback/Callback';
 
-export { App, Callback, CreateCustomer, DashboardPage, ProfileAvator, Customer, DatasetList };
+export { App, Callback, DashboardPage, Customer, DatasetList };

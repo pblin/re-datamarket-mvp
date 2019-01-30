@@ -6,6 +6,7 @@ import {fileSagas} from "./file/fileSaga";
 
 //Reducers
 import FileState from "./file/reducers";
+import DatasetFormState from "./datasetForm/reducers";
 
 export class AppStore {
   private static instance: AppStore;
@@ -33,7 +34,8 @@ export class AppStore {
 
     //Allows the store to be broken into different states
     const rootReducer = combineReducers({
-      FileState
+      FileState,
+      DatasetFormState
     });
 
     //Set up sagas

@@ -8,6 +8,7 @@ import { WebAuthentication } from '../auth/WebAuthentication';
 import history from './history';
 import DatasetManager from "../components/DatasetManager/DatasetManager";
 import App from '../components/App/App';
+
 const auth = new WebAuthentication();
 
 const handleAuthentication = (props: RouteComponentProps<{}>) => {

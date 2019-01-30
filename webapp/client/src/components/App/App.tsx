@@ -15,11 +15,11 @@ import ListItem from '@material-ui/core/ListItem';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import Button from '@material-ui/core/Button';
-import ProfileAvator from '../Profile/ProfileAvator';
 import { withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
+import ProfileAvatar from '../Profile/ProfileAvatar';
 
 const drawerWidth = 240;
 
@@ -56,13 +56,7 @@ const styles = (theme: Theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
+
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
@@ -98,10 +92,9 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   appLinks: AppLink[] = [
-    new AppLink('Market Place', '/marketplace'),
+    new AppLink('Market Place', '/dashboard'),
     new AppLink('Data Explorer', '/dataexplorer'),
     new AppLink('Dataset Manager', '/dataset-manager'),
-    new AppLink('Data Sources', '/dashboard'),
     new AppLink('News', '/news')
   ];
 
@@ -161,7 +154,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             <Typography variant="h6" color="inherit"  style={{ borderRight: '0.1em solid white', padding: '0.5em' }}>
               Rebloc  
             </Typography>
-            { (profileObj !== '') && (<ProfileAvator initial={initial}/> )}
+            { (profileObj !== '') && (<ProfileAvatar initial={initial}/> )}
             {!authenticated && ( 
                 <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
               )
