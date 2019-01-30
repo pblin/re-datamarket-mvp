@@ -5,13 +5,16 @@ import autobind from 'autobind-decorator';
 import { Redirect } from 'auth0-js';
 // import { APIKEY, GRAPHQL } from '../ConfigEnv';
 // import { GraphQLClient } from 'graphql-request';
-// import './Dashboard.css';
+//import './Dashboard.css';
 import App from '../App/App';
 import {Dialog} from 'primereact/dialog';
 import {Panel} from 'primereact/panel';
 import {DataView, DataViewLayoutOptions} from "primereact/dataview";
 import {Button} from "primereact/button";
 import {Dropdown} from "primereact/dropdown";
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 export interface DashboardProps {
   auth: Auth0Authentication;
