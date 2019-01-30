@@ -34,11 +34,8 @@
     "jquery": "^3.3.1",
     "material-ui-search-bar": "^1.0.0-beta.13",
     "material-ui-search-bar-enhanced": "^0.5.1",
-<<<<<<< HEAD
     "primereact": "^3.0.0",
-=======
     "mui-datatables": "^2.0.0-beta-53",
->>>>>>> 7ae503a9ce3a69c2d3686c92d76453b6189050ef
     "react": "^16.1.1",
     "react-apollo": "^1.4.14",
     "react-dom": "^16.1.1",

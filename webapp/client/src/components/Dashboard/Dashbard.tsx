@@ -17,21 +17,51 @@ export interface DashboardProps {
   auth: Auth0Authentication;
 }
 
-class DashboardPage extends Component<DashboardProps> {
-    state = {
-        pendingSearch: false,
-        selectedSet: null,
-        visible: false,
-        sortKey: null,
-        sortOrder: null,
-        sortField: null,
-        layout: 'list',
-        datasets: [{}]
-    };
+type DatasetType = {
+    id: string,
+    name: string,
+    description: string,
+    delivery_method: string,
+    num_of_records: number,
+    state_province: string,
+    country: string,
+    price_low: number,
+    price_high: number,
+    num_of_verifiers: number,
+    date_created: string,
+    date_modified: string
+}
+interface DashboardState {
+    pendingSearch: boolean,
+    selectedSet: DatasetType,
+    visible: boolean,
+    sortKey: string,
+    sortOrder: any,
+    sortField: string,
+    layout: string,
+    datasets: DatasetType[]
+}
+class DashboardPage extends Component<DashboardProps, DashboardState> {
+    constructor (props) {
+        super (props);
+        this.state = {
+                pendingSearch: false,
+                selectedSet: null,
+                visible: false,
+                sortKey: "",
+                sortOrder: null,
+                sortField: "",
+                layout: 'list',
+                datasets: []
+            };
+        this.itemTemplate = this.itemTemplate.bind(this);
+        this.onSortChange = this.onSortChange.bind(this);
+    }
 
     @autobind
     componentDidMount() {
-        this.state.datasets = [
+        this.setState ( { 
+            datasets: [
             {
                 "id": "5fe63ef68edf4f969cc9db158c299b18",
                 "name": "cherre_nyc_lot",
@@ -40,9 +70,9 @@ class DashboardPage extends Component<DashboardProps> {
                 "num_of_records": 10000,
                 "state_province": "NY",
                 "country": "USA",
-                "price_low": "300",
-                "price_high": "400",
-                "num_verifiers": 3,
+                "price_low": 300,
+                "price_high": 400,
+                "num_of_verifiers": 3,
                 "date_created": "Mon Jan 28 22:50:05 2019",
                 "date_modified": "Mon Jan 28 22:50:05 2019"
             },
@@ -54,8 +84,8 @@ class DashboardPage extends Component<DashboardProps> {
                 "state_province": "NY",
                 "country": "USA",
                 "num_of_records": 1000,
-                "price_low": "50",
-                "price_high": "75",
+                "price_low": 50,
+                "price_high": 75,
                 "num_of_verifiers": 2,
                 "date_created": "Mon Jan 2 10:50:05 2019",
                 "date_modified": "Mon Jan 2 10:50:05 2019"
@@ -68,16 +98,17 @@ class DashboardPage extends Component<DashboardProps> {
                 "state_province": "NY",
                 "country": "USA",
                 "num_of_records": 14046,
-                "price_low": "600",
-                "price_high": "650",
+                "price_low": 600,
+                "price_high": 650,
                 "num_of_verifiers": 5,
                 "date_created": "Mon Jan 10 21:50:05 2019",
                 "date_modified": "Mon Jan 10 21:50:05 2019"
             },
-        ];
+        ]});
     }
     @autobind
     renderListItem(ds) {
+        console.log(ds)
         return (
             <div className="p-col-12" style={{padding: '2em', borderBottom: '1px solid #d9d9d9'}}>
                 <div className="p-col-12 p-md-8 car-details">
@@ -109,7 +140,6 @@ class DashboardPage extends Component<DashboardProps> {
         );
     }
 
-    @autobind
     onSortChange(event) {
         const value = event.value;
 
@@ -131,6 +161,7 @@ class DashboardPage extends Component<DashboardProps> {
 
     @autobind
     renderGridItem(ds) {
+        console.log(ds);
         return (
             <div style={{ padding: '.5em' }} className="p-col-12 p-md-3">
                 <Panel header={ds.id} style={{ textAlign: 'center' }}>
@@ -145,7 +176,7 @@ class DashboardPage extends Component<DashboardProps> {
             </div>
         );
     }
-    @autobind
+
     itemTemplate(ds, layout) {
         if (!ds) {
             return;
@@ -156,9 +187,8 @@ class DashboardPage extends Component<DashboardProps> {
             return this.renderListItem(ds);
     }   
 
-    @autobind
     renderDatasetDialogContent() {
-
+       // @ts-ignore 
         if (this.state.selectedSet) {
             return (
                 <div className="p-grid" style={{fontSize: '16px', textAlign: 'center', padding: '20px'}}>
@@ -227,10 +257,10 @@ class DashboardPage extends Component<DashboardProps> {
 
     @autobind
     render () { 
-        const header = this.renderHeader();
         const { authenticated } = this.props.auth;
         console.log( authenticated )
         if (authenticated) {
+            const header = this.renderHeader();
             return (
                 <div>
                     <div>
@@ -238,14 +268,13 @@ class DashboardPage extends Component<DashboardProps> {
                     </div>
                     <div className="content-section introduction">
                         <div className="feature-intro">
-                            <h1>Dataset View</h1>
-                            <p>DataView displays data in grid or list layout with pagination, sorting and filtering features.</p>
+                            <h1>Dataset Listing</h1>
                         </div>
                     </div>
 
                     <div className="content-section implementation">
                         <DataView value={this.state.datasets} layout={this.state.layout} header={header} 
-                                itemTemplate={this.itemTemplate} paginatorPosition={'both'} paginator={true} rows={20} 
+                                itemTemplate={this.itemTemplate} paginatorPosition={'both'} paginator={true} rows={3} 
                                 sortOrder={this.state.sortOrder} sortField={this.state.sortField} />
 
                         <Dialog header="Dataset Details" visible={this.state.visible} modal={true} onHide={this.setToHid}>
@@ -253,7 +282,7 @@ class DashboardPage extends Component<DashboardProps> {
                         </Dialog>
                     </div>
 
-                    </div>
+                </div>
             );
             } else { 
                 // @ts-ignore
