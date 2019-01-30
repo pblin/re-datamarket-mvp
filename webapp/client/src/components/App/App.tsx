@@ -98,10 +98,9 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   appLinks: AppLink[] = [
-    new AppLink('Market Place', '/marketplace'),
+    new AppLink('Market Place', '/dashboard'),
     new AppLink('Data Explorer', '/dataexplorer'),
     new AppLink('Dataset Manager', '/dataset-manager'),
-    new AppLink('Data Sources', '/dashboard'),
     new AppLink('News', '/news')
   ];
 

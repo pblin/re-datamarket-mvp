@@ -5,13 +5,32 @@ import autobind from 'autobind-decorator';
 import { Redirect } from 'auth0-js';
 import { APIKEY, GRAPHQL } from '../ConfigEnv';
 import { GraphQLClient } from 'graphql-request';
+// import Divider from '@material-ui/core/Divider';
+import DatasetList from './DatasetList';
+// import Select from 'react-select';
+import AsyncSelect from 'react-select/lib/Async';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+// import ReactDOM from 'react-dom';
+import $ from 'jquery';
+import { List, Typography } from '@material-ui/core';
 import App from '../App/App';
-import JsonTable from 'ts-react-json-table';
-import './Dashboard.css';
+
 
 export interface DashboardProps {
   auth: Auth0Authentication;
 }
+
+const customStyles = {
+    // @ts-ignore
+    option: (provided, state) => ({
+      ...provided,
+      // color: state.isSelected ? 'red' : 'blue',
+      padding: 20,
+    }),
+    // @ts-ignore
+    control: styles => ({ ...styles, width: '100%', backgroundColor: 'white' })
+  };
 
 
 export default class DashboardPage extends Component<DashboardProps> {
@@ -130,46 +149,6 @@ export default class DashboardPage extends Component<DashboardProps> {
     }
     @autobind
     render () { 
-       // mock data  
-       let datasetList = [
-            {
-                "id": "5fe63ef68edf4f969cc9db158c299b18",
-                "name": "cherre_nyc_lot",
-                "description": "Cherre NY Lot",
-                "num_of_records": 10000,
-                "price_low": "300",
-                "price_high": "400",
-                "num_verifiers": 3
-            },
-            {
-                "id": "5fe63ef68edf4f969cc9db158c309b18",
-                "name": "cherre_nyc_building",
-                "description": "Cherre NYC Building",
-                "num_of_records": 1000,
-                "price_low": "50",
-                "price_high": "75",
-                "num_of_verifiers": 2
-            },
-            {
-                "id": "5fe63ef68edf4f969cc9db158c309b17",
-                "name": "cherre_acris_simple",
-                "description": "Cherre ACRIS Simple data",
-                "num_of_records": 14046,
-                "price_low": "600",
-                "price_high": "650",
-                "num_of_verifiers": 5
-            },
-        ];
-
-        let columns = [
-            {key:"id", label:"Dataset ID", cell:"id"},
-            {key:"name", label:"Dataset Name", cell:"name"},
-            {key:"description", label:"Description", cell:"description"},
-            {key:"num_of_records", label:"# of Records", cell:"num_of_records"},
-            {key:"price_low", label:"Quote (L)", cell:"price_low"},
-            {key:"price_high", label:"Quote (H)", cell:"price_high"},
-            {key:"num_of_verifiers", label:"Available Verifiers", cell:"num_of_verifiers"},
-        ]
         const { authenticated } = this.props.auth;
         if (authenticated) {
             if ( this.state.fieldList.length < 2) {
@@ -177,15 +156,48 @@ export default class DashboardPage extends Component<DashboardProps> {
             }
         
             return (
-
                 // @ts-ignore  
                 <div>
-                    <div>
-                        <App auth={this.props.auth} {...this.props} />
-                    </div>
-                    <JsonTable className="table" 
-                               rows={datasetList}
-                               columns={columns} />
+                    <App auth={this.props.auth} {...this.props} />
+                    <Grid container alignItems="center" spacing={24}>
+                        <Grid item xs={2}>
+                            <Typography variant="subtitle1" align="right">
+                                Data Fields:
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <AsyncSelect
+                                ref="fields"
+                                name="fields-select"
+                                isMulti
+                                cacheOptions 
+                                defaultOptions
+                                loadOptions={this.promiseOptions} 
+                                styles={customStyles}
+                                onInputChange={this.handleInputChange}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" color="primary"
+                                disabled={this.state.pendingSearch}
+                                onClick={() => { this.findDataSets(); }}> 
+                                Find
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" color="primary"> 
+                                Save
+                            </Button>
+                        </Grid>
+                        </Grid>   
+                        <Grid container spacing={24}>
+                            <Grid item xs={3}>
+                                <DatasetList datasetNames={this.state.datasets} />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <List />
+                            </Grid>
+                        </Grid>
                 </div>
             );
             } else { 
