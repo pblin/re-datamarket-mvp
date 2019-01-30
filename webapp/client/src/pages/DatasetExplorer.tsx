@@ -26,8 +26,9 @@ interface MapState {
     markerTitle: string,
     draggableMarker: false,
     overlays: any,
-    selectedPosition: number,
-    infoWindow: any
+    selectedPosition: any,
+    infoWindow: any,
+    growl: any
 
 }
 class DataMap extends Component<MapProps, MapState> {
@@ -41,8 +42,9 @@ class DataMap extends Component<MapProps, MapState> {
             markerTitle: '',
             draggableMarker: false,
             overlays: null,
-            selectedPosition: 0,
-            infoWindow: null
+            selectedPosition: null,
+            infoWindow: null,
+            growl: null
         };
         this.onMapClick = this.onMapClick.bind(this);
         // this.onOverlayClick = this.onOverlayClick.bind(this);
@@ -69,15 +71,15 @@ class DataMap extends Component<MapProps, MapState> {
             this.state.infoWindow.open(event.map, event.overlay);
             event.map.setCenter(event.overlay.getPosition());
             
-            this.growl.show({severity:'info', summary:'Marker Selected', detail: title});
+            this.state.growl.show({severity:'info', summary:'Marker Selected', detail: title});
         }
         else {
-            this.growl.show({severity:'info', summary:'Shape Selected', detail: ''});
+            this.state.growl.show({severity:'info', summary:'Shape Selected', detail: ''});
         }   
     }
     
     handleDragEnd(event) {
-        this.growl.show({severity:'info', summary:'Marker Dragged', detail: event.overlay.getTitle()});
+        this.state.growl.show({severity:'info', summary:'Marker Dragged', detail: event.overlay.getTitle()});
     }
     
     addMarker() {
@@ -131,15 +133,15 @@ class DataMap extends Component<MapProps, MapState> {
         });
     
         let result = '';
-        this.state.pendingSearch = true;
+        this.setState ({ pendingSearch: false });
         result = await client.request (query);
         // @ts-ignore
-        this.state.datasets = result.marketplace_field_in_table;
-        this.state.pendingSearch = false;
+        this.setState ( {datasets: result.marketplace_field_in_table} );
+        this.setState ({ pendingSearch: false });
         this.forceUpdate();
     }
 
-    onHide(event) {
+    onHide() {
         this.setState({dialogVisible: false});
     }
 
@@ -155,24 +157,24 @@ class DataMap extends Component<MapProps, MapState> {
             <Button label="No" icon="pi pi-times" onClick={this.onHide} />
         </div>;
 
-    if ( authenticate && !this.state.pendingSearch && this.state.datasets[0].table_name === '' ) {
+    if ( authenticated && !this.state.pendingSearch && this.state.datasets[0].table_name === '' ) {
         this.getDataSets();
         }   
    
     return (
         <div>
             <App auth={this.props.auth} {...this.props} />
-                {authenticated && 
+                { authenticated && 
                     <div className="content-section implementation">
-                        <Growl ref={(el) => { this.growl = el; }}></Growl>
+                        <Growl ref={(el) => { this.setState( {growl: el} ); }}></Growl>
                     
                         <GMap overlays={this.state.overlays} options={options} style={{width: '100%', minHeight: '320px'}} onMapReady={this.onMapReady}
                             onMapClick={this.onMapClick} onOverlayClick={this.onOverlayClick} onOverlayDragEnd={this.handleDragEnd} />
                             
-                        <Dialog header="New Location" visible={this.state.dialogVisible} width="300px" modal={true} footer={footer} onHide={this.onHide}>
+                        <Dialog header="New Location" visible={this.state.dialogVisible}  modal={true} footer={footer} onHide={this.onHide}>
                             <div className="p-grid p-fluid">
                                 <div className="p-col-2" style={{paddingTop:'.75em'}}><label htmlFor="title">Label</label></div>
-                                <div className="p-col-10"><InputText type="text" id="title" value={this.state.markerTitle} onChange={(e) => this.setState({markerTitle: e.target.value})} /></div>
+                                <div className="p-col-10"><InputText type="text" id="title" value={this.state.markerTitle} onChange={(e) => this.setState({markerTitle: (<HTMLTextAreaElement>)e.target.value})} /></div>
                                 
                                 <div className="p-col-2" style={{paddingTop:'.75em'}}>Lat</div>
                                 <div className="p-col-10"><InputText readOnly value={this.state.selectedPosition ? this.state.selectedPosition.lat() : ''} /></div>
