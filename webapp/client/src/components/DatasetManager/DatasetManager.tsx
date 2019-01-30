@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {FileManager} from "../../services/FileManager";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {nextStep, prevStep, datasetFileChange} from "../../store/datasetForm/actions";
+import SchemaList from './SchemaList/SchemaList';
 
 interface ComponentProps {
   file: any[];
@@ -85,7 +86,8 @@ class DatasetManager extends React.Component<ComponentProps> {
         <div>
           <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
           <button type="button" onClick={this.upload}>Upload</button>
-          {this.props.file.map( (f, index) => <p key={`schema_${index}`}>{f.name}</p>)}
+          {/*this.props.file.map( (f, index) => <p key={`schema_${index}`}>{f.name}</p>)*/}
+          <SchemaList schemas={this.props.file}/>
         </div>
         <div> Here</div>
       </DatasetWizard>
@@ -99,6 +101,7 @@ function mapStateToProps(state: any, ownProps: any) {
   if(state.DatasetFormState.datasetFormFile) {
     fileName = state.DatasetFormState.datasetFormFile.name;
   }
+  console.log(state);
   return {
     file: Object.assign([],state.FileState[fileName]),
     wizard: state.DatasetFormState.wizard
