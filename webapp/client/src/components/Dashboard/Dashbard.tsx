@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
-import autobind from 'autobind-decorator';
+// import autobind from 'autobind-decorator';
 import { Redirect } from 'auth0-js';
 // import { APIKEY, GRAPHQL } from '../ConfigEnv';
 // import { GraphQLClient } from 'graphql-request';
@@ -61,7 +61,6 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
         this.onSortChange = this.onSortChange.bind(this);
     }
 
-    @autobind
     componentDidMount() {
         this.setState ( { 
             datasets: [
@@ -109,7 +108,6 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
             },
         ]});
     }
-    @autobind
     renderListItem(ds) {
         console.log(ds)
         return (
@@ -162,7 +160,6 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
         }
     }
 
-    @autobind
     renderGridItem(ds) {
         console.log(ds);
         return (
@@ -252,13 +249,11 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
         );
     }
 
-    @autobind
     setToHid ()
     {
         this.setState({visible: false});
     }
 
-    @autobind
     render () { 
         const { authenticated } = this.props.auth;
         console.log( authenticated )
