@@ -1,9 +1,8 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {FileManager} from "../../services/FileManager";
-import {datasetFileChange} from "../../store/file/actions";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
-import {nextStep, prevStep} from "../../store/datasetForm/actions";
+import {nextStep, prevStep, datasetFileChange} from "../../store/datasetForm/actions";
 
 interface ComponentProps {
   file: any[];
@@ -76,26 +75,32 @@ class DatasetManager extends React.Component<ComponentProps> {
   render() {
     return <div>
       <h1>Create Schema Form</h1>
-      <DatasetWizard steps={this.props.wizard.steps} onNext={this.onWizardNext} onPrev={this.onWizardPrev} currentStep={this.props.wizard.currentStep}>
+      <DatasetWizard
+        steps={this.props.wizard.steps}
+        onNext={this.onWizardNext}
+        onPrev={this.onWizardPrev}
+        currentStep={this.props.wizard.currentStep}
+      >
         <div> I am transcluded</div>
+        <div>
+          <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
+          <button type="button" onClick={this.upload}>Upload</button>
+          {this.props.file.map( (f, index) => <p key={`schema_${index}`}>{f.name}</p>)}
+        </div>
+        <div> Here</div>
       </DatasetWizard>
-      <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
-      <button type="button" onClick={this.upload}>Upload</button>
-      {this.props.file.map( (f, index) => <p key={`schema_${index}`}>{f.name}</p>)}
+
     </div>
   }
 }
 
 function mapStateToProps(state: any, ownProps: any) {
   let fileName = '';
-  if(state.FileState.datasetFormFile) {
-    fileName = state.FileState.datasetFormFile.name;
+  if(state.DatasetFormState.datasetFormFile) {
+    fileName = state.DatasetFormState.datasetFormFile.name;
   }
-  console.log(state.FileState);
-  console.log('Here is the state');
-  console.log(state);
   return {
-    file: state.FileState.files[fileName] || [],
+    file: Object.assign([],state.FileState[fileName]),
     wizard: state.DatasetFormState.wizard
   }
 }
