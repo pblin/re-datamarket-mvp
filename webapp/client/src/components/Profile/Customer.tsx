@@ -131,13 +131,9 @@ class Customer extends React.Component<Props> {
             email: userEmail
         };
         // @ts-ignore
-      
-        localStorage.setItem('pendingProfileQuery', 'y');
         let result = await client.request (query, variables);
-        
         // @ts-ignore
         localStorage.setItem ('profile', JSON.stringify(result.marketplace_customer[0]));
-        localStorage.setItem('pendingProfileQuery', 'n');
         this.forceUpdate();
     } 
   // @ts-ignore
@@ -181,10 +177,7 @@ class Customer extends React.Component<Props> {
     const { authenticated } = this.props.auth;
     if ( authenticated) {
 
-      let isFindUserPending = localStorage.getItem('pendingProfileQuery');
-      if ( isFindUserPending === 'n' || isFindUserPending == null ) {
-        this.findUser();
-      }   
+      this.findUser();
       let profile = localStorage.getItem('profile');
       let profileObj = {
         id: -1,
