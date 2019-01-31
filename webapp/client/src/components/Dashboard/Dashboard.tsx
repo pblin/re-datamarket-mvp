@@ -54,6 +54,7 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
             };
         this.itemTemplate = this.itemTemplate.bind(this);
         this.onSortChange = this.onSortChange.bind(this);
+        this.setToHid = this.setToHid.bind(this);
     }
 
     componentDidMount() {
