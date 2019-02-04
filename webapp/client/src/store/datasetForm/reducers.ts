@@ -6,7 +6,8 @@ interface DatasetFormState {
     steps: WizardStep[],
     currentStep: number
   },
-  datasetFormFile: any
+  datasetFormFile: any,
+  basicInfo: any
 }
 
 const defaultState: DatasetFormState = {
@@ -19,7 +20,8 @@ const defaultState: DatasetFormState = {
       ],
       currentStep: 0
     },
-  datasetFormFile: null
+  datasetFormFile: null,
+  basicInfo: {}
 };
 
 const reducer = function(state=defaultState, action: any) {

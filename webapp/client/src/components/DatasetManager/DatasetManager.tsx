@@ -7,6 +7,7 @@ import SchemaList from './SchemaList/SchemaList';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import {BasicInfo} from "./DatasetWizard/BasicInfo";
 
 interface ComponentProps {
   file: any[];
@@ -29,6 +30,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.upload = this.upload.bind(this);
     this.onWizardNext = this.onWizardNext.bind(this);
     this.onWizardPrev = this.onWizardPrev.bind(this);
+    this.handleBasicFormChange = this.handleBasicFormChange.bind(this);
     this.fileManager = new FileManager();
   }
 
@@ -66,6 +68,10 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.onFileUpload(file);
   }
 
+  handleBasicFormChange() {
+    console.log('Basic form change');
+  }
+
   onWizardNext() {
     console.log('On wizard next');
     this.props.nextStep();
@@ -85,7 +91,9 @@ class DatasetManager extends React.Component<ComponentProps> {
         onPrev={this.onWizardPrev}
         currentStep={this.props.wizard.currentStep}
       >
-        <div> I am transcluded</div>
+        <BasicInfo
+          onChange={this.handleBasicFormChange}
+        />
         <div>
           <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
           <button type="button" onClick={this.upload}>Upload</button>
