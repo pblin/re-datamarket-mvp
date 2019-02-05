@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Grid, TextField} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {ValidatedTextField} from "../../Common/Validator";
 import "./DatasetWizard.css";
 import {ERROR_TYPE} from "../../Common/ErrorType";
@@ -16,14 +16,16 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
   constructor(props: BasicInfoProps) {
     super(props);
     this.state = {
-      description: '1234',
-      searchTerms: 'test',
-      sampleAPIKey: 'test1234',
-      endpoint: 'http://test.com',
-      sampleDataKey: '12341234',
-      records: 1000,
-      askPriceHigh: 1,
-      askPriceLow: 10,
+      description: '',
+      searchTerms: '',
+      country: '',
+      state: '',
+      sampleAPIKey: '',
+      endpoint: '',
+      sampleDataKey: '',
+      records: undefined,
+      askPriceHigh: undefined,
+      askPriceLow: undefined,
       test: '',
       errors: []
     };
@@ -54,13 +56,11 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
       <Grid container={true} justify="center">
         <form className="basic-form">
           <Grid spacing={24} container={true} >
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <ValidatedTextField
                 value={this.state.test}
-                errorText="Please enter a valid test"
                 label={'Test Validator'}
                 onValidate={this.onValidate}
-                required
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                   {type: ERROR_TYPE.MAX_LENGTH, val: 7},
@@ -80,90 +80,202 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoFocus={true}
-                label="Description"
-                variant="outlined"
-                margin="normal"
-                error={true}
-                fullWidth
-                helperText="Please provide a description"
+            <Grid item xs={12} sm={5}>
+              <ValidatedTextField
                 value={this.state.description}
+                label={'Description'}
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                ]}
+                errorMessages={[
+                  'Please enter a valid description'
+                ]}
+                margin="normal"
                 onChange={(event) => this.handleChange(event, 'description')}
+                variant={'outlined'}
+                helperText="Description"
+                autoFocus={true}
+                fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Search Terms"
-                variant="outlined"
-                margin="normal"
-                fullWidth
+            <Grid item xs={12} sm={3}>
+              <ValidatedTextField
                 value={this.state.searchTerms}
+                label={'Search Terms'}
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                ]}
+                errorMessages={[
+                  'Please enter valid search terms'
+                ]}
+                margin="normal"
                 onChange={(event) => this.handleChange(event, 'searchTerms')}
+                variant={'outlined'}
+                helperText="Search Terms"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <ValidatedTextField
+                value={this.state.state}
+                label={'State/Province'}
+                select
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                ]}
+                errorMessages={[
+                  'Please select a state or province'
+                ]}
+                margin="normal"
+                onChange={(event) => this.handleChange(event, 'state')}
+                variant={'outlined'}
+                helperText="State"
+                options={[
+                  {key: 'ny', value: 'New York'},
+                  {key: '', value: ''}
+                ]}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <ValidatedTextField
+                value={this.state.country}
+                label={'Country'}
+                select
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                ]}
+                errorMessages={[
+                  'Please select a country'
+                ]}
+                margin="normal"
+                onChange={(event) => this.handleChange(event, 'country')}
+                variant={'outlined'}
+                helperText="Country"
+                options={[{key: 'usa', value: 'United States Of America'}]}
+                fullWidth
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Sample Api Key"
-                variant="outlined"
-                margin="normal"
-                fullWidth
+              <ValidatedTextField
                 value={this.state.sampleAPIKey}
+                label={'Sample Api Key'}
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                ]}
+                errorMessages={[
+                  'Please enter a valid sample Api key'
+                ]}
+                margin="normal"
                 onChange={(event) => this.handleChange(event, 'sampleAPIKey')}
+                variant={'outlined'}
+                helperText="Sample Api Key"
+                fullWidth
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Endpoint URL"
-                variant="outlined"
-                margin="normal"
-                fullWidth
+              <ValidatedTextField
                 value={this.state.endpoint}
+                label={'Endpoint'}
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                ]}
+                errorMessages={[
+                  'Please enter a valid endpoint'
+                ]}
+                margin="normal"
                 onChange={(event) => this.handleChange(event, 'endpoint')}
+                variant={'outlined'}
+                helperText="Endpoint"
+                fullWidth
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Sample Data Key"
-                variant="outlined"
-                margin="normal"
-                fullWidth
+              <ValidatedTextField
                 value={this.state.sampleDataKey}
+                label={'Sample Data Key'}
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                ]}
+                errorMessages={[
+                  'Please enter a valid sample data key'
+                ]}
+                margin="normal"
                 onChange={(event) => this.handleChange(event, 'sampleDataKey')}
+                variant={'outlined'}
+                helperText="Sample Data Key"
+                fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="# of records"
-                variant="outlined"
-                margin="normal"
-                type="number"
-                fullWidth
+            <Grid item xs={12} sm={2}>
+              <ValidatedTextField
                 value={this.state.records}
+                label={'# of records'}
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                  {type: ERROR_TYPE.GREATER_THAN, val: 0}
+                ]}
+                errorMessages={[
+                  'Please enter a valid number of records',
+                  'Please ensure that the number of records are greater than 0'
+                ]}
+                margin="normal"
                 onChange={(event) => this.handleChange(event, 'records')}
+                variant={'outlined'}
+                helperText="Records"
+                fullWidth
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Ask Price (low)"
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                type="number"
-                value={this.state.askPriceHigh}
-                onChange={(event) => this.handleChange(event, 'askPriceHigh')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Ask Price (high)"
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                type="number"
+            <Grid item xs={12} sm={2}>
+              <ValidatedTextField
                 value={this.state.askPriceLow}
+                label={'Ask Price (low)'}
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                  {type: ERROR_TYPE.MAX, val: this.state.askPriceHigh},
+                  {type: ERROR_TYPE.MIN, val: 0}
+                ]}
+                errorMessages={[
+                  'Please enter a valid ask price',
+                  'Please ensure that the low ask price is not greater than the high ask price',
+                  'Please enter a positive asking price'
+                ]}
+                margin="normal"
                 onChange={(event) => this.handleChange(event, 'askPriceLow')}
+                variant={'outlined'}
+                helperText="Ask Price Low"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <ValidatedTextField
+                value={this.state.askPriceHigh}
+                label={'Ask Price (high)'}
+                onValidate={this.onValidate}
+                errors={[
+                  {type: ERROR_TYPE.REQUIRED},
+                  {type: ERROR_TYPE.MIN, val: this.state.askPriceLow},
+                  {type: ERROR_TYPE.MIN, val: 0}
+                ]}
+                errorMessages={[
+                  'Please enter a valid ask price',
+                  'Please ensure that the high ask price is not less than the low ask price',
+                  'Please enter a positive asking price'
+                ]}
+                margin="normal"
+                onChange={(event) => this.handleChange(event, 'askPriceHigh')}
+                variant={'outlined'}
+                helperText="Ask Price High"
+                fullWidth
               />
             </Grid>
           </Grid>

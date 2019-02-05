@@ -5,7 +5,9 @@ export enum ERROR_TYPE {
   MAX_LENGTH = 'MAX_LENGTH',
   MIN_LENGTH = 'MIN_LENGTH',
   MAX = 'MAX',
-  LENGTH = 'LENGTH'
+  LENGTH = 'LENGTH',
+  GREATER_THAN = 'GREATER_THAN',
+  LESS_THAN = 'LESS_THAN'
 }
 
 export interface ErrorType {

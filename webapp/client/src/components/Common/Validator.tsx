@@ -2,6 +2,7 @@ import * as React from "react";
 import {TextField} from "@material-ui/core";
 import {OutlinedTextFieldProps} from "@material-ui/core/TextField";
 import {ERROR_TYPE, ErrorType} from "./ErrorType";
+import {SelectOption} from "./SelectOption";
 
 interface ValidatedTextFieldProps extends OutlinedTextFieldProps{
   required?: boolean;
@@ -9,6 +10,7 @@ interface ValidatedTextFieldProps extends OutlinedTextFieldProps{
   errors : ErrorType[];
   errorMessages: string[];
   onValidate: any; //TODO: Type check this
+  options?: SelectOption[];
 }
 
 interface ValidatedTextFieldState {}
@@ -24,8 +26,6 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
   }
 
   isValid(val: any, errorType: ErrorType) {
-    console.log('Validity Check');
-
     switch (errorType.type) {
       case ERROR_TYPE.REQUIRED:
         return val != '';
@@ -39,22 +39,26 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
         return val.length <= errorType.val;
       case ERROR_TYPE.MIN_LENGTH:
         return val.length >= errorType.val;
+      case ERROR_TYPE.GREATER_THAN:
+        return val > errorType.val;
+      case ERROR_TYPE.LESS_THAN:
+        return val < errorType.val;
       case ERROR_TYPE.PATTERN:
         return errorType.val.test(val)
     }
     return true;
   }
 
+  generateOptions(props: ValidatedTextFieldProps) {
+    if(props.options) {
+        return props.options.map(option => {
+          return (<option key={option.key} value={option.value}>{option.value}</option>)
+        })
+    }
+  }
+
   generateProps(props: ValidatedTextFieldProps) {
     let generatedProps: any = {};
-
-    //TODO: Make different error checks [min, max, required, pattern]
-    if(props.required && !props.value && this.dirty) {
-      generatedProps.error = true;
-      if(props.errorText) {
-        //generatedProps.helperText = props.errorText;
-      }
-    }
 
     //Only validate the field if its dirty
     if(this.dirty) {
@@ -68,7 +72,6 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
         }
       }
     }
-
 
     generatedProps.onChange = (event) => {
       if(!this.dirty) {
@@ -99,6 +102,7 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
       <TextField
         {...this.generateProps(this.props)}
       >
+        {this.generateOptions(this.props)}
       </TextField>
     )
   }
