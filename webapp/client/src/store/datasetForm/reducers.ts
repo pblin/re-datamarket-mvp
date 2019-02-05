@@ -61,9 +61,11 @@ const reducer = function(state=defaultState, action: any) {
       console.log(action);
       if(action.isValid && newState.basicInfo.errors.length) {
         newState.basicInfo.errors = [...newState.basicInfo.errors.filter(error => error != action.key)]
-      } else if(!action.isValid && !newState.basicInfo.errors[action.key]) {
+      } else if(!action.isValid && !newState.basicInfo.errors.includes(action.key)) {
         newState.basicInfo.errors = [...newState.basicInfo.errors , action.key]
       }
+      newState.basicInfo == {...newState.basicInfo};
+      newState.basicInfo[action.key] = action.val;
       break;
     default:
       return state;

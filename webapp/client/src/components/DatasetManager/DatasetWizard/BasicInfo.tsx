@@ -172,9 +172,11 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 name='endpoint'
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
+                  {type: ERROR_TYPE.IS_URL}
                 ]}
                 errorMessages={[
-                  'Please enter a valid endpoint'
+                  'Please enter a valid endpoint',
+                  'Please enter a valid url'
                 ]}
                 margin="normal"
                 variant={'outlined'}
