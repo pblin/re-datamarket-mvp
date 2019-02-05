@@ -19,7 +19,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
       description: '',
       searchTerms: '',
       country: '',
-      state: '',
+      state: 'New York',
       sampleAPIKey: '',
       endpoint: '',
       sampleDataKey: '',
@@ -56,30 +56,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
       <Grid container={true} justify="center">
         <form className="basic-form">
           <Grid spacing={24} container={true} >
-            <Grid item xs={12} sm={12}>
-              <ValidatedTextField
-                value={this.state.test}
-                label={'Test Validator'}
-                onValidate={this.onValidate}
-                errors={[
-                  {type: ERROR_TYPE.REQUIRED},
-                  {type: ERROR_TYPE.MAX_LENGTH, val: 7},
-                  {type: ERROR_TYPE.MIN_LENGTH, val: 3},
-                  {type: ERROR_TYPE.PATTERN, val: /^hello/}
-                ]}
-                errorMessages={[
-                  'Please enter a valid test',
-                  'Please make sure test field is less than 7 characters',
-                  'Please make sure test field is greater than 3 characters',
-                  'Please include hello in the field'
-                ]}
-                margin="normal"
-                onChange={(event) => this.handleChange(event, 'test')}
-                variant={'outlined'}
-                helperText="Test Field"
-                fullWidth
-              />
-            </Grid>
             <Grid item xs={12} sm={5}>
               <ValidatedTextField
                 value={this.state.description}
@@ -134,8 +110,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 variant={'outlined'}
                 helperText="State"
                 options={[
-                  {key: 'ny', value: 'New York'},
-                  {key: '', value: ''}
+                  {key: 'ny', value: 'New York'}
                 ]}
                 fullWidth
               />
