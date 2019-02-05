@@ -11,6 +11,7 @@ interface ValidatedTextFieldProps extends OutlinedTextFieldProps{
   errorMessages: string[];
   onValidate: any; //TODO: Type check this
   options?: SelectOption[];
+  name: string;
 }
 
 interface ValidatedTextFieldState {}
@@ -26,6 +27,9 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
   }
 
   isValid(val: any, errorType: ErrorType) {
+    console.log('IS VALID');
+    console.log(val);
+    console.log(val != '');
     switch (errorType.type) {
       case ERROR_TYPE.REQUIRED:
         return val != '';
@@ -59,15 +63,18 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
 
   generateProps(props: ValidatedTextFieldProps) {
     let generatedProps: any = {};
+    //Reset validity
+    this.valid = true;
 
     //Only validate the field if its dirty
     if(this.dirty) {
       for(let i = 0; i < props.errors.length; i++) {
+        console.log('prop prop ', props.value);
         let isValid = this.isValid(props.value, props.errors[i]);
-        console.log(isValid);
         if(!isValid) {
           generatedProps.helperText = props.errorMessages[i];
           generatedProps.error = true;
+          this.valid = false;
           break;
         }
       }
@@ -77,14 +84,10 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
       if(!this.dirty) {
         this.dirty = !this.dirty;
       }
-      if(props.onChange) {
-        props.onChange(event);
-      }
+
       if(props.onValidate) {
-        props.onValidate();
+        props.onValidate(event, this.props.name, this.valid);
       }
-      console.log('Is dirty');
-      console.log(this.dirty);
     };
 
     let newProps = Object.assign({}, props, generatedProps);

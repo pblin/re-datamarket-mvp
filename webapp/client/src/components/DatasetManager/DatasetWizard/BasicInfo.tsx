@@ -5,7 +5,7 @@ import "./DatasetWizard.css";
 import {ERROR_TYPE} from "../../Common/ErrorType";
 
 interface BasicInfoProps {
-  onChange: any;
+  onFormChange: any;
 }
 
 interface BasicInfoState {}
@@ -29,35 +29,45 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
       test: '',
       errors: []
     };
-    this.handleChange = this.handleChange.bind(this);
+    //this.handleChange = this.handleChange.bind(this);
+    this.onValidate = this.onValidate.bind(this);
   }
 
-  handleChange(event: any, key: string): void {
-    console.log('Here is the event');
-    console.log(event);
-    console.log(key);
+  /*handleChange(event: any, key: string): void {
     let state = {};
     state[key] = event.target.value;
     this.setState(state);
     this.props.onChange();
 
-    //TODO: Write validators
-    if(this.state[key] == '') {
+  }*/
 
-    }
+  onValidate(event: any, key: string, isValid: boolean) {
+    console.log('On Validation');
+    console.log(event);
+    console.log(key);
+    console.log(isValid);
+    let state = {};
+    state[key] = event.target.value;
+    this.setState(state);
+    //this.props.onChange();
+    this.props.onFormChange(key, event.target.value, isValid);
   }
 
-  onValidate() {
-    console.log('On Validation');
+  componentDidMount() {
+    console.log('Component Did mount');
+    let form = document.getElementById('basic-info');
+    console.log(form);
+    console.log((form as any).description.checkValidity())
   }
 
   render() {
     return (
       <Grid container={true} justify="center">
-        <form className="basic-form">
+        <form className="basic-form" id="basic-info">
           <Grid spacing={24} container={true} >
             <Grid item xs={12} sm={5}>
               <ValidatedTextField
+                ref="description"
                 value={this.state.description}
                 label={'Description'}
                 onValidate={this.onValidate}
@@ -68,10 +78,11 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please enter a valid description'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'description')}
                 variant={'outlined'}
                 helperText="Description"
+                errorText={"test"}
                 autoFocus={true}
+                name="description"
                 fullWidth
               />
             </Grid>
@@ -87,8 +98,8 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please enter valid search terms'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'searchTerms')}
                 variant={'outlined'}
+                name='searchTerms'
                 helperText="Search Terms"
                 fullWidth
               />
@@ -97,6 +108,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
               <ValidatedTextField
                 value={this.state.state}
                 label={'State/Province'}
+                name='state'
                 select
                 onValidate={this.onValidate}
                 errors={[
@@ -106,7 +118,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please select a state or province'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'state')}
                 variant={'outlined'}
                 helperText="State"
                 options={[
@@ -119,6 +130,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
               <ValidatedTextField
                 value={this.state.country}
                 label={'Country'}
+                name='country'
                 select
                 onValidate={this.onValidate}
                 errors={[
@@ -128,7 +140,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please select a country'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'country')}
                 variant={'outlined'}
                 helperText="Country"
                 options={[{key: 'usa', value: 'United States Of America'}]}
@@ -140,6 +151,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 value={this.state.sampleAPIKey}
                 label={'Sample Api Key'}
                 onValidate={this.onValidate}
+                name='sampleAPIKey'
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                 ]}
@@ -147,7 +159,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please enter a valid sample Api key'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'sampleAPIKey')}
                 variant={'outlined'}
                 helperText="Sample Api Key"
                 fullWidth
@@ -158,6 +169,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 value={this.state.endpoint}
                 label={'Endpoint'}
                 onValidate={this.onValidate}
+                name='endpoint'
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                 ]}
@@ -165,7 +177,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please enter a valid endpoint'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'endpoint')}
                 variant={'outlined'}
                 helperText="Endpoint"
                 fullWidth
@@ -175,6 +186,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
               <ValidatedTextField
                 value={this.state.sampleDataKey}
                 label={'Sample Data Key'}
+                name='sampleDataKey'
                 onValidate={this.onValidate}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
@@ -183,7 +195,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please enter a valid sample data key'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'sampleDataKey')}
                 variant={'outlined'}
                 helperText="Sample Data Key"
                 fullWidth
@@ -194,6 +205,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 value={this.state.records}
                 label={'# of records'}
                 onValidate={this.onValidate}
+                name='records'
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                   {type: ERROR_TYPE.GREATER_THAN, val: 0}
@@ -203,7 +215,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please ensure that the number of records are greater than 0'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'records')}
                 variant={'outlined'}
                 helperText="Records"
                 fullWidth
@@ -214,6 +225,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 value={this.state.askPriceLow}
                 label={'Ask Price (low)'}
                 onValidate={this.onValidate}
+                name='askPriceLow'
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                   {type: ERROR_TYPE.MAX, val: this.state.askPriceHigh},
@@ -225,7 +237,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please enter a positive asking price'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'askPriceLow')}
                 variant={'outlined'}
                 helperText="Ask Price Low"
                 fullWidth
@@ -236,6 +247,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 value={this.state.askPriceHigh}
                 label={'Ask Price (high)'}
                 onValidate={this.onValidate}
+                name='askPriceHigh'
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                   {type: ERROR_TYPE.MIN, val: this.state.askPriceLow},
@@ -247,7 +259,6 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                   'Please enter a positive asking price'
                 ]}
                 margin="normal"
-                onChange={(event) => this.handleChange(event, 'askPriceHigh')}
                 variant={'outlined'}
                 helperText="Ask Price High"
                 fullWidth

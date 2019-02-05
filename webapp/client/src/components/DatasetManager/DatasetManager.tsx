@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {FileManager} from "../../services/FileManager";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
-import {nextStep, prevStep, datasetFileChange} from "../../store/datasetForm/actions";
+import {nextStep, prevStep, datasetFileChange, updateBasicInfo} from "../../store/datasetForm/actions";
 import SchemaList from './SchemaList/SchemaList';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -14,6 +14,7 @@ interface ComponentProps {
   fileName: string;
   datasetFileChange: any;
   onFileUpload: any;
+  updateBasicInfo: any;
   wizard: any,
   nextStep: any,
   prevStep: any
@@ -68,8 +69,10 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.onFileUpload(file);
   }
 
-  handleBasicFormChange() {
+  handleBasicFormChange(key: string, val: any, isValid: boolean ) {
     console.log('Basic form change');
+    console.log(key, val, isValid);
+    this.props.updateBasicInfo(key, val, isValid)
   }
 
   onWizardNext() {
@@ -92,7 +95,7 @@ class DatasetManager extends React.Component<ComponentProps> {
         currentStep={this.props.wizard.currentStep}
       >
         <BasicInfo
-          onChange={this.handleBasicFormChange}
+          onFormChange={this.handleBasicFormChange}
         />
         <div>
           <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
@@ -123,6 +126,7 @@ function mapDispatchToProps(dispatch: any) {
   return {
     onFileUpload: (file: File) => dispatch({ type: "FILE_UPLOADED", file: file }),
     datasetFileChange: (file: File) => dispatch(datasetFileChange(file)),
+    updateBasicInfo: (key: string, val: any, isValid: boolean) => dispatch(updateBasicInfo(key,val,isValid)),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep())
   };
