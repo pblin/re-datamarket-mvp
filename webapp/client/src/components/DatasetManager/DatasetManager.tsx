@@ -16,6 +16,7 @@ interface ComponentProps {
   onFileUpload: any;
   updateBasicInfo: any;
   wizard: any,
+  basicInfo: any;
   nextStep: any,
   prevStep: any
 }
@@ -96,6 +97,7 @@ class DatasetManager extends React.Component<ComponentProps> {
       >
         <BasicInfo
           onFormChange={this.handleBasicFormChange}
+          basicInfo={this.props.basicInfo}
         />
         <div>
           <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
@@ -118,7 +120,8 @@ function mapStateToProps(state: any, ownProps: any) {
   console.log(state);
   return {
     file: Object.assign([],state.FileState[fileName]),
-    wizard: state.DatasetFormState.wizard
+    wizard: state.DatasetFormState.wizard,
+    basicInfo: state.DatasetFormState.basicInfo
   }
 }
 
