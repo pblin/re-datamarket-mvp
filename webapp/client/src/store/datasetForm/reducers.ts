@@ -57,8 +57,6 @@ const reducer = function(state=defaultState, action: any) {
       newState.datasetFormFile = action.file;
       break;
     case DATASET_FORM_ACTIONS.UPDATE_BASIC_INFO:
-      console.log('Updating Basic Info reducer called');
-      console.log(action);
       if(action.isValid && newState.basicInfo.errors.length) {
         newState.basicInfo.errors = [...newState.basicInfo.errors.filter(error => error != action.key)]
       } else if(!action.isValid && !newState.basicInfo.errors.includes(action.key)) {
@@ -70,8 +68,6 @@ const reducer = function(state=defaultState, action: any) {
     default:
       return state;
   }
-
-  console.log(newState);
   return newState;
 };
 

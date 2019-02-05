@@ -7,6 +7,7 @@ import {ERROR_TYPE} from "../../Common/ErrorType";
 interface BasicInfoProps {
   onFormChange: any;
   basicInfo: any; //TODO: Typecast this
+  submitted: boolean;
 }
 
 interface BasicInfoState {}
@@ -19,8 +20,8 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
     this.onValidate = this.onValidate.bind(this);
   }
 
-  onValidate(event: any, key: string, isValid: boolean) {
-    this.props.onFormChange(key, event.target.value, isValid);
+  onValidate(value: any, key: string, isValid: boolean) {
+    this.props.onFormChange(key, value, isValid);
   }
 
   render() {
@@ -43,7 +44,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 margin="normal"
                 variant={'outlined'}
                 helperText="Description"
-                errorText={"test"}
+                forceValidators={this.props.submitted}
                 autoFocus={true}
                 name="description"
                 fullWidth
@@ -54,6 +55,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 value={this.props.basicInfo.searchTerms}
                 label={'Search Terms'}
                 onValidate={this.onValidate}
+                forceValidators={this.props.submitted}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                 ]}
@@ -73,6 +75,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 label={'State/Province'}
                 name='state'
                 select
+                forceValidators={this.props.submitted}
                 onValidate={this.onValidate}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
@@ -95,6 +98,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 label={'Country'}
                 name='country'
                 select
+                forceValidators={this.props.submitted}
                 onValidate={this.onValidate}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
@@ -113,6 +117,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
               <ValidatedTextField
                 value={this.props.basicInfo.sampleAPIKey}
                 label={'Sample Api Key'}
+                forceValidators={this.props.submitted}
                 onValidate={this.onValidate}
                 name='sampleAPIKey'
                 errors={[
@@ -131,6 +136,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
               <ValidatedTextField
                 value={this.props.basicInfo.endpoint}
                 label={'Endpoint'}
+                forceValidators={this.props.submitted}
                 onValidate={this.onValidate}
                 name='endpoint'
                 errors={[
@@ -150,6 +156,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             <Grid item xs={12} sm={6}>
               <ValidatedTextField
                 value={this.props.basicInfo.sampleDataKey}
+                forceValidators={this.props.submitted}
                 label={'Sample Data Key'}
                 name='sampleDataKey'
                 onValidate={this.onValidate}
@@ -168,6 +175,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             <Grid item xs={12} sm={2}>
               <ValidatedTextField
                 value={this.props.basicInfo.records}
+                forceValidators={this.props.submitted}
                 label={'# of records'}
                 onValidate={this.onValidate}
                 name='records'
@@ -189,6 +197,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             <Grid item xs={12} sm={2}>
               <ValidatedTextField
                 value={this.props.basicInfo.askPriceLow}
+                forceValidators={this.props.submitted}
                 label={'Ask Price (low)'}
                 onValidate={this.onValidate}
                 name='askPriceLow'
@@ -212,6 +221,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             <Grid item xs={12} sm={2}>
               <ValidatedTextField
                 value={this.props.basicInfo.askPriceHigh}
+                forceValidators={this.props.submitted}
                 label={'Ask Price (high)'}
                 onValidate={this.onValidate}
                 name='askPriceHigh'

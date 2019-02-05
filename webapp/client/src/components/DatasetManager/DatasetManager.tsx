@@ -23,6 +23,7 @@ interface ComponentProps {
 
 class DatasetManager extends React.Component<ComponentProps> {
   fileManager: FileManager;
+  basicFormSubmitted: boolean = false;
   constructor(props: any, fileManager: FileManager) {
     super(props);
 
@@ -78,11 +79,18 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   onWizardNext() {
     console.log('On wizard next');
+    console.log(this.props.wizard);
+    switch(this.props.wizard.currentStep) {
+      case 0:
+        console.log('Run Form validations');
+        this.basicFormSubmitted = true;
+    }
     this.props.nextStep();
   }
 
   onWizardPrev() {
     console.log('On wizard prev');
+    console.log(this.props.wizard);
     this.props.prevStep();
   }
 
@@ -98,11 +106,11 @@ class DatasetManager extends React.Component<ComponentProps> {
         <BasicInfo
           onFormChange={this.handleBasicFormChange}
           basicInfo={this.props.basicInfo}
+          submitted={this.basicFormSubmitted}
         />
         <div>
           <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
           <button type="button" onClick={this.upload}>Upload</button>
-          {/*this.props.file.map( (f, index) => <p key={`schema_${index}`}>{f.name}</p>)*/}
           <SchemaList schemas={this.props.file}/>
         </div>
         <div> Here</div>
@@ -117,7 +125,6 @@ function mapStateToProps(state: any, ownProps: any) {
   if(state.DatasetFormState.datasetFormFile) {
     fileName = state.DatasetFormState.datasetFormFile.name;
   }
-  console.log(state);
   return {
     file: Object.assign([],state.FileState[fileName]),
     wizard: state.DatasetFormState.wizard,

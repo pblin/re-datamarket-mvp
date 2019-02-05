@@ -31,7 +31,7 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
             }
           })}
         <button onClick={this.props.onPrev}>Previous</button>
-        <button onClick={this.props.onNext} disabled={!this.props.steps[this.props.currentStep].completed}>Next</button>
+        <button onClick={this.props.onNext}>Next</button>
       </div>
     )
   }

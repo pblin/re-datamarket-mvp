@@ -11,6 +11,7 @@ interface ValidatedTextFieldProps extends OutlinedTextFieldProps{
   errorMessages: string[];
   onValidate: any; //TODO: Type check this
   options?: SelectOption[];
+  forceValidators?: boolean;
   name: string;
 }
 
@@ -22,6 +23,7 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
   helperText: string;
   valid: boolean = true;
   error: boolean = false;
+  forced: boolean = false;
 
   constructor(props: ValidatedTextFieldProps) {
     super(props);
@@ -62,6 +64,22 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
     }
   }
 
+  checkForErrors(props, val: any) {
+    for(let i = 0; i < props.errors.length; i++) {
+      let isValid = this.isValid(val, props.errors[i]);
+      if(!isValid) {
+        this.helperText = props.errorMessages[i];
+        this.error = true;
+        this.valid = false;
+        break;
+      }
+      if(i == props.errors.length - 1) {
+        this.valid = true;
+        this.error = false;
+      }
+    }
+  }
+
   generateProps(props: ValidatedTextFieldProps) {
     let generatedProps: any = {};
 
@@ -69,26 +87,19 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
       if(!this.dirty) {
         this.dirty = !this.dirty;
       } else {
-        for(let i = 0; i < props.errors.length; i++) {
-          console.log('prop prop ', props.value);
-          let isValid = this.isValid(event.target.value, props.errors[i]);
-          if(!isValid) {
-            this.helperText = props.errorMessages[i];
-            this.error = true;
-            this.valid = false;
-            break;
-          }
-          if(i == props.errors.length - 1) {
-            this.valid = true;
-            this.error = false;
-          }
-        }
+        this.checkForErrors(props, event.target.value)
       }
 
       if(props.onValidate) {
-        props.onValidate(event, this.props.name, this.valid);
+        props.onValidate(event.target.value, this.props.name, this.valid);
       }
     };
+
+    if(props.forceValidators && !this.forced) {
+      this.checkForErrors(props, this.props.value);
+      this.forced = !this.forced;
+      props.onValidate(this.props.value, this.props.name, this.valid);
+    }
 
     let newProps = Object.assign({}, props, generatedProps);
 
@@ -97,6 +108,7 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
     delete newProps.onValidate;
     delete newProps.errors;
     delete newProps.errorMessages;
+    delete newProps.forceValidators;
     return newProps;
   }
 
