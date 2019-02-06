@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React, {Component} from 'react';
+import {Field, reduxForm} from 'redux-form';
 import {Grid, TextField} from "@material-ui/core";
+import {ReduxFormValidator} from "../../Common/ReduxFormValidator";
 import "./DatasetWizard.css";
+import {ERROR_TYPE} from "../../Common/ErrorType";
 
 interface BasicFormProps {
   handleSubmit: any;
+  pristine: boolean;
+  invalid: boolean;
 }
 
 const renderSelectField = ({input, label, meta, custom}) => {
@@ -32,8 +36,15 @@ const renderSelectField = ({input, label, meta, custom}) => {
 };
 
 const renderTextField = ({input, label, meta, custom}) => {
-  let helperText = meta.error && meta.touched ? meta.error: custom.helperText;
-  console.log(input);
+  let helperText = meta.error != undefined && meta.touched ? meta.error: custom.helperText;
+
+  if(label == 'Description') {
+    console.log('ERROR');
+    console.log(meta);
+    console.log(meta.dirty);
+    console.log(meta.error);
+  }
+
   return (
     <Grid item xs={custom.gridXs} sm={custom.gridSm}>
       <TextField
@@ -41,7 +52,7 @@ const renderTextField = ({input, label, meta, custom}) => {
         margin="normal"
         variant={'outlined'}
         label={label}
-        error={meta.dirty && meta.error}
+        error={meta.touched && meta.error != undefined}
         {...input}
         type={custom.type || 'text'}
         fullWidth
@@ -51,15 +62,52 @@ const renderTextField = ({input, label, meta, custom}) => {
   )
 };
 
-const validate = (values) => {
-  let errors: any = {};
-  console.log('Validating');
-  console.log(values);
-  if(!values.description) {
-    errors.description = 'A description is required';
-  }
+const reduxFormValidator = new ReduxFormValidator();
 
-  console.log(errors);
+const validate = (values) => {
+  let errors = reduxFormValidator.validate(values, [
+    {
+      fieldName: 'description',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED}
+      ],
+      errorMessages: [
+        'Description is required'
+      ]
+    },
+    {
+      fieldName: 'searchTerms',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED}
+      ],
+      errorMessages: [
+        'Error Message is required'
+      ]
+    },
+    {
+      fieldName: 'endpoint',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED},
+        {type: ERROR_TYPE.IS_URL}
+      ],
+      errorMessages: [
+        'Endpoint is required',
+        'Please enter a valid endpoint'
+      ]
+    },
+    {
+      fieldName: 'records',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED},
+        {type: ERROR_TYPE.GREATER_THAN, val: 0}
+      ],
+      errorMessages: [
+        'Records are required',
+        'Please enter more than one record'
+      ]
+    }
+  ]);
+
   return errors;
 };
 
@@ -138,7 +186,7 @@ class BasicInfoForm extends Component<BasicFormProps> {
               custom={ {helperText: "Ask Price (High)", gridXs: 12, gridSm: 2, type: 'number'} }
             />
           </Grid>
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={this.props.pristine || this.props.invalid}>Submit</button>
         </form>
       </Grid>
     );
