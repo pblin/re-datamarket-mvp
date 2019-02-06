@@ -19,6 +19,11 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
     this.state = {value: ''};
   }
 
+  shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<{}>): boolean {
+    console.log('Wizard', nextProps, nextState)
+    return true;
+  }
+
   render() {
     return (
       <div>

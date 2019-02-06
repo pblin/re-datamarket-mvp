@@ -10,6 +10,7 @@ interface ValidatedTextFieldProps extends OutlinedTextFieldProps{
   errors : ErrorType[];
   errorMessages: string[];
   onValidate: any; //TODO: Type check this
+  onForcedValidation?: any;
   options?: SelectOption[];
   forceValidators?: boolean;
   name: string;
@@ -80,9 +81,21 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
     }
   }
 
+  shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<{}>): boolean {
+    console.log('Should Update?');
+    console.log(nextProps.value);
+    console.log(nextState);
+    console.log(this.props.value);
+    console.log(nextProps.forceValidators || this.props.value != nextProps.value);
+    //return nextProps.forceValidators != true;
+    return true;
+    //return nextProps.forceValidators || this.props.value != nextProps.value;
+  }
+
   generateProps(props: ValidatedTextFieldProps) {
     let generatedProps: any = {};
 
+    console.log('bing bing bing');
     generatedProps.onChange = (event) => {
       if(!this.dirty) {
         this.dirty = !this.dirty;
@@ -96,9 +109,12 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
     };
 
     if(props.forceValidators && !this.forced) {
+      console.log('Run ten times');
       this.checkForErrors(props, this.props.value);
       this.forced = !this.forced;
-      props.onValidate(this.props.value, this.props.name, this.valid);
+      if(props.onValidate) {
+        props.onValidate(this.props.value, this.props.name, this.valid);
+      }
     }
 
     let newProps = Object.assign({}, props, generatedProps);
@@ -106,6 +122,7 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
     //Props that don't belong on the TextField
     delete newProps.errorText;
     delete newProps.onValidate;
+    delete newProps.onForcedValidation;
     delete newProps.errors;
     delete newProps.errorMessages;
     delete newProps.forceValidators;

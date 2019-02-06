@@ -7,21 +7,62 @@ import {ERROR_TYPE} from "../../Common/ErrorType";
 interface BasicInfoProps {
   onFormChange: any;
   basicInfo: any; //TODO: Typecast this
+  submitting: boolean;
   submitted: boolean;
+  onSubmit: any;
 }
 
 interface BasicInfoState {}
 
 export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
   state: any;
+  inputLength: number;
+  counter: number = 0;
+  validatedInputs: any[] = [];
 
   constructor(props: BasicInfoProps) {
     super(props);
     this.onValidate = this.onValidate.bind(this);
+    this.onForcedValidation = this.onForcedValidation.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   onValidate(value: any, key: string, isValid: boolean) {
-    this.props.onFormChange(key, value, isValid);
+    //if(this.props.basicInfo[key] != value) {
+      this.props.onFormChange(key, value, isValid);
+      if(this.props.submitting) {
+        this.counter++;
+      }
+      console.log(this.counter);
+      if(this.counter == this.inputLength) {
+        console.log('FIRE EVENT HERE');
+        this.props.onSubmit();
+      }
+    //}
+  }
+
+  onValidationComplete() {
+
+  }
+
+  onForcedValidation(value: any, key: string, isValid: boolean) {
+    this.validatedInputs.push({key, value, isValid});
+    if(this.validatedInputs.length == this.inputLength) {
+      this.props.onSubmit(this.validatedInputs);
+    }
+  }
+
+  shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<{}>): boolean {
+    console.log('Basic Info');
+    console.log(nextProps);
+    console.log(nextState);
+    return nextProps.submitted == false;
+  }
+
+  componentDidMount() {
+    const form = document.getElementById('basic-info');
+    let fields = form.querySelectorAll('.basic-form-input');
+    this.inputLength = fields.length;
   }
 
   render() {
@@ -31,10 +72,12 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
           <Grid spacing={24} container={true} >
             <Grid item xs={12} sm={5}>
               <ValidatedTextField
+                className="basic-form-input"
                 ref="description"
                 value={this.props.basicInfo.description}
                 label={'Description'}
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                 ]}
@@ -44,7 +87,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 margin="normal"
                 variant={'outlined'}
                 helperText="Description"
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 autoFocus={true}
                 name="description"
                 fullWidth
@@ -52,10 +95,12 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={3}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.searchTerms}
                 label={'Search Terms'}
                 onValidate={this.onValidate}
-                forceValidators={this.props.submitted}
+                onForcedValidation={this.onForcedValidation}
+                forceValidators={this.props.submitting}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                 ]}
@@ -71,12 +116,14 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={2}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.state}
                 label={'State/Province'}
                 name='state'
                 select
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                 ]}
@@ -94,12 +141,14 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={2}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.country}
                 label={'Country'}
                 name='country'
                 select
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                 ]}
@@ -115,10 +164,12 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={6}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.sampleAPIKey}
                 label={'Sample Api Key'}
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 name='sampleAPIKey'
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
@@ -134,10 +185,12 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={6}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.endpoint}
                 label={'Endpoint'}
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 name='endpoint'
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
@@ -155,11 +208,13 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={6}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.sampleDataKey}
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 label={'Sample Data Key'}
                 name='sampleDataKey'
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 errors={[
                   {type: ERROR_TYPE.REQUIRED},
                 ]}
@@ -174,10 +229,12 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={2}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.records}
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 label={'# of records'}
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 name='records'
                 type="number"
                 errors={[
@@ -196,10 +253,12 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={2}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.askPriceLow}
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 label={'Ask Price (low)'}
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 name='askPriceLow'
                 type="number"
                 errors={[
@@ -220,10 +279,12 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
             </Grid>
             <Grid item xs={12} sm={2}>
               <ValidatedTextField
+                className="basic-form-input"
                 value={this.props.basicInfo.askPriceHigh}
-                forceValidators={this.props.submitted}
+                forceValidators={this.props.submitting}
                 label={'Ask Price (high)'}
                 onValidate={this.onValidate}
+                onForcedValidation={this.onForcedValidation}
                 name='askPriceHigh'
                 type="number"
                 errors={[
