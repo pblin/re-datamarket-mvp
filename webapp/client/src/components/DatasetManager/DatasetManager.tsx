@@ -42,6 +42,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.onWizardPrev = this.onWizardPrev.bind(this);
     this.handleBasicFormChange = this.handleBasicFormChange.bind(this);
     this.onBasicFormSubmit = this.onBasicFormSubmit.bind(this);
+    this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
     this.fileManager = new FileManager();
   }
 
@@ -104,9 +105,10 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   handleBasicFormSubmit(values) {
-    console.log('submitted values');
-    console.log(values);
-    window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+    //console.log('submitted values');
+    //console.log(values);
+    //window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+    this.props.nextStep();
   }
 
   render() {

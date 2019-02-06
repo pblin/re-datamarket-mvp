@@ -87,8 +87,7 @@ const validate = (values) => {
     {
       fieldName: 'endpoint',
       errors: [
-        {type: ERROR_TYPE.REQUIRED},
-        {type: ERROR_TYPE.IS_URL}
+        {type: ERROR_TYPE.REQUIRED}
       ],
       errorMessages: [
         'Endpoint is required',
@@ -103,7 +102,33 @@ const validate = (values) => {
       ],
       errorMessages: [
         'Records are required',
-        'Please enter more than one record'
+        'Please ensure that the number of records are greater than 0'
+      ]
+    },
+    {
+      fieldName: 'askPriceLow',
+      errors:[
+        {type: ERROR_TYPE.REQUIRED},
+        {type: ERROR_TYPE.LESS_THAN, val: values.askPriceHigh},
+        {type: ERROR_TYPE.MIN, val: 0}
+      ],
+      errorMessages: [
+        'Please enter a valid ask price',
+        'Please ensure that the low ask price is not greater than the high ask price',
+        'Please enter a positive asking price'
+      ]
+    },
+    {
+      fieldName: 'askPriceHigh',
+      errors:[
+        {type: ERROR_TYPE.REQUIRED},
+        {type: ERROR_TYPE.GREATER_THAN, val: values.askPriceLow},
+        {type: ERROR_TYPE.MIN, val: 0}
+      ],
+      errorMessages: [
+        'Please enter a valid ask price',
+        'Please ensure that the high ask price is not less than the low ask price',
+        'Please enter a positive asking price'
       ]
     }
   ]);
@@ -193,4 +218,4 @@ class BasicInfoForm extends Component<BasicFormProps> {
   }
 }
 
-export default reduxForm({form: 'contact', validate})(BasicInfoForm);
+export default reduxForm({form: 'contact', validate, destroyOnUnmount: false})(BasicInfoForm);
