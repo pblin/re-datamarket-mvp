@@ -6,8 +6,7 @@ interface DatasetFormState {
     steps: WizardStep[],
     currentStep: number
   },
-  datasetFormFile: any,
-  basicInfo: any
+  datasetFormFile: any
 }
 
 const defaultState: DatasetFormState = {
@@ -15,37 +14,12 @@ const defaultState: DatasetFormState = {
       steps: [
         {label: 'Dataset Info', completed: false},
         {label: 'Upload Schema', completed: false},
-        {label: 'Validate Schema', completed: false},
         {label: 'Published', completed: false}
       ],
       currentStep: 0
     },
-  datasetFormFile: null,
-  basicInfo: {
-    description: '',
-    searchTerms: '',
-    country: '',
-    state: 'New York',
-    sampleAPIKey: '',
-    endpoint: '',
-    sampleDataKey: '',
-    records: undefined,
-    askPriceHigh: undefined,
-    askPriceLow: undefined,
-    test: '',
-    errors: []
-  }
+  datasetFormFile: null
 };
-
-/*function updateBasicInfo(newState, action) {
-  if(action.isValid && newState.basicInfo.errors.length) {
-    newState.basicInfo.errors = [...newState.basicInfo.errors.filter(error => error != action.key)]
-  } else if(!action.isValid && !newState.basicInfo.errors.includes(action.key)) {
-    newState.basicInfo.errors = [...newState.basicInfo.errors , action.key]
-  }
-  newState.basicInfo == {...newState.basicInfo};
-  newState.basicInfo[action.key] = action.val;
-}*/
 
 const reducer = function(state=defaultState, action: any) {
   let newState = {...state};
@@ -66,30 +40,9 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_FORM_ACTIONS.DATASET_FILE_CHANGE:
       newState.datasetFormFile = action.file;
       break;
-    case DATASET_FORM_ACTIONS.BASIC_INFO_SUBMITTING:
-      newState.basicInfo = {...newState.basicInfo};
-      console.log('SUBMITTING');
-      console.log(action);
-      newState.basicInfo.submitting= action.submitting;
-      break;
-    case DATASET_FORM_ACTIONS.BASIC_INFO_SUBMITTED:
-      newState.basicInfo = {...newState.basicInfo};
-      action.inputs.forEach((input) => {
-        //console.log(action)
-        //console.log('Updating dataset form actions');
-        //console.log(input);
-        console.log(input);
-        newState.basicInfo[action.key] = action.value;
-      });
-      break;
-    case DATASET_FORM_ACTIONS.UPDATE_BASIC_INFO:
-      newState.basicInfo == {...newState.basicInfo};
-      newState.basicInfo[action.key] = action.val;
-      break;
     default:
       return state;
   }
-  console.log(newState);
   return newState;
 };
 

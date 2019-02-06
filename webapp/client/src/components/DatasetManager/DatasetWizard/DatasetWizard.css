@@ -1,6 +1,11 @@
-.basic-form {
-  width: 70%;
+.wizard-wrapper {
+  width: 80%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 30px;
+}
+
+.wizard-wrapper .wizard-button {
+  margin-right: 10px;
 }

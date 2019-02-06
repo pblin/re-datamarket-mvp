@@ -6,16 +6,13 @@ import {
   nextStep,
   prevStep,
   datasetFileChange,
-  onBasicFormSubmitted,
-  updateBasicInfo,
 } from "../../store/datasetForm/actions";
 import SchemaList from './SchemaList/SchemaList';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import {BasicInfo} from "./DatasetWizard/BasicInfo"
-import {getBasicInfo} from "../../store/datasetForm/dataFormSelectors";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
+import {Grid} from "@material-ui/core";
 
 interface ComponentProps {
   file: any[];
@@ -40,19 +37,8 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.upload = this.upload.bind(this);
     this.onWizardNext = this.onWizardNext.bind(this);
     this.onWizardPrev = this.onWizardPrev.bind(this);
-    this.handleBasicFormChange = this.handleBasicFormChange.bind(this);
-    this.onBasicFormSubmit = this.onBasicFormSubmit.bind(this);
     this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
     this.fileManager = new FileManager();
-  }
-
-  onBasicFormSubmit(inputs: any[], isValid: boolean) {
-    console.log('Basic form Submitted');
-    console.log(inputs);
-    this.props.submitBasicForm(inputs, isValid);
-    if(isValid) {
-      this.props.nextStep();
-    }
   }
 
   handleFileChange() {
@@ -78,12 +64,6 @@ class DatasetManager extends React.Component<ComponentProps> {
     let file: File = (fileElement as any).files[0];
 
     this.props.onFileUpload(file);
-  }
-
-  handleBasicFormChange(key: string, val: any, isValid: boolean ) {
-    console.log('Basic form change');
-    console.log(key, val, isValid);
-    this.props.updateBasicInfo(key, val, isValid)
   }
 
   onWizardNext() {
@@ -113,27 +93,22 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   render() {
     return <div>
-      <h1>Create Schema Form</h1>
-      <DatasetWizard
-        steps={this.props.wizard.steps}
-        onNext={this.onWizardNext}
-        onPrev={this.onWizardPrev}
-        currentStep={this.props.wizard.currentStep}
-      >
-        <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
-        <BasicInfo
-          onFormChange={this.handleBasicFormChange}
-          basicInfo={this.props.basicInfo}
-          onSubmit={this.onBasicFormSubmit}
-        />
-        <div>
-          <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
-          <button type="button" onClick={this.upload}>Upload</button>
-          <SchemaList schemas={this.props.file}/>
-        </div>
-        <div> Here</div>
-      </DatasetWizard>
-
+      <Grid container={true}>
+        <DatasetWizard
+          steps={this.props.wizard.steps}
+          onNext={this.onWizardNext}
+          onPrev={this.onWizardPrev}
+          currentStep={this.props.wizard.currentStep}
+        >
+          <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
+          <div>
+            <input type="file"  onChange={this.handleFileChange} accept=".json,application/json" id="file"/>
+            <button type="button" onClick={this.upload}>Upload</button>
+            <SchemaList schemas={this.props.file}/>
+          </div>
+          <div> Here</div>
+        </DatasetWizard>
+      </Grid>
     </div>
   }
 }
@@ -147,8 +122,7 @@ function mapStateToProps(state: any, ownProps: any) {
   console.log(state);
   return {
     file: Object.assign([],state.FileState[fileName]),
-    wizard: state.DatasetFormState.wizard,
-    basicInfo: getBasicInfo(state)
+    wizard: state.DatasetFormState.wizard
   }
 }
 
@@ -156,10 +130,8 @@ function mapDispatchToProps(dispatch: any) {
   return {
     onFileUpload: (file: File) => dispatch({ type: "FILE_UPLOADED", file: file }),
     datasetFileChange: (file: File) => dispatch(datasetFileChange(file)),
-    updateBasicInfo: (key: string, val: any, isValid: boolean) => dispatch(updateBasicInfo(key,val,isValid)),
     nextStep: () => dispatch(nextStep()),
-    prevStep: () => dispatch(prevStep()),
-    submitBasicForm: (inputs, isValid) => dispatch(onBasicFormSubmitted(inputs, isValid))
+    prevStep: () => dispatch(prevStep())
   };
 }
 

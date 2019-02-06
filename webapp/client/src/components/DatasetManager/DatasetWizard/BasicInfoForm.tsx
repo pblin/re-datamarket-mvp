@@ -38,13 +38,6 @@ const renderSelectField = ({input, label, meta, custom}) => {
 const renderTextField = ({input, label, meta, custom}) => {
   let helperText = meta.error != undefined && meta.touched ? meta.error: custom.helperText;
 
-  if(label == 'Description') {
-    console.log('ERROR');
-    console.log(meta);
-    console.log(meta.dirty);
-    console.log(meta.error);
-  }
-
   return (
     <Grid item xs={custom.gridXs} sm={custom.gridSm}>
       <TextField
@@ -139,8 +132,8 @@ const validate = (values) => {
 class BasicInfoForm extends Component<BasicFormProps> {
   render() {
     return (
-      <Grid container={true} justify="center">
-        <form className="basic-form" onSubmit={this.props.handleSubmit}>
+      /*<Grid container={true} justify="center">*/
+        <form onSubmit={this.props.handleSubmit}>
           <Grid spacing={24} container={true} >
             <Field
               label="Description"
@@ -213,7 +206,7 @@ class BasicInfoForm extends Component<BasicFormProps> {
           </Grid>
           <button type="submit" disabled={this.props.pristine || this.props.invalid}>Submit</button>
         </form>
-      </Grid>
+      /*</Grid>*/
     );
   }
 }
