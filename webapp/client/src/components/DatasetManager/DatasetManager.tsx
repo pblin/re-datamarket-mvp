@@ -8,7 +8,6 @@ import {
   datasetFileChange,
   onBasicFormSubmitted,
   updateBasicInfo,
-  submittingBasicForm
 } from "../../store/datasetForm/actions";
 import SchemaList from './SchemaList/SchemaList';
 import 'primereact/resources/themes/nova-light/theme.css';
@@ -45,16 +44,13 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.fileManager = new FileManager();
   }
 
-  onBasicFormSubmit(inputs: any[]) {
+  onBasicFormSubmit(inputs: any[], isValid: boolean) {
     console.log('Basic form Submitted');
     console.log(inputs);
-    this.props.submitBasicForm(inputs);
-  }
-
-  componentDidUpdate(test) {
-    console.log('COMPONENT UPDATED');
-    console.log(test);
-    console.log(this.props.basicInfo);
+    this.props.submitBasicForm(inputs, isValid);
+    if(isValid) {
+      this.props.nextStep();
+    }
   }
 
   handleFileChange() {
@@ -88,24 +84,13 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.updateBasicInfo(key, val, isValid)
   }
 
-  shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<{}>): boolean {
-    console.log('Manager');
-    console.log(nextProps);
-    console.log(nextState)
-    console.log(this.props.basicInfo);
-    //return nextProps.submitted == false;
-    //return this.props.basicInfo.submitted !=
-    //return nextProps.basicInfo.submitting != true;
-    return true;
-  }
-
   onWizardNext() {
     console.log('On wizard next');
     console.log(this.props.wizard);
     switch(this.props.wizard.currentStep) {
       case 0:
         console.log('Run Form validations');
-        this.props.submittingBasicForm();
+        //this.props.submittingBasicForm();
         return;
     }
     this.props.nextStep();
@@ -129,8 +114,6 @@ class DatasetManager extends React.Component<ComponentProps> {
         <BasicInfo
           onFormChange={this.handleBasicFormChange}
           basicInfo={this.props.basicInfo}
-          submitting={this.props.basicInfo.submitting}
-          submitted={this.props.basicInfo.submitted}
           onSubmit={this.onBasicFormSubmit}
         />
         <div>
@@ -166,8 +149,7 @@ function mapDispatchToProps(dispatch: any) {
     updateBasicInfo: (key: string, val: any, isValid: boolean) => dispatch(updateBasicInfo(key,val,isValid)),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
-    submittingBasicForm: () => dispatch(submittingBasicForm()),
-    submitBasicForm: (inputs) => dispatch(onBasicFormSubmitted(inputs))
+    submitBasicForm: (inputs, isValid) => dispatch(onBasicFormSubmitted(inputs, isValid))
   };
 }
 

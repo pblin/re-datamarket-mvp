@@ -10,7 +10,6 @@ interface ValidatedTextFieldProps extends OutlinedTextFieldProps{
   errors : ErrorType[];
   errorMessages: string[];
   onValidate: any; //TODO: Type check this
-  onForcedValidation?: any;
   options?: SelectOption[];
   forceValidators?: boolean;
   name: string;
@@ -81,22 +80,12 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
     }
   }
 
-  shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<{}>): boolean {
-    console.log('Should Update?');
-    console.log(nextProps.value);
-    console.log(nextState);
-    console.log(this.props.value);
-    console.log(nextProps.forceValidators || this.props.value != nextProps.value);
-    //return nextProps.forceValidators != true;
-    return true;
-    //return nextProps.forceValidators || this.props.value != nextProps.value;
-  }
-
   generateProps(props: ValidatedTextFieldProps) {
     let generatedProps: any = {};
 
-    console.log('bing bing bing');
     generatedProps.onChange = (event) => {
+      console.log('On change');
+      console.log(event.target.value)
       if(!this.dirty) {
         this.dirty = !this.dirty;
       } else {
@@ -108,8 +97,7 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
       }
     };
 
-    if(props.forceValidators && !this.forced) {
-      console.log('Run ten times');
+    if(props.forceValidators ) {
       this.checkForErrors(props, this.props.value);
       this.forced = !this.forced;
       if(props.onValidate) {
@@ -122,7 +110,6 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
     //Props that don't belong on the TextField
     delete newProps.errorText;
     delete newProps.onValidate;
-    delete newProps.onForcedValidation;
     delete newProps.errors;
     delete newProps.errorMessages;
     delete newProps.forceValidators;
@@ -141,3 +128,5 @@ export class ValidatedTextField extends React.Component<ValidatedTextFieldProps,
     )
   }
 }
+
+//TODO: Convert to stateless components

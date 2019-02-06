@@ -28,8 +28,8 @@ export function datasetFileChange(file: File) {
   return {type: DATASET_FORM_ACTIONS.DATASET_FILE_CHANGE, file: file}
 }
 
-export function onBasicFormSubmitted(inputs: any[]) {
-  return {type: DATASET_FORM_ACTIONS.BASIC_INFO_SUBMITTED, inputs}
+export function onBasicFormSubmitted(inputs: any[], isValid) {
+  return {type: DATASET_FORM_ACTIONS.BASIC_INFO_SUBMITTED, inputs, isValid}
 }
 
 export function submittingBasicForm() {

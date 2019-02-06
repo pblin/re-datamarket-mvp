@@ -33,13 +33,11 @@ const defaultState: DatasetFormState = {
     askPriceHigh: undefined,
     askPriceLow: undefined,
     test: '',
-    errors: [],
-    submitted: false,
-    submitting: false
+    errors: []
   }
 };
 
-function updateBasicInfo(newState, action) {
+/*function updateBasicInfo(newState, action) {
   if(action.isValid && newState.basicInfo.errors.length) {
     newState.basicInfo.errors = [...newState.basicInfo.errors.filter(error => error != action.key)]
   } else if(!action.isValid && !newState.basicInfo.errors.includes(action.key)) {
@@ -47,7 +45,7 @@ function updateBasicInfo(newState, action) {
   }
   newState.basicInfo == {...newState.basicInfo};
   newState.basicInfo[action.key] = action.val;
-}
+}*/
 
 const reducer = function(state=defaultState, action: any) {
   let newState = {...state};
@@ -76,18 +74,17 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case DATASET_FORM_ACTIONS.BASIC_INFO_SUBMITTED:
       newState.basicInfo = {...newState.basicInfo};
-      newState.basicInfo.submitted = true;
-      newState.basicInfo.submitting = false;
-      console.log(action);
-      console.log('Basic Info Submitted');
       action.inputs.forEach((input) => {
         //console.log(action)
         //console.log('Updating dataset form actions');
         //console.log(input);
+        console.log(input);
+        newState.basicInfo[action.key] = action.value;
       });
       break;
     case DATASET_FORM_ACTIONS.UPDATE_BASIC_INFO:
-      updateBasicInfo(newState, action);
+      newState.basicInfo == {...newState.basicInfo};
+      newState.basicInfo[action.key] = action.val;
       break;
     default:
       return state;
