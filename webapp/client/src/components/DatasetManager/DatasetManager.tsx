@@ -15,6 +15,7 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import {BasicInfo} from "./DatasetWizard/BasicInfo"
 import {getBasicInfo} from "../../store/datasetForm/dataFormSelectors";
+import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 
 interface ComponentProps {
   file: any[];
@@ -102,6 +103,12 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.prevStep();
   }
 
+  handleBasicFormSubmit(values) {
+    console.log('submitted values');
+    console.log(values);
+    window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+  }
+
   render() {
     return <div>
       <h1>Create Schema Form</h1>
@@ -111,6 +118,7 @@ class DatasetManager extends React.Component<ComponentProps> {
         onPrev={this.onWizardPrev}
         currentStep={this.props.wizard.currentStep}
       >
+        <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
         <BasicInfo
           onFormChange={this.handleBasicFormChange}
           basicInfo={this.props.basicInfo}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Grid} from "@material-ui/core";
-import {ValidatedTextField} from "../../Common/Validator";
+import {ValidatedTextField, ValidatedTextField2} from "../../Common/Validator";
 import "./DatasetWizard.css";
 import {ERROR_TYPE} from "../../Common/ErrorType";
 import Button from "@material-ui/core/Button/Button";
@@ -87,9 +87,8 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
         <form className="basic-form" id="basic-info">
           <Grid spacing={24} container={true} >
             <Grid item xs={12} sm={5}>
-              <ValidatedTextField
+              <ValidatedTextField2
                 className="basic-form-input"
-                ref="description"
                 value={this.props.basicInfo.description}
                 label={'Description'}
                 onValidate={this.onValidate}
@@ -309,6 +308,7 @@ export class BasicInfo extends React.Component<BasicInfoProps, BasicInfoState> {
                 fullWidth
               />
             </Grid>
+            <ValidatedTextField2 errors={[]} errorMessages={[]} onValidate={this.onValidate} name='test' variant='outlined'/>
             <Button onClick={this.validateForm}>Next</Button>
           </Grid>
         </form>
