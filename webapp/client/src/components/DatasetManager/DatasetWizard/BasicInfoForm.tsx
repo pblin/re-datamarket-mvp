@@ -12,7 +12,7 @@ interface BasicFormProps {
 }
 
 const renderSelectField = ({input, label, meta, custom}) => {
-  let helperText = meta.error && meta.touched ? meta.error: custom.helperText;
+  let helperText = meta.error != undefined && meta.touched ? meta.error: custom.helperText;
 
   return (
     <Grid item xs={custom.gridXs} sm={custom.gridSm}>
@@ -22,7 +22,7 @@ const renderSelectField = ({input, label, meta, custom}) => {
         variant={'outlined'}
         label={label}
         select
-        error={meta.dirty && meta.error}
+        error={meta.touched && meta.error != undefined}
         {...input}
         fullWidth
         helperText={helperText}
@@ -75,6 +75,42 @@ const validate = (values) => {
       ],
       errorMessages: [
         'Error Message is required'
+      ]
+    },
+    {
+      fieldName: 'state',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED}
+      ],
+      errorMessages: [
+        'Please select a state/province'
+      ]
+    },
+    {
+      fieldName: 'sampleAPIKey',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED}
+      ],
+      errorMessages: [
+        'Please provide a sample api key'
+      ]
+    },
+    {
+      fieldName: 'sampleDataKey',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED}
+      ],
+      errorMessages: [
+        'Please provide a sample data key'
+      ]
+    },
+    {
+      fieldName: 'country',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED}
+      ],
+      errorMessages: [
+        'Please select a country'
       ]
     },
     {
@@ -132,7 +168,6 @@ const validate = (values) => {
 class BasicInfoForm extends Component<BasicFormProps> {
   render() {
     return (
-      /*<Grid container={true} justify="center">*/
         <form onSubmit={this.props.handleSubmit}>
           <Grid spacing={24} container={true} >
             <Field
@@ -150,16 +185,16 @@ class BasicInfoForm extends Component<BasicFormProps> {
               custom={ {helperText: "Search Terms", gridXs: 12, gridSm: 3} }
             />
             <Field
+              label="Country"
+              component={renderSelectField}
+              name="country"
+              custom={ {helperText: "Country", gridXs: 12, gridSm: 2, options: ['USA']} }
+            />
+            <Field
               label="State"
               component={renderSelectField}
               name="state"
               custom={ {helperText: "State", gridXs: 12, gridSm: 2, options: ['New York']} }
-            />
-            <Field
-              label="Country"
-              component={renderSelectField}
-              name="country"
-              custom={ {helperText: "Country", gridXs: 12, gridSm: 2, options: ['Country']} }
             />
             <Field
               label="Sample Api Key"
@@ -204,9 +239,7 @@ class BasicInfoForm extends Component<BasicFormProps> {
               custom={ {helperText: "Ask Price (High)", gridXs: 12, gridSm: 2, type: 'number'} }
             />
           </Grid>
-          <button type="submit" disabled={this.props.pristine || this.props.invalid}>Submit</button>
         </form>
-      /*</Grid>*/
     );
   }
 }

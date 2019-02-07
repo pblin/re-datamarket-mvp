@@ -12,14 +12,17 @@ import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
+import { submit } from 'redux-form';
 import {Grid} from "@material-ui/core";
+import {PublishForm} from "./DatasetWizard/PublishForm";
+import {basicInfo} from "../../store/datasetForm/datasetFormSelectors";
 
 interface ComponentProps {
   file: any[];
   fileName: string;
   datasetFileChange: any;
   onFileUpload: any;
-  submitBasicForm: any;
+  submitBasicInfoForm: any;
   submittingBasicForm: any;
   updateBasicInfo: any;
   wizard: any,
@@ -73,6 +76,7 @@ class DatasetManager extends React.Component<ComponentProps> {
       case 0:
         console.log('Run Form validations');
         //this.props.submittingBasicForm();
+        this.props.submitBasicInfoForm();
         return;
     }
     this.props.nextStep();
@@ -88,6 +92,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     //console.log('submitted values');
     //console.log(values);
     //window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+    console.log('FORM SUBMITTED BAM BAM');
     this.props.nextStep();
   }
 
@@ -106,7 +111,7 @@ class DatasetManager extends React.Component<ComponentProps> {
             <button type="button" onClick={this.upload}>Upload</button>
             <SchemaList schemas={this.props.file}/>
           </div>
-          <div> Here</div>
+          <PublishForm basicDetails={this.props.basicInfo}></PublishForm>
         </DatasetWizard>
       </Grid>
     </div>
@@ -122,7 +127,8 @@ function mapStateToProps(state: any, ownProps: any) {
   console.log(state);
   return {
     file: Object.assign([],state.FileState[fileName]),
-    wizard: state.DatasetFormState.wizard
+    wizard: state.DatasetFormState.wizard,
+    basicInfo: basicInfo(state)
   }
 }
 
@@ -131,7 +137,8 @@ function mapDispatchToProps(dispatch: any) {
     onFileUpload: (file: File) => dispatch({ type: "FILE_UPLOADED", file: file }),
     datasetFileChange: (file: File) => dispatch(datasetFileChange(file)),
     nextStep: () => dispatch(nextStep()),
-    prevStep: () => dispatch(prevStep())
+    prevStep: () => dispatch(prevStep()),
+    submitBasicInfoForm: () => dispatch(submit('contact'))
   };
 }
 

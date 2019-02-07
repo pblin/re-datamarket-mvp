@@ -9,3 +9,8 @@
 .wizard-wrapper .wizard-button {
   margin-right: 10px;
 }
+
+.json-details {
+  font-size: 15px;
+  font-weight: 200;
+}

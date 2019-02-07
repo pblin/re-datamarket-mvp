@@ -38,12 +38,16 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
               }
             })}
           <Grid container={true} justify={'flex-end'}>
-            <Button onClick={this.props.onPrev} variant="contained" color="primary" className={"wizard-button"}>
-              Previous
-            </Button>
-            <Button onClick={this.props.onNext} variant="contained" color="primary" className={"wizard-button"}>
-              Next
-            </Button>
+            {this.props.currentStep != 0 &&
+              <Button onClick={this.props.onPrev} variant="contained" color="primary" className={"wizard-button"}>
+                Previous
+              </Button>
+             }
+            {this.props.currentStep != this.props.steps.length - 1 &&
+              <Button onClick={this.props.onNext} variant="contained" color="primary" className={"wizard-button"}>
+                Next
+              </Button>
+            }
           </Grid>
         </div>
       </Grid>
