@@ -1,4 +1,4 @@
-import {ERROR_TYPE, ErrorType, IsUrl} from "./ErrorType";
+import {ERROR_TYPE, ErrorType, isURL} from "./ErrorType";
 
 export interface ReduxValidator {
   fieldName: string;
@@ -28,7 +28,7 @@ export class ReduxFormValidator {
       case ERROR_TYPE.LESS_THAN:
         return val < errorType.val;
       case ERROR_TYPE.IS_URL:
-        return IsUrl.test(val);
+        return isURL(val);
       case ERROR_TYPE.PATTERN:
         return errorType.val.test(val)
     }

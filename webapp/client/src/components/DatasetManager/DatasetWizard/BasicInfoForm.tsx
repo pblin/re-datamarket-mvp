@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {Grid, TextField} from "@material-ui/core";
+import {Grid, MenuItem, TextField} from "@material-ui/core";
 import {ReduxFormValidator} from "../../Common/ReduxFormValidator";
 import "./DatasetWizard.css";
 import {ERROR_TYPE} from "../../Common/ErrorType";
@@ -28,7 +28,7 @@ const renderSelectField = ({input, label, meta, custom}) => {
         helperText={helperText}
       >
         {custom.options.map(option => {
-          return (<option key={option} value={option}>{option}</option>)
+          return (<MenuItem key={option} value={option}>{option}</MenuItem>)
         })}
       </TextField>
     </Grid>
@@ -116,7 +116,8 @@ const validate = (values) => {
     {
       fieldName: 'endpoint',
       errors: [
-        {type: ERROR_TYPE.REQUIRED}
+        {type: ERROR_TYPE.REQUIRED},
+        {type: ERROR_TYPE.IS_URL}
       ],
       errorMessages: [
         'Endpoint is required',
