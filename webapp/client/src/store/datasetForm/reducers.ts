@@ -5,8 +5,7 @@ interface DatasetFormState {
   wizard: {
     steps: WizardStep[],
     currentStep: number
-  },
-  datasetFormFile: any
+  }
 }
 
 const defaultState: DatasetFormState = {
@@ -17,8 +16,7 @@ const defaultState: DatasetFormState = {
         {label: 'Published', completed: false}
       ],
       currentStep: 0
-    },
-  datasetFormFile: null
+    }
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -36,9 +34,6 @@ const reducer = function(state=defaultState, action: any) {
         state.wizard.currentStep - 1;
       break;
     case DATASET_FORM_ACTIONS.GOTO_STEP:
-      break;
-    case DATASET_FORM_ACTIONS.DATASET_FILE_CHANGE:
-      newState.datasetFormFile = action.file;
       break;
     default:
       return state;
