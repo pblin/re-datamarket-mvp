@@ -17,6 +17,7 @@ import {basicInfo} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {fileChange} from "../../store/file/actions";
 import {getFileState} from "../../store/file/fileSelectors";
+import {uploadSchema} from "../Util/SchemaValidator";
 
 interface ComponentProps {
   file: any[];
@@ -103,7 +104,7 @@ function mapStateToProps(state: any, ownProps: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId }),
+    onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema }),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),

@@ -29,10 +29,12 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
   }
 
   renderFileContent() {
-    if(this.props.schemaFile && this.props.schemaFile.content){
-      return (<SchemaList schemas={this.props.schemaFile.content}/>);
-    } else if(!this.props.schemaFile || (this.props.schemaFile && !this.props.schemaFile.content)) {
+    if(!this.props.schemaFile || (this.props.schemaFile && !this.props.schemaFile.content)) {
       return (<FileUpload fileId="schemaFile" onFileChange={this.onFileChange} upload={this.upload}/>);
+    } else if(this.props.schemaFile.errors) {
+      return (<div>ERRORS OCCURED {JSON.stringify(this.props.schemaFile.errors)}</div>)
+    } else if(this.props.schemaFile && this.props.schemaFile.content){
+      return (<SchemaList schemas={this.props.schemaFile.content}/>);
     }
   }
 

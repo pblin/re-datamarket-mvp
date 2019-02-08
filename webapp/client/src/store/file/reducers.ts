@@ -17,6 +17,14 @@ const reducer = function(state=defaultState, action: any) {
        let file = {blob: action.file, fileId: action.fileId};
        newState.files = [...newState.files.filter(file => file.fileId != action.fileId), file];
        break;
+    case FILE_ACTIONS.FILE_UPLOAD_VALIDATION_ERROR:
+      let ef = newState.files.find(file => action.id == file.fileId);
+      ef = {...ef,  errors: action.errors};
+      console.log('ef');
+      console.log(ef);
+      console.log(action.id);
+      newState.files = [...newState.files.filter(file => file.fileId != action.id), ef];
+      break;
     default:
       return state;
   }
