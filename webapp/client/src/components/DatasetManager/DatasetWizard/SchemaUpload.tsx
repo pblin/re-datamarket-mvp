@@ -2,6 +2,7 @@ import * as React from "react";
 import {Grid} from "@material-ui/core";
 import {FileUpload} from "../../Common/FileUpload";
 import SchemaList from "../SchemaList/SchemaList";
+import NotificationLabel from "../../Common/NotificationLabel";
 
 interface SchemaUploadProps {
   onSchemaFileChange: any;
@@ -23,16 +24,27 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
   }
 
   upload(fileId: string) {
-    console.log('Here is the file upload');
-    console.log(fileId);
     this.props.onSchemaUpload(fileId);
+  }
+
+  renderErrors(errors: any[]) {
+    return(
+      errors.map((error, index) => {
+        return (
+          <NotificationLabel key={'notification-'+index}
+                             type="error">
+            <strong>ERROR </strong>{error.dataPath} {error.message} {JSON.stringify(error.params)}
+          </NotificationLabel>
+        )
+      })
+    )
   }
 
   renderFileContent() {
     if(!this.props.schemaFile || (this.props.schemaFile && !this.props.schemaFile.content)) {
       return (<FileUpload fileId="schemaFile" onFileChange={this.onFileChange} upload={this.upload}/>);
     } else if(this.props.schemaFile.errors) {
-      return (<div>ERRORS OCCURED {JSON.stringify(this.props.schemaFile.errors)}</div>)
+      return (this.renderErrors(this.props.schemaFile.errors));
     } else if(this.props.schemaFile && this.props.schemaFile.content){
       return (<SchemaList schemas={this.props.schemaFile.content}/>);
     }
