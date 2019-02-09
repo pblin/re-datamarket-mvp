@@ -220,7 +220,7 @@ class Customer extends React.Component<Props> {
                 <Grid item xs={6}>
                   <TextField 
                       id="outlined-name"
-                      label="Frist Name (Required)"
+                      label="First Name (Required)"
                       className={classes.textField}
                       value={this.state.firstName}
                       onChange={this.handleChange('firstName')}

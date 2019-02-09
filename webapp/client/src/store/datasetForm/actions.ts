@@ -13,11 +13,8 @@ export function prevStep() {
   return {type: DATASET_FORM_ACTIONS.PREV_STEP}
 }
 
-export function gotoStep(step: number) {
-  return {type: DATASET_FORM_ACTIONS.GOTO_STEP, step}
-}
-
 export function datasetFileChange(file: File) {
   return {type: DATASET_FORM_ACTIONS.DATASET_FILE_CHANGE, file: file}
 }
+
 

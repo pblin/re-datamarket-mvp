@@ -1,0 +1,16 @@
+.wizard-wrapper {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.wizard-wrapper .wizard-button {
+  margin-right: 10px;
+}
+
+.json-details {
+  font-size: 15px;
+  font-weight: 200;
+}
