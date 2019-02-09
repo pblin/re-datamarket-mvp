@@ -20,17 +20,12 @@ const reducer = function(state=defaultState, action: any) {
     case FILE_ACTIONS.FILE_UPLOAD_VALIDATION_ERROR:
       let ef = newState.files.find(file => action.id == file.fileId);
       ef = {...ef,  errors: action.errors};
-      console.log('ef');
-      console.log(ef);
-      console.log(action.id);
       newState.files = [...newState.files.filter(file => file.fileId != action.id), ef];
       break;
     default:
       return state;
   }
 
-  console.log('Uploaded file state');
-  console.log(newState);
   return newState;
 };
 

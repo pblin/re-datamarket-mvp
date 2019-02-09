@@ -4,9 +4,6 @@ import {getFileState} from "./fileSelectors";
 import {SchemaValidator} from "../../components/Util/SchemaValidator";
 
 const schemaValidator = new SchemaValidator();
-console.log('HERE IS THE SCHEMA VALIDATOR');
-console.log(schemaValidator);
-//schemaValidator.test();
 
 function* FileUploadAsync() {
   //Get the file from the redux action
@@ -23,10 +20,7 @@ function* FileUploadAsync() {
 
   if(validator) {
     let validationResults = yield schemaValidator.validate(validator, result);
-    console.log('Here are the validation results');
-    console.log(validationResults);
     if(validationResults.length > 0) {
-      console.log('MADE IT IN HERE');
       yield put({type: 'FILE_UPLOAD_VALIDATION_ERROR', errors: validationResults, id: fileId})
     }
   }
