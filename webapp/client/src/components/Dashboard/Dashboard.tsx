@@ -4,12 +4,13 @@ import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import App from '../App/App';
 import {Dialog} from 'primereact/dialog';
 import {Panel} from 'primereact/panel';
-import {DataView, DataViewLayoutOptions} from "primereact/dataview";
-import {Button} from "primereact/button";
-import {Dropdown} from "primereact/dropdown";
+import {DataView, DataViewLayoutOptions} from 'primereact/dataview';
+import {Button} from 'primereact/button';
+import {Dropdown} from 'primereact/dropdown';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
 
 export interface DashboardProps {
   auth: Auth0Authentication;
@@ -157,7 +158,7 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
     }
 
     renderGridItem(ds) {
-        console.log(ds);
+        //console.log(ds);
         return (
             <div style={{ padding: '.5em' }} className="p-col-12 p-md-3">
                 <Panel header={ds.id} style={{ textAlign: 'center' }}>
