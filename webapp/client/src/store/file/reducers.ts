@@ -22,6 +22,11 @@ const reducer = function(state=defaultState, action: any) {
       ef = {...ef,  errors: action.errors};
       newState.files = [...newState.files.filter(file => file.fileId != action.id), ef];
       break;
+    case FILE_ACTIONS.ADD_DATA_TO_FILE:
+      let find = newState.files.find(file => action.id == file.fileId);
+      if(Array.isArray(find.content)) {
+        find.content = [...find.content, action.data];
+      }
     default:
       return state;
   }
