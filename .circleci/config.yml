@@ -43,7 +43,7 @@ jobs:
             rsh mvp@demo-app.rebloc.io "/var/local/democonfig/check-n-restart.sh"
 workflows:
   version: 2
-  just-deploy:
+  just_deploy:
     jobs:
       - deploy:
         requires:
