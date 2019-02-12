@@ -18,10 +18,15 @@ jobs:
     working_directory: ~/demo
     steps:
       - checkout
+  test:
+    docker:
+      - image: circleci/node:10.15.0
+    working_directory: ~/demo
+    steps:
+      - checkout
       - run:
           name: test
           command: npm test
-
   deploy:
     machine: true
     production:
