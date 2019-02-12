@@ -20,7 +20,7 @@ jobs:
       - checkout
       - run:
           name: test
-          command: npm run test
+          command: npm test
 
   deploy:
     machine: true
