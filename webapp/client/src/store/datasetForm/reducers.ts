@@ -38,6 +38,7 @@ const reducer = function(state=defaultState, action: any) {
         state.wizard.currentStep - 1;
       break;
     case DATASET_FORM_ACTIONS.GOTO_STEP:
+      newState.wizard.currentStep = action.step;
       break;
     case DATASET_FORM_ACTIONS.CHANGE_NO_SCHEMA_ERROR:
       newState.displayNoSchemaError = action.displayError;
