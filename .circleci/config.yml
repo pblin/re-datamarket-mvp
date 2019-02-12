@@ -47,4 +47,4 @@ workflows:
     jobs:
       - deploy:
         requires:
-          -test
+          - test
