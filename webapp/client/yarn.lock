@@ -11861,6 +11861,11 @@ pretty-hrtime@^1.0.3:
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
   integrity sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=
 
+primeflex@^1.0.0-rc.1:
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/primeflex/-/primeflex-1.0.0-rc.1.tgz#8f3555522238870500baa8587e360095261fff5f"
+  integrity sha512-JVrQE0ulyP0UJ3Rn8UI1RjmpHU/f4CIm7BI18xoMLlUriAViiykFMmtDTvUC0AZWHl4YhgEvHJIZ7EERxER2cg==
+
 primeicons@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/primeicons/-/primeicons-1.0.0.tgz#90061f168ef6227f21f0a7db8204ffa85cd27aec"
