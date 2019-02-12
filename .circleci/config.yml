@@ -26,7 +26,7 @@ jobs:
       - checkout
       - run:
           name: test
-          command: cd webapp/client && npm test
+          command: cd webapp/client && yarn install && npm test
   deploy:
     machine: true
     production:
