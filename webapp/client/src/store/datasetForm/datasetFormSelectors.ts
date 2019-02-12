@@ -3,6 +3,7 @@ import {createSelector} from "reselect";
 
 export const wizardSelector = state => state.wizard;
 export const basicFormSelector = state => state.form.contact;
+export const schemaSelector = state => state.DatasetFormState.schema;
 
 
 export const basicInfo = createSelector(

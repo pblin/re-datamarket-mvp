@@ -5,18 +5,22 @@ interface DatasetFormState {
   wizard: {
     steps: WizardStep[],
     currentStep: number
-  }
+  },
+  basicInfo: any,
+  schema: any[] //TODO: typecheck
 }
 
 const defaultState: DatasetFormState = {
-    wizard: {
-      steps: [
-        {label: 'Dataset Info', completed: false},
-        {label: 'Upload Schema', completed: false},
-        {label: 'Published', completed: false}
-      ],
-      currentStep: 0
-    }
+  wizard: {
+    steps: [
+      {label: 'Dataset Info', completed: false},
+      {label: 'Upload Schema', completed: false},
+      {label: 'Published', completed: false}
+    ],
+    currentStep: 0
+  },
+  basicInfo: [],
+  schema: []
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -34,6 +38,18 @@ const reducer = function(state=defaultState, action: any) {
         state.wizard.currentStep - 1;
       break;
     case DATASET_FORM_ACTIONS.GOTO_STEP:
+      break;
+    case DATASET_FORM_ACTIONS.UPDATE_BASIC_INFO:
+      newState.basicInfo = [...newState.basicInfo];
+      newState.basicInfo = action.basicInfo;
+      break;
+    case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:
+      if(action.value) {
+        console.log('LOAD SCHEMA LIST');
+        console.log(action.value);
+        newState.schema = [...action.value];
+        console.log(newState.schema);
+      }
       break;
     default:
       return state;

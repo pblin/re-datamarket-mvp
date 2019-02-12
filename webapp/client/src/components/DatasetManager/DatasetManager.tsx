@@ -4,7 +4,7 @@ import {FileManager} from "../../services/FileManager";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {
   nextStep,
-  prevStep
+  prevStep,
 } from "../../store/datasetForm/actions";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -13,26 +13,27 @@ import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit } from 'redux-form';
 import {Grid} from "@material-ui/core";
 import {PublishForm} from "./DatasetWizard/PublishForm";
-import {basicInfo} from "../../store/datasetForm/datasetFormSelectors";
+import {basicInfo, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {fileChange} from "../../store/file/actions";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
 
 interface ComponentProps {
-  file: any[];
-  fileName: string;
-  datasetFileChange: any;
-  onFileUpload: any;
-  submitBasicInfoForm: any;
-  submittingBasicForm: any;
-  updateBasicInfo: any;
+  file: any[],
+  fileName: string,
+  datasetFileChange: any,
+  onFileUpload: any,
+  submitBasicInfoForm: any,
+  submittingBasicForm: any,
+  updateBasicInfo: any,
   wizard: any,
-  basicInfo: any;
+  basicInfo: any,
   nextStep: any,
   prevStep: any,
   fileChange: any,
-  schemaFile: any
+  schemaFile: any,
+  schema: any[]
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -72,6 +73,13 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.nextStep();
   }
 
+  componentWillReceiveProps(nextProps: Readonly<ComponentProps>, nextContext: any): void {
+    console.log('Current Props');
+    console.log(this.props);
+    console.log('NEXT PROPS');
+    console.log(nextProps);
+  }
+
   render() {
     return <div>
       <Grid container={true}>
@@ -86,6 +94,8 @@ class DatasetManager extends React.Component<ComponentProps> {
             onSchemaFileChange={this.onSchemaFileChange}
             onSchemaUpload={this.onSchemaUpload}
             schemaFile={this.props.schemaFile}
+            errors={this.props.schemaFile.errors}
+            schema={this.props.schema}
           />
           <PublishForm basicDetails={this.props.basicInfo}></PublishForm>
         </DatasetWizard>
@@ -98,13 +108,14 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     schemaFile: Object.assign({}, getFileState(state).files.find(file => file.fileId == 'schemaFile')),
     wizard: state.DatasetFormState.wizard,
-    basicInfo: basicInfo(state)
+    basicInfo: basicInfo(state),
+    schema: Object.assign([], schemaSelector(state))
   }
 }
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema }),
+    onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),

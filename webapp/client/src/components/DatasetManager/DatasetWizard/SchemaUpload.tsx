@@ -8,6 +8,8 @@ interface SchemaUploadProps {
   onSchemaFileChange: any;
   onSchemaUpload: any;
   schemaFile: any;
+  schema: any[];
+  errors: any[];
 }
 
 export class SchemaUpload extends React.Component<SchemaUploadProps> {
@@ -17,6 +19,7 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
     this.onFileChange = this.onFileChange.bind(this);
     this.upload = this.upload.bind(this);
     this.renderFileContent = this.renderFileContent.bind(this);
+    this.renderFileUpload = this.renderFileUpload.bind(this);
   }
 
   onFileChange(fileId: string, file: File) {
@@ -29,24 +32,33 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
 
   renderErrors(errors: any[]) {
     return(
-      errors.map((error, index) => {
-        return (
-          <NotificationLabel key={'notification-'+index}
-                             type="error">
-            <strong>ERROR </strong>{error.dataPath} {error.message} {JSON.stringify(error.params)}
-          </NotificationLabel>
-        )
-      })
+      <div>
+        {errors.map((error, index) => {
+          return (
+            <NotificationLabel key={'notification-'+index}
+                               type="error">
+              <strong>ERROR </strong>{error.dataPath} {error.message} {JSON.stringify(error.params)}
+            </NotificationLabel>
+          )
+        })}
+      </div>
+    )
+  }
+
+  renderFileUpload() {
+    return (
+      <Grid item xs={12} className="text-center"><FileUpload fileId="schemaFile" onFileChange={this.onFileChange} upload={this.upload}/></Grid>
     )
   }
 
   renderFileContent() {
-    if(!this.props.schemaFile || (this.props.schemaFile && !this.props.schemaFile.content)) {
-      return (<FileUpload fileId="schemaFile" onFileChange={this.onFileChange} upload={this.upload}/>);
-    } else if(this.props.schemaFile.errors) {
-      return (this.renderErrors(this.props.schemaFile.errors));
-    } else if(this.props.schemaFile && this.props.schemaFile.content){
-      return (<SchemaList schemas={this.props.schemaFile.content}/>);
+    if(!this.props.schemaFile) {
+      return;
+    }else if(this.props.errors) {
+      return (this.renderErrors(this.props.errors));
+    } else if(this.props.schemaFile && this.props.schema.length){
+      console.log('MADE IT HERE');
+      return (<SchemaList schemas={this.props.schema}/>);
     }
   }
 
@@ -54,7 +66,7 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
     return (
       <Grid container={true} justify={'center'}>
         {this.renderFileContent()}
-
+        {(!this.props.schema.length || this.props.errors) && this.renderFileUpload()}
       </Grid>
     )
   }
