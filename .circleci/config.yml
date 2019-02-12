@@ -45,4 +45,5 @@ workflows:
   version: 2
   just_deploy:
     jobs:
+      - test
       - deploy
