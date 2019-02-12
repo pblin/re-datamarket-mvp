@@ -10,6 +10,7 @@ interface SchemaUploadProps {
   schemaFile: any;
   schema: any[];
   errors: any[];
+  displayNoSchemaError: boolean;
 }
 
 export class SchemaUpload extends React.Component<SchemaUploadProps> {
@@ -57,14 +58,21 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
     }else if(this.props.errors) {
       return (this.renderErrors(this.props.errors));
     } else if(this.props.schemaFile && this.props.schema.length){
-      console.log('MADE IT HERE');
       return (<SchemaList schemas={this.props.schema}/>);
+    }
+  }
+
+  renderNoSchemaError() {
+    if (this.props.displayNoSchemaError) {
+      return (<NotificationLabel type="error"><strong>ERROR </strong> Schema is required, please upload a valid
+        schema</NotificationLabel>)
     }
   }
 
   render() {
     return (
       <Grid container={true} justify={'center'}>
+        {this.renderNoSchemaError()}
         {this.renderFileContent()}
         {(!this.props.schema.length || this.props.errors) && this.renderFileUpload()}
       </Grid>

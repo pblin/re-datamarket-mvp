@@ -1,4 +1,5 @@
 export interface WizardStep {
   label: string,
-  completed?: boolean
+  completed?: boolean,
+  nextButtonValue?: string;
 }

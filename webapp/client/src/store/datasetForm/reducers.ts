@@ -6,8 +6,8 @@ interface DatasetFormState {
     steps: WizardStep[],
     currentStep: number
   },
-  basicInfo: any,
   schema: any[] //TODO: typecheck
+  displayNoSchemaError: boolean;
 }
 
 const defaultState: DatasetFormState = {
@@ -15,12 +15,12 @@ const defaultState: DatasetFormState = {
     steps: [
       {label: 'Dataset Info', completed: false},
       {label: 'Upload Schema', completed: false},
-      {label: 'Published', completed: false}
+      {label: 'Published', completed: false, nextButtonValue: 'Publish'}
     ],
     currentStep: 0
   },
-  basicInfo: [],
-  schema: []
+  schema: [],
+  displayNoSchemaError: false
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -39,16 +39,13 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case DATASET_FORM_ACTIONS.GOTO_STEP:
       break;
-    case DATASET_FORM_ACTIONS.UPDATE_BASIC_INFO:
-      newState.basicInfo = [...newState.basicInfo];
-      newState.basicInfo = action.basicInfo;
+    case DATASET_FORM_ACTIONS.CHANGE_NO_SCHEMA_ERROR:
+      newState.displayNoSchemaError = action.displayError;
       break;
     case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:
       if(action.value) {
-        console.log('LOAD SCHEMA LIST');
-        console.log(action.value);
+        newState.displayNoSchemaError = false;
         newState.schema = [...action.value];
-        console.log(newState.schema);
       }
       break;
     default:

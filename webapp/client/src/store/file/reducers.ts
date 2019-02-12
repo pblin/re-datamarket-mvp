@@ -31,8 +31,6 @@ const reducer = function(state=defaultState, action: any) {
       return state;
   }
 
-  console.log('File state');
-  console.log(newState);
   return newState;
 };
 

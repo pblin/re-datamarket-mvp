@@ -5,8 +5,6 @@ import {Column} from "primereact/column";
 const SchemaList = ({schemas}) => {
   return(
     <div>
-      SCHEMA LIST CONTAINER
-      {console.log(schemas)}
       <DataTable value={schemas}>
         <Column field="name" header="Name"/>
         <Column field="type" header="type"/>
