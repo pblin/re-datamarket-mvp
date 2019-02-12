@@ -14,6 +14,10 @@ export function prevStep() {
   return {type: DATASET_FORM_ACTIONS.PREV_STEP}
 }
 
+export function gotoStep(step: number) {
+  return {type: DATASET_FORM_ACTIONS.GOTO_STEP, step}
+}
+
 export function changeDisplaySchemaError(displayError: boolean) {
   return {type: DATASET_FORM_ACTIONS.CHANGE_NO_SCHEMA_ERROR, displayError}
 }
