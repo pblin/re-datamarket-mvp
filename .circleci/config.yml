@@ -18,6 +18,9 @@ jobs:
     working_directory: ~/demo
     steps:
       - checkout
+      - run:
+          name: test
+          command: npm run test
 
   deploy:
     machine: true
