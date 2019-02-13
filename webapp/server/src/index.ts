@@ -145,7 +145,7 @@ async function extractAndSaveDataFields (jsonStr:string, dsId:string) {
   }
 }
 
-app.post('/commit', (req, res) => {
+app.post('/schema', (req, res) => {
   new Promise ( function (resolve, reject) {
     if (saveDataset(req.body)) {
       resolve (1);
