@@ -4,11 +4,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/cors": "^2.8.4",
     "apollo-server-express": "^1.1.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.4",
+    "fibers": "^3.1.1",
     "graphql": "^0.10.5",
+    "graphql-request": "^1.8.2",
     "longjohn": "^0.2.12",
     "path": "^0.12.7",
     "pg": "^7.1.2",
@@ -31,7 +34,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "watch": "rm -rf dist && tsc && tsc -w",
-    "serve": "NODE_ENV=development NODE_DEBUG=net node --inspect dist/index.js",
+    "serve": "NODE_DEBUG=net node --inspect dist/index.js",
     "test": "NODE_ENV=test mocha config/test-setup.js --require ts-node/register src/**/*.spec.ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "migrate-up": "db-migrate up -e dev",
