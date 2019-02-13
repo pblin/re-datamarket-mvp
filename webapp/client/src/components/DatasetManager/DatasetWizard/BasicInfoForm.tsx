@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {Grid, MenuItem, TextField} from "@material-ui/core";
-import {ReduxFormValidator} from "../../Common/ReduxFormValidator";
+import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
 import "./DatasetWizard.css";
-import {ERROR_TYPE} from "../../Common/ErrorType";
+import {ERROR_TYPE} from "../../Common/Error/ErrorType";
 
 interface BasicFormProps {
   handleSubmit: any;
