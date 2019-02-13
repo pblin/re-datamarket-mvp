@@ -3,7 +3,8 @@ export enum DATASET_FORM_ACTIONS {
   PREV_STEP = "PREV_STEP",
   GOTO_STEP = "GOTO_STEP",
   LOAD_SCHEMA_LIST = "LOAD_SCHEMA_LIST",
-  CHANGE_NO_SCHEMA_ERROR = "CHANGE_NO_SCHEMA_ERROR"
+  CHANGE_NO_SCHEMA_ERROR = "CHANGE_NO_SCHEMA_ERROR",
+  CHANGE_SCHEMA = "CHANGE_SCHEMA"
 }
 
 export function nextStep() {
@@ -20,4 +21,8 @@ export function gotoStep(step: number) {
 
 export function changeDisplaySchemaError(displayError: boolean) {
   return {type: DATASET_FORM_ACTIONS.CHANGE_NO_SCHEMA_ERROR, displayError}
+}
+
+export function changeSchema(name: string, field: string, value: any) {
+  return {type: DATASET_FORM_ACTIONS.CHANGE_SCHEMA, name, field, value};
 }

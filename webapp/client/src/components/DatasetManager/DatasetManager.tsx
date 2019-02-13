@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {FileManager} from "../../services/FileManager";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {
-  changeDisplaySchemaError,
+  changeDisplaySchemaError, changeSchema,
   nextStep,
   prevStep,
 } from "../../store/datasetForm/actions";
@@ -38,6 +38,7 @@ interface ComponentProps {
   noSchemaError: any;
   shouldDisplayNoSchemaError: any;
   displaySchemaError: boolean;
+  changeSchema: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -49,6 +50,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
     this.onSchemaFileChange = this.onSchemaFileChange.bind(this);
     this.onSchemaUpload = this.onSchemaUpload.bind(this);
+    this.onSchemaChange = this.onSchemaChange.bind(this);
     this.fileManager = new FileManager();
   }
 
@@ -57,6 +59,12 @@ class DatasetManager extends React.Component<ComponentProps> {
       this.props.shouldDisplayNoSchemaError(false);
     }
     this.props.fileChange(fileId, file);
+  }
+
+  onSchemaChange(name: string, field: string, value: any) {
+    console.log('SCHEMA STATE CHANGE SHOULD HAPPEN');
+    console.log(name, field, value);
+    this.props.changeSchema(name,field,value);
   }
 
   onSchemaUpload(fileId: string) {
@@ -108,6 +116,7 @@ class DatasetManager extends React.Component<ComponentProps> {
           <SchemaUpload
             onSchemaFileChange={this.onSchemaFileChange}
             onSchemaUpload={this.onSchemaUpload}
+            onSchemaChange={this.onSchemaChange}
             schemaFile={this.props.schemaFile}
             errors={this.props.schemaFile.errors}
             schema={this.props.schema}
@@ -137,7 +146,8 @@ function mapDispatchToProps(dispatch: any) {
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),
     fileChange: (fileId, file) => dispatch(fileChange(fileId, file)),
-    shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay))
+    shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
+    changeSchema: (name: string, field: string, value) => dispatch(changeSchema(name, field, value))
   };
 }
 
