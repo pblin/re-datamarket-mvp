@@ -31,7 +31,7 @@ const SchemaList = ({schemas, onSchemaChange}) => {
     <div>
       <DataTable value={schemas} scrollable={true} scrollHeight="300px">
         <Column field="name" header="Name"/>
-        <Column field="type" header="type"/>
+        <Column field="type" header="Type"/>
         <Column field="description" header="Description" editor={inputEditor} />
       </DataTable>
     </div>
