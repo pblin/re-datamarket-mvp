@@ -8,7 +8,7 @@ export class ReduxFormValidator {
       let value = values[validator.fieldName];
 
       for(let i = 0; i < validator.errors.length; i++) {
-        if(validate(value, validator.errors[i])) {
+        if(!validate(value, validator.errors[i])) {
           errors[validator.fieldName] = validator.errorMessages[i];
           break;
         }
