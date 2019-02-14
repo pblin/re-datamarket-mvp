@@ -11,6 +11,9 @@ import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
+import 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
+import { APIKEY, GRAPHQL } from '../ConfigEnv';
 
 export interface DashboardProps {
   auth: Auth0Authentication;
@@ -26,9 +29,9 @@ type DatasetType = {
     country: string,
     price_low: number,
     price_high: number,
-    num_of_verifiers: number,
     date_created: string,
-    date_modified: string
+    date_modified: string,
+    access_url: string
 }
 interface DashboardState {
     pendingSearch: boolean,
@@ -57,54 +60,46 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
         this.onSortChange = this.onSortChange.bind(this);
         this.setToHid = this.setToHid.bind(this);
     }
-
-    componentDidMount() {
-        this.setState ( { 
-            datasets: [
-            {
-                "id": "5fe63ef68edf4f969cc9db158c299b18",
-                "name": "cherre_nyc_lot",
-                "description": "Cherre NY Lot",
-                "delivery_method": "API",
-                "num_of_records": 10000,
-                "state_province": "NY",
-                "country": "USA",
-                "price_low": 300,
-                "price_high": 400,
-                "num_of_verifiers": 3,
-                "date_created": "Mon Jan 28 22:50:05 2019",
-                "date_modified": "Mon Jan 28 22:50:05 2019"
+    async getDatasets(ds:DatasetType[]) {
+        const query =  `
+        query {
+            marketplace_data_source_detail {
+              id
+              name
+              description
+              num_of_records
+              date_created
+              date_modified
+              price_high
+              price_low
+              country
+              state_province
+              delivery_method
+              access_url
+            }
+          }`;
+        // @ts-ignore
+        const client = new GraphQLClient (GRAPHQL, {
+            headers: {
+            'X-Hasura-Access-Key': APIKEY,
             },
-            {
-                "id": "5fe63ef68edf4f969cc9db158c309b18",
-                "name": "cherre_nyc_building",
-                "description": "Cherre NYC Building",
-                "delivery_method": "API",
-                "state_province": "NY",
-                "country": "USA",
-                "num_of_records": 1000,
-                "price_low": 50,
-                "price_high": 75,
-                "num_of_verifiers": 2,
-                "date_created": "Mon Jan 2 10:50:05 2019",
-                "date_modified": "Mon Jan 2 10:50:05 2019"
-            },
-            {
-                "id": "5fe63ef68edf4f969cc9db158c309b17",
-                "name": "cherre_acris_simple",
-                "description": "Cherre ACRIS Simple data",
-                "delivery_method": "API",
-                "state_province": "NY",
-                "country": "USA",
-                "num_of_records": 14046,
-                "price_low": 600,
-                "price_high": 650,
-                "num_of_verifiers": 5,
-                "date_created": "Mon Jan 10 21:50:05 2019",
-                "date_modified": "Mon Jan 10 21:50:05 2019"
-            },
-        ]});
+        });
+        // @ts-ignore
+        let data = await client.request (query);
+        // @ts-ignore
+        if (data.marketplace_data_source_detail != undefined) {
+            // @ts-ignore
+            let datasetListItems = data.marketplace_data_source_detail;
+            for (var i=0; i < datasetListItems.length; i++ ) {
+                ds.push (datasetListItems[i]);
+            }
+        }
+        this.forceUpdate();
     }
+    componentDidMount() {
+        this.getDatasets(this.state.datasets);
+    }
+
     renderListItem(ds) {
         console.log(ds)
         return (
@@ -199,9 +194,6 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
                     <div className="p-col-4">Number of Records: </div>
                     <div className="p-col-8">{this.state.selectedSet.num_of_records}</div>
 
-                     <div className="p-col-4">Number of Verifiers: </div>
-                    <div className="p-col-8">{this.state.selectedSet.num_of_verifiers}</div>
-
                     <div className="p-col-4">Region: </div>
                     <div className="p-col-8">{this.state.selectedSet.state_province}</div>
 
@@ -214,8 +206,8 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
                     <div className="p-col-4">Last Modified Date: </div>
                     <div className="p-col-8">{this.state.selectedSet.date_modified}</div>
 
-                    <div className="p-col-4">Detail Schema: </div>
-                    <div className="p-col-8">This Link</div>   
+                    <div className="p-col-4">Access URL: </div>
+                    <div className="p-col-8">{this.state.selectedSet.access_url}</div>
                 </div>
             );
         }
