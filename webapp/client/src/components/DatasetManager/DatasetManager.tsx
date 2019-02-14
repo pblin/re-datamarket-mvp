@@ -39,6 +39,7 @@ interface ComponentProps {
   shouldDisplayNoSchemaError: any;
   displaySchemaError: boolean;
   changeSchema: any;
+  publishSchema: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -93,6 +94,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     console.log('THE FORM IS PUBLISHING!');
     console.log(this.props.schema);
     console.log(this.props.basicInfo);
+    this.props.publishSchema(this.props.basicInfo, this.props.schema);
   }
 
   onWizardPrev() {
@@ -142,6 +144,7 @@ function mapStateToProps(state: any, ownProps: any) {
 function mapDispatchToProps(dispatch: any) {
   return {
     onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
+    publishSchema: (basicInfo: any, schema: any[]) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema}),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),

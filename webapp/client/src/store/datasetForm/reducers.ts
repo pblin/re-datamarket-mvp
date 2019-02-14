@@ -50,6 +50,9 @@ const reducer = function(state=defaultState, action: any) {
       newState.schema = [...newState.schema.filter(sch => sch.name != action.name)];
       newState.schema.splice(index, 0, found);
       break;
+    case DATASET_FORM_ACTIONS.SCHEMA_PUBLISHED:
+      console.log('Schema Published Reducer');
+      break;
     case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:
       if(action.value) {
         newState.displayNoSchemaError = false;

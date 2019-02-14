@@ -2,7 +2,10 @@
 import {combineReducers, createStore, applyMiddleware} from "redux";
 import createSagaMiddleware from 'redux-saga';
 import {all} from 'redux-saga/effects';
+
+//Sagas
 import {fileSagas} from "./file/fileSaga";
+import {datasetFormSagas} from "./datasetForm/datasetFormSaga";
 
 //Reducers
 import FileState from "./file/reducers";
@@ -43,7 +46,8 @@ export class AppStore {
     //Set up sagas
     function* rootSaga() {
       yield all([
-        ...fileSagas()
+        ...fileSagas(),
+        ...datasetFormSagas()
       ])
     }
 
