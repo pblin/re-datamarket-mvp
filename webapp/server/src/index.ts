@@ -79,13 +79,13 @@ async function saveDataset (ds:any) {
   });
   let data = await client.request(mut, variables);
   // @ts-ignore
-  if (data !== undefined && data.insert_marketplace_data_source_detail !== undefined) {
+  if (data.insert_marketplace_data_source_detail !== undefined) {
     // @ts-ignore
     return data.insert_marketplace_data_source_detail.affected_rows;
   } else return 0; 
 }
 
-async function extractAndSaveDataFields (jsonStr:string, dsId:string) {
+async function extractAndSaveDataFields (schemaItems:any, dsId:string) {
   const mut = `
       mutation insert_marketplace_source_of_field($objects:[marketplace_source_of_field_insert_input!]!)
       {
@@ -107,61 +107,61 @@ async function extractAndSaveDataFields (jsonStr:string, dsId:string) {
   let variables = {
       objects: []
     };
-  
-  let schemaItems = null;
-  try  {
-    schemaItems = JSON.parse(jsonStr);
-  }
-  catch (e) {
-    console.log(e);
-  }
-  if (schemaItems != null) {
-    for (var i = 0; i < schemaItems.length; i++) {
-      const item = {
-          field_name:schemaItems[i].name,
-          description:schemaItems[i].description,
-          field_type:schemaItems[i].type,
-          source_id:dsId,
-      };
-      variables.objects.push(item);
-    }
 
-    const client = new GraphQLClient (GRAPHQL, {
-      headers: {
-        'X-Hasura-Access-Key': APIKEY,
-      },
-    });
+  for (var i = 0; i < schemaItems.length; i++) {
+    const item = {
+        field_name:schemaItems[i].name,
+        description:schemaItems[i].description,
+        field_type:schemaItems[i].type,
+        source_id:dsId,
+    };
+    variables.objects.push(item);
+  }
 
-    let data = await client.request(mut, variables);
-    // @ts-ignore
-    if (data !== undefined && data.insert_marketplace_source_of_field !== undefined) {
+  const client = new GraphQLClient (GRAPHQL, {
+    headers: {
+      'X-Hasura-Access-Key': APIKEY,
+    },
+  });
+
+  let data = await client.request(mut, variables);
+  // @ts-ignore
+  if (data.insert_marketplace_source_of_field !== undefined) {
       // @ts-ignore
       return data.insert_marketplace_source_of_field.affected_rows;
-    } else {
-       return 0; 
-    }
   } else {
-    return 0 ;
+       return 0; 
   }
-}
 
+}
 app.post('/schema', (req, res) => {
-  new Promise ( function (resolve, reject) {
-    if (saveDataset(req.body)) {
-      resolve (1);
-    } else {
-      reject (-1);
-    }
-  }).then ( function (resolve) { 
-      if (extractAndSaveDataFields(req.body.json_schema, req.body.id)) {
-           res.sendStatus(200);
-        } else {
-           res.sendStatus(400);
-        }
+
+      let schemaItems = null;
+      try  {
+        schemaItems = JSON.parse(req.body.json_schema);
       }
-    )
-    .catch ((err) => {res.status(500).send(err.messge)});
-  });
+      catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+      }
+      new Promise ( function (resolve, reject) {
+        if (saveDataset(req.body)) {
+          resolve (1);
+        } else {
+          reject (-1);
+        }
+      }).then ( function (resolve) { 
+          new Promise (function (resolve1, reject1) { 
+              if (extractAndSaveDataFields(schemaItems, req.body.id)) {
+                  resolve1 (1);
+                } else {
+                  reject1 (-1);
+                }
+            }).then ( function (resolve1) {
+               res.sendStatus(200);
+            }).catch ((err) => { res.status(500).send(err.message); });
+        }).catch ((err) => {res.status(500).send(err.messge); });
+});
 
 app.get('/health', (req, res) => {
   res.sendStatus(200);
