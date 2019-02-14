@@ -41,7 +41,8 @@ interface DashboardState {
     sortOrder: any,
     sortField: string,
     layout: string,
-    datasets: DatasetType[]
+    datasets: DatasetType[],
+    datasetSize: number
 }
 class DashboardPage extends Component<DashboardProps, DashboardState> {
     constructor (props) {
@@ -54,13 +55,14 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
                 sortOrder: null,
                 sortField: "",
                 layout: 'list',
-                datasets: []
+                datasets: [],
+                datasetSize: 0
             };
         this.itemTemplate = this.itemTemplate.bind(this);
         this.onSortChange = this.onSortChange.bind(this);
         this.setToHid = this.setToHid.bind(this);
     }
-    async getDatasets(ds:DatasetType[]) {
+    async getDatasets(state) {
         const query =  `
         query {
             marketplace_data_source_detail {
@@ -90,47 +92,53 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
         if (data.marketplace_data_source_detail != undefined) {
             // @ts-ignore
             let datasetListItems = data.marketplace_data_source_detail;
+            state.datasetSize = datasetListItems.length;
             for (var i=0; i < datasetListItems.length; i++ ) {
-                ds.push (datasetListItems[i]);
+                state.datasets.push (datasetListItems[i]);
             }
         }
         this.forceUpdate();
     }
     componentDidMount() {
-        this.getDatasets(this.state.datasets);
+        this.getDatasets(this.state);
     }
 
     renderListItem(ds) {
         console.log(ds)
-        return (
-            <div className="p-col-12" style={{padding: '2em', borderBottom: '1px solid #d9d9d9'}}>
-                <div className="p-col-12 p-md-8 car-details">
-                    <div className="p-grid">
-                        <div className="p-col-2 p-sm-6">ID:</div>
-                        <div className="p-col-10 p-sm-6">{ds.id}</div>
+        if ( ds != null ) {
+            return (
+            
+                <div className="p-col-12" style={{padding: '2em', borderBottom: '1px solid #d9d9d9'}}>
+                    <div className="p-col-12 p-md-8 car-details">
+                        <div className="p-grid">
+                            <div className="p-col-2 p-sm-6">ID:</div>
+                            <div className="p-col-10 p-sm-6">{ds.id}</div>
 
-                        <div className="p-col-2 p-sm-6">Name:</div>
-                        <div className="p-col-10 p-sm-6">{ds.name}</div>
+                            <div className="p-col-2 p-sm-6">Name:</div>
+                            <div className="p-col-10 p-sm-6">{ds.name}</div>
 
-                        <div className="p-col-2 p-sm-6">Description:</div>
-                        <div className="p-col-10 p-sm-6">{ds.description}</div>
+                            <div className="p-col-2 p-sm-6">Description:</div>
+                            <div className="p-col-10 p-sm-6">{ds.description}</div>
 
-                        <div className="p-col-2 p-sm-6">No of Records:</div>
-                        <div className="p-col-10 p-sm-6">{ds.num_of_records}</div>
+                            <div className="p-col-2 p-sm-6">No of Records:</div>
+                            <div className="p-col-10 p-sm-6">{ds.num_of_records}</div>
 
-                        <div className="p-col-2 p-sm-6">Region:</div>
-                        <div className="p-col-10 p-sm-6">{ds.state_province}</div>
+                            <div className="p-col-2 p-sm-6">Region:</div>
+                            <div className="p-col-10 p-sm-6">{ds.state_province}</div>
 
-                        <div className="p-col-2 p-sm-6">Country</div>
-                        <div className="p-col-10 p-sm-6">{ds.country}</div>
+                            <div className="p-col-2 p-sm-6">Country</div>
+                            <div className="p-col-10 p-sm-6">{ds.country}</div>
+                        </div>
+                    </div>
+
+                    <div className="p-col-12 p-md-1 search-icon" style={{marginTop:'40px'}}>
+                        <Button icon="pi pi-search" onClick={(e) => this.setState({ selectedSet: ds, visible: true })}></Button>
                     </div>
                 </div>
-
-                <div className="p-col-12 p-md-1 search-icon" style={{marginTop:'40px'}}>
-                    <Button icon="pi pi-search" onClick={(e) => this.setState({ selectedSet: ds, visible: true })}></Button>
-                </div>
-            </div>
-        );
+            );
+        } else {
+            return ( <div/>);
+        }
     }
 
     onSortChange(event) {
@@ -154,19 +162,23 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
 
     renderGridItem(ds) {
         //console.log(ds);
-        return (
-            <div style={{ padding: '.5em' }} className="p-col-12 p-md-3">
-                <Panel header={ds.id} style={{ textAlign: 'center' }}>
-                    <div className="ddataset-name">{ds.name}</div>
-                    <div className="ddataset-detail">{ds.description}</div>
-                    <div className="ddataset-records">{ds.num_of_records}</div>
-                    <div className="ddataset-region">{ds.state_province}</div>
-                    <div className="ddataset-country">{ds.country}</div>
-                    <hr className="ui-widget-content" style={{ borderTop: 0 }} />
-                    <Button icon="pi pi-search" onClick={(e) => this.setState({ selectedSet: ds, visible: true })}></Button>
-                </Panel>
-            </div>
-        );
+        if (ds ! = null ) {
+            return (
+                <div style={{ padding: '.5em' }} className="p-col-12 p-md-3">
+                    <Panel header={ds.id} style={{ textAlign: 'center' }}>
+                        <div className="ddataset-name">{ds.name}</div>
+                        <div className="ddataset-detail">{ds.description}</div>
+                        <div className="ddataset-records">{ds.num_of_records}</div>
+                        <div className="ddataset-region">{ds.state_province}</div>
+                        <div className="ddataset-country">{ds.country}</div>
+                        <hr className="ui-widget-content" style={{ borderTop: 0 }} />
+                        <Button icon="pi pi-search" onClick={(e) => this.setState({ selectedSet: ds, visible: true })}></Button>
+                    </Panel>
+                </div>
+            );
+        } else {
+            return (<div/>);
+        }
     }
 
     itemTemplate(ds, layout) {
@@ -212,7 +224,10 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
             );
         }
         else {
-            return null;
+        return (<div> 
+                    <h3> No Info </h3>
+                </div> 
+               );
         }
     }
 
@@ -258,7 +273,7 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
 
                     <div className="content-section implementation">
                         <DataView value={this.state.datasets} layout={this.state.layout} header={header} 
-                                itemTemplate={this.itemTemplate} paginatorPosition={'both'} paginator={true} rows={3} 
+                                itemTemplate={this.itemTemplate} paginatorPosition={'both'} paginator={true} rows={5} 
                                 sortOrder={this.state.sortOrder} sortField={this.state.sortField} />
 
                         <Dialog header="Dataset Details" visible={this.state.visible} modal={true} onHide={this.setToHid}>
