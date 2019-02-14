@@ -107,7 +107,6 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
         console.log(ds)
         if ( ds != null ) {
             return (
-            
                 <div className="p-col-12" style={{padding: '2em', borderBottom: '1px solid #d9d9d9'}}>
                     <div className="p-col-12 p-md-8 car-details">
                         <div className="p-grid">
@@ -161,8 +160,8 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
     }
 
     renderGridItem(ds) {
-        //console.log(ds);
-        if (ds ! = null ) {
+        console.log(ds);
+        if (ds != null ) {
             return (
                 <div style={{ padding: '.5em' }} className="p-col-12 p-md-3">
                     <Panel header={ds.id} style={{ textAlign: 'center' }}>
