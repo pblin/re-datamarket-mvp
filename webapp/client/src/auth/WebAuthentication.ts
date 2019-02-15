@@ -3,6 +3,9 @@ import history from '../utils/history';
 import { AUTH_CONFIG } from './configuration';
 import { Auth0Authentication } from './Auth0Authentication';
 import {Auth0DecodedHash, WebAuth} from 'auth0-js';
+import 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
+import { APIKEY, GRAPHQL } from '../components/ConfigEnv';
 
 /**
  * Web based Auth0 authentication
@@ -55,6 +58,40 @@ export class WebAuthentication implements Auth0Authentication {
       }
     });
   }
+ @autobind
+  async findUser (userEmail: string) { 
+
+    const query =  `
+    query customer ($email: String ) {
+        marketplace_customer (where:{primary_email:{ _eq : $email }})
+        {
+            id
+            primary_email
+            secondary_email
+            first_name
+            last_name
+            phone
+            address
+            is_org_admin
+        }
+    }
+    `;
+    // @ts-ignore
+    const client = new GraphQLClient (GRAPHQL, {
+        headers: {
+        'X-Hasura-Access-Key': APIKEY,
+        },
+    });
+
+    const variables = {
+        email: userEmail
+    };
+    // @ts-ignore
+    let result = await client.request (query, variables);
+    // @ts-ignore
+    localStorage.setItem ('profile', JSON.stringify(result.marketplace_customer[0]));
+    location.reload();
+  } 
 
   @autobind
   setSession(authResult: Auth0DecodedHash): void {
@@ -68,8 +105,11 @@ export class WebAuthentication implements Auth0Authentication {
     localStorage.setItem('authenticated', 'true');
     localStorage.setItem('idTokenPayload', JSON.stringify(idTokenPayload));
     localStorage.setItem('pendingProfileQuery', 'n');
+    this.findUser(idTokenPayload.email);
+
     // navigate to the home route
     history.replace('/home');
+
   }
 
   @autobind

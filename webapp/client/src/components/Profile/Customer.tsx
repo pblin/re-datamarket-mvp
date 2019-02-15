@@ -14,29 +14,6 @@ import SaveIcon from '@material-ui/icons/Save';
 import autobind from 'autobind-decorator';
 import classNames from 'classnames';
 
-const mut = 
-`mutation insert_marketplace_customer ($objects:[marketplace_customer_insert_input!]!)
- {
-  insert_marketplace_customer ( 
-    objects:$objects,
-    on_conflict: { 
-      constraint: customer_pkey, 
-      update_columns: [first_name,last_name,secondary_email,address,phone,is_org_admin] 
-    }
-  ) {
-    returning {
-      id
-      primary_email
-      secondary_email
-      first_name
-      last_name
-      address
-      phone
-      is_org_admin
-    }
-  }
-}
-`;
 
 
 // @ts-ignore
@@ -138,6 +115,29 @@ class Customer extends React.Component<Props> {
     } 
   // @ts-ignore
   _createCustomer = async () => {
+    const mut = 
+        `mutation insert_marketplace_customer ($objects:[marketplace_customer_insert_input!]!)
+        {
+          insert_marketplace_customer ( 
+            objects:$objects,
+            on_conflict: { 
+              constraint: customer_pkey, 
+              update_columns: [first_name,last_name,secondary_email,address,phone,is_org_admin] 
+            }
+          ) {
+            returning {
+              id
+              primary_email
+              secondary_email
+              first_name
+              last_name
+              address
+              phone
+              is_org_admin
+            }
+          }
+        }
+        `;
 
     // @ts-ignore
     const client = new GraphQLClient (GRAPHQL, {
@@ -178,12 +178,14 @@ class Customer extends React.Component<Props> {
     if ( authenticated) {
 
       this.findUser();
+      let email = localStorage.getItem('email');
+      this.state.primaryEmail = email;
       let profile = localStorage.getItem('profile');
       let profileObj = {
         id: -1,
         first_name: '',
         last_name: '',
-        primary_email: '',
+        primary_email: email,
         secondary_email: '',
         phone: '',
         address: '',
