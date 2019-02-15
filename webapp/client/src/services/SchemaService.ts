@@ -9,9 +9,6 @@ export class SchemaService {
   }
 
   async postSchema(basicInfo: any, schema: any[]) {
-    console.log(basicInfo);
-    console.log(schema);
-
     let body = {
       id: uuid(),
       name: basicInfo.name,

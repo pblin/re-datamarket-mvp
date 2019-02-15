@@ -18,10 +18,6 @@ const handleAuthentication = (props: RouteComponentProps<{}>) => {
 };
 
 const PrivateRoute = ({component: Component, authenticated, ...rest}) => {
-  console.log('PRIVATE ROUTE');
-  console.log(Component);
-  console.log(authenticated);
-  console.log(rest);
   return (
     <Route
       {...rest}

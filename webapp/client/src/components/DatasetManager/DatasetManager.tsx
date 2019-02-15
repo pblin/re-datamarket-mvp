@@ -63,8 +63,6 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   onSchemaChange(name: string, field: string, value: any) {
-    console.log('SCHEMA STATE CHANGE SHOULD HAPPEN');
-    console.log(name, field, value);
     this.props.changeSchema(name,field,value);
   }
 
@@ -91,9 +89,6 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   publish() {
-    console.log('THE FORM IS PUBLISHING!');
-    console.log(this.props.schema);
-    console.log(this.props.basicInfo);
     this.props.publishSchema(this.props.basicInfo, this.props.schema);
   }
 
