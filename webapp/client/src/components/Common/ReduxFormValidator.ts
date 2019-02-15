@@ -10,8 +10,6 @@ export class ReduxFormValidator {
   isValid(val: any, errorType: ErrorType) {
     switch (errorType.type) {
       case ERROR_TYPE.REQUIRED:
-        console.log('REQUIRED');
-        console.log(val != '' && val != undefined);
         return val != '' && val != undefined;
       case ERROR_TYPE.LENGTH:
         return val.length == errorType.val;

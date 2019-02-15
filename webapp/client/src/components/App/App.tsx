@@ -23,6 +23,16 @@ import ProfileAvatar from '../Profile/ProfileAvatar';
 import 'graphql-request';
 import { GraphQLClient } from 'graphql-request';
 import { APIKEY, GRAPHQL } from '../ConfigEnv';
+import "./App.css";
+
+//Icons
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import PersonIcon from "@material-ui/icons/Person";
+import HistoryIcon from "@material-ui/icons/History";
+import MessageIcon from "@material-ui/icons/Message";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import ExploreIcon from "@material-ui/icons/Explore";
+import CloudIcon from "@material-ui/icons/CloudUpload";
 
 const drawerWidth = 240;
 
@@ -95,16 +105,16 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   appLinks: AppLink[] = [
-    new AppLink('Market Place', '/dashboard'),
-    new AppLink('Data Explorer', '/dataexplorer'),
-    new AppLink('Dataset Manager', '/dataset-manager'),
-    new AppLink('News', '/news')
+    new AppLink('Market Place', '/dashboard', (<DashboardIcon/>)),
+    new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
+    new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
+    new AppLink('News', '/news', (<NotificationsIcon/>))
   ];
 
   userAppLinks: AppLink[] = [
-    new AppLink('Profie', '/profile'),
-    new AppLink('Order History', '/orders'),
-    new AppLink('Message', '/message')
+    new AppLink('Profie', '/profile', (<PersonIcon/>)),
+    new AppLink('Order History', '/orders', <HistoryIcon/>),
+    new AppLink('Message', '/message', (<MessageIcon/>))
   ];
 
   @autobind
@@ -180,7 +190,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
-          position="fixed"
           className={classes.appBar}
         >
           <Toolbar disableGutters={!open}>
@@ -223,16 +232,16 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
           <Divider />
           <List>
               {this.appLinks.map((link, index) => (
-                  <ListItem button key={link.title}>
-                    <Link to={link.url}>{link.title}</Link>
+                  <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                    <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
                   </ListItem>
               ))}
           </List>
           <Divider />
           <List>
             {this.userAppLinks.map((link, index) => (
-              <ListItem button key={link.title}>
-                <Link to={link.url}>{link.title}</Link>
+              <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
               </ListItem>
             ))}
           </List>

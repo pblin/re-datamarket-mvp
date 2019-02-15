@@ -5,20 +5,15 @@
 #
 version: 2
 jobs:
-  build:
+  build-and-test:
     docker:
-      # specify the version you desire here
       - image: circleci/node:10.15.0
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/demo
     steps:
       - checkout
-
+      - run:
+          name: test
+          command: cd webapp/client && yarn install && npm test
   deploy:
     machine: true
     production:
@@ -28,13 +23,18 @@ jobs:
       - run:
           name: push file to server 
           command: |
-            rsh  mvp@demo-app.rebloc.io "if [ ! -d 'webapp' ]; then mkdir -p webapp/client ; fi"
-            scp -r ./webapp/client/* mvp@demo-app.rebloc.io:/home/mvp/webapp/client
+            rsh  mvp@demo-app.rebloc.io "if [ ! -d 'webapp' ]; then mkdir -p webapp; fi"
+            scp -r ./webapp/* mvp@demo-app.rebloc.io:/home/mvp/webapp
+            rsh mvp@demo-app.rebloc.io "cd webapp/server && yarn install"
+            rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/server && bash ./src/check_n_run_server.sh"
             rsh mvp@demo-app.rebloc.io "cd webapp/client && yarn install"
             rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/client && cp /var/local/democonfig/client/configuration.ts ./webapp/client/src/auth"
             rsh mvp@demo-app.rebloc.io "/var/local/democonfig/check-n-restart.sh"
 workflows:
   version: 2
-  just_deploy:
+  build-test-and-deploy:
     jobs:
-      - deploy
+      - build-and-test
+      - deploy:
+          requires:
+            - build-and-test

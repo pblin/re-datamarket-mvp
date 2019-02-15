@@ -3,8 +3,9 @@ import {connect} from "react-redux";
 import {FileManager} from "../../services/FileManager";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {
+  changeDisplaySchemaError,
   nextStep,
-  prevStep
+  prevStep,
 } from "../../store/datasetForm/actions";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -13,26 +14,30 @@ import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit } from 'redux-form';
 import {Grid} from "@material-ui/core";
 import {PublishForm} from "./DatasetWizard/PublishForm";
-import {basicInfo} from "../../store/datasetForm/datasetFormSelectors";
+import {basicInfo, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {fileChange} from "../../store/file/actions";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
 
 interface ComponentProps {
-  file: any[];
-  fileName: string;
-  datasetFileChange: any;
-  onFileUpload: any;
-  submitBasicInfoForm: any;
-  submittingBasicForm: any;
-  updateBasicInfo: any;
+  file: any[],
+  fileName: string,
+  datasetFileChange: any,
+  onFileUpload: any,
+  submitBasicInfoForm: any,
+  submittingBasicForm: any,
+  updateBasicInfo: any,
   wizard: any,
-  basicInfo: any;
+  basicInfo: any,
   nextStep: any,
   prevStep: any,
   fileChange: any,
-  schemaFile: any
+  schemaFile: any,
+  schema: any[],
+  noSchemaError: any;
+  shouldDisplayNoSchemaError: any;
+  displaySchemaError: boolean;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -48,6 +53,9 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   onSchemaFileChange(fileId: string, file: File) {
+    if(this.props.displaySchemaError) {
+      this.props.shouldDisplayNoSchemaError(false);
+    }
     this.props.fileChange(fileId, file);
   }
 
@@ -60,8 +68,23 @@ class DatasetManager extends React.Component<ComponentProps> {
       case 0:
         this.props.submitBasicInfoForm();
         return;
+      case 1:
+        if(!this.props.schema.length) {
+          this.props.shouldDisplayNoSchemaError(true);
+          return;
+        }
+        break;
+      case 2:
+        this.publish();
+        return;
     }
     this.props.nextStep();
+  }
+
+  publish() {
+    console.log('THE FORM IS PUBLISHING!');
+    console.log(this.props.schema);
+    console.log(this.props.basicInfo);
   }
 
   onWizardPrev() {
@@ -86,6 +109,9 @@ class DatasetManager extends React.Component<ComponentProps> {
             onSchemaFileChange={this.onSchemaFileChange}
             onSchemaUpload={this.onSchemaUpload}
             schemaFile={this.props.schemaFile}
+            errors={this.props.schemaFile.errors}
+            schema={this.props.schema}
+            displayNoSchemaError={this.props.displaySchemaError}
           />
           <PublishForm basicDetails={this.props.basicInfo}></PublishForm>
         </DatasetWizard>
@@ -98,17 +124,20 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     schemaFile: Object.assign({}, getFileState(state).files.find(file => file.fileId == 'schemaFile')),
     wizard: state.DatasetFormState.wizard,
-    basicInfo: basicInfo(state)
+    basicInfo: basicInfo(state),
+    schema: Object.assign([], schemaSelector(state)),
+    displaySchemaError: state.DatasetFormState.displayNoSchemaError
   }
 }
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema }),
+    onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),
-    fileChange: (fileId, file) => dispatch(fileChange(fileId, file))
+    fileChange: (fileId, file) => dispatch(fileChange(fileId, file)),
+    shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay))
   };
 }
 

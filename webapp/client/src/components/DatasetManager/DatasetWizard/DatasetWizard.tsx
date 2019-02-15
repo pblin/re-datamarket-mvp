@@ -22,6 +22,13 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
     this.state = {value: ''};
   }
 
+  renderTitle(value: string) {
+    if(!value) {
+      return (<span>Next</span>);
+    }
+    return (<span>{value}</span>)
+  }
+
   render() {
     return (
       <Grid container={true} justify={'center'}>
@@ -43,11 +50,9 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
                 Previous
               </Button>
              }
-            {this.props.currentStep != this.props.steps.length - 1 &&
               <Button onClick={this.props.onNext} variant="contained" color="primary" className={"wizard-button"}>
-                Next
+                {this.renderTitle(this.props.steps[this.props.currentStep].nextButtonValue)}
               </Button>
-            }
           </Grid>
         </div>
       </Grid>
