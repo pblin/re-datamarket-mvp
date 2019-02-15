@@ -5,7 +5,7 @@ export class SchemaService {
   client: any;
   baseUrl: string;
   constructor() {
-    this.baseUrl = 'http://localhost:9000'; //TODO: Create local and Prod instance
+    this.baseUrl = location.protocol+'//'+location.hostname + ":9000";
   }
 
   async postSchema(basicInfo: any, schema: any[]) {
