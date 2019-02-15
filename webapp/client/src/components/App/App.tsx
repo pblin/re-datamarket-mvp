@@ -128,6 +128,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   @autobind
   logout() {
     this.props.auth.logout();
+    //window.location.replace('/home');
   }
   handleDrawerOpen = () => {
     this.setState({ open: true });

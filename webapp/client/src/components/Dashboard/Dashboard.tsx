@@ -254,43 +254,31 @@ class DashboardPage extends Component<DashboardProps, DashboardState> {
         this.setState({visible: false});
     }
 
-    render () { 
-        const { authenticated } = this.props.auth;
-        console.log( authenticated );
-        if (authenticated) {
-            const header = this.renderHeader();
-            return (
+    render () {
+        const header = this.renderHeader();
+        return (
+            <div>
                 <div>
-                    <div>
-                        <App auth={this.props.auth} {...this.props} />
-                    </div>
-                    <div className="content-section introduction">
-                        <div className="feature-intro">
-                            <h1>Dataset Listing</h1>
-                        </div>
-                    </div>
-
-                    <div className="content-section implementation">
-                        <DataView value={this.state.datasets} layout={this.state.layout} header={header} 
-                                itemTemplate={this.itemTemplate} paginatorPosition={'both'} paginator={true} rows={5} 
-                                sortOrder={this.state.sortOrder} sortField={this.state.sortField} />
-
-                        <Dialog header="Dataset Details" visible={this.state.visible} modal={true} onHide={this.setToHid}>
-                            {this.renderDatasetDialogContent()}
-                        </Dialog>
-                    </div>
-
+                    <App auth={this.props.auth} {...this.props} />
                 </div>
-            );
-            } else { 
-                // @ts-ignore
-                //TODO: Move this logic into the router
-                return (
-                  <div>
-                    Please Login
-                  </div>
-                );
-            }
+                <div className="content-section introduction">
+                    <div className="feature-intro">
+                        <h1>Dataset Listing</h1>
+                    </div>
+                </div>
+
+                <div className="content-section implementation">
+                    <DataView value={this.state.datasets} layout={this.state.layout} header={header}
+                            itemTemplate={this.itemTemplate} paginatorPosition={'both'} paginator={true} rows={5}
+                            sortOrder={this.state.sortOrder} sortField={this.state.sortField} />
+
+                    <Dialog header="Dataset Details" visible={this.state.visible} modal={true} onHide={this.setToHid}>
+                        {this.renderDatasetDialogContent()}
+                    </Dialog>
+                </div>
+
+            </div>
+        );
     }
 }
 

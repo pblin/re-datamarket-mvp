@@ -2,7 +2,7 @@ import React, { SFC } from 'react';
 import { Callback, DashboardPage, Customer } from '../components';
 import Home from '../pages/Home';
 import DataMap from '../pages/DatasetExplorer';
-import { Route, RouteComponentProps } from 'react-router';
+import { Route, RouteComponentProps, Redirect } from 'react-router';
 import { Router } from 'react-router-dom';
 import { WebAuthentication } from '../auth/WebAuthentication';
 import history from './history';
@@ -17,6 +17,21 @@ const handleAuthentication = (props: RouteComponentProps<{}>) => {
   }
 };
 
+const PrivateRoute = ({component: Component, authenticated, ...rest}) => {
+  console.log('PRIVATE ROUTE');
+  console.log(Component);
+  console.log(authenticated);
+  console.log(rest);
+  return (
+    <Route
+      {...rest}
+      render={(props) => authenticated === true
+        ? <Component {...props} auth={rest.auth}/>
+        : <Redirect to={{pathname: '/home', state: {from: props.location}}} />}
+    />
+  )
+}
+
 const Routes: SFC<{}> = () => {
   return (
     <div>
@@ -29,20 +44,29 @@ const Routes: SFC<{}> = () => {
               path="/home"
               render={(props) => <Home auth={auth} {...props} />}
             />
-            <Route
+            <PrivateRoute
               path="/dashboard"
-              render={(props) => <DashboardPage auth={auth} {...props} />}
+              component={DashboardPage}
+              auth={auth}
+              authenticated={auth.authenticated}
             />
-            <Route
+            <PrivateRoute
               path="/dataexplorer"
-              render={(props) => <DataMap auth={auth} />}
+              component={DataMap}
+              auth={auth}
+              authenticated={auth.authenticated}
             />
-            <Route
+            <PrivateRoute
               path="/profile"
-              render={(props) => <Customer auth={auth} {...props} />}
+              component={Customer}
+              auth={auth}
+              authenticated={auth.authenticated}
             />
-            <Route path="/dataset-manager"
-              render = {(props) => <DatasetManager auth={auth} {...props}/>}
+            <PrivateRoute
+              path="/dataset-manager"
+              component={DatasetManager}
+              auth={auth}
+              authenticated={auth.authenticated}
             />
             <Route
               path="/callback"
