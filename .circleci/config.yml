@@ -26,7 +26,7 @@ jobs:
             rsh  mvp@demo-app.rebloc.io "if [ ! -d 'webapp' ]; then mkdir -p webapp; fi"
             scp -r ./webapp/* mvp@demo-app.rebloc.io:/home/mvp/webapp
             rsh mvp@demo-app.rebloc.io "cd webapp/server && yarn install"
-            rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/server && bash ./src/check_n_run_server.sh"
+            rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/server && bash ./webapp/server/src/check_n_run_server.sh"
             rsh mvp@demo-app.rebloc.io "cd webapp/client && yarn install"
             rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/client && cp /var/local/democonfig/client/configuration.ts ./webapp/client/src/auth"
             rsh mvp@demo-app.rebloc.io "/var/local/democonfig/check-n-restart.sh"

@@ -19,7 +19,7 @@ for i in range (1,sheet.nrows):
             field["type"] = sheet.cell_value(i, 0)
         else:
             field["type"] = "text"
-        field["description"] = sheet.cell_value(i, 3)
+        field["description"] = sheet.cell_value(i, 3).replace('\t',' ').replace ('"','U+0022').replace('\n',' ')
         fieldList.append (field)
 
 schemaJson.write (json.dumps(fieldList))
