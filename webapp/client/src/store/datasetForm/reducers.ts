@@ -43,6 +43,16 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_FORM_ACTIONS.CHANGE_NO_SCHEMA_ERROR:
       newState.displayNoSchemaError = action.displayError;
       break;
+    case DATASET_FORM_ACTIONS.CHANGE_SCHEMA:
+      let index = newState.schema.findIndex(sch => sch.name == action.name);
+      let found = newState.schema.find(sch => sch.name == action.name);
+      found[action.field] = action.value;
+      newState.schema = [...newState.schema.filter(sch => sch.name != action.name)];
+      newState.schema.splice(index, 0, found);
+      break;
+    case DATASET_FORM_ACTIONS.SCHEMA_PUBLISHED:
+      console.log('Schema Published Reducer');
+      break;
     case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:
       if(action.value) {
         newState.displayNoSchemaError = false;

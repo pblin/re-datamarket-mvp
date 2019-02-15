@@ -61,6 +61,7 @@
     "ts-react-json-table": "^0.1.1",
     "typed-rest-client": "^1.0.11",
     "typeface-roboto": "^0.0.54",
+    "uuid": "^3.3.2",
     "yup": "^0.26.7"
   },
   "browserslist": [
@@ -89,7 +90,9 @@
         "statements": 2
       }
     },
-    "coverageReporters": ["html"]
+    "coverageReporters": [
+      "html"
+    ]
   },
   "devDependencies": {
     "@storybook/addon-info": "^4.1.9",

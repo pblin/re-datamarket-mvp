@@ -1,6 +1,6 @@
 import {createStore} from "redux";
 import DatasetFormReducer from './reducers';
-import {gotoStep, nextStep, prevStep} from "./actions";
+import {changeSchema, gotoStep, nextStep, prevStep, DATASET_FORM_ACTIONS} from "./actions";
 
 describe('Dataset Form Store', () => {
   let store;
@@ -54,7 +54,28 @@ describe('Dataset Form Store', () => {
     store.dispatch(gotoStep(store.getState().wizard.steps.length - 1));
     store.dispatch(nextStep());
     expect(store.getState().wizard.currentStep).toBe(store.getState().wizard.steps.length - 1);
-  })
+  });
 
+  it("should load the schema", () => {
+    store.dispatch({type: DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST, value:[
+        {name: 'test'},
+        {},
+        {}
+    ]});
+    expect(store.getState().schema.length).toBe(3);
+    expect(store.getState().schema[0].name).toBe('test');
+  });
+
+  it("should change the schema", () => {
+    store.dispatch({type: DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST, value:[
+        {name: 'test', description: "1234"},
+        {name: 'test2', description: "1234"},
+        {name: 'test3', description: "1234"}
+    ]});
+    store.dispatch(changeSchema('test', 'description', '123456'));
+    expect(store.getState().schema.length).toBe(3);
+    expect(store.getState().schema[0].name).toBe('test');
+    expect(store.getState().schema[0].description).toBe('123456');
+  })
 });
 
