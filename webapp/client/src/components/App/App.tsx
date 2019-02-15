@@ -20,9 +20,6 @@ import { Theme } from '@material-ui/core';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
 import ProfileAvatar from '../Profile/ProfileAvatar';
-import 'graphql-request';
-import { GraphQLClient } from 'graphql-request';
-import { APIKEY, GRAPHQL } from '../ConfigEnv';
 import "./App.css";
 
 //Icons
@@ -120,9 +117,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   @autobind
   login() {
     this.props.auth.login();
-    
-    //check if user is registered
-    this.findUser();
   }
 
   @autobind
@@ -138,41 +132,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     this.setState({ open: false });
   };
 
-  @autobind
-  async findUser () { 
-
-      const query =  `
-      query customer ($email: String ) {
-          marketplace_customer (where:{primary_email:{ _eq : $email }})
-          {
-              id
-              primary_email
-              secondary_email
-              first_name
-              last_name
-              phone
-              address
-              is_org_admin
-          }
-      }
-      `;
-      // @ts-ignore
-      const client = new GraphQLClient (GRAPHQL, {
-          headers: {
-          'X-Hasura-Access-Key': APIKEY,
-          },
-      });
-
-      let userEmail = localStorage.getItem('email');
-      const variables = {
-          email: userEmail
-      };
-      // @ts-ignore
-      let result = await client.request (query, variables);
-      // @ts-ignore
-      localStorage.setItem ('profile', JSON.stringify(result.marketplace_customer[0]));
-      this.forceUpdate();
-  } 
   render() {
     const { classes, theme } = this.props;
     const { open } = this.state;
