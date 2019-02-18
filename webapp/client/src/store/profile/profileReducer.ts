@@ -14,6 +14,8 @@ const reducer = function(state=defaultState, action: any) {
   switch(action.type) {
     case PROFILE_ACTIONS.SET_PROFILE:
       console.log('SETTING PROFILE IN REDUCER');
+      console.log(action.profile);
+      newState.profile = action.profile;
       break;
     default:
       return state;

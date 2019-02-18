@@ -19,6 +19,7 @@ import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {fileChange} from "../../store/file/actions";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
+import {profileSelector} from "../../store/profile/profileSelector";
 
 interface ComponentProps {
   file: any[],
@@ -40,6 +41,7 @@ interface ComponentProps {
   displaySchemaError: boolean;
   changeSchema: any;
   publishSchema: any;
+  profile: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -100,6 +102,11 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.nextStep();
   }
 
+  componentDidMount() {
+    console.log('IS PROFILE SET');
+    console.log(this.props.profile);
+  }
+
   render() {
     return <div>
       <Grid container={true}>
@@ -132,7 +139,8 @@ function mapStateToProps(state: any, ownProps: any) {
     wizard: state.DatasetFormState.wizard,
     basicInfo: basicInfo(state),
     schema: Object.assign([], schemaSelector(state)),
-    displaySchemaError: state.DatasetFormState.displayNoSchemaError
+    displaySchemaError: state.DatasetFormState.displayNoSchemaError,
+    profile: profileSelector(state)
   }
 }
 

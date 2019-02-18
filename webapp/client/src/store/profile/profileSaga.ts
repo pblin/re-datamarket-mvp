@@ -1,21 +1,15 @@
 import {takeLatest, put} from 'redux-saga/effects';
-import {ProfileService} from "../../services/ProfileService";
-
-const profileService = new ProfileService();
+import {PROFILE_ACTIONS} from "./profileActions";
 
 function* GetProfile(action) {
-  const email = action.email;
 
-  //TODO: CHECK LOCAL STORAGE FIRST
-  console.log('Getting profile in saga');
-  yield profileService.getProfile(email);
+  let profile = localStorage.getItem ('profile');
 
-  yield put({type: 'SET_PROFILE'});
+  yield put({type: PROFILE_ACTIONS.SET_PROFILE, profile});
 }
 
-
 export function* watchProfile() {
-  yield takeLatest('GET_PROFILE', GetProfile);
+  yield takeLatest(PROFILE_ACTIONS.GET_PROFILE, GetProfile);
 }
 
 export function profileSagas() {

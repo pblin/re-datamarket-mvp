@@ -17,4 +17,4 @@ export const basicInfo = createSelector(
       return basicForm.values;
     }
   }
-)
+);
