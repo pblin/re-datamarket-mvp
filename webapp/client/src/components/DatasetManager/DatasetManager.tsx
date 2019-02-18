@@ -20,6 +20,7 @@ import {fileChange} from "../../store/file/actions";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
 import {profileSelector} from "../../store/profile/profileSelector";
+import {getProfile} from "../../store/profile/profileActions";
 
 interface ComponentProps {
   file: any[],
@@ -42,6 +43,7 @@ interface ComponentProps {
   changeSchema: any;
   publishSchema: any;
   profile: any;
+  getProfile: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -105,6 +107,9 @@ class DatasetManager extends React.Component<ComponentProps> {
   componentDidMount() {
     console.log('IS PROFILE SET');
     console.log(this.props.profile);
+    if(!this.props.profile) {
+      this.props.getProfile();
+    }
   }
 
   render() {
@@ -153,7 +158,8 @@ function mapDispatchToProps(dispatch: any) {
     submitBasicInfoForm: () => dispatch(submit('contact')),
     fileChange: (fileId, file) => dispatch(fileChange(fileId, file)),
     shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
-    changeSchema: (name: string, field: string, value) => dispatch(changeSchema(name, field, value))
+    changeSchema: (name: string, field: string, value) => dispatch(changeSchema(name, field, value)),
+    getProfile: () => dispatch(getProfile())
   };
 }
 

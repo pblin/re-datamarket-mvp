@@ -11,7 +11,7 @@ function* GetProfile(action) {
 export function* watchProfile() {
   yield takeLatest(PROFILE_ACTIONS.GET_PROFILE, GetProfile);
 }
-
+ 
 export function profileSagas() {
   return[
     watchProfile()
