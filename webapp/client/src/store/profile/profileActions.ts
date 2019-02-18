@@ -1,0 +1,3 @@
+export enum PROFILE_ACTIONS {
+  SET_PROFILE = "SET_PROFILE"
+}

@@ -2,7 +2,6 @@ import {v1 as uuid} from 'uuid';
 
 //TODO: SET BASE URL AS A PROP
 export class SchemaService {
-  client: any;
   baseUrl: string;
   constructor() {
     this.baseUrl = location.protocol+'//'+location.hostname + ":9000";
@@ -39,8 +38,8 @@ export class SchemaService {
       body: JSON.stringify(body)
     });
 
-    console.log('POST RESULTS');
-    console.log(results);
+    console.debug(results);
+
     return true;
   }
 
