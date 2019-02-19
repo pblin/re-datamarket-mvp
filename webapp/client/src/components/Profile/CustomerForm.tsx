@@ -22,6 +22,7 @@ const renderTextField = ({input, label, meta, custom}) => {
         margin="normal"
         variant={'outlined'}
         label={label}
+        disabled={custom.disabled || false}
         error={meta.touched && meta.error != undefined}
         {...input}
         type={custom.type || 'text'}
@@ -83,7 +84,7 @@ class CustomerForm extends Component<CustomerFormProps> {
           component={renderTextField}
           name="primaryEmail"
           type="text"
-          custom={ {helperText: "Last Name", gridXs: 12, gridSm: 4} }
+          custom={ {helperText: "Last Name", gridXs: 12, gridSm: 4, disabled: true} }
         />
         <Field
           label="Secondary Email"

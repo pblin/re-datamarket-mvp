@@ -13,11 +13,14 @@ import {connect} from "react-redux";
 import CustomerForm from "./CustomerForm";
 import {getProfile, updateProfile} from "../../store/profile/profileActions";
 import {emailSelector, profileSelector} from "../../store/profile/profileSelector";
+import {Grid} from "@material-ui/core";
 
 // @ts-ignore
 const styles = (theme: Theme ) => createStyles ({
   container: {
     display: 'flex',
+    width: '80%',
+    marginTop: '30px',
     flexWrap: 'wrap',
   },
   textField: {
@@ -30,23 +33,16 @@ const styles = (theme: Theme ) => createStyles ({
   menu: {
     width: 200,
   },
+  wrapper: {
+    width: "80%",
+    display: 'flex',
+
+  }
 });
-export interface CustomerIntf {
-  id: number;
-  first_name: string;
-  last_name: string;
-  primary_email: string;
-  secondary_email: string;
-  phone: string,
-  address: string,
-  is_org_admin: boolean;
-}
 
 interface Props {
-  // customer: CustomerIntf;
   classes?: any;
   theme?: any;
-  // findACustomer: Function; 
   auth: Auth0Authentication;
   getProfile: any;
   profile: any;
@@ -73,8 +69,6 @@ class Customer extends React.Component<Props> {
   }
 
   handleProfileSubmit(values) {
-    console.log('Handling profile submit');
-    console.log(values);
     this.props.updateProfile(this.props.email, values);
   }
 
@@ -84,15 +78,17 @@ class Customer extends React.Component<Props> {
     if ( authenticated) {
       return (
 
-        <div> 
-          <App auth={this.props.auth} />
-          <CustomerForm onSubmit={this.handleProfileSubmit}/>
-          <Button color="primary" className={classes.button}
-                  onClick={this.props.submitProfileForm}>
-              <SaveIcon className={classNames(classes.leftIcon, classes.iconLarge)} />
-              Save
-          </Button>
-        </div>
+        <Grid container={true} justify={'center'}>
+          <div className={classes.container}>
+            <App auth={this.props.auth} />
+            <CustomerForm onSubmit={this.handleProfileSubmit}/>
+            <Button color="primary" className={classes.button}
+                    onClick={this.props.submitProfileForm}>
+                <SaveIcon className={classNames(classes.leftIcon, classes.iconLarge)} />
+                Save
+            </Button>
+          </div>
+        </Grid>
       );
     } else {
         // @ts-ignore
