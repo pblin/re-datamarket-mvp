@@ -142,8 +142,15 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
     if (profile !== 'undefined' && profile != null ) {
       profileObj = JSON.parse(profile);
-      // @ts-ignore
-      initial = profileObj.first_name[0].toUpperCase() + profileObj.last_name[0].toUpperCase();
+      if(profileObj['first_name']) {
+        //@ts-ignore
+        initial += profileObj.first_name[0].toUpperCase();
+      }
+
+      if(profileObj['last_name']) {
+        //@ts-ignore
+        initial += profileObj.last_name[0].toUpperCase();
+      }
     } 
 
     return (

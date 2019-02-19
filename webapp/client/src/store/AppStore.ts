@@ -6,10 +6,13 @@ import {all} from 'redux-saga/effects';
 //Sagas
 import {fileSagas} from "./file/fileSaga";
 import {datasetFormSagas} from "./datasetForm/datasetFormSaga";
+import {profileSagas} from "./profile/profileSaga";
 
 //Reducers
 import FileState from "./file/reducers";
 import DatasetFormState from "./datasetForm/reducers";
+import ProfileState from "./profile/profileReducer";
+
 import {reducer as formReducer} from 'redux-form';
 
 export class AppStore {
@@ -40,6 +43,7 @@ export class AppStore {
     const rootReducer = combineReducers({
       FileState,
       DatasetFormState,
+      ProfileState,
       form: formReducer
     });
 
@@ -47,7 +51,8 @@ export class AppStore {
     function* rootSaga() {
       yield all([
         ...fileSagas(),
-        ...datasetFormSagas()
+        ...datasetFormSagas(),
+        ...profileSagas()
       ])
     }
 
