@@ -9,4 +9,26 @@ export class ProfileService {
       return results.json();
     }
   }
+
+  async updateProfile(email: string, profile: any) {
+    console.log('profileService updateProfile');
+    const body = {
+      primaryEmail: email,
+      secondaryEmail: profile.secondaryEmail,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      address: profile.address,
+      phone: profile.phone
+    };
+
+    const results = await fetch(`${config.serverBase}/profile`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    return results.json();
+  }
 }

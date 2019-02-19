@@ -5,16 +5,14 @@ import { Theme, withStyles, createStyles} from '@material-ui/core/styles';
 import { Redirect } from 'auth0-js';
 import App from '../../components/App/App';
 import 'graphql-request';
-import { GraphQLClient } from 'graphql-request';
-import { APIKEY, GRAPHQL } from '../ConfigEnv';
 import { submit } from 'redux-form';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import classNames from 'classnames';
 import {connect} from "react-redux";
 import CustomerForm from "./CustomerForm";
-import {getProfile} from "../../store/profile/profileActions";
-import {profileSelector} from "../../store/profile/profileSelector";
+import {getProfile, updateProfile} from "../../store/profile/profileActions";
+import {emailSelector, profileSelector} from "../../store/profile/profileSelector";
 
 // @ts-ignore
 const styles = (theme: Theme ) => createStyles ({
@@ -52,7 +50,9 @@ interface Props {
   auth: Auth0Authentication;
   getProfile: any;
   profile: any;
+  email: string;
   submitProfileForm: any;
+  updateProfile: any;
 }
 
 class Customer extends React.Component<Props> {
@@ -61,86 +61,10 @@ class Customer extends React.Component<Props> {
     theme: PropTypes.object.isRequired,
   };
 
-  state = {
-    firstName: '',
-    lastName: '',
-    primaryEmail: '',
-    secondaryEmail: '',
-    address: '',
-    phone: '',
-    isOrgAdmin: false,
-    isButtonDisabled: false,
-    checkBuyer: false, 
-    checkSeller: false, 
-    checkValidator: false
-  };
-   // @ts-ignore
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  };
-
-  // @ts-ignore
-  _createCustomer = async () => {
-    const mut = 
-        `mutation insert_marketplace_customer ($objects:[marketplace_customer_insert_input!]!)
-        {
-          insert_marketplace_customer ( 
-            objects:$objects,
-            on_conflict: { 
-              constraint: customer_pkey, 
-              update_columns: [first_name,last_name,secondary_email,address,phone,is_org_admin] 
-            }
-          ) {
-            returning {
-              id
-              primary_email
-              secondary_email
-              first_name
-              last_name
-              address
-              phone
-              is_org_admin
-            }
-          }
-        }
-        `;
-
-    // @ts-ignore
-    const client = new GraphQLClient (GRAPHQL, {
-      headers: {
-        'X-Hasura-Access-Key': APIKEY,
-      },
-    });
-
-    const variables = {
-      objects: [
-        {
-          first_name: this.state.firstName,
-          last_name: this.state.lastName,
-          primary_email: this.state.primaryEmail,
-          secondary_email: this.state.secondaryEmail,
-          address: this.state.address,
-          phone: this.state.phone,
-          is_org_admin: this.state.isOrgAdmin
-        }
-      ]
-     };
-    this.setState({
-        isButtonDisabled: true
-      });
-    
-    let returnData = await client.request(mut, variables);
-    // @ts-ignore
-    localStorage.setItem('profile', JSON.stringify(returnData.insert_marketplace_customer.returning[0]));
-
-    this.setState({
-      isButtonDisabled: false
-    });
-
-  };
-
+  constructor(props: any) {
+    super(props);
+    this.handleProfileSubmit = this.handleProfileSubmit.bind(this);
+  }
 
   componentDidMount() {
     if(!this.props.profile) {
@@ -148,8 +72,10 @@ class Customer extends React.Component<Props> {
     }
   }
 
-  handleProfileSubmit() {
+  handleProfileSubmit(values) {
     console.log('Handling profile submit');
+    console.log(values);
+    this.props.updateProfile(this.props.email, values);
   }
 
   render() {
@@ -162,8 +88,7 @@ class Customer extends React.Component<Props> {
           <App auth={this.props.auth} />
           <CustomerForm onSubmit={this.handleProfileSubmit}/>
           <Button color="primary" className={classes.button}
-                  onClick={this.props.submitProfileForm}
-                  disabled={this.state.isButtonDisabled}>
+                  onClick={this.props.submitProfileForm}>
               <SaveIcon className={classNames(classes.leftIcon, classes.iconLarge)} />
               Save
           </Button>
@@ -178,13 +103,15 @@ class Customer extends React.Component<Props> {
 
 function mapStateToProps(state: any, ownProps: any) {
   return {
-    profile: profileSelector(state)
+    profile: profileSelector(state),
+    email: emailSelector(state)
   }
 }
 
 function mapDispatchToProps(dispatch: any) {
   return {
     getProfile: () => dispatch(getProfile()),
+    updateProfile: (email, profile) => dispatch(updateProfile(email, profile)),
     submitProfileForm: () => dispatch(submit('profile')),
   };
 }

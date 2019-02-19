@@ -40,6 +40,7 @@ export class SchemaService {
 
     console.debug(results);
 
+    //TODO: Return something better
     return true;
   }
 
