@@ -1,13 +1,14 @@
 import * as React from "react";
 import {MenuList, MenuItem, Popper, ClickAwayListener, Paper, Divider} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 const ProfileMenu = ({authenticated, profile, open, onClickAway}) => {
 
   console.log('IS PROFILE MENU OPEN');
   console.log(open);
-  let handleClose = () => {
+  let handleClose = (item) => {
     console.log('Handling Close');
-    onClickAway();
+    onClickAway(item);
   };
 
   return(
@@ -16,13 +17,15 @@ const ProfileMenu = ({authenticated, profile, open, onClickAway}) => {
       placement={"bottom"}
       anchorEl={document.getElementById('avatar')}
       disablePortal>
-      <ClickAwayListener onClickAway={handleClose}>
+      <ClickAwayListener onClickAway={() => handleClose('clickAway')}>
         <Paper>
           <MenuList>
-            <MenuItem onClick={handleClose}><p>Signed in as Test Test</p></MenuItem>
+            <MenuItem><p>Signed in as Test Test</p></MenuItem>
             <Divider />
-            <MenuItem onClick={handleClose}>My Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={() => handleClose('profile')}>
+              <Link to="/profile"><div>My Profile</div></Link>
+            </MenuItem>
+            <MenuItem onClick={() => handleClose('logout')}>Logout</MenuItem>
           </MenuList>
         </Paper>
       </ClickAwayListener>

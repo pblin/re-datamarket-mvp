@@ -154,10 +154,17 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   @autobind
-  handleProfileMenuClickAway() {
+  handleProfileMenuClickAway(itemPressed) {
     console.log('HANDLING MENU CLOSE');
-    this.setState({profileMenuOpen: false});
-    this.forceUpdate();
+    switch(itemPressed) {
+      case 'clickAway':
+        this.setState({profileMenuOpen: false});
+        this.forceUpdate();
+        break;
+      case 'logout':
+        this.logout();
+        break;
+    }
   };
 
   render() {
@@ -200,10 +207,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             {!authenticated && ( 
                 <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
               )
-            }
-            {authenticated && ( 
-              <Button color="inherit" type="submit" onClick={this.logout}>Logout</Button> 
-              ) 
             }
             <div className={classes.grow}></div>
             { (profileObj !== '') && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
