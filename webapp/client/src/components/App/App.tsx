@@ -7,7 +7,6 @@ import {
   AppBar,
   Toolbar,
   List,
-  Typography,
   Divider,
   IconButton,
   ListItem,
@@ -25,6 +24,7 @@ import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
+import Logo from '../../img/Rebloc_logo.png';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import "./App.css";
 
@@ -50,6 +50,10 @@ const styles = (theme: Theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    background: '#47494d'
+  },
+  appLogo: {
+    height: '26px'
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -177,16 +181,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
       }
     }
 
-    /*const renderProfileMenu = (
-      <Menu
-        anchorEl={document.getElementById('avatar')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={this.state.profileMenuOpen}
-      >
-        <MenuItem>Logout</MenuItem>
-      </Menu>
-    );*/
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -202,9 +196,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit"  style={{ borderRight: '0.1em solid white', padding: '0.5em' }}>
-              Rebloc  
-            </Typography>
+            <img src={Logo} className={classes.appLogo}/>
             {!authenticated && ( 
                 <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
               )
