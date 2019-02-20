@@ -14,8 +14,8 @@ import {
   Button,
   withStyles,
   Theme,
-  Menu,
-  MenuItem
+ // Menu,
+ // MenuItem
 } from "@material-ui/core";
 
 import MenuIcon from '@material-ui/icons/Menu';
@@ -36,6 +36,7 @@ import MessageIcon from "@material-ui/icons/Message";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ExploreIcon from "@material-ui/icons/Explore";
 import CloudIcon from "@material-ui/icons/CloudUpload";
+import ProfileMenu from "./ProfileMenu";
 
 const drawerWidth = 240;
 
@@ -148,6 +149,13 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     this.setState({profileMenuOpen: true})
   };
 
+  @autobind
+  handleProfileMenuClickAway() {
+    console.log('HANDLING MENU CLOSE');
+    this.setState({profileMenuOpen: false});
+    this.forceUpdate();
+  };
+
   render() {
     const { classes, theme } = this.props;
     const { open } = this.state;
@@ -169,7 +177,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
       }
     }
 
-    const renderProfileMenu = (
+    /*const renderProfileMenu = (
       <Menu
         anchorEl={document.getElementById('avatar')}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -178,7 +186,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
       >
         <MenuItem>Logout</MenuItem>
       </Menu>
-    );
+    );*/
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -208,7 +216,11 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             <div className={classes.grow}></div>
             { (profileObj !== '') && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
           </Toolbar>
-          {renderProfileMenu}
+          <ProfileMenu
+            open={this.state.profileMenuOpen}
+            onClickAway={this.handleProfileMenuClickAway}
+            authenticated={true}
+            profile={''}/>
         </AppBar>
         <Drawer
           className={classes.drawer}
