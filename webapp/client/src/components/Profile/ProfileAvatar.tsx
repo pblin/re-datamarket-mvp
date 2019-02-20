@@ -10,7 +10,7 @@ class ProfileAvatar extends Component <ProfileProps, {}> {
     render () {
         if (this.props.initial !== null) { 
             return (
-                <Avatar>
+                <Avatar id="avatar">
                     {this.props.initial} 
                 </Avatar>
             );

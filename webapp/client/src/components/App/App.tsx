@@ -1,22 +1,28 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+
+import {
+  Drawer,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  List,
+  Typography,
+  Divider,
+  IconButton,
+  ListItem,
+  Button,
+  withStyles,
+  Theme,
+  Menu,
+  MenuItem
+} from "@material-ui/core";
+
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
-import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
-import { Theme } from '@material-ui/core';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
 import ProfileAvatar from '../Profile/ProfileAvatar';
@@ -59,6 +65,9 @@ const styles = (theme: Theme) => ({
   hide: {
     display: 'none',
   },
+  grow: {
+    flexGrow: 1
+  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -66,7 +75,9 @@ const styles = (theme: Theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-
+  avatar: {
+    marginRight: "50px"
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
@@ -99,6 +110,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
   state = {
     open: false,
+    profileMenuOpen: false
   };
 
   appLinks: AppLink[] = [
@@ -132,6 +144,10 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     this.setState({ open: false });
   };
 
+  handleProfileMenuOpen = () => {
+    this.setState({profileMenuOpen: true})
+  };
+
   render() {
     const { classes, theme } = this.props;
     const { open } = this.state;
@@ -151,8 +167,18 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
         //@ts-ignore
         initial += profileObj.last_name[0].toUpperCase();
       }
-    } 
+    }
 
+    const renderProfileMenu = (
+      <Menu
+        anchorEl={document.getElementById('avatar')}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={this.state.profileMenuOpen}
+      >
+        <MenuItem>Logout</MenuItem>
+      </Menu>
+    );
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -171,7 +197,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             <Typography variant="h6" color="inherit"  style={{ borderRight: '0.1em solid white', padding: '0.5em' }}>
               Rebloc  
             </Typography>
-            { (profileObj !== '') && (<ProfileAvatar initial={initial}/> )}
             {!authenticated && ( 
                 <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
               )
@@ -180,7 +205,10 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
               <Button color="inherit" type="submit" onClick={this.logout}>Logout</Button> 
               ) 
             }
+            <div className={classes.grow}></div>
+            { (profileObj !== '') && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
           </Toolbar>
+          {renderProfileMenu}
         </AppBar>
         <Drawer
           className={classes.drawer}
