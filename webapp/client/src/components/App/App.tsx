@@ -1,35 +1,42 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+
+import {
+  Drawer,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  List,
+  Divider,
+  IconButton,
+  ListItem,
+  Button,
+  withStyles,
+  Theme,
+ // Menu,
+ // MenuItem
+} from "@material-ui/core";
+
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
-import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
-import { Theme } from '@material-ui/core';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
+import Logo from '../../img/Rebloc_logo.png';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import "./App.css";
 
 //Icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
-import HistoryIcon from "@material-ui/icons/History";
-import MessageIcon from "@material-ui/icons/Message";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+//import HistoryIcon from "@material-ui/icons/History";
+//import MessageIcon from "@material-ui/icons/Message";
+//import NotificationsIcon from "@material-ui/icons/Notifications";
 import ExploreIcon from "@material-ui/icons/Explore";
 import CloudIcon from "@material-ui/icons/CloudUpload";
+import ProfileMenu from "./ProfileMenu";
 
 const drawerWidth = 240;
 
@@ -43,6 +50,16 @@ const styles = (theme: Theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    background: '#47494d'
+  },
+  loginBtn: {
+    background: "#d15f3e",
+    marginRight: "50px",
+    fontWeight: 600,
+    padding: "6px 22px"
+  },
+  appLogo: {
+    height: '26px'
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -59,6 +76,9 @@ const styles = (theme: Theme) => ({
   hide: {
     display: 'none',
   },
+  grow: {
+    flexGrow: 1
+  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -66,7 +86,9 @@ const styles = (theme: Theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-
+  avatar: {
+    marginRight: "50px"
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
@@ -99,19 +121,20 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
   state = {
     open: false,
+    profileMenuOpen: false
   };
 
   appLinks: AppLink[] = [
     new AppLink('Market Place', '/dashboard', (<DashboardIcon/>)),
     new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
     new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
-    new AppLink('News', '/news', (<NotificationsIcon/>))
+    //new AppLink('News', '/news', (<NotificationsIcon/>))
   ];
 
   userAppLinks: AppLink[] = [
     new AppLink('Profie', '/profile', (<PersonIcon/>)),
-    new AppLink('Order History', '/orders', <HistoryIcon/>),
-    new AppLink('Message', '/message', (<MessageIcon/>))
+    //new AppLink('Order History', '/orders', <HistoryIcon/>),
+    //new AppLink('Message', '/message', (<MessageIcon/>))
   ];
 
   @autobind
@@ -130,6 +153,24 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   handleDrawerClose = () => {
     this.setState({ open: false });
+  };
+
+  handleProfileMenuOpen = () => {
+    this.setState({profileMenuOpen: true})
+  };
+
+  @autobind
+  handleProfileMenuClickAway(itemPressed) {
+    console.log('HANDLING MENU CLOSE');
+    switch(itemPressed) {
+      case 'clickAway':
+        this.setState({profileMenuOpen: false});
+        this.forceUpdate();
+        break;
+      case 'logout':
+        this.logout();
+        break;
+    }
   };
 
   render() {
@@ -151,7 +192,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
         //@ts-ignore
         initial += profileObj.last_name[0].toUpperCase();
       }
-    } 
+    }
 
     return (
       <div className={classes.root}>
@@ -168,19 +209,18 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit"  style={{ borderRight: '0.1em solid white', padding: '0.5em' }}>
-              Rebloc  
-            </Typography>
-            { (profileObj !== '') && (<ProfileAvatar initial={initial}/> )}
-            {!authenticated && ( 
-                <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
-              )
-            }
-            {authenticated && ( 
-              <Button color="inherit" type="submit" onClick={this.logout}>Logout</Button> 
-              ) 
+            <img src={Logo} className={classes.appLogo}/>
+            <div className={classes.grow}></div>
+            { (profileObj !== '' && authenticated) && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
+            {!authenticated && (
+              <Button color="inherit" type="submit" onClick={this.login} className={classes.loginBtn}>Login</Button>
+            )
             }
           </Toolbar>
+          <ProfileMenu
+            open={this.state.profileMenuOpen}
+            onClickAway={this.handleProfileMenuClickAway}
+            profile={profileObj}/>
         </AppBar>
         <Drawer
           className={classes.drawer}

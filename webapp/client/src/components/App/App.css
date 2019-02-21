@@ -42,3 +42,16 @@
 .app-link a svg {
   font-size: 24px;
 }
+
+.tab-bar {
+  margin-top: 0px;
+  /*background-color: #FFF;
+  color: black;*/
+  height: 40px !important;
+  min-height: 40px !important;
+}
+
+.tab-bar .tab {
+  height: 40px !important;
+  min-height: 40px !important;
+}
