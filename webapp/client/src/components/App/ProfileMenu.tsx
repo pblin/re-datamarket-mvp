@@ -2,7 +2,7 @@ import * as React from "react";
 import {MenuList, MenuItem, Popper, ClickAwayListener, Paper, Divider} from "@material-ui/core";
 import {Link} from "react-router-dom";
 
-const ProfileMenu = ({authenticated, profile, open, onClickAway}) => {
+const ProfileMenu = ({profile, open, onClickAway}) => {
 
   console.log('IS PROFILE MENU OPEN');
   console.log(open);
@@ -20,8 +20,13 @@ const ProfileMenu = ({authenticated, profile, open, onClickAway}) => {
       <ClickAwayListener onClickAway={() => handleClose('clickAway')}>
         <Paper>
           <MenuList>
-            <MenuItem><p>Signed in as Test Test</p></MenuItem>
-            <Divider />
+            {(profile['first_name'] && profile['last_name']) && (
+              <div>
+                <MenuItem><p>Signed in as {profile['first_name']} {profile['last_name']}</p></MenuItem>
+                <Divider />
+              </div>
+            )
+            }
             <MenuItem onClick={() => handleClose('profile')}>
               <Link to="/profile"><div>My Profile</div></Link>
             </MenuItem>

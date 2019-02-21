@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import PersonIcon from "@material-ui/icons/Person";
 
 export interface ProfileProps {
     initial: string;
@@ -8,7 +8,7 @@ export interface ProfileProps {
 class ProfileAvatar extends Component <ProfileProps, {}> {
 
     render () {
-        if (this.props.initial !== null) { 
+        if (this.props.initial !== null && this.props.initial != '') {
             return (
                 <Avatar id="avatar">
                     {this.props.initial} 
@@ -16,9 +16,9 @@ class ProfileAvatar extends Component <ProfileProps, {}> {
             );
         } else {
             return ( 
-                <Typography variant="title"> 
-                    No Profile Registered.
-                </Typography>
+                <Avatar id="avatar">
+                   <PersonIcon/>
+                </Avatar>
             );
         }
     }

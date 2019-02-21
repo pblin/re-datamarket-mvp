@@ -52,6 +52,12 @@ const styles = (theme: Theme) => ({
     }),
     background: '#47494d'
   },
+  loginBtn: {
+    background: "#d15f3e",
+    marginRight: "50px",
+    fontWeight: 600,
+    padding: "6px 22px"
+  },
   appLogo: {
     height: '26px'
   },
@@ -204,18 +210,17 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
               <MenuIcon />
             </IconButton>
             <img src={Logo} className={classes.appLogo}/>
-            {!authenticated && ( 
-                <Button color="inherit" type="submit" onClick={this.login}>Login</Button> 
-              )
-            }
             <div className={classes.grow}></div>
-            { (profileObj !== '') && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
+            { (profileObj !== '' && authenticated) && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
+            {!authenticated && (
+              <Button color="inherit" type="submit" onClick={this.login} className={classes.loginBtn}>Login</Button>
+            )
+            }
           </Toolbar>
           <ProfileMenu
             open={this.state.profileMenuOpen}
             onClickAway={this.handleProfileMenuClickAway}
-            authenticated={true}
-            profile={''}/>
+            profile={profileObj}/>
         </AppBar>
         <Drawer
           className={classes.drawer}
