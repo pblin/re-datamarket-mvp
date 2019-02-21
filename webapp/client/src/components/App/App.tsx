@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-
+import {connect} from 'react-redux';
 import {
   Drawer,
   CssBaseline,
@@ -37,6 +37,8 @@ import PersonIcon from "@material-ui/icons/Person";
 import ExploreIcon from "@material-ui/icons/Explore";
 import CloudIcon from "@material-ui/icons/CloudUpload";
 import ProfileMenu from "./ProfileMenu";
+import {updateProfileMenuOpen} from "../../store/app/appActions";
+import {appSelector} from "../../store/app/appSelector";
 
 const drawerWidth = 240;
 
@@ -111,6 +113,8 @@ interface AppProps {
   classes: any;
   theme?: any;
   auth: Auth0Authentication;
+  profileMenuOpen: boolean;
+  updateProfileMenuOpen: any;
 }
 
 class PersistentDrawerLeft extends React.Component <AppProps> {
@@ -156,7 +160,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   handleProfileMenuOpen = () => {
-    this.setState({profileMenuOpen: true})
+    this.props.updateProfileMenuOpen(true);
   };
 
   @autobind
@@ -164,7 +168,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     console.log('HANDLING MENU CLOSE');
     switch(itemPressed) {
       case 'clickAway':
-        this.setState({profileMenuOpen: false});
+        this.props.updateProfileMenuOpen(false);
         this.forceUpdate();
         break;
       case 'logout':
@@ -174,6 +178,8 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   render() {
+    console.log('HERE IS PROFILE MENU OPEN');
+    console.log(this.props.profileMenuOpen);
     const { classes, theme } = this.props;
     const { open } = this.state;
     const { authenticated } = this.props.auth;
@@ -218,7 +224,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             }
           </Toolbar>
           <ProfileMenu
-            open={this.state.profileMenuOpen}
+            open={this.props.profileMenuOpen}
             onClickAway={this.handleProfileMenuClickAway}
             profile={profileObj}/>
         </AppBar>
@@ -263,4 +269,19 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(PersistentDrawerLeft);
+function mapStateToProps (state: any) {
+  return {
+    profileMenuOpen: appSelector(state).profileMenuOpen
+  };
+};
+
+function mapDispatchToProps(dispatch: any) {
+  return {
+    updateProfileMenuOpen: (isOpen: boolean) => dispatch(updateProfileMenuOpen(isOpen))
+  }
+}
+
+
+
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(PersistentDrawerLeft));
+
