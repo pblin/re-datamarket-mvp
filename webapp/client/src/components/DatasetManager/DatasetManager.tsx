@@ -19,8 +19,10 @@ import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {fileChange} from "../../store/file/actions";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
-import {profileSelector} from "../../store/profile/profileSelector";
+import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import {getProfile} from "../../store/profile/profileActions";
+import JumboPaper from "../Common/jumboPaper";
+import {withRouter} from "react-router";
 
 interface ComponentProps {
   file: any[],
@@ -44,6 +46,8 @@ interface ComponentProps {
   publishSchema: any;
   profile: any;
   getProfile: any;
+  isProfileSet: boolean;
+  history: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -93,7 +97,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   publish() {
-    this.props.publishSchema(this.props.basicInfo, this.props.schema);
+    this.props.publishSchema(this.props.basicInfo, this.props.schema, this.props.profile.id);
   }
 
   onWizardPrev() {
@@ -113,46 +117,62 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   render() {
-    return <div>
-      <Grid container={true}>
-        <DatasetWizard
-          steps={this.props.wizard.steps}
-          onNext={this.onWizardNext}
-          onPrev={this.onWizardPrev}
-          currentStep={this.props.wizard.currentStep}
-        >
-          <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
-          <SchemaUpload
-            onSchemaFileChange={this.onSchemaFileChange}
-            onSchemaUpload={this.onSchemaUpload}
-            onSchemaChange={this.onSchemaChange}
-            schemaFile={this.props.schemaFile}
-            errors={this.props.schemaFile.errors}
-            schema={this.props.schema}
-            displayNoSchemaError={this.props.displaySchemaError}
-          />
-          <PublishForm basicDetails={this.props.basicInfo}></PublishForm>
-        </DatasetWizard>
-      </Grid>
-    </div>
+    if(this.props.isProfileSet) {
+      return <div>
+        <Grid container={true}>
+          <DatasetWizard
+            steps={this.props.wizard.steps}
+            onNext={this.onWizardNext}
+            onPrev={this.onWizardPrev}
+            currentStep={this.props.wizard.currentStep}
+          >
+            <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
+            <SchemaUpload
+              onSchemaFileChange={this.onSchemaFileChange}
+              onSchemaUpload={this.onSchemaUpload}
+              onSchemaChange={this.onSchemaChange}
+              schemaFile={this.props.schemaFile}
+              errors={this.props.schemaFile.errors}
+              schema={this.props.schema}
+              displayNoSchemaError={this.props.displaySchemaError}
+            />
+            <PublishForm basicDetails={this.props.basicInfo}></PublishForm>
+          </DatasetWizard>
+        </Grid>
+      </div>
+    } else {
+       return (
+         <div>
+           <JumboPaper
+             title={"Welcome,"}
+             content={"Creating new schemas requires a profile. Please create a profile before continuing"}
+             buttonText={"Create Profile"}
+             handleClick={() => {this.props.history.push('/profile')}}
+           />
+         </div>
+       )
+    }
   }
 }
 
 function mapStateToProps(state: any, ownProps: any) {
+  console.log('MAPPING STATE TO PROPS');
+  console.log(state);
   return {
     schemaFile: Object.assign({}, getFileState(state).files.find(file => file.fileId == 'schemaFile')),
     wizard: state.DatasetFormState.wizard,
     basicInfo: basicInfo(state),
     schema: Object.assign([], schemaSelector(state)),
     displaySchemaError: state.DatasetFormState.displayNoSchemaError,
-    profile: profileSelector(state)
+    profile: profileSelector(state),
+    isProfileSet: isProfileSet(state)
   }
 }
 
 function mapDispatchToProps(dispatch: any) {
   return {
     onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
-    publishSchema: (basicInfo: any, schema: any[]) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema}),
+    publishSchema: (basicInfo: any, schema: any[], id: any) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id}),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),
@@ -162,5 +182,6 @@ function mapDispatchToProps(dispatch: any) {
     getProfile: () => dispatch(getProfile())
   };
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(DatasetManager);
+export default withRouter(
+   connect(mapStateToProps, mapDispatchToProps)(DatasetManager)
+);

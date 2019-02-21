@@ -31,9 +31,9 @@ import "./App.css";
 //Icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
-import HistoryIcon from "@material-ui/icons/History";
-import MessageIcon from "@material-ui/icons/Message";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+//import HistoryIcon from "@material-ui/icons/History";
+//import MessageIcon from "@material-ui/icons/Message";
+//import NotificationsIcon from "@material-ui/icons/Notifications";
 import ExploreIcon from "@material-ui/icons/Explore";
 import CloudIcon from "@material-ui/icons/CloudUpload";
 import ProfileMenu from "./ProfileMenu";
@@ -128,13 +128,13 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     new AppLink('Market Place', '/dashboard', (<DashboardIcon/>)),
     new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
     new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
-    new AppLink('News', '/news', (<NotificationsIcon/>))
+    //new AppLink('News', '/news', (<NotificationsIcon/>))
   ];
 
   userAppLinks: AppLink[] = [
     new AppLink('Profie', '/profile', (<PersonIcon/>)),
-    new AppLink('Order History', '/orders', <HistoryIcon/>),
-    new AppLink('Message', '/message', (<MessageIcon/>))
+    //new AppLink('Order History', '/orders', <HistoryIcon/>),
+    //new AppLink('Message', '/message', (<MessageIcon/>))
   ];
 
   @autobind

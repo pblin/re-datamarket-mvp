@@ -23,3 +23,27 @@
   background-color: #f2dede;
   border-color: #ebccd1;
 }
+
+/* Jumbo-paper */
+
+.jumbo-paper {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+/* Refactor this into different app buttons*/
+.jumbo-paper .jumbo-title {
+  font-weight: 300;
+  padding: 20px 0 0 20px;
+}
+
+.jumbo-paper .jumbo-button {
+  background: #668eac;
+  color: white;
+  margin: 20px;
+}
+
+.jumbo-paper .jumbo-button:hover {
+  background: #4D6B82
+}
