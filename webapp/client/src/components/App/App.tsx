@@ -151,6 +151,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   @autobind
   logout() {
+    console.log('Logging out');
     this.props.auth.logout();
     //window.location.replace('/home');
   }
@@ -168,6 +169,8 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   @autobind
   handleProfileMenuClickAway(itemPressed) {
+    console.log('THE ITEM PRESSED');
+    console.log(itemPressed);
     switch(itemPressed) {
       case 'clickAway':
         this.props.updateProfileMenuOpen(false);

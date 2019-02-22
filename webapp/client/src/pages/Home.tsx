@@ -4,12 +4,17 @@ import { Auth0Authentication } from '..//auth/Auth0Authentication';
 import {TimelineMax, Linear} from 'greensock';
 import './main.css';
 import JumboPaper from "../components/Common/jumboPaper";
-//import {connect} from "react-redux";
+import history from "../utils/history";
+import {connect} from "react-redux";
+import {profileSelector} from "../store/profile/profileSelector";
+import {getProfile} from "../store/profile/profileActions";
 
 interface HomeProps {
   auth: Auth0Authentication;
+  getProfile: any;
+  profile: any;
 }
-export default class Home extends React.Component<HomeProps> {
+class Home extends React.Component<HomeProps> {
   @autobind
   login() {
     this.props.auth.login();
@@ -19,17 +24,48 @@ export default class Home extends React.Component<HomeProps> {
     this.props.auth.logout();
   }
 
+  componentWillMount(): void {
+    console.log('GETTING PROFILE');
+    this.props.getProfile();
+  }
+
   componentDidMount(): void {
     init();
   }
 
   navToProfile() {
-    console.log('Should Nav to Profile')
+    history.push('/profile');
+  }
+
+  navToMarketplace() {
+    history.push('/dashboard');
+  }
+
+  renderJumboPaper() {
+    if(!this.props.profile && this.props.auth.authenticated) {
+      return (
+        <JumboPaper
+          title={"Welcome to ReBloc,"}
+          content={"Please create a profile to continue."}
+          handleClick={this.navToProfile}
+          buttonText={"Create Profile"}/>
+      )
+    } else if(this.props.profile && this.props.auth.authenticated) {
+       return (
+         <JumboPaper
+           title={`Welcome back to ReBloc, ${this.props.profile['first_name']} ${this.props.profile['last_name']}`}
+           content={`Please visit the marketplace.`}
+           handleClick={this.navToMarketplace}
+           buttonText={"Go To The Marketplace"}/>
+       )
+    }
+
   }
 
   render() {
     const { authenticated } = this.props.auth;
-   
+    console.log('HERE ARE THE HOME PROPS');
+    console.log(this.props);
     return (
       <div>
         {!authenticated && (
@@ -57,17 +93,12 @@ export default class Home extends React.Component<HomeProps> {
           </div>
 
         </section>)}
-        {authenticated && (
-          <JumboPaper
-            title={"Welcome to ReBloc,"}
-            content={"Please create a profile to continue"}
-            handleClick={this.navToProfile}
-            buttonText={"Create Profile"}/>
-        )}
+        {this.renderJumboPaper()}
       </div>
     );
   }
 }
+
 
 function init() {
 
@@ -96,16 +127,18 @@ function init() {
   window.addEventListener("resize", coverup, false)
 }
 
-/*function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+    console.log('HOME GETTING STATE');
+    console.log(state);
+    return {
+      profile: profileSelector(state)
+    };
 }
 
-function mapDispatchToProps() {
-  return {};
-}*/
+function mapDispatchToProps(dispatch) {
+    return {
+      getProfile: () => dispatch(getProfile())
+    };
+}
 
-//export default withRouter(
-//  connect(mapStateToProps, mapDispatchToProps)(Home as any)
-//);
-
-//export default connect(mapStateToProps, mapDispatchToProps)(Home as any)
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
