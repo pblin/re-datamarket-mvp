@@ -176,8 +176,8 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
         this.props.updateProfileMenuOpen(false);
         break;
       case 'logout':
-        this.props.updateProfileMenuOpen(false);
         this.logout();
+        this.props.updateProfileMenuOpen(false);
         break;
       case 'profile':
         this.props.updateProfileMenuOpen(false);
