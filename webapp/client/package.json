@@ -31,6 +31,7 @@
     "graphql": "^14.0.2",
     "graphql-request": "^1.8.2",
     "graphql-tools": "^4.0.3",
+    "greensock": "^1.20.2",
     "history": "^4.7.2",
     "jquery": "^3.3.1",
     "material-ui-search-bar": "^1.0.0-beta.13",

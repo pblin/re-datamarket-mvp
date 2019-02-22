@@ -10,7 +10,7 @@ import {
   Divider,
   IconButton,
   ListItem,
-  Button,
+ // Button,
   withStyles,
   Theme,
  // Menu,
@@ -59,6 +59,9 @@ const styles = (theme: Theme) => ({
     marginRight: "50px",
     fontWeight: 600,
     padding: "6px 22px"
+  },
+  marginLeft50: {
+    marginLeft: "50px"
   },
   appLogo: {
     height: '26px'
@@ -165,21 +168,21 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   @autobind
   handleProfileMenuClickAway(itemPressed) {
-    console.log('HANDLING MENU CLOSE');
     switch(itemPressed) {
       case 'clickAway':
         this.props.updateProfileMenuOpen(false);
-        this.forceUpdate();
         break;
       case 'logout':
+        this.props.updateProfileMenuOpen(false);
         this.logout();
+        break;
+      case 'profile':
+        this.props.updateProfileMenuOpen(false);
         break;
     }
   };
 
   render() {
-    console.log('HERE IS PROFILE MENU OPEN');
-    console.log(this.props.profileMenuOpen);
     const { classes, theme } = this.props;
     const { open } = this.state;
     const { authenticated } = this.props.auth;
@@ -207,21 +210,21 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
           className={classes.appBar}
         >
           <Toolbar disableGutters={!open}>
-            <IconButton
+            {authenticated && (<IconButton
               color="inherit"
               aria-label="Open drawer"
               onClick={this.handleDrawerOpen}
               className={classes.menuButton}
             >
               <MenuIcon />
-            </IconButton>
-            <img src={Logo} className={classes.appLogo}/>
+            </IconButton>)}
+            <Link to={"/home"}><img src={Logo} className={classes.appLogo + ' ' + (authenticated ? '': classes.marginLeft50)}/></Link>
             <div className={classes.grow}></div>
             { (profileObj !== '' && authenticated) && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
-            {!authenticated && (
+            {/*!authenticated && (
               <Button color="inherit" type="submit" onClick={this.login} className={classes.loginBtn}>Login</Button>
             )
-            }
+            */}
           </Toolbar>
           <ProfileMenu
             open={this.props.profileMenuOpen}
