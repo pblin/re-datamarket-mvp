@@ -11,6 +11,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     super(props);
   }
 
+  /*TODO: Make this responsive */
   render() {
     return (
       <div>

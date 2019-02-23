@@ -12,6 +12,7 @@ import {profileSagas} from "./profile/profileSaga";
 import FileState from "./file/reducers";
 import DatasetFormState from "./datasetForm/reducers";
 import ProfileState from "./profile/profileReducer";
+import MarketplaceState from './marketplace/marketplaceReducer';
 import AppState from './app/appReducer';
 
 import {reducer as formReducer} from 'redux-form';
@@ -45,6 +46,7 @@ export class AppStore {
       FileState,
       DatasetFormState,
       ProfileState,
+      MarketplaceState,
       AppState,
       form: formReducer
     });
