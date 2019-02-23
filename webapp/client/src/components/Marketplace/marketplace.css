@@ -1,0 +1,6 @@
+.marketplace-toolbar {
+  border: 1px solid black;
+  min-height: 0px !important;
+  border-bottom: 1px solid rgba(0,0,0,0.26);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}

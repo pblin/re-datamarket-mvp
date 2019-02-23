@@ -7,6 +7,7 @@ import { Router } from 'react-router-dom';
 import { WebAuthentication } from '../auth/WebAuthentication';
 import history from './history';
 import DatasetManager from "../components/DatasetManager/DatasetManager";
+import MarketplaceV2 from "../components/Marketplace/MarketplaceV2";
 import App from '../components/App/App';
 
 const auth = new WebAuthentication();
@@ -61,6 +62,12 @@ const Routes: SFC<{}> = () => {
             <PrivateRoute
               path="/dataset-manager"
               component={DatasetManager}
+              auth={auth}
+              authenticated={auth.authenticated}
+            />
+            <PrivateRoute
+              path="/marketplace"
+              component={MarketplaceV2}
               auth={auth}
               authenticated={auth.authenticated}
             />

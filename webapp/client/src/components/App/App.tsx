@@ -24,7 +24,7 @@ import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
-import Logo from '../../img/Rebloc_logo.png';
+import Logo from '../../img/rebloc_logo.svg';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import "./App.css";
 
@@ -211,6 +211,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
         <CssBaseline />
         <AppBar
           className={classes.appBar}
+          position={"sticky"}
         >
           <Toolbar disableGutters={!open}>
             {authenticated && (<IconButton
