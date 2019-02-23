@@ -8,15 +8,7 @@ const SchemaList = ({schemas, onSchemaChange}) => {
     onSchemaChange(props.rowData.name, props.field, value);
   };
 
-  /*let validator = (props) => {
-    console.log('validator');
-    console.log(props);
-    return false;
-  };*/
-
   let inputEditor = (props) => {
-    console.log('input editor');
-    console.log(props);
     return (
       <input
         value={props.rowData[props.field]}
