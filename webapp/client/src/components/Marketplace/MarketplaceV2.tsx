@@ -13,6 +13,7 @@ interface ComponentProps {
   profile: any;
   getProfile: any;
   getUserSchemas: any;
+  getAllSchemas: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -39,8 +40,9 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     if(!this.props.profile) {
       //Display profile warning
     } else {
-      this.getUserSchemas(this.props.profile.id);
+      //this.getUserSchemas(this.props.profile.id);
     }
+    this.props.getAllSchemas();
   }
 
   handleSchemaChange(val) {
@@ -61,7 +63,8 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
-    console.log(state)
+  console.log('MARKETPLACE STATE');
+  console.log(state);
   return {
     schemaFilter: state.MarketplaceState.schemaFilter,
     profile: profileSelector(state)
@@ -71,7 +74,8 @@ function mapStateToProps(state: any, ownProps: any) {
 function mapDispatchToProps(dispatch: any) {
   return {
     updateSchemaFilter: (filter: string) => dispatch(updateSchemaFilter(filter)),
-    getUserSchemas: (id) => dispatch({type: MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, id})
+    getUserSchemas: (id) => dispatch({type: MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, id}),
+    getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS})
   };
 }
 export default withRouter(
