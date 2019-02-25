@@ -1,4 +1,5 @@
 import {v1 as uuid} from 'uuid';
+import {config} from "./ServiceConfig";
 
 //TODO: SET BASE URL AS A PROP
 export class SchemaService {
@@ -42,6 +43,15 @@ export class SchemaService {
 
     //TODO: Return something better
     return true;
+  }
+
+  async getUserSchemas(id: string) {
+    const results = await fetch(`${config.serverBase}/schema/${id}`);
+    if(results.status !== 200) {
+      return [];
+    } else {
+      return results.json();
+    }
   }
 
 }

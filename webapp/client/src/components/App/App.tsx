@@ -39,6 +39,8 @@ import CloudIcon from "@material-ui/icons/CloudUpload";
 import ProfileMenu from "./ProfileMenu";
 import {updateProfileMenuOpen} from "../../store/app/appActions";
 import {appSelector} from "../../store/app/appSelector";
+import {getProfile} from "../../store/profile/profileActions";
+import {profileSelector} from "../../store/profile/profileSelector";
 
 const drawerWidth = 240;
 
@@ -118,6 +120,8 @@ interface AppProps {
   auth: Auth0Authentication;
   profileMenuOpen: boolean;
   updateProfileMenuOpen: any;
+  getProfile: any;
+  profile: any;
 }
 
 class PersistentDrawerLeft extends React.Component <AppProps> {
@@ -167,10 +171,15 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     this.props.updateProfileMenuOpen(true);
   };
 
+  componentDidMount(): void {
+    if(!this.props.profile) {
+      console.log('getting profile');
+      this.props.getProfile();
+    }
+  }
+
   @autobind
   handleProfileMenuClickAway(itemPressed) {
-    console.log('THE ITEM PRESSED');
-    console.log(itemPressed);
     switch(itemPressed) {
       case 'clickAway':
         this.props.updateProfileMenuOpen(false);
@@ -211,7 +220,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
         <CssBaseline />
         <AppBar
           className={classes.appBar}
-          position={"sticky"}
+          position={"static"}
         >
           <Toolbar disableGutters={!open}>
             {authenticated && (<IconButton
@@ -278,13 +287,15 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
 function mapStateToProps (state: any) {
   return {
-    profileMenuOpen: appSelector(state).profileMenuOpen
+    profileMenuOpen: appSelector(state).profileMenuOpen,
+    profile: profileSelector(state)
   };
 };
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    updateProfileMenuOpen: (isOpen: boolean) => dispatch(updateProfileMenuOpen(isOpen))
+    updateProfileMenuOpen: (isOpen: boolean) => dispatch(updateProfileMenuOpen(isOpen)),
+    getProfile: () => dispatch(getProfile())
   }
 }
 

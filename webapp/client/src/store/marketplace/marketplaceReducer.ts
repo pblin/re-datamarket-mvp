@@ -17,6 +17,10 @@ const reducer = function(state=defaultState, action: any) {
       console.log(action);
       newState.schemaFilter = action.schemaFilter;
       break;
+    case MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED:
+      console.log('SCHEMAS RETRIEVED');
+      console.log(action);
+      break;
     default:
       return state;
   }
