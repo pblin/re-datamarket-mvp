@@ -8,7 +8,8 @@ import {ToolbarOption} from "./ToolbarOption";
 import {profileSelector} from "../../store/profile/profileSelector";
 import SchemaList from "./SchemaList";
 import {marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
-import {Grid} from "@material-ui/core";
+import {Grid, Button} from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 
 interface ComponentProps {
   schemaFilter: boolean;
@@ -63,6 +64,12 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         />
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
+            <Grid container={true} justify={"flex-end"}>
+              <Button variant="contained" color="secondary" className="add-schema">
+                Add
+                <AddIcon/>
+              </Button>
+            </Grid>
             <Grid item xs={12} sm={12}>
               <SchemaList schemas={this.props.schemas}/>
             </Grid>

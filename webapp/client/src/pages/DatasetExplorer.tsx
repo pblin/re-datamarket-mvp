@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { GraphQLClient } from 'graphql-request';
 import { Auth0Authentication } from '..//auth/Auth0Authentication';
 import Grid from '@material-ui/core/Grid';
-import { App, DatasetList} from '../components';
+import { DatasetList} from '../components';
 import { APIKEY, GRAPHQL } from '../components/ConfigEnv';
 // import {Link} from 'react-router-dom';
 import {GMap} from 'primereact/gmap';
@@ -152,7 +152,6 @@ class DataMap extends Component<MapProps, MapState> {
 
     return (
         <div>
-            <App auth={this.props.auth} {...this.props} />
                 { authenticated && 
                     <div className="content-section implementation">
                         <Growl ref={(el) => { this.growl = el; }}></Growl>
