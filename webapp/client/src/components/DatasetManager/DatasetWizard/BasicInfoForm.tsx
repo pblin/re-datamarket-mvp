@@ -60,6 +60,15 @@ const reduxFormValidator = new ReduxFormValidator();
 const validate = (values) => {
   let errors = reduxFormValidator.validate(values, [
     {
+      fieldName: 'name',
+      errors: [
+        {type: ERROR_TYPE.REQUIRED}
+      ],
+      errorMessages: [
+        'Name is required'
+      ]
+    },
+    {
       fieldName: 'description',
       errors: [
         {type: ERROR_TYPE.REQUIRED}
@@ -172,30 +181,37 @@ class BasicInfoForm extends Component<BasicFormProps> {
         <form onSubmit={this.props.handleSubmit}>
           <Grid spacing={24} container={true} >
             <Field
+              label="Name"
+              component={renderTextField}
+              name="name"
+              type="text"
+              custom={ {helperText: "Name", gridXs: 12, gridSm: 6} }
+            />
+            <Field
               label="Description"
               component={renderTextField}
               name="description"
               type="text"
-              custom={ {helperText: "Description", gridXs: 12, gridSm: 5} }
+              custom={ {helperText: "Description", gridXs: 12, gridSm: 6} }
             />
             <Field
               label="Search Terms"
               component={renderTextField}
               name="searchTerms"
               type="text"
-              custom={ {helperText: "Search Terms", gridXs: 12, gridSm: 3} }
+              custom={ {helperText: "Search Terms", gridXs: 12, gridSm: 6} }
             />
             <Field
               label="Country"
               component={renderSelectField}
               name="country"
-              custom={ {helperText: "Country", gridXs: 12, gridSm: 2, options: ['USA']} }
+              custom={ {helperText: "Country", gridXs: 12, gridSm: 3, options: ['USA']} }
             />
             <Field
               label="State"
               component={renderSelectField}
               name="state"
-              custom={ {helperText: "State", gridXs: 12, gridSm: 2, options: ['New York']} }
+              custom={ {helperText: "State", gridXs: 12, gridSm: 3, options: ['New York']} }
             />
             <Field
               label="Sample Api Key"

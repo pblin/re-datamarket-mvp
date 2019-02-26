@@ -6,6 +6,9 @@ import {MARKETPLACE_ACTIONS, updateSchemaFilter} from "../../store/marketplace/m
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
 import {profileSelector} from "../../store/profile/profileSelector";
+import SchemaList from "./SchemaList";
+import {marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
+import {Grid} from "@material-ui/core";
 
 interface ComponentProps {
   schemaFilter: boolean;
@@ -14,6 +17,7 @@ interface ComponentProps {
   getProfile: any;
   getUserSchemas: any;
   getAllSchemas: any;
+  schemas: any[];
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -57,17 +61,23 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
           schemaFilter={this.props.schemaFilter}
           toolbarOptions={this.toolbarOptions}
         />
+        <Grid container={true} justify={'center'}>
+          <div className={"app-section-wrapper"}>
+            <Grid item xs={12} sm={12}>
+              <SchemaList schemas={this.props.schemas}/>
+            </Grid>
+          </div>
+        </Grid>
       </div>
     )
   }
 }
 
 function mapStateToProps(state: any, ownProps: any) {
-  console.log('MARKETPLACE STATE');
-  console.log(state);
   return {
-    schemaFilter: state.MarketplaceState.schemaFilter,
-    profile: profileSelector(state)
+    schemaFilter: marketplaceSelector(state).schemaFilter,
+    profile: profileSelector(state),
+    schemas: marketplaceSelector(state).schemas
   }
 }
 
