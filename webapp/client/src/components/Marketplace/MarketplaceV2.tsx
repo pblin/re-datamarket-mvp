@@ -32,6 +32,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.handleSchemaChange = this.handleSchemaChange.bind(this);
     this.getUserSchemas = this.getUserSchemas.bind(this);
     this.openDialog = this.openDialog.bind(this);
+    this.closeDialog = this.closeDialog.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -61,6 +62,10 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.props.changeDialogState(true);
   }
 
+  closeDialog() {
+    this.props.changeDialogState(false);
+  }
+
   render() {
     return (
       <div>
@@ -85,7 +90,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 <UserSchemaList schemas={this.props.userSchemas}/>
               }
             </Grid>
-            <DatasetDialog open={this.props.datasetDialog.open}/>
+            <DatasetDialog open={this.props.datasetDialog.open} onClose={this.closeDialog}/>
           </div>
         </Grid>
       </div>
