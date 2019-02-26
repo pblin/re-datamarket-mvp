@@ -7,11 +7,13 @@ import {all} from 'redux-saga/effects';
 import {fileSagas} from "./file/fileSaga";
 import {datasetFormSagas} from "./datasetForm/datasetFormSaga";
 import {profileSagas} from "./profile/profileSaga";
+import {marketplaceSagas} from "./marketplace/marketplaceSaga";
 
 //Reducers
 import FileState from "./file/reducers";
 import DatasetFormState from "./datasetForm/reducers";
 import ProfileState from "./profile/profileReducer";
+import MarketplaceState from './marketplace/marketplaceReducer';
 import AppState from './app/appReducer';
 
 import {reducer as formReducer} from 'redux-form';
@@ -45,6 +47,7 @@ export class AppStore {
       FileState,
       DatasetFormState,
       ProfileState,
+      MarketplaceState,
       AppState,
       form: formReducer
     });
@@ -54,7 +57,8 @@ export class AppStore {
       yield all([
         ...fileSagas(),
         ...datasetFormSagas(),
-        ...profileSagas()
+        ...profileSagas(),
+        ...marketplaceSagas()
       ])
     }
 

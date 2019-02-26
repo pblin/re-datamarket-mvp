@@ -24,7 +24,7 @@ import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
-import Logo from '../../img/Rebloc_logo.png';
+import Logo from '../../img/rebloc_logo.svg';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import "./App.css";
 
@@ -35,10 +35,12 @@ import PersonIcon from "@material-ui/icons/Person";
 //import MessageIcon from "@material-ui/icons/Message";
 //import NotificationsIcon from "@material-ui/icons/Notifications";
 import ExploreIcon from "@material-ui/icons/Explore";
-import CloudIcon from "@material-ui/icons/CloudUpload";
+//import CloudIcon from "@material-ui/icons/CloudUpload";
 import ProfileMenu from "./ProfileMenu";
 import {updateProfileMenuOpen} from "../../store/app/appActions";
 import {appSelector} from "../../store/app/appSelector";
+import {getProfile} from "../../store/profile/profileActions";
+import {profileSelector} from "../../store/profile/profileSelector";
 
 const drawerWidth = 240;
 
@@ -118,6 +120,8 @@ interface AppProps {
   auth: Auth0Authentication;
   profileMenuOpen: boolean;
   updateProfileMenuOpen: any;
+  getProfile: any;
+  profile: any;
 }
 
 class PersistentDrawerLeft extends React.Component <AppProps> {
@@ -132,9 +136,9 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   appLinks: AppLink[] = [
-    new AppLink('Market Place', '/dashboard', (<DashboardIcon/>)),
+    new AppLink('Marketplace', '/marketplace', (<DashboardIcon/>)),
     new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
-    new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
+    //new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
     //new AppLink('News', '/news', (<NotificationsIcon/>))
   ];
 
@@ -167,10 +171,15 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     this.props.updateProfileMenuOpen(true);
   };
 
+  componentDidMount(): void {
+    if(!this.props.profile) {
+      console.log('getting profile');
+      this.props.getProfile();
+    }
+  }
+
   @autobind
   handleProfileMenuClickAway(itemPressed) {
-    console.log('THE ITEM PRESSED');
-    console.log(itemPressed);
     switch(itemPressed) {
       case 'clickAway':
         this.props.updateProfileMenuOpen(false);
@@ -211,6 +220,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
         <CssBaseline />
         <AppBar
           className={classes.appBar}
+          position={"static"}
         >
           <Toolbar disableGutters={!open}>
             {authenticated && (<IconButton
@@ -277,13 +287,15 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
 function mapStateToProps (state: any) {
   return {
-    profileMenuOpen: appSelector(state).profileMenuOpen
+    profileMenuOpen: appSelector(state).profileMenuOpen,
+    profile: profileSelector(state)
   };
 };
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    updateProfileMenuOpen: (isOpen: boolean) => dispatch(updateProfileMenuOpen(isOpen))
+    updateProfileMenuOpen: (isOpen: boolean) => dispatch(updateProfileMenuOpen(isOpen)),
+    getProfile: () => dispatch(getProfile())
   }
 }
 

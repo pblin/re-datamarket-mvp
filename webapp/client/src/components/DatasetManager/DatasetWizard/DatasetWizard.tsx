@@ -3,7 +3,6 @@ import DatasetStepper from './DatasetStepper';
 import {WizardStep} from "./WizardStep";
 import {Button, Grid} from "@material-ui/core";
 import "./DatasetWizard.css";
-import Typography from "@material-ui/core/Typography/Typography";
 
 interface WizardProps {
   steps: WizardStep[],
@@ -33,9 +32,6 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
     return (
       <Grid container={true} justify={'center'}>
         <div className="wizard-wrapper">
-          <Grid item xs={12}>
-            <Typography variant="h6">Schema Information</Typography>
-          </Grid>
           <DatasetStepper
             wizardSteps={this.props.steps}
             currentStep={this.props.currentStep}/>

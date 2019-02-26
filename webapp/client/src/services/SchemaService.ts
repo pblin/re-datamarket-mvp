@@ -1,4 +1,5 @@
 import {v1 as uuid} from 'uuid';
+import {config} from "./ServiceConfig";
 
 //TODO: SET BASE URL AS A PROP
 export class SchemaService {
@@ -17,7 +18,7 @@ export class SchemaService {
       enc_data_key: basicInfo.sampleDataKey,
       search_terms: `{'${basicInfo.searchTerms}'}`, //TODO: ALLOW AN ARRAY OF SEARCH TERMS
       delivery_method: 'API',
-      dataset_owner_id: id, //TODO: (1)find dataset owner id (Requires finished profile) (2) Save profile api (3) block manager until profile is complete
+      dataset_owner_id: id,
       price_low: basicInfo.askPriceLow,
       price_high: basicInfo.askPriceHigh,
       num_of_records: basicInfo.records,
@@ -42,6 +43,24 @@ export class SchemaService {
 
     //TODO: Return something better
     return true;
+  }
+
+  async getUserSchemas(id: string) {
+    const results = await fetch(`${config.serverBase}/schema/${id}`);
+    if(results.status !== 200) {
+      return [];
+    } else {
+      return results.json();
+    }
+  }
+
+  async getAllSchemas() {
+    const results = await fetch(`${config.serverBase}/marketplace`);
+    if(results.status !== 200) {
+      return [];
+    } else {
+      return results.json();
+    }
   }
 
 }

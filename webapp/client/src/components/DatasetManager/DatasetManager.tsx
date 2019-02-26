@@ -20,7 +20,6 @@ import {fileChange} from "../../store/file/actions";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
 import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
-import {getProfile} from "../../store/profile/profileActions";
 import JumboPaper from "../Common/jumboPaper";
 import {withRouter} from "react-router";
 
@@ -108,14 +107,6 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.nextStep();
   }
 
-  componentDidMount() {
-    console.log('IS PROFILE SET');
-    console.log(this.props.profile);
-    if(!this.props.profile) {
-      this.props.getProfile();
-    }
-  }
-
   render() {
     if(this.props.isProfileSet) {
       return <div>
@@ -156,8 +147,6 @@ class DatasetManager extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
-  console.log('MAPPING STATE TO PROPS');
-  console.log(state);
   return {
     schemaFile: Object.assign({}, getFileState(state).files.find(file => file.fileId == 'schemaFile')),
     wizard: state.DatasetFormState.wizard,
@@ -178,8 +167,7 @@ function mapDispatchToProps(dispatch: any) {
     submitBasicInfoForm: () => dispatch(submit('contact')),
     fileChange: (fileId, file) => dispatch(fileChange(fileId, file)),
     shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
-    changeSchema: (name: string, field: string, value) => dispatch(changeSchema(name, field, value)),
-    getProfile: () => dispatch(getProfile())
+    changeSchema: (name: string, field: string, value) => dispatch(changeSchema(name, field, value))
   };
 }
 export default withRouter(

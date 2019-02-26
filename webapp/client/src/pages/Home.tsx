@@ -38,7 +38,7 @@ class Home extends React.Component<HomeProps> {
   }
 
   navToMarketplace() {
-    history.push('/dashboard');
+    history.push('/marketplace');
   }
 
   renderJumboPaper() {
@@ -128,8 +128,6 @@ function init() {
 }
 
 function mapStateToProps(state) {
-    console.log('HOME GETTING STATE');
-    console.log(state);
     return {
       profile: profileSelector(state)
     };

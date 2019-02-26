@@ -45,8 +45,6 @@
 
 .tab-bar {
   margin-top: 0px;
-  /*background-color: #FFF;
-  color: black;*/
   height: 40px !important;
   min-height: 40px !important;
 }
@@ -54,4 +52,14 @@
 .tab-bar .tab {
   height: 40px !important;
   min-height: 40px !important;
+}
+
+/* WRAPPER */
+
+.app-section-wrapper {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
 }
