@@ -16,7 +16,7 @@ export class SchemaService {
       access_url: basicInfo.endpoint,
       api_key: basicInfo.sampleAPIKey,
       enc_data_key: basicInfo.sampleDataKey,
-      search_terms: `{'${basicInfo.searchTerms}'}`, //TODO: ALLOW AN ARRAY OF SEARCH TERMS
+      search_terms: `{${basicInfo.searchTerms}}`, //TODO: ALLOW AN ARRAY OF SEARCH TERMS
       delivery_method: 'API',
       dataset_owner_id: id,
       price_low: basicInfo.askPriceLow,
