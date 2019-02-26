@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import { Theme, withStyles, createStyles} from '@material-ui/core/styles';
 import { Redirect } from 'auth0-js';
-import App from '../../components/App/App';
 import 'graphql-request';
 import { submit } from 'redux-form';
 import Button from '@material-ui/core/Button';
@@ -80,7 +79,6 @@ class Customer extends React.Component<Props> {
 
         <Grid container={true} justify={'center'}>
           <div className={classes.container}>
-            <App auth={this.props.auth} />
             <CustomerForm onSubmit={this.handleProfileSubmit}/>
             <Button color="primary" className={classes.button}
                     onClick={this.props.submitProfileForm}>

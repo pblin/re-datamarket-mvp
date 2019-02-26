@@ -10,7 +10,7 @@ import {
   Divider,
   IconButton,
   ListItem,
-  Button,
+ // Button,
   withStyles,
   Theme,
  // Menu,
@@ -24,7 +24,7 @@ import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import autobind from 'autobind-decorator';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
-import Logo from '../../img/Rebloc_logo.png';
+import Logo from '../../img/rebloc_logo.svg';
 import ProfileAvatar from '../Profile/ProfileAvatar';
 import "./App.css";
 
@@ -35,10 +35,12 @@ import PersonIcon from "@material-ui/icons/Person";
 //import MessageIcon from "@material-ui/icons/Message";
 //import NotificationsIcon from "@material-ui/icons/Notifications";
 import ExploreIcon from "@material-ui/icons/Explore";
-import CloudIcon from "@material-ui/icons/CloudUpload";
+//import CloudIcon from "@material-ui/icons/CloudUpload";
 import ProfileMenu from "./ProfileMenu";
 import {updateProfileMenuOpen} from "../../store/app/appActions";
 import {appSelector} from "../../store/app/appSelector";
+import {getProfile} from "../../store/profile/profileActions";
+import {profileSelector} from "../../store/profile/profileSelector";
 
 const drawerWidth = 240;
 
@@ -59,6 +61,9 @@ const styles = (theme: Theme) => ({
     marginRight: "50px",
     fontWeight: 600,
     padding: "6px 22px"
+  },
+  marginLeft50: {
+    marginLeft: "50px"
   },
   appLogo: {
     height: '26px'
@@ -115,6 +120,8 @@ interface AppProps {
   auth: Auth0Authentication;
   profileMenuOpen: boolean;
   updateProfileMenuOpen: any;
+  getProfile: any;
+  profile: any;
 }
 
 class PersistentDrawerLeft extends React.Component <AppProps> {
@@ -129,9 +136,9 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   appLinks: AppLink[] = [
-    new AppLink('Market Place', '/dashboard', (<DashboardIcon/>)),
+    new AppLink('Marketplace', '/marketplace', (<DashboardIcon/>)),
     new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
-    new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
+    //new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
     //new AppLink('News', '/news', (<NotificationsIcon/>))
   ];
 
@@ -148,6 +155,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   @autobind
   logout() {
+    console.log('Logging out');
     this.props.auth.logout();
     //window.location.replace('/home');
   }
@@ -163,23 +171,30 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     this.props.updateProfileMenuOpen(true);
   };
 
+  componentDidMount(): void {
+    if(!this.props.profile) {
+      console.log('getting profile');
+      this.props.getProfile();
+    }
+  }
+
   @autobind
   handleProfileMenuClickAway(itemPressed) {
-    console.log('HANDLING MENU CLOSE');
     switch(itemPressed) {
       case 'clickAway':
         this.props.updateProfileMenuOpen(false);
-        this.forceUpdate();
         break;
       case 'logout':
         this.logout();
+        this.props.updateProfileMenuOpen(false);
+        break;
+      case 'profile':
+        this.props.updateProfileMenuOpen(false);
         break;
     }
   };
 
   render() {
-    console.log('HERE IS PROFILE MENU OPEN');
-    console.log(this.props.profileMenuOpen);
     const { classes, theme } = this.props;
     const { open } = this.state;
     const { authenticated } = this.props.auth;
@@ -205,23 +220,24 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
         <CssBaseline />
         <AppBar
           className={classes.appBar}
+          position={"static"}
         >
           <Toolbar disableGutters={!open}>
-            <IconButton
+            {authenticated && (<IconButton
               color="inherit"
               aria-label="Open drawer"
               onClick={this.handleDrawerOpen}
               className={classes.menuButton}
             >
               <MenuIcon />
-            </IconButton>
-            <img src={Logo} className={classes.appLogo}/>
+            </IconButton>)}
+            <Link to={"/home"}><img src={Logo} className={classes.appLogo + ' ' + (authenticated ? '': classes.marginLeft50)}/></Link>
             <div className={classes.grow}></div>
             { (profileObj !== '' && authenticated) && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
-            {!authenticated && (
+            {/*!authenticated && (
               <Button color="inherit" type="submit" onClick={this.login} className={classes.loginBtn}>Login</Button>
             )
-            }
+            */}
           </Toolbar>
           <ProfileMenu
             open={this.props.profileMenuOpen}
@@ -271,13 +287,15 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
 function mapStateToProps (state: any) {
   return {
-    profileMenuOpen: appSelector(state).profileMenuOpen
+    profileMenuOpen: appSelector(state).profileMenuOpen,
+    profile: profileSelector(state)
   };
 };
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    updateProfileMenuOpen: (isOpen: boolean) => dispatch(updateProfileMenuOpen(isOpen))
+    updateProfileMenuOpen: (isOpen: boolean) => dispatch(updateProfileMenuOpen(isOpen)),
+    getProfile: () => dispatch(getProfile())
   }
 }
 
