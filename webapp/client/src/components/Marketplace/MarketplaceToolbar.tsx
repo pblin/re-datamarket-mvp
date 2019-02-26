@@ -14,8 +14,8 @@ const MarketplaceToolbar = ({onSchemaFilterChange, schemaFilter, toolbarOptions}
   return(
     <Toolbar className="marketplace-toolbar">
       <Hidden xsDown>
-        {toolbarOptions.map(option => (
-          <Button onClick={() => handleButtonClick(option.value)}>
+        {toolbarOptions.map((option, index) => (
+          <Button onClick={() => handleButtonClick(option.value)} key={`toolbarOption${index}`}>
             {schemaFilter == option.value && <strong>{option.label}</strong>}
             {schemaFilter != option.value && <span>{option.label}</span>}
           </Button>
@@ -24,8 +24,8 @@ const MarketplaceToolbar = ({onSchemaFilterChange, schemaFilter, toolbarOptions}
       <Hidden smUp>
         <FormControl>
           <Select value={schemaFilter} onChange={handleSchemaChange}>
-            {toolbarOptions.map(option => (
-              <MenuItem value={option.value}>{option.label}</MenuItem>
+            {toolbarOptions.map((option, index) => (
+              <MenuItem key={`toolbarSelectOption${index}`} value={option.value}>{option.label}</MenuItem>
             ))}
           </Select>
         </FormControl>

@@ -10,15 +10,17 @@ import SchemaList from "./SchemaList";
 import {marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
 import {Grid, Button} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import UserSchemaList from "./UserSchemaList";
 
 interface ComponentProps {
-  schemaFilter: boolean;
+  schemaFilter: string;
   updateSchemaFilter: any;
   profile: any;
   getProfile: any;
   getUserSchemas: any;
   getAllSchemas: any;
   schemas: any[];
+  userSchemas: any[];
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -34,20 +36,17 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   ];
 
   getUserSchemas(id: string) {
-    console.log('getting user schemas');
-    console.log(id);
     this.props.getUserSchemas(id);
   }
 
   componentDidMount() {
-    console.log('component did mount');
-    console.log(this.props.profile);
     if(!this.props.profile) {
       //Display profile warning
     } else {
       //this.getUserSchemas(this.props.profile.id);
     }
     this.props.getAllSchemas();
+    this.props.getUserSchemas();
   }
 
   handleSchemaChange(val) {
@@ -71,7 +70,12 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
               </Button>
             </Grid>
             <Grid item xs={12} sm={12}>
-              <SchemaList schemas={this.props.schemas}/>
+              {this.props.schemaFilter == 'all' &&
+                <SchemaList schemas={this.props.schemas}/>
+              }
+              {this.props.schemaFilter == 'ownedByMe' &&
+                <UserSchemaList schemas={this.props.userSchemas}/>
+              }
             </Grid>
           </div>
         </Grid>
@@ -81,10 +85,12 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
+  console.log(state);
   return {
     schemaFilter: marketplaceSelector(state).schemaFilter,
     profile: profileSelector(state),
-    schemas: marketplaceSelector(state).schemas
+    schemas: marketplaceSelector(state).schemas,
+    userSchemas: marketplaceSelector(state).userSchemas,
   }
 }
 

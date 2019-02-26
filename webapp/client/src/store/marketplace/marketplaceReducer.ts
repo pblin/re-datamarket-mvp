@@ -3,11 +3,13 @@ import {MARKETPLACE_ACTIONS} from "./marketplaceActions";
 interface MarketplaceState {
   schemaFilter: string;
   schemas: any[];
+  userSchemas: any[];
 }
 
 const defaultState: MarketplaceState = {
   schemaFilter: 'all',
-  schemas: []
+  schemas: [],
+  userSchemas: []
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -19,6 +21,9 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED:
       newState.schemas = action.schemas;
+      break;
+    case MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED:
+      newState.userSchemas = action.schemas;
       break;
     default:
       return state;

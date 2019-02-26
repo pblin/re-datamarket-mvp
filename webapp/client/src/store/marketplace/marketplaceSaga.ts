@@ -2,13 +2,13 @@ import {takeLatest, put} from 'redux-saga/effects';
 import {SchemaService} from "../../services/SchemaService";
 import {MARKETPLACE_ACTIONS} from "./marketplaceActions";
 
-function* GetUserSchemas(action) {
-  let id = action.id;
+function* GetUserSchemas() {
+  let profile = JSON.parse(localStorage.getItem ('profile'));
 
   const schemaService = new SchemaService();
-  const schemas = yield schemaService.getUserSchemas(id);
+  const schemas = yield schemaService.getUserSchemas(profile.id);
 
-  yield put({type: MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED, schemas})
+  yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas})
 }
 
 function* GetAllSchemas() {
