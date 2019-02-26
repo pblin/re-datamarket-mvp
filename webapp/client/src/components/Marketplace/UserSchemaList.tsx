@@ -2,8 +2,7 @@ import * as React from "react";
 import {
   Grid,
   ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails
+  ExpansionPanelSummary
 } from "@material-ui/core";
 
 //TODO: Add more details
@@ -11,7 +10,7 @@ const UserSchemaList = ({schemas}) => {
   return(
     <div>
       {schemas.map((schema, index) => (
-          <ExpansionPanel key={`userSchema${index}`}>
+          <ExpansionPanel key={`userSchema${index}`} expanded={false}>
             <ExpansionPanelSummary className={"schema-list"}>
               <Grid container={true} justify={"flex-start"}>
                 <Grid item xs={8} sm={6} md={7}>
@@ -23,7 +22,6 @@ const UserSchemaList = ({schemas}) => {
                 </Grid>
               </Grid>
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails>Here are some details</ExpansionPanelDetails>
         </ExpansionPanel>
       ))}
     </div>

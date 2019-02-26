@@ -4,12 +4,16 @@ interface MarketplaceState {
   schemaFilter: string;
   schemas: any[];
   userSchemas: any[];
+  datasetDialog: any;
 }
 
 const defaultState: MarketplaceState = {
   schemaFilter: 'all',
   schemas: [],
-  userSchemas: []
+  userSchemas: [],
+  datasetDialog: {
+    open: false
+  }
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -24,6 +28,10 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED:
       newState.userSchemas = action.schemas;
+      break;
+    case MARKETPLACE_ACTIONS.CHANGE_DIALOG_STATE:
+      newState.datasetDialog = {...state.datasetDialog};
+      newState.datasetDialog.open = action.isOpen;
       break;
     default:
       return state;

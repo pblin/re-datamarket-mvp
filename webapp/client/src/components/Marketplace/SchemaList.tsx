@@ -3,8 +3,7 @@ import {
   Grid,
   Hidden,
   ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails
+  ExpansionPanelSummary
 } from "@material-ui/core";
 
 //TODO: Add more details
@@ -12,7 +11,7 @@ const SchemaList = ({schemas}) => {
   return(
     <div>
       {schemas.map((schema, index) => (
-          <ExpansionPanel key={`schema${index}`}>
+          <ExpansionPanel key={`schema${index}`} expanded={false}>
             <ExpansionPanelSummary className={"schema-list"}>
               <Grid container={true} justify={"flex-start"}>
                 <Grid item xs={4} sm={2} md={1}>
@@ -35,7 +34,6 @@ const SchemaList = ({schemas}) => {
                 </Hidden>
               </Grid>
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails>Here are some details</ExpansionPanelDetails>
           </ExpansionPanel>
       ))}
     </div>

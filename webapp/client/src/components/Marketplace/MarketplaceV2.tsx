@@ -2,15 +2,16 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import './marketplace.css';
-import {MARKETPLACE_ACTIONS, updateSchemaFilter} from "../../store/marketplace/marketplaceActions";
+import {changeDialogState, MARKETPLACE_ACTIONS, updateSchemaFilter} from "../../store/marketplace/marketplaceActions";
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
 import {profileSelector} from "../../store/profile/profileSelector";
 import SchemaList from "./SchemaList";
-import {marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
+import {datasetDialogSelector, marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
 import {Grid, Button} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserSchemaList from "./UserSchemaList";
+import DatasetDialog from "./DatasetDialog";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -21,6 +22,8 @@ interface ComponentProps {
   getAllSchemas: any;
   schemas: any[];
   userSchemas: any[];
+  datasetDialog: any
+  changeDialogState: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -28,6 +31,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     super(props);
     this.handleSchemaChange = this.handleSchemaChange.bind(this);
     this.getUserSchemas = this.getUserSchemas.bind(this);
+    this.openDialog = this.openDialog.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -53,6 +57,10 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.props.updateSchemaFilter(val);
   }
 
+  openDialog() {
+    this.props.changeDialogState(true);
+  }
+
   render() {
     return (
       <div>
@@ -64,7 +72,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-end"}>
-              <Button variant="contained" color="secondary" className="add-schema">
+              <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
                 Add
                 <AddIcon/>
               </Button>
@@ -77,6 +85,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 <UserSchemaList schemas={this.props.userSchemas}/>
               }
             </Grid>
+            <DatasetDialog open={this.props.datasetDialog.open}/>
           </div>
         </Grid>
       </div>
@@ -91,6 +100,7 @@ function mapStateToProps(state: any, ownProps: any) {
     profile: profileSelector(state),
     schemas: marketplaceSelector(state).schemas,
     userSchemas: marketplaceSelector(state).userSchemas,
+    datasetDialog: datasetDialogSelector(state)
   }
 }
 
@@ -98,7 +108,8 @@ function mapDispatchToProps(dispatch: any) {
   return {
     updateSchemaFilter: (filter: string) => dispatch(updateSchemaFilter(filter)),
     getUserSchemas: (id) => dispatch({type: MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, id}),
-    getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS})
+    getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS}),
+    changeDialogState: (isOpen) => dispatch(changeDialogState(isOpen))
   };
 }
 export default withRouter(
