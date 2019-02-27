@@ -9,7 +9,7 @@ import {
 } from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit } from 'redux-form';
-import {Button, Grid, IconButton, Typography} from "@material-ui/core";
+import {Button, Grid, Typography} from "@material-ui/core";
 import {PublishForm} from "./DatasetWizard/PublishForm";
 import {basicInfo, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
@@ -19,8 +19,10 @@ import {uploadSchema} from "../Util/SchemaValidator";
 import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import JumboPaper from "../Common/jumboPaper";
 import {withRouter} from "react-router";
-import {Dialog, DialogActions, DialogContent, DialogTitle, Toolbar} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import {Dialog, DialogActions, DialogContent, DialogTitle} from "@material-ui/core";
+//import CloseIcon from "@material-ui/icons/Close";
+import {changeDialogState} from "../../store/marketplace/marketplaceActions";
+import {datasetDialogSelector} from "../../store/marketplace/marketplaceSelectors";
 
 interface ComponentProps {
   file: any[],
@@ -46,6 +48,8 @@ interface ComponentProps {
   getProfile: any;
   isProfileSet: boolean;
   history: any;
+  changeDialogState: any;
+  datasetDialog: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -59,6 +63,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.onSchemaUpload = this.onSchemaUpload.bind(this);
     //this.onSchemaChange = this.onSchemaChange.bind(this);
     this.fileManager = new FileManager();
+    this.handleClose = this.handleClose.bind(this);
   }
 
   onSchemaFileChange(fileId: string, file: File) {
@@ -115,22 +120,20 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   handleClose() {
-
+    this.props.changeDialogState(false)
   }
 
   render() {
     if(this.props.isProfileSet) {
       return <div>
-        <Dialog open={true} fullScreen={true}>
+        <Dialog open={this.props.datasetDialog.open} fullWidth={true}>
           <DialogTitle>
-            <Toolbar className={"dialog-toolbar"}>
-              <IconButton onClick={this.handleClose} className={"close-btn"}>
-                <CloseIcon/>
-              </IconButton>
-              <Typography variant="h6" color="inherit">
-                Create a new schema
-              </Typography>
-            </Toolbar>
+            <Typography variant="h6" color="inherit" className={"dialog-header"}>
+              <span className={"bold"}>CREATE</span> A DATASET
+            </Typography>
+            <Typography variant="subtitle1" color="inherit" className={"dialog-subheader"}>
+              Fill out this form to publish a new dataset to the marketplace.
+            </Typography>
           </DialogTitle>
           <DialogContent>
             <Grid container={true}>
@@ -191,7 +194,8 @@ function mapStateToProps(state: any, ownProps: any) {
     schema: Object.assign([], schemaSelector(state)),
     displaySchemaError: state.DatasetFormState.displayNoSchemaError,
     profile: profileSelector(state),
-    isProfileSet: isProfileSet(state)
+    isProfileSet: isProfileSet(state),
+    datasetDialog: datasetDialogSelector(state)
   }
 }
 
@@ -204,7 +208,8 @@ function mapDispatchToProps(dispatch: any) {
     submitBasicInfoForm: () => dispatch(submit('contact')),
     fileChange: (fileId, file) => dispatch(fileChange(fileId, file)),
     shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
-    changeSchema: (name: string, field: string, value) => dispatch(changeSchema(name, field, value))
+    changeSchema: (name: string, field: string, value) => dispatch(changeSchema(name, field, value)),
+    changeDialogState: (isOpen: boolean) => dispatch(changeDialogState(isOpen))
   };
 }
 export default withRouter(
