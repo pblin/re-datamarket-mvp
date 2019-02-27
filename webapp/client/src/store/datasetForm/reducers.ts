@@ -14,8 +14,9 @@ const defaultState: DatasetFormState = {
   wizard: {
     steps: [
       {label: 'Dataset Info', completed: false},
-      {label: 'Upload Schema', completed: false},
-      {label: 'Published', completed: false, nextButtonValue: 'Publish'}
+      {label: 'Upload Schema', completed: false, nextButtonValue: 'Upload'},
+      {label: 'Review', completed: false, nextButtonValue: 'Publish'},
+      {label: 'Complete', completed: false, nextButtonValue: 'Publish'}
     ],
     currentStep: 0
   },

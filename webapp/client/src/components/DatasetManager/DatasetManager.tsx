@@ -29,6 +29,7 @@ interface ComponentProps {
   fileName: string,
   datasetFileChange: any,
   onFileUpload: any,
+  onFileChangeAndUpload: any,
   submitBasicInfoForm: any,
   submittingBasicForm: any,
   updateBasicInfo: any,
@@ -70,7 +71,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     if(this.props.displaySchemaError) {
       this.props.shouldDisplayNoSchemaError(false);
     }
-    this.props.fileChange(fileId, file);
+    this.props.onFileChangeAndUpload(file, fileId);
   }
 
   onSchemaSelect(e:any) {
@@ -137,23 +138,24 @@ class DatasetManager extends React.Component<ComponentProps> {
           </DialogTitle>
           <DialogContent>
             <Grid container={true}>
-              <DatasetWizard
-                steps={this.props.wizard.steps}
-                onNext={this.onWizardNext}
-                onPrev={this.onWizardPrev}
-                currentStep={this.props.wizard.currentStep}
-              >
-                <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
-                <SchemaUpload
-                  onSchemaFileChange={this.onSchemaFileChange}
-                  onSchemaUpload={this.onSchemaUpload}
-                  onSchemaSelect={this.onSchemaSelect}
-                  schemaFile={this.props.schemaFile}
-                  errors={this.props.schemaFile.errors}
-                  schema={this.props.schema}
-                  displayNoSchemaError={this.props.displaySchemaError}
-                />
-                <PublishForm basicDetails={this.props.basicInfo} schema={this.props.schema}></PublishForm>
+                <DatasetWizard
+                  steps={this.props.wizard.steps}
+                  onNext={this.onWizardNext}
+                  onPrev={this.onWizardPrev}
+                  currentStep={this.props.wizard.currentStep}
+                >
+                  <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
+                  <SchemaUpload
+                    onSchemaFileChange={this.onSchemaFileChange}
+                    onSchemaUpload={this.onSchemaUpload}
+                    onSchemaSelect={this.onSchemaSelect}
+                    schemaFile={this.props.schemaFile}
+                    errors={this.props.schemaFile.errors}
+                    schema={this.props.schema}
+                    displayNoSchemaError={this.props.displaySchemaError}
+                  />
+                  <div>Schema will go here</div>
+                  <PublishForm basicDetails={this.props.basicInfo} schema={this.props.schema}></PublishForm>
               </DatasetWizard>
             </Grid>
           </DialogContent>
@@ -205,6 +207,7 @@ function mapStateToProps(state: any, ownProps: any) {
 function mapDispatchToProps(dispatch: any) {
   return {
     onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
+    onFileChangeAndUpload: (file: any, fileId: string) => dispatch({type: "FILE_CHANGED_AND_UPLOADED", validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST', file, fileId}),
     publishSchema: (basicInfo: any, schema: any[], id: any) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id}),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
