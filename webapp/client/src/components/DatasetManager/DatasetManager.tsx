@@ -23,6 +23,7 @@ import {Dialog, DialogActions, DialogContent, DialogTitle} from "@material-ui/co
 //import CloseIcon from "@material-ui/icons/Close";
 import {changeDialogState} from "../../store/marketplace/marketplaceActions";
 import {datasetDialogSelector} from "../../store/marketplace/marketplaceSelectors";
+import SchemaList from "./SchemaList/SchemaList";
 
 interface ComponentProps {
   file: any[],
@@ -51,6 +52,7 @@ interface ComponentProps {
   history: any;
   changeDialogState: any;
   datasetDialog: any;
+  datasetForm: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -94,7 +96,7 @@ class DatasetManager extends React.Component<ComponentProps> {
           return;
         }
         break;
-      case 2:
+      case 3:
         this.publish();
         return;
     }
@@ -154,8 +156,8 @@ class DatasetManager extends React.Component<ComponentProps> {
                     schema={this.props.schema}
                     displayNoSchemaError={this.props.displaySchemaError}
                   />
-                  <div>Schema will go here</div>
-                  <PublishForm basicDetails={this.props.basicInfo} schema={this.props.schema}></PublishForm>
+                  <SchemaList schemas={this.props.schema} onSchemaSelect={this.onSchemaSelect}></SchemaList>
+                  <PublishForm basicDetails={this.props.basicInfo} schema={this.props.schema} schemaPublished={this.props.datasetForm.schemaPublished}></PublishForm>
               </DatasetWizard>
             </Grid>
           </DialogContent>
@@ -200,7 +202,8 @@ function mapStateToProps(state: any, ownProps: any) {
     displaySchemaError: state.DatasetFormState.displayNoSchemaError,
     profile: profileSelector(state),
     isProfileSet: isProfileSet(state),
-    datasetDialog: datasetDialogSelector(state)
+    datasetDialog: datasetDialogSelector(state),
+    datasetForm: state.DatasetFormState
   }
 }
 

@@ -15,6 +15,7 @@ export class FileUpload extends React.Component<FileUploadProps> {
     super(props);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.upload = this.upload.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
   }
 
   handleFileChange() {
@@ -24,11 +25,23 @@ export class FileUpload extends React.Component<FileUploadProps> {
     }
 
     let file: File = (fileElement as any).files[0];
-    console.log(file);
 
     this.props.onFileChange(this.props.fileId, file);
-    //Everytime the file changes we need to update the state(need it to get the filename)
-    //this.props.datasetFileChange(file);
+  }
+
+  handleDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  handleDrop(e) {
+    //TODO: Place errors for wrong file types
+    e.preventDefault();
+    e.stopPropagation();
+    let dt = e.dataTransfer;
+    let files = dt.files;
+    let file = files[0];
+    this.props.onFileChange(this.props.fileId, file);
   }
 
   async upload() {
@@ -37,7 +50,7 @@ export class FileUpload extends React.Component<FileUploadProps> {
 
   render() {
     return (
-        <div className={'drop-zone'}>
+        <div className={'drop-zone'} onDrop={this.handleDrop} onDragOver={this.handleDragOver}>
           <Grid item xs={12}>
             <Icon fontSize={"large"}>
               <CloudUploadIcon className={"upload-icon"}/>

@@ -8,20 +8,22 @@ interface DatasetFormState {
   },
   schema: any[] //TODO: typecheck
   displayNoSchemaError: boolean;
+  schemaPublished: boolean;
 }
 
 const defaultState: DatasetFormState = {
   wizard: {
     steps: [
       {label: 'Dataset Info', completed: false},
-      {label: 'Upload Schema', completed: false, nextButtonValue: 'Upload'},
-      {label: 'Review', completed: false, nextButtonValue: 'Publish'},
-      {label: 'Complete', completed: false, nextButtonValue: 'Publish'}
+      {label: 'Upload Schema', completed: false},
+      {label: 'Review', completed: false},
+      {label: 'Publish', completed: false, nextButtonValue: 'Publish'}
     ],
     currentStep: 0
   },
   schema: [],
-  displayNoSchemaError: false
+  displayNoSchemaError: false,
+  schemaPublished: false
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -53,6 +55,7 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case DATASET_FORM_ACTIONS.SCHEMA_PUBLISHED:
       console.log('Schema Published Reducer');
+      newState.schemaPublished = true;
       break;
     case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:
       if(action.value) {

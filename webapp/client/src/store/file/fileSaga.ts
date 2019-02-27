@@ -42,14 +42,9 @@ function* FileChangeUploadAsync(action) {
   //Handle the file change
   yield put({type: FILE_ACTIONS.FILE_CHANGE, file, fileId});
 
-  console.log('HERE IS THE FILE');
-  console.log(file);
-  const fileState = yield select(getFileState);
-  let fileBlob = fileState.files.find(file => file.fileId == fileId);
-
   //Create a file manager and read the file
   const fileManager = new FileManager();
-  const result = yield fileManager.readFile(fileBlob.blob);
+  const result = yield fileManager.readFile(file);
 
   let validationResults = [];
   if(validator) {

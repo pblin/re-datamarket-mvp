@@ -1,7 +1,6 @@
 import * as React from "react";
 import {Grid} from "@material-ui/core";
 import {FileUpload} from "../../Common/FileUpload";
-import SchemaList from "../SchemaList/SchemaList";
 import NotificationLabel from "../../Common/NotificationLabel";
 
 interface SchemaUploadProps {
@@ -65,7 +64,7 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
     }else if(this.props.errors) {
       return (this.renderErrors(this.props.errors));
     } else if(this.props.schemaFile && this.props.schema.length){
-      return (<SchemaList onSchemaSelect={this.props.onSchemaSelect} schemas={this.props.schema}/>);
+      return (<NotificationLabel type={"success"}>File is valid, and it passes all validation checks</NotificationLabel>);
     }
   }
 
