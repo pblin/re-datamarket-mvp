@@ -40,3 +40,8 @@
   font-weight: 900;
   font-size: 22px;
 }
+
+.cancel-btn {
+  border: 1px solid #dddddd !important;
+  margin-left: 10px !important;
+}

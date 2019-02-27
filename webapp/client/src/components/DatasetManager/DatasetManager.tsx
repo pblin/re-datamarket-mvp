@@ -126,7 +126,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   render() {
     if(this.props.isProfileSet) {
       return <div>
-        <Dialog open={this.props.datasetDialog.open} fullWidth={true}>
+        <Dialog open={this.props.datasetDialog.open} fullWidth={true} maxWidth={"md"}>
           <DialogTitle>
             <Typography variant="h6" color="inherit" className={"dialog-header"}>
               <span className={"bold"}>CREATE</span> A DATASET
@@ -166,6 +166,9 @@ class DatasetManager extends React.Component<ComponentProps> {
               }
               <Button onClick={this.onWizardNext} variant="contained" color="primary" className={"wizard-button"}>
                 {this.renderTitle(this.props.wizard.steps[this.props.wizard.currentStep].nextButtonValue)}
+              </Button>
+              <Button onClick={this.handleClose} className={"cancel-btn"}>
+                Cancel
               </Button>
             </Grid>
           </DialogActions>
