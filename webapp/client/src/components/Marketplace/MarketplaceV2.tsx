@@ -11,7 +11,6 @@ import {datasetDialogSelector, marketplaceSelector} from "../../store/marketplac
 import {Grid, Button} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserSchemaList from "./UserSchemaList";
-//import DatasetDialog from "./DatasetDialog";
 import DatasetManager from '../DatasetManager/DatasetManager'
 
 interface ComponentProps {
