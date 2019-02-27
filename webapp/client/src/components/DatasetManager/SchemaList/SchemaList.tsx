@@ -20,7 +20,7 @@ const SchemaList = ({schemas, onSchemaChange}) => {
   //TODO: Make name editable
   //TODO: Make types editable
   return(
-    <div>
+    <div className={"schema-dt"}>
       <DataTable value={schemas} scrollable={true} scrollHeight="300px">
         <Column field="name" header="Name"/>
         <Column field="type" header="Type"/>

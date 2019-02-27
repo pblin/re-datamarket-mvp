@@ -19,7 +19,7 @@ const renderSelectField = ({input, label, meta, custom}) => {
       <TextField
         className="basic-form-input"
         margin="normal"
-        variant={'outlined'}
+        variant={'standard'}
         label={label}
         select
         error={meta.touched && meta.error != undefined}
@@ -37,13 +37,15 @@ const renderSelectField = ({input, label, meta, custom}) => {
 
 const renderTextField = ({input, label, meta, custom}) => {
   let helperText = meta.error != undefined && meta.touched ? meta.error: custom.helperText;
-
+  console.log('Placeholder');
+  console.log(custom);
   return (
     <Grid item xs={custom.gridXs} sm={custom.gridSm}>
       <TextField
         className="basic-form-input"
         margin="normal"
-        variant={'outlined'}
+        variant={'standard'}
+        placeholder={custom.placeholder}
         label={label}
         error={meta.touched && meta.error != undefined}
         {...input}
@@ -185,75 +187,75 @@ class BasicInfoForm extends Component<BasicFormProps> {
               component={renderTextField}
               name="name"
               type="text"
-              custom={ {helperText: "Name", gridXs: 12, gridSm: 12} }
+              custom={ {gridXs: 12, gridSm: 6, placeholder: "Name of the dataset"} }
             />
             <Field
               label="Description"
               component={renderTextField}
               name="description"
               type="text"
-              custom={ {helperText: "Description", gridXs: 12, gridSm: 12} }
+              custom={ {gridXs: 12, gridSm: 6, placeholder: "Description about the dataset"} }
             />
             <Field
               label="Search Terms"
               component={renderTextField}
               name="searchTerms"
               type="text"
-              custom={ {helperText: "Search Terms", gridXs: 12, gridSm: 6} }
+              custom={ {gridXs: 12, gridSm: 6, placeholder: "Term1,Term2,Term3"} }
+            />
+            <Field
+              label="Country"
+              component={renderSelectField}
+              name="country"
+              custom={ {gridXs: 12, gridSm: 3, options: ['USA']} }
+            />
+            <Field
+              label="State"
+              component={renderSelectField}
+              name="state"
+              custom={ {gridXs: 12, gridSm: 3, options: ['New York']} }
             />
             <Field
               label="Sample Api Key"
               component={renderTextField}
               name="sampleAPIKey"
               type="text"
-              custom={ {helperText: "sampleAPIKey", gridXs: 12, gridSm: 6} }
-            />
-            <Field
-              label="Country"
-              component={renderSelectField}
-              name="country"
-              custom={ {helperText: "Country", gridXs: 12, gridSm: 6, options: ['USA']} }
-            />
-            <Field
-              label="State"
-              component={renderSelectField}
-              name="state"
-              custom={ {helperText: "State", gridXs: 12, gridSm: 6, options: ['New York']} }
-            />
-            <Field
-              label="Endpoint"
-              component={renderTextField}
-              name="endpoint"
-              type="text"
-              custom={ {helperText: "endpoint", gridXs: 12, gridSm: 12} }
+              custom={ {gridXs: 12, gridSm: 4, placeholder: "Provide a sample API key"} }
             />
             <Field
               label="Sample Data Key"
               component={renderTextField}
               name="sampleDataKey"
               type="text"
-              custom={ {helperText: "sampleDataKey", gridXs: 12, gridSm: 12} }
+              custom={ {gridXs: 12, gridSm: 4, placeholder: "Provide a sample access data key"} }
+            />
+            <Field
+              label="Endpoint"
+              component={renderTextField}
+              name="endpoint"
+              type="text"
+              custom={ {gridXs: 12, gridSm: 4, placeholder: "http://{DATASET ENDPOINT}"} }
             />
             <Field
               label="# of records"
               component={renderTextField}
               name="records"
               type="number"
-              custom={ {helperText: "records", gridXs: 12, gridSm: 4, type: 'number'} }
+              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Total Amount Of Records"} }
             />
             <Field
               label="Ask Price (Low)"
               component={renderTextField}
               name="askPriceLow"
               type="number"
-              custom={ {helperText: "Ask Price (Low)", gridXs: 12, gridSm: 4, type: 'number'} }
+              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Lowest Asking Price"} }
             />
             <Field
               label="Ask Price (High)"
               component={renderTextField}
               name="askPriceHigh"
               type="number"
-              custom={ {helperText: "Ask Price (High)", gridXs: 12, gridSm: 4, type: 'number'} }
+              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Highest Asking Price"} }
             />
           </Grid>
         </form>

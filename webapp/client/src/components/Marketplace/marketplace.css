@@ -50,5 +50,10 @@
 }
 
 .marketplace-dialog .close-button {
-  /*color: red;*/
+  color: white;
+}
+
+.marketplace-dialog .dialog-toolbar {
+  background: #008ABC;
+  color: #fff;
 }

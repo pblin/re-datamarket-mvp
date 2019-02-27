@@ -3,11 +3,14 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 30px;
 }
 
 .wizard-wrapper .wizard-button {
   margin-right: 10px;
+}
+
+.schema-dt {
+  margin-bottom: 20px;
 }
 
 .json-details {

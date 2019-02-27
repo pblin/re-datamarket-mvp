@@ -127,7 +127,7 @@ class DatasetManager extends React.Component<ComponentProps> {
               schema={this.props.schema}
               displayNoSchemaError={this.props.displaySchemaError}
             />
-            <PublishForm basicDetails={this.props.basicInfo}></PublishForm>
+            <PublishForm basicDetails={this.props.basicInfo} schema={this.props.schema}></PublishForm>
           </DatasetWizard>
         </Grid>
       </div>
