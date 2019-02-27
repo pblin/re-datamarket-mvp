@@ -1,7 +1,7 @@
 import * as React from "react";
 import DatasetStepper from './DatasetStepper';
 import {WizardStep} from "./WizardStep";
-import {Button, Grid} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import "./DatasetWizard.css";
 
 interface WizardProps {
@@ -21,13 +21,6 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
     this.state = {value: ''};
   }
 
-  renderTitle(value: string) {
-    if(!value) {
-      return (<span>Next</span>);
-    }
-    return (<span>{value}</span>)
-  }
-
   render() {
     return (
       <Grid container={true} justify={'center'}>
@@ -40,16 +33,6 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
                 return (arr[index])
               }
             })}
-          <Grid container={true} justify={'flex-end'}>
-            {this.props.currentStep != 0 &&
-              <Button onClick={this.props.onPrev} variant="contained" color="primary" className={"wizard-button"}>
-                Previous
-              </Button>
-             }
-              <Button onClick={this.props.onNext} variant="contained" color="primary" className={"wizard-button"}>
-                {this.renderTitle(this.props.steps[this.props.currentStep].nextButtonValue)}
-              </Button>
-          </Grid>
         </div>
       </Grid>
     )

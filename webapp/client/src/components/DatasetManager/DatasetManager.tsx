@@ -7,12 +7,9 @@ import {
   nextStep,
   prevStep,
 } from "../../store/datasetForm/actions";
-import 'primereact/resources/themes/nova-light/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit } from 'redux-form';
-import {Grid} from "@material-ui/core";
+import {Button, Grid, IconButton, Typography} from "@material-ui/core";
 import {PublishForm} from "./DatasetWizard/PublishForm";
 import {basicInfo, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
@@ -22,6 +19,8 @@ import {uploadSchema} from "../Util/SchemaValidator";
 import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import JumboPaper from "../Common/jumboPaper";
 import {withRouter} from "react-router";
+import {Dialog, DialogActions, DialogContent, DialogTitle, Toolbar} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
 interface ComponentProps {
   file: any[],
@@ -108,29 +107,66 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.nextStep();
   }
 
+  renderTitle(value: string) {
+    if(!value) {
+      return (<span>Next</span>);
+    }
+    return (<span>{value}</span>)
+  }
+
+  handleClose() {
+
+  }
+
   render() {
     if(this.props.isProfileSet) {
       return <div>
-        <Grid container={true}>
-          <DatasetWizard
-            steps={this.props.wizard.steps}
-            onNext={this.onWizardNext}
-            onPrev={this.onWizardPrev}
-            currentStep={this.props.wizard.currentStep}
-          >
-            <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
-            <SchemaUpload
-              onSchemaFileChange={this.onSchemaFileChange}
-              onSchemaUpload={this.onSchemaUpload}
-              onSchemaSelect={this.onSchemaSelect}
-              schemaFile={this.props.schemaFile}
-              errors={this.props.schemaFile.errors}
-              schema={this.props.schema}
-              displayNoSchemaError={this.props.displaySchemaError}
-            />
-            <PublishForm basicDetails={this.props.basicInfo} schema={this.props.schema}></PublishForm>
-          </DatasetWizard>
-        </Grid>
+        <Dialog open={true} fullScreen={true}>
+          <DialogTitle>
+            <Toolbar className={"dialog-toolbar"}>
+              <IconButton onClick={this.handleClose} className={"close-btn"}>
+                <CloseIcon/>
+              </IconButton>
+              <Typography variant="h6" color="inherit">
+                Create a new schema
+              </Typography>
+            </Toolbar>
+          </DialogTitle>
+          <DialogContent>
+            <Grid container={true}>
+              <DatasetWizard
+                steps={this.props.wizard.steps}
+                onNext={this.onWizardNext}
+                onPrev={this.onWizardPrev}
+                currentStep={this.props.wizard.currentStep}
+              >
+                <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
+                <SchemaUpload
+                  onSchemaFileChange={this.onSchemaFileChange}
+                  onSchemaUpload={this.onSchemaUpload}
+                  onSchemaSelect={this.onSchemaSelect}
+                  schemaFile={this.props.schemaFile}
+                  errors={this.props.schemaFile.errors}
+                  schema={this.props.schema}
+                  displayNoSchemaError={this.props.displaySchemaError}
+                />
+                <PublishForm basicDetails={this.props.basicInfo} schema={this.props.schema}></PublishForm>
+              </DatasetWizard>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Grid container={true} justify={'flex-end'}>
+              {this.props.wizard.currentStep != 0 &&
+              <Button onClick={this.onWizardPrev} variant="contained" color="primary" className={"wizard-button"}>
+                Previous
+              </Button>
+              }
+              <Button onClick={this.onWizardNext} variant="contained" color="primary" className={"wizard-button"}>
+                {this.renderTitle(this.props.wizard.steps[this.props.wizard.currentStep].nextButtonValue)}
+              </Button>
+            </Grid>
+          </DialogActions>
+        </Dialog>
       </div>
     } else {
        return (

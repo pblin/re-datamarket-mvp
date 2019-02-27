@@ -11,7 +11,8 @@ import {datasetDialogSelector, marketplaceSelector} from "../../store/marketplac
 import {Grid, Button} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserSchemaList from "./UserSchemaList";
-import DatasetDialog from "./DatasetDialog";
+//import DatasetDialog from "./DatasetDialog";
+import DatasetManager from '../DatasetManager/DatasetManager'
 
 interface ComponentProps {
   schemaFilter: string;
@@ -90,7 +91,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 <UserSchemaList schemas={this.props.userSchemas}/>
               }
             </Grid>
-            <DatasetDialog open={this.props.datasetDialog.open} onClose={this.closeDialog}/>
+            <DatasetManager/>
           </div>
         </Grid>
       </div>
