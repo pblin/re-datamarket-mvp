@@ -4,26 +4,6 @@ import {Column} from "primereact/column";
 import {Button} from "@material-ui/core";
 
 const SchemaList = ({schemas, onSchemaSelect}) => {
-  /*let handleChange = (value: any, props: any) => {
-    //TODO: Each schema field needs an ID
-    onSchemaChange(props.rowData.name, props.field, value);
-  };*/
-
-  /*let inputEditor = (props) => {
-    return (
-      <input
-        value={props.rowData[props.field]}
-        type="text"
-        onChange={(e) => {handleChange(e.target.value, props)}}>
-      </input>)
-  };*/
-
-  //const handleSchemaSelect = (e) => {
-    //console.log('Schema Selected');
-    //console.log(e.data);
-  //  onSchemaSelect(e.data);
-  //};
-
   const dtHeader = () => {
     return (<div><Button>Add</Button></div>)
   };
