@@ -6,23 +6,26 @@ import {
   DialogContent,
   //DialogActions,
  // DialogTitle,
- // IconButton,
+  IconButton,
   Typography
 } from '@material-ui/core';
-//import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close';
 import Toolbar from "@material-ui/core/Toolbar";
 //import Button from "@material-ui/core/Button";
 
 //TODO: Add more details
 const DatasetDialog = ({open, onClose}) => {
-  /*const handleClose = () => {
+  const handleClose = () => {
     console.log('HANDLING CLOSE');
     onClose();
-  };*/
+  };
 
   return(
-    <Dialog open={open} fullScreen={true} className={"marketplace-dialog"}>
+    <Dialog open={open} fullWidth={true} className={"marketplace-dialog"}>
         <Toolbar className={"dialog-toolbar"}>
+          <IconButton onClick={handleClose} className={"close-btn"}>
+            <CloseIcon/>
+          </IconButton>
           <Typography variant="h6" color="inherit">
             Create a new schema
           </Typography>

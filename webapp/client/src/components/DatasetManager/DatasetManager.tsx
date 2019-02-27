@@ -58,7 +58,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
     this.onSchemaFileChange = this.onSchemaFileChange.bind(this);
     this.onSchemaUpload = this.onSchemaUpload.bind(this);
-    this.onSchemaChange = this.onSchemaChange.bind(this);
+    //this.onSchemaChange = this.onSchemaChange.bind(this);
     this.fileManager = new FileManager();
   }
 
@@ -69,8 +69,9 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.fileChange(fileId, file);
   }
 
-  onSchemaChange(name: string, field: string, value: any) {
-    this.props.changeSchema(name,field,value);
+  onSchemaSelect(e:any) {
+    //this.props.changeSchema(name,field,value);
+    console.log(e);
   }
 
   onSchemaUpload(fileId: string) {
@@ -121,7 +122,7 @@ class DatasetManager extends React.Component<ComponentProps> {
             <SchemaUpload
               onSchemaFileChange={this.onSchemaFileChange}
               onSchemaUpload={this.onSchemaUpload}
-              onSchemaChange={this.onSchemaChange}
+              onSchemaSelect={this.onSchemaSelect}
               schemaFile={this.props.schemaFile}
               errors={this.props.schemaFile.errors}
               schema={this.props.schema}

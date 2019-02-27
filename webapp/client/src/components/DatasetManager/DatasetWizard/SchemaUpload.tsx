@@ -7,7 +7,7 @@ import NotificationLabel from "../../Common/NotificationLabel";
 interface SchemaUploadProps {
   onSchemaFileChange: any;
   onSchemaUpload: any;
-  onSchemaChange: any;
+  onSchemaSelect: any;
   schemaFile: any;
   schema: any[];
   errors: any[];
@@ -29,7 +29,7 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
   }
 
   onSchemaChange(name: string, field: string, value: any) {
-    this.props.onSchemaChange(name, field, value);
+    this.props.onSchemaSelect(name, field, value);
   }
 
   upload(fileId: string) {
@@ -63,7 +63,7 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
     }else if(this.props.errors) {
       return (this.renderErrors(this.props.errors));
     } else if(this.props.schemaFile && this.props.schema.length){
-      return (<SchemaList onSchemaChange={this.props.onSchemaChange} schemas={this.props.schema}/>);
+      return (<SchemaList onSchemaSelect={this.props.onSchemaSelect} schemas={this.props.schema}/>);
     }
   }
 
