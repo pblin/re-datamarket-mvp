@@ -7,9 +7,9 @@ function* DatasetFormPublished(action) {
   let id = action.id;
 
   const schemaService = new SchemaService();
-  yield schemaService.postSchema(basicInfo, schema, id);
+  const schemaId = yield schemaService.postSchema(basicInfo, schema, id);
 
-  yield put({type: 'SCHEMA_PUBLISHED'})
+  yield put({type: 'SCHEMA_PUBLISHED', schemaId})
 }
 
 export function* watchPublish() {

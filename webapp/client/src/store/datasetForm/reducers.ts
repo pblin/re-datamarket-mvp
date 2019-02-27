@@ -9,6 +9,7 @@ interface DatasetFormState {
   schema: any[] //TODO: typecheck
   displayNoSchemaError: boolean;
   schemaPublished: boolean;
+  schemaPublishedId: string;
 }
 
 const defaultState: DatasetFormState = {
@@ -23,7 +24,8 @@ const defaultState: DatasetFormState = {
   },
   schema: [],
   displayNoSchemaError: false,
-  schemaPublished: false
+  schemaPublished: false,
+  schemaPublishedId: undefined
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -54,7 +56,7 @@ const reducer = function(state=defaultState, action: any) {
       newState.schema.splice(index, 0, found);
       break;
     case DATASET_FORM_ACTIONS.SCHEMA_PUBLISHED:
-      console.log('Schema Published Reducer');
+      newState.schemaPublishedId = action.schemaId;
       newState.schemaPublished = true;
       break;
     case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:

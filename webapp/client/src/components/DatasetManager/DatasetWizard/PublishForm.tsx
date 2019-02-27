@@ -1,11 +1,13 @@
 import * as React from "react";
 import "./DatasetWizard.css";
 import {Divider, Grid, Typography} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 interface PublishFormProps {
   basicDetails: any;
   schema: any;
   schemaPublished: boolean;
+  schemaPublishedId: string;
 }
 
 export class PublishForm extends React.Component<PublishFormProps> {
@@ -44,7 +46,9 @@ export class PublishForm extends React.Component<PublishFormProps> {
           </Grid>
         </div>)}
         {this.props.schemaPublished && (
-          <div>Schema was published</div>
+          <div>Schema was published
+            <Link to={`/dataset/${this.props.schemaPublishedId}`}>Go to details</Link>
+          </div>
         )}
       </Grid>
     )

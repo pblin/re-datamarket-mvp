@@ -9,8 +9,10 @@ export class SchemaService {
   }
 
   async postSchema(basicInfo: any, schema: any[], id: any) {
+    const uid = uuid();
+
     let body = {
-      id: uuid(),
+      id: uid,
       name: basicInfo.name,
       description: basicInfo.description,
       access_url: basicInfo.endpoint,
@@ -31,7 +33,7 @@ export class SchemaService {
       json_schema: JSON.stringify(schema)
     };
 
-    const results = await fetch(`${this.baseUrl}/schema`, {
+    await fetch(`${this.baseUrl}/schema`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -39,10 +41,7 @@ export class SchemaService {
       body: JSON.stringify(body)
     });
 
-    console.debug(results);
-
-    //TODO: Return something better
-    return true;
+    return uid;
   }
 
   async getUserSchemas(id: string) {

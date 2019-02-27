@@ -1,26 +1,30 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {FileManager} from "../../services/FileManager";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {
-  changeDisplaySchemaError, changeSchema,
+  changeDisplaySchemaError,
   nextStep,
   prevStep,
 } from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit } from 'redux-form';
-import {Button, Grid, Typography} from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from "@material-ui/core";
 import {PublishForm} from "./DatasetWizard/PublishForm";
 import {basicInfo, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
-import {fileChange} from "../../store/file/actions";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
 import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import JumboPaper from "../Common/jumboPaper";
 import {withRouter} from "react-router";
-import {Dialog, DialogActions, DialogContent, DialogTitle} from "@material-ui/core";
-//import CloseIcon from "@material-ui/icons/Close";
 import {changeDialogState} from "../../store/marketplace/marketplaceActions";
 import {datasetDialogSelector} from "../../store/marketplace/marketplaceSelectors";
 import SchemaList from "./SchemaList/SchemaList";
@@ -38,13 +42,11 @@ interface ComponentProps {
   basicInfo: any,
   nextStep: any,
   prevStep: any,
-  fileChange: any,
   schemaFile: any,
   schema: any[],
   noSchemaError: any;
   shouldDisplayNoSchemaError: any;
   displaySchemaError: boolean;
-  changeSchema: any;
   publishSchema: any;
   profile: any;
   getProfile: any;
@@ -56,16 +58,13 @@ interface ComponentProps {
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
-  fileManager: FileManager;
-  constructor(props: any, fileManager: FileManager) {
+  constructor(props: any) {
     super(props);
     this.onWizardNext = this.onWizardNext.bind(this);
     this.onWizardPrev = this.onWizardPrev.bind(this);
     this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
     this.onSchemaFileChange = this.onSchemaFileChange.bind(this);
     this.onSchemaUpload = this.onSchemaUpload.bind(this);
-    //this.onSchemaChange = this.onSchemaChange.bind(this);
-    this.fileManager = new FileManager();
     this.handleClose = this.handleClose.bind(this);
   }
 
@@ -157,20 +156,27 @@ class DatasetManager extends React.Component<ComponentProps> {
                     displayNoSchemaError={this.props.displaySchemaError}
                   />
                   <SchemaList schemas={this.props.schema} onSchemaSelect={this.onSchemaSelect}></SchemaList>
-                  <PublishForm basicDetails={this.props.basicInfo} schema={this.props.schema} schemaPublished={this.props.datasetForm.schemaPublished}></PublishForm>
+                  <PublishForm
+                    basicDetails={this.props.basicInfo}
+                    schema={this.props.schema}
+                    schemaPublishedId={this.props.datasetForm.schemaPublishedId}
+                    schemaPublished={this.props.datasetForm.schemaPublished}>
+                  </PublishForm>
               </DatasetWizard>
             </Grid>
           </DialogContent>
           <DialogActions>
             <Grid container={true} justify={'flex-end'}>
               {this.props.wizard.currentStep != 0 &&
-              <Button onClick={this.onWizardPrev} variant="contained" color="primary" className={"wizard-button"}>
-                Previous
-              </Button>
+                <Button onClick={this.onWizardPrev} variant="contained" color="primary" className={"wizard-button"}>
+                  Previous
+                </Button>
               }
-              <Button onClick={this.onWizardNext} variant="contained" color="primary" className={"wizard-button"}>
-                {this.renderTitle(this.props.wizard.steps[this.props.wizard.currentStep].nextButtonValue)}
-              </Button>
+              {(this.props.wizard.currentStep != 3 || (this.props.wizard.currentStep == 3 && !this.props.datasetForm.schemaPublished))  &&
+                <Button onClick={this.onWizardNext} variant="contained" color="primary" className={"wizard-button"}>
+                  {this.renderTitle(this.props.wizard.steps[this.props.wizard.currentStep].nextButtonValue)}
+                </Button>
+              }
               <Button onClick={this.handleClose} className={"cancel-btn"}>
                 Cancel
               </Button>
@@ -215,9 +221,7 @@ function mapDispatchToProps(dispatch: any) {
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),
-    fileChange: (fileId, file) => dispatch(fileChange(fileId, file)),
     shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
-    changeSchema: (name: string, field: string, value) => dispatch(changeSchema(name, field, value)),
     changeDialogState: (isOpen: boolean) => dispatch(changeDialogState(isOpen))
   };
 }
