@@ -47,3 +47,45 @@
 .jumbo-paper .jumbo-button:hover {
   background: #4D6B82
 }
+
+/* File Upload */
+
+.drop-zone {
+  border: 1px dotted black;
+}
+
+.drop-zone .upload-icon {
+  width: 60px;
+  height: 60px;
+  color: #3f51b5;
+}
+
+.drop-zone .file-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.drop-zone .file-input-label {
+  border: 1px solid black !important;
+  color: white;
+  background-color: #3f51b5;
+  border-radius: 5px;
+  padding: 10px;
+  font-weight: 500;
+  margin-top: 25px;
+  cursor: pointer;
+}
+
+.file-input:focus + label {
+  /* keyboard navigation */
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.file-input + label * {
+  pointer-events: none;
+}

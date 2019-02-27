@@ -1,9 +1,12 @@
 import * as React from "react";
+import {Grid, Icon, Typography} from "@material-ui/core";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 interface FileUploadProps {
   fileId: string,
   onFileChange: any;
   upload: any;
+  displayUpload: boolean;
 }
 
 export class FileUpload extends React.Component<FileUploadProps> {
@@ -12,6 +15,7 @@ export class FileUpload extends React.Component<FileUploadProps> {
     super(props);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.upload = this.upload.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
   }
 
   handleFileChange() {
@@ -21,11 +25,23 @@ export class FileUpload extends React.Component<FileUploadProps> {
     }
 
     let file: File = (fileElement as any).files[0];
-    console.log(file);
 
     this.props.onFileChange(this.props.fileId, file);
-    //Everytime the file changes we need to update the state(need it to get the filename)
-    //this.props.datasetFileChange(file);
+  }
+
+  handleDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  handleDrop(e) {
+    //TODO: Place errors for wrong file types
+    e.preventDefault();
+    e.stopPropagation();
+    let dt = e.dataTransfer;
+    let files = dt.files;
+    let file = files[0];
+    this.props.onFileChange(this.props.fileId, file);
   }
 
   async upload() {
@@ -34,10 +50,27 @@ export class FileUpload extends React.Component<FileUploadProps> {
 
   render() {
     return (
-      <div>
-        <input type="file" id={this.props.fileId} onChange={this.handleFileChange} accept=".json,application/json"/>
-        <button type="button" onClick={this.upload}>Upload</button>
-      </div>
+        <div className={'drop-zone'} onDrop={this.handleDrop} onDragOver={this.handleDragOver}>
+          <Grid item xs={12}>
+            <Icon fontSize={"large"}>
+              <CloudUploadIcon className={"upload-icon"}/>
+            </Icon>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography>Drag And Drop Files Here To Upload</Typography>
+          </Grid>
+          <label htmlFor={this.props.fileId} className="file-input-label">Or Select A File To Upload</label>
+          <input className={"file-input"}
+                 type="file"
+                 id={this.props.fileId}
+                 name={this.props.fileId}
+                 onChange={this.handleFileChange}
+                 accept=".json,application/json"
+          />
+          {this.props.displayUpload && (
+            <button type="button" onClick={this.upload}>Upload</button>
+          )}
+        </div>
     )
   }
 }

@@ -6,9 +6,6 @@
 }
 
 .add-schema {
-  /*position: fixed !important;
-  bottom: 20px;
-  right: 20px;*/
   background-color: #668eac !important;
   margin-bottom: 10px !important;
 }
@@ -49,6 +46,11 @@
   color: #9e9e9e;
 }
 
-.marketplace-dialog .close-button {
-  /*color: red;*/
+.marketplace-dialog .close-btn {
+  color: white;
+}
+
+.marketplace-dialog .dialog-toolbar {
+  background: #3f51b5;
+  color: #fff;
 }

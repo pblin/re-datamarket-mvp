@@ -1,13 +1,16 @@
 .wizard-wrapper {
-  width: 80%;
+  width: 90%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 30px;
 }
 
 .wizard-wrapper .wizard-button {
   margin-right: 10px;
+}
+
+.schema-dt {
+  margin-bottom: 20px;
 }
 
 .json-details {
@@ -17,4 +20,28 @@
 
 .text-center {
   text-align: center;
+}
+
+.stepper {
+  width: 100%;
+}
+
+/*Dialog*/
+.dialog-header {
+  text-align: center;
+}
+
+.dialog-subheader {
+  text-align: center;
+  color: #999999 !important;
+}
+
+.dialog-header .bold {
+  font-weight: 900;
+  font-size: 22px;
+}
+
+.cancel-btn {
+  border: 1px solid #dddddd !important;
+  margin-left: 10px !important;
 }

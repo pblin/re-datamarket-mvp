@@ -9,14 +9,16 @@ export class SchemaService {
   }
 
   async postSchema(basicInfo: any, schema: any[], id: any) {
+    const uid = uuid();
+
     let body = {
-      id: uuid(),
+      id: uid,
       name: basicInfo.name,
       description: basicInfo.description,
       access_url: basicInfo.endpoint,
       api_key: basicInfo.sampleAPIKey,
       enc_data_key: basicInfo.sampleDataKey,
-      search_terms: `{'${basicInfo.searchTerms}'}`, //TODO: ALLOW AN ARRAY OF SEARCH TERMS
+      search_terms: `{${basicInfo.searchTerms}}`, //TODO: ALLOW AN ARRAY OF SEARCH TERMS
       delivery_method: 'API',
       dataset_owner_id: id,
       price_low: basicInfo.askPriceLow,
@@ -31,7 +33,7 @@ export class SchemaService {
       json_schema: JSON.stringify(schema)
     };
 
-    const results = await fetch(`${this.baseUrl}/schema`, {
+    await fetch(`${this.baseUrl}/schema`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -39,10 +41,7 @@ export class SchemaService {
       body: JSON.stringify(body)
     });
 
-    console.debug(results);
-
-    //TODO: Return something better
-    return true;
+    return uid;
   }
 
   async getUserSchemas(id: string) {
