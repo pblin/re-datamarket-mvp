@@ -1,9 +1,12 @@
 import * as React from "react";
+import {Grid, Icon, Typography} from "@material-ui/core";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 interface FileUploadProps {
   fileId: string,
   onFileChange: any;
   upload: any;
+  displayUpload: boolean;
 }
 
 export class FileUpload extends React.Component<FileUploadProps> {
@@ -34,10 +37,27 @@ export class FileUpload extends React.Component<FileUploadProps> {
 
   render() {
     return (
-      <div>
-        <input type="file" id={this.props.fileId} onChange={this.handleFileChange} accept=".json,application/json"/>
-        <button type="button" onClick={this.upload}>Upload</button>
-      </div>
+        <div className={'drop-zone'}>
+          <Grid item xs={12}>
+            <Icon fontSize={"large"}>
+              <CloudUploadIcon className={"upload-icon"}/>
+            </Icon>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography>Drag And Drop Files Here To Upload</Typography>
+          </Grid>
+          <label htmlFor={this.props.fileId} className="file-input-label">Or Select A File To Upload</label>
+          <input className={"file-input"}
+                 type="file"
+                 id={this.props.fileId}
+                 name={this.props.fileId}
+                 onChange={this.handleFileChange}
+                 accept=".json,application/json"
+          />
+          {this.props.displayUpload && (
+            <button type="button" onClick={this.upload}>Upload</button>
+          )}
+        </div>
     )
   }
 }

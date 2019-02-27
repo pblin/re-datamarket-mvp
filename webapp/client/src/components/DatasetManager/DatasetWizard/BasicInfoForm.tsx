@@ -187,47 +187,47 @@ class BasicInfoForm extends Component<BasicFormProps> {
               component={renderTextField}
               name="name"
               type="text"
-              custom={ {gridXs: 12, gridSm: 12, placeholder: "Name of the dataset"} }
+              custom={ {gridXs: 12, gridSm: 6, placeholder: "Name of the dataset"} }
             />
             <Field
               label="Description"
               component={renderTextField}
               name="description"
               type="text"
-              custom={ {gridXs: 12, gridSm: 12, placeholder: "Description about the dataset"} }
+              custom={ {gridXs: 12, gridSm: 6, placeholder: "Description about the dataset"} }
             />
             <Field
               label="Search Terms"
               component={renderTextField}
               name="searchTerms"
               type="text"
-              custom={ {gridXs: 12, gridSm: 12, placeholder: "Term1,Term2,Term3"} }
+              custom={ {gridXs: 12, gridSm: 4, placeholder: "Term1,Term2,Term3"} }
             />
             <Field
               label="Country"
               component={renderSelectField}
               name="country"
-              custom={ {gridXs: 12, gridSm: 12, options: ['USA']} }
+              custom={ {gridXs: 12, gridSm: 4, options: ['USA']} }
             />
             <Field
               label="State"
               component={renderSelectField}
               name="state"
-              custom={ {gridXs: 12, gridSm: 12, options: ['New York']} }
+              custom={ {gridXs: 12, gridSm: 4, options: ['New York']} }
             />
             <Field
               label="Sample Api Key"
               component={renderTextField}
               name="sampleAPIKey"
               type="text"
-              custom={ {gridXs: 12, gridSm: 12, placeholder: "Provide a sample API key"} }
+              custom={ {gridXs: 12, gridSm: 6, placeholder: "Provide a sample API key"} }
             />
             <Field
               label="Sample Data Key"
               component={renderTextField}
               name="sampleDataKey"
               type="text"
-              custom={ {gridXs: 12, gridSm: 12, placeholder: "Provide a sample access data key"} }
+              custom={ {gridXs: 12, gridSm: 6, placeholder: "Provide a sample access data key"} }
             />
             <Field
               label="Endpoint"
@@ -241,21 +241,21 @@ class BasicInfoForm extends Component<BasicFormProps> {
               component={renderTextField}
               name="records"
               type="number"
-              custom={ {gridXs: 12, gridSm: 12, type: 'number', placeholder: "Total Amount Of Records"} }
+              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Total Amount Of Records"} }
             />
             <Field
               label="Ask Price (Low)"
               component={renderTextField}
               name="askPriceLow"
               type="number"
-              custom={ {gridXs: 12, gridSm: 12, type: 'number', placeholder: "Lowest Asking Price"} }
+              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Lowest Asking Price"} }
             />
             <Field
               label="Ask Price (High)"
               component={renderTextField}
               name="askPriceHigh"
               type="number"
-              custom={ {gridXs: 12, gridSm: 12, type: 'number', placeholder: "Highest Asking Price"} }
+              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Highest Asking Price"} }
             />
           </Grid>
         </form>
