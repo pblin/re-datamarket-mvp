@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {Grid, MenuItem, TextField} from "@material-ui/core";
+import {connect} from "react-redux";
 import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
 import "./DatasetWizard.css";
 import {ERROR_TYPE} from "../../Common/Error/ErrorType";
@@ -261,4 +262,14 @@ class BasicInfoForm extends Component<BasicFormProps> {
   }
 }
 
-export default reduxForm({form: 'contact', validate, destroyOnUnmount: false})(BasicInfoForm);
+function mapStateToProps(state) {
+    console.log('mapping state')
+    console.log(state);
+    return {
+
+    }
+}
+
+//@ts-ignore
+BasicInfoForm = connect(mapStateToProps)(BasicInfoForm);
+export default reduxForm({form: 'contact', validate, destroyOnUnmount: false}, mapStateToProps)(BasicInfoForm);

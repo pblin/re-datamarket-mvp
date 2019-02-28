@@ -15,12 +15,11 @@ const UserDatasetList = ({schemas, onEditClick}) => {
           <ExpansionPanel key={`userSchema${index}`} expanded={false}>
             <ExpansionPanelSummary className={"schema-list"}>
               <Grid container={true} justify={"flex-start"}>
-                <Grid item xs={8} sm={6} md={7}>
+                <Grid item xs={11}>
                   <p className={"header"}>{schema.name}</p>
                   <p className={"sub-header"}>{schema.description}</p>
                 </Grid>
-                <Grid item xs={2}>
-                  User Controls go here
+                <Grid item xs={1}>
                   <Button onClick={() =>{onEditClick(schema)}}>Edit</Button>
                 </Grid>
               </Grid>

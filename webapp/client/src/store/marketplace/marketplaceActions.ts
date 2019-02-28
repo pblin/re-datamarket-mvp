@@ -11,6 +11,6 @@ export function updateSchemaFilter(schemaFilter) {
   return {type: MARKETPLACE_ACTIONS.CHANGE_SCHEMA_FILTER, schemaFilter};
 }
 
-export function changeDialogState(isOpen, mode?, datasetId?) {
-  return {type: MARKETPLACE_ACTIONS.CHANGE_DIALOG_STATE, isOpen, mode, datasetId};
+export function changeDialogState(isOpen, mode?, dataset?) {
+  return {type: MARKETPLACE_ACTIONS.CHANGE_DIALOG_STATE, isOpen, mode, dataset};
 }

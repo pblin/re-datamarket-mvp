@@ -70,7 +70,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   handleOnEdit(dataset) {
     console.log('Handling on edit');
     console.log(dataset);
-    this.props.changeDialogState(true, 'edit', dataset.id)
+    this.props.changeDialogState(true, 'edit', dataset);
   }
 
   render() {

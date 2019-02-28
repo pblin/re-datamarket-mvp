@@ -65,6 +65,9 @@ const reducer = function(state=defaultState, action: any) {
         newState.schema = [...action.value];
       }
       break;
+    case DATASET_FORM_ACTIONS.UPDATE_DATASET_FORM:
+      //TODO: Update schema here
+      break;
     default:
       return state;
   }

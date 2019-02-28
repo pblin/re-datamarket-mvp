@@ -11,7 +11,7 @@ import { submit } from 'redux-form';
 import {
   Button,
   Grid,
-  Typography,
+  //Typography,
   Dialog,
   DialogActions,
   DialogContent,
@@ -136,12 +136,12 @@ class DatasetManager extends React.Component<ComponentProps> {
       return <div>
         <Dialog open={this.props.datasetDialog.open} fullWidth={true} maxWidth={"md"} onEnter={this.handleEnter}>
           <DialogTitle>
-            <Typography variant="h6" color="inherit" className={"dialog-header"}>
+            <p className={"dialog-header"}>
               <span className={"bold"}>CREATE</span> A DATASET
-            </Typography>
-            <Typography variant="subtitle1" color="inherit" className={"dialog-subheader"}>
+            </p>
+            <p  className={"dialog-subheader"}>
               Fill out this form to publish a new dataset to the marketplace.
-            </Typography>
+            </p>
           </DialogTitle>
           <DialogContent>
             <Grid container={true}>
