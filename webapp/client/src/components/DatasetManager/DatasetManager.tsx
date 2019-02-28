@@ -66,6 +66,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.onSchemaFileChange = this.onSchemaFileChange.bind(this);
     this.onSchemaUpload = this.onSchemaUpload.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleEnter = this.handleEnter.bind(this);
   }
 
   onSchemaFileChange(fileId: string, file: File) {
@@ -125,10 +126,15 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.changeDialogState(false)
   }
 
+  handleEnter() {
+    console.log('Entering Modal');
+    console.log(this.props.datasetDialog);
+  }
+
   render() {
     if(this.props.isProfileSet) {
       return <div>
-        <Dialog open={this.props.datasetDialog.open} fullWidth={true} maxWidth={"md"}>
+        <Dialog open={this.props.datasetDialog.open} fullWidth={true} maxWidth={"md"} onEnter={this.handleEnter}>
           <DialogTitle>
             <Typography variant="h6" color="inherit" className={"dialog-header"}>
               <span className={"bold"}>CREATE</span> A DATASET
@@ -200,6 +206,7 @@ class DatasetManager extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
+        console.log(state);
   return {
     schemaFile: Object.assign({}, getFileState(state).files.find(file => file.fileId == 'schemaFile')),
     wizard: state.DatasetFormState.wizard,

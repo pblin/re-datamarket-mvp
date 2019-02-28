@@ -37,8 +37,6 @@ const renderSelectField = ({input, label, meta, custom}) => {
 
 const renderTextField = ({input, label, meta, custom}) => {
   let helperText = meta.error != undefined && meta.touched ? meta.error: custom.helperText;
-  console.log('Placeholder');
-  console.log(custom);
   return (
     <Grid item xs={custom.gridXs} sm={custom.gridSm}>
       <TextField

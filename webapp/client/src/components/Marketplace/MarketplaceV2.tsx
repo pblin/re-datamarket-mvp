@@ -10,7 +10,7 @@ import SchemaList from "./SchemaList";
 import {datasetDialogSelector, marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
 import {Grid, Button} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import UserSchemaList from "./UserSchemaList";
+import UserDatasetList from "./UserDatasetList";
 import DatasetManager from '../DatasetManager/DatasetManager'
 
 interface ComponentProps {
@@ -33,6 +33,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.getUserSchemas = this.getUserSchemas.bind(this);
     this.openDialog = this.openDialog.bind(this);
     this.closeDialog = this.closeDialog.bind(this);
+    this.handleOnEdit = this.handleOnEdit.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -66,6 +67,12 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.props.changeDialogState(false);
   }
 
+  handleOnEdit(dataset) {
+    console.log('Handling on edit');
+    console.log(dataset);
+    this.props.changeDialogState(true, 'edit', dataset.id)
+  }
+
   render() {
     return (
       <div>
@@ -87,7 +94,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 <SchemaList schemas={this.props.schemas}/>
               }
               {this.props.schemaFilter == 'ownedByMe' &&
-                <UserSchemaList schemas={this.props.userSchemas}/>
+                <UserDatasetList schemas={this.props.userSchemas} onEditClick={this.handleOnEdit}/>
               }
             </Grid>
             <DatasetManager/>
@@ -114,7 +121,7 @@ function mapDispatchToProps(dispatch: any) {
     updateSchemaFilter: (filter: string) => dispatch(updateSchemaFilter(filter)),
     getUserSchemas: (id) => dispatch({type: MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, id}),
     getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS}),
-    changeDialogState: (isOpen) => dispatch(changeDialogState(isOpen))
+    changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id))
   };
 }
 export default withRouter(
