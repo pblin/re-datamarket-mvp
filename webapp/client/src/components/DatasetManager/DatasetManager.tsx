@@ -4,7 +4,7 @@ import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {
   changeDisplaySchemaError,
   nextStep,
-  prevStep, updateDatasetForm,
+  prevStep, resetForm, updateDatasetForm,
 } from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit } from 'redux-form';
@@ -56,6 +56,7 @@ interface ComponentProps {
   datasetDialog: any;
   datasetForm: any;
   updateDatasetForm: any;
+  resetForm: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -124,7 +125,8 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   handleClose() {
-    this.props.changeDialogState(false)
+    this.props.changeDialogState(false);
+    this.props.resetForm();
   }
 
   handleEnter() {
@@ -138,7 +140,13 @@ class DatasetManager extends React.Component<ComponentProps> {
   render() {
     if(this.props.isProfileSet) {
       return <div>
-        <Dialog open={this.props.datasetDialog.open} fullWidth={true} maxWidth={"md"} onEnter={this.handleEnter}>
+        <Dialog
+          open={this.props.datasetDialog.open}
+          fullWidth={true}
+          maxWidth={"md"}
+          onEnter={this.handleEnter}
+          onClose={this.handleClose}
+        >
           <DialogTitle>
             <p className={"dialog-header"}>
               <span className={"bold"}>CREATE</span> A DATASET
@@ -234,7 +242,8 @@ function mapDispatchToProps(dispatch: any) {
     submitBasicInfoForm: () => dispatch(submit('contact')),
     shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
     changeDialogState: (isOpen: boolean) => dispatch(changeDialogState(isOpen)),
-    updateDatasetForm: (dataset: any) => dispatch(updateDatasetForm(dataset))
+    updateDatasetForm: (dataset: any) => dispatch(updateDatasetForm(dataset)),
+    resetForm: () => dispatch(resetForm())
   };
 }
 export default withRouter(

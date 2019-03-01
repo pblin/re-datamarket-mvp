@@ -6,7 +6,8 @@ export enum DATASET_FORM_ACTIONS {
   CHANGE_NO_SCHEMA_ERROR = "CHANGE_NO_SCHEMA_ERROR",
   CHANGE_SCHEMA = "CHANGE_SCHEMA",
   SCHEMA_PUBLISHED = "SCHEMA_PUBLISHED",
-  UPDATE_DATASET_FORM = "UPDATE_DATASET_FORM"
+  UPDATE_DATASET_FORM = "UPDATE_DATASET_FORM",
+  RESET = "RESET"
 }
 
 export function nextStep() {
@@ -31,4 +32,8 @@ export function changeSchema(name: string, field: string, value: any) {
 
 export function updateDatasetForm(dataset: any) {
   return {type: DATASET_FORM_ACTIONS.UPDATE_DATASET_FORM, dataset}
+}
+
+export function resetForm() {
+  return {type: DATASET_FORM_ACTIONS.RESET};
 }
