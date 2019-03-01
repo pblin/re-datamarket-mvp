@@ -4,7 +4,7 @@ import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {
   changeDisplaySchemaError,
   nextStep,
-  prevStep,
+  prevStep, updateDatasetForm,
 } from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit } from 'redux-form';
@@ -55,6 +55,7 @@ interface ComponentProps {
   changeDialogState: any;
   datasetDialog: any;
   datasetForm: any;
+  updateDatasetForm: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -129,6 +130,9 @@ class DatasetManager extends React.Component<ComponentProps> {
   handleEnter() {
     console.log('Entering Modal');
     console.log(this.props.datasetDialog);
+    if(this.props.datasetDialog.dataset) {
+      this.props.updateDatasetForm(this.props.datasetDialog.dataset);
+    }
   }
 
   render() {
@@ -229,7 +233,8 @@ function mapDispatchToProps(dispatch: any) {
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),
     shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
-    changeDialogState: (isOpen: boolean) => dispatch(changeDialogState(isOpen))
+    changeDialogState: (isOpen: boolean) => dispatch(changeDialogState(isOpen)),
+    updateDatasetForm: (dataset: any) => dispatch(updateDatasetForm(dataset))
   };
 }
 export default withRouter(

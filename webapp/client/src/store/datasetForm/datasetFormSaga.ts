@@ -12,8 +12,21 @@ function* DatasetFormPublished(action) {
   yield put({type: 'SCHEMA_PUBLISHED', schemaId})
 }
 
+function* DatasetFormUpdated(action) {
+  let basicInfo = action.basicInfo;
+  let schema = action.schema;
+  let ownerId = action.ownerId;
+  let datasetId = action.datasetId;
+
+  const schemaService = new SchemaService();
+  const schemaId = yield schemaService.updateSchema(basicInfo, schema, ownerId, datasetId);
+
+  yield put({type: 'SCHEMA_PUBLISHED', schemaId})
+}
+
 export function* watchPublish() {
   yield takeLatest('DATASET_FORM_PUBLISHED', DatasetFormPublished);
+  yield takeLatest('DATASET_FORM_UPDATED', DatasetFormUpdated);
 }
 
 export function datasetFormSagas() {

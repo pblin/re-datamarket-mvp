@@ -294,7 +294,7 @@ function mapStateToProps(state, props) {
 BasicInfoForm = reduxForm({
   form: 'contact',
   validate,
-  destroyOnUnmount: false,
+  destroyOnUnmount: true,
   enableReinitialize: true,
 })(BasicInfoForm);
 
