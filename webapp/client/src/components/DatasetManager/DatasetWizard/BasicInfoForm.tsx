@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
 import "./DatasetWizard.css";
 import {ERROR_TYPE} from "../../Common/Error/ErrorType";
+import {datasetDialogSelector} from "../../../store/marketplace/marketplaceSelectors";
 
 interface BasicFormProps {
   handleSubmit: any;
@@ -177,6 +178,11 @@ const validate = (values) => {
 };
 
 class BasicInfoForm extends Component<BasicFormProps> {
+  componentDidUpdate(prevProps: Readonly<BasicFormProps>, prevState: Readonly<{}>, snapshot?: any): void {
+    //@ts-ignore
+    //this.props.initialize({name: 'test'})
+  }
+
   render() {
     return (
         <form onSubmit={this.props.handleSubmit}>
@@ -262,14 +268,35 @@ class BasicInfoForm extends Component<BasicFormProps> {
   }
 }
 
-function mapStateToProps(state) {
-    console.log('mapping state')
-    console.log(state);
-    return {
-
+function mapStateToProps(state, props) {
+    const dialog = datasetDialogSelector(state);
+    if(!dialog.dataset) {
+      return {}
     }
+    return {
+      initialValues: {
+        name: dialog.dataset.name,
+        description: dialog.dataset.description,
+        searchTerms: dialog.dataset['search_terms'],
+        country: dialog.dataset.country,
+        state: dialog.dataset['state_province'],
+        sampleAPIKey: dialog.dataset['api_key'],
+        sampleDataKey: dialog.dataset['enc_data_key'],
+        endpoint: dialog.dataset['access_url'],
+        records: dialog.dataset['num_of_records'],
+        askPriceHigh: dialog.dataset['price_high'],
+        askPriceLow: dialog.dataset['price_low']
+      }
+    };
 }
 
 //@ts-ignore
-BasicInfoForm = connect(mapStateToProps)(BasicInfoForm);
-export default reduxForm({form: 'contact', validate, destroyOnUnmount: false}, mapStateToProps)(BasicInfoForm);
+BasicInfoForm = reduxForm({
+  form: 'contact',
+  validate,
+  destroyOnUnmount: false,
+  enableReinitialize: true,
+})(BasicInfoForm);
+
+export default connect(mapStateToProps)(BasicInfoForm);
+
