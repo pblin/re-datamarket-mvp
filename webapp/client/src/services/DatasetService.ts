@@ -1,14 +1,13 @@
 import {v1 as uuid} from 'uuid';
 import {config} from "./ServiceConfig";
 
-//TODO: SET BASE URL AS A PROP
-export class SchemaService {
+export class DatasetService {
   baseUrl: string;
   constructor() {
     this.baseUrl = location.protocol+'//'+location.hostname + ":9000";
   }
 
-  async postSchema(basicInfo: any, schema: any[], id: any) {
+  async postDataset(basicInfo: any, schema: any[], id: any) {
     const uid = uuid();
 
     let body = {
@@ -44,7 +43,7 @@ export class SchemaService {
     return uid;
   }
 
-  async updateSchema(basicInfo: any, schema: any[], ownerId: string, schemaId: string) {
+  async updateDataset(basicInfo: any, schema: any[], ownerId: string, schemaId: string) {
     let body = {
       id: schemaId,
       name: basicInfo.name,
@@ -78,7 +77,7 @@ export class SchemaService {
     return schemaId;
   }
 
-  async getUserSchemas(id: string) {
+  async getUserDatasets(id: string) {
     const results = await fetch(`${config.serverBase}/schema/${id}`);
     if(results.status !== 200) {
       return [];
@@ -87,7 +86,7 @@ export class SchemaService {
     }
   }
 
-  async getAllSchemas() {
+  async getAllDatasets() {
     const results = await fetch(`${config.serverBase}/marketplace`);
     if(results.status !== 200) {
       return [];

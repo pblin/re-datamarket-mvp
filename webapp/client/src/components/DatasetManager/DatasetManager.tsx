@@ -4,7 +4,7 @@ import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {
   changeDisplaySchemaError,
   nextStep,
-  prevStep, resetForm, updateDatasetForm,
+  prevStep, resetForm, updateDataset, updateDatasetForm,
 } from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit } from 'redux-form';
@@ -57,6 +57,7 @@ interface ComponentProps {
   datasetForm: any;
   updateDatasetForm: any;
   resetForm: any;
+  updateDataset: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -69,6 +70,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.onSchemaUpload = this.onSchemaUpload.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
+    this.update = this.update.bind(this);
   }
 
   onSchemaFileChange(fileId: string, file: File) {
@@ -99,7 +101,11 @@ class DatasetManager extends React.Component<ComponentProps> {
         }
         break;
       case 3:
-        this.publish();
+        if(this.props.datasetDialog.mode == 'add') {
+          this.publish();
+        } else {
+          this.update();
+        }
         return;
     }
     this.props.nextStep();
@@ -107,6 +113,10 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   publish() {
     this.props.publishSchema(this.props.basicInfo, this.props.schema, this.props.profile.id);
+  }
+
+  update() {
+    this.props.updateDataset(this.props.basicInfo, this.props.schema, this.props.profile.id, this.props.datasetDialog.dataset.id);
   }
 
   onWizardPrev() {
@@ -134,6 +144,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     console.log(this.props.datasetDialog);
     if(this.props.datasetDialog.dataset) {
       this.props.updateDatasetForm(this.props.datasetDialog.dataset);
+      console.log(this.props.datasetDialog.dataset);
     }
   }
 
@@ -236,7 +247,8 @@ function mapDispatchToProps(dispatch: any) {
   return {
     onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
     onFileChangeAndUpload: (file: any, fileId: string) => dispatch({type: "FILE_CHANGED_AND_UPLOADED", validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST', file, fileId}),
-    publishSchema: (basicInfo: any, schema: any[], id: any) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id}),
+    publishSchema: (basicInfo: any, schema: any[], id: any) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id}), //TODO: Refactor to publish dataset
+    updateDataset: (basicInfo: any, schema: any[], ownerId: any, datasetId: any) => dispatch(updateDataset(basicInfo, schema, ownerId, datasetId)),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),
     submitBasicInfoForm: () => dispatch(submit('contact')),
