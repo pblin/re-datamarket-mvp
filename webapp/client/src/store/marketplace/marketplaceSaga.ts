@@ -6,9 +6,13 @@ function* GetUserSchemas() {
   let profile = JSON.parse(localStorage.getItem ('profile'));
 
   const schemaService = new DatasetService();
-  const schemas = yield schemaService.getUserDatasets(profile.id);
+  if(profile.id) {
+    const schemas = yield schemaService.getUserDatasets(profile.id);
 
-  yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas})
+    yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas})
+  } else {
+    yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas: []})
+  }
 }
 
 function* GetAllSchemas() {

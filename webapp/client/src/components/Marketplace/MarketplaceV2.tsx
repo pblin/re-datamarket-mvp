@@ -48,11 +48,6 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   componentDidMount() {
-    if(!this.props.profile) {
-      //Display profile warning
-    } else {
-      //this.getUserDatasets(this.props.profile.id);
-    }
     this.props.getAllSchemas();
     this.props.getUserSchemas();
   }
