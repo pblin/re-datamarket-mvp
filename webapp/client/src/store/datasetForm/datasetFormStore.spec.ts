@@ -1,6 +1,6 @@
 import {createStore} from "redux";
 import DatasetFormReducer from './reducers';
-import {changeSchema, gotoStep, nextStep, prevStep, DATASET_FORM_ACTIONS} from "./actions";
+import {changeSchema, gotoStep, nextStep, prevStep, DATASET_FORM_ACTIONS, changeDisplaySchemaError} from "./actions";
 
 describe('Dataset Form Store', () => {
   let store;
@@ -76,6 +76,17 @@ describe('Dataset Form Store', () => {
     expect(store.getState().schema.length).toBe(3);
     expect(store.getState().schema[0].name).toBe('test');
     expect(store.getState().schema[0].description).toBe('123456');
-  })
+  });
+
+  it("should display no schema error", () => {
+    store.dispatch(changeDisplaySchemaError(true));
+    expect(store.getState().displayNoSchemaError).toBe(true);
+  });
+
+  it("the dataset should be published", () => {
+    store.dispatch({type: DATASET_FORM_ACTIONS.SCHEMA_PUBLISHED, schemaId: 1234});
+    expect(store.getState().schemaPublished).toBeTruthy();
+    expect(store.getState().schemaPublishedId).toBe(1234);
+  });
 });
 
