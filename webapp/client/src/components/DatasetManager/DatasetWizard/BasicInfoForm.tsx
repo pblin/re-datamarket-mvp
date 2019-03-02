@@ -270,9 +270,7 @@ class BasicInfoForm extends Component<BasicFormProps> {
 
 function mapStateToProps(state, props) {
     const dialog = datasetDialogSelector(state);
-    console.log('basic form');
-    console.log(state);
-    console.log(dialog);
+
     if(!dialog.dataset) {
       return {}
     }

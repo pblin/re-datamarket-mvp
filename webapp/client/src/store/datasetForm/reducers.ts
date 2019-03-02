@@ -66,7 +66,6 @@ const reducer = function(state=defaultState, action: any) {
       }
       break;
     case DATASET_FORM_ACTIONS.UPDATE_DATASET_FORM:
-      //TODO: Update schema here
       newState.schema = JSON.parse(action.dataset['json_schema']);
       break;
     case DATASET_FORM_ACTIONS.RESET:

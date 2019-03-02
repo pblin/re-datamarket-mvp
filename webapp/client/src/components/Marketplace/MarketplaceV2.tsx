@@ -86,7 +86,10 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
             </Grid>
             <Grid item xs={12} sm={12}>
               {this.props.schemaFilter == 'all' &&
-                <SchemaList schemas={this.props.schemas}/>
+                <SchemaList
+                  schemas={this.props.schemas}
+                  history={this.props.history}
+                />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
                 <UserDatasetList schemas={this.props.userSchemas} onEditClick={this.handleOnEdit}/>
