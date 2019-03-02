@@ -5,13 +5,14 @@ import './marketplace.css';
 import {changeDialogState, MARKETPLACE_ACTIONS, updateSchemaFilter} from "../../store/marketplace/marketplaceActions";
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
-import {profileSelector} from "../../store/profile/profileSelector";
+import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import SchemaList from "./SchemaList";
 import {datasetDialogSelector, marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
 import {Grid, Button} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManager from '../DatasetManager/DatasetManager'
+import JumboPaper from "../Common/jumboPaper";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -24,6 +25,8 @@ interface ComponentProps {
   userSchemas: any[];
   datasetDialog: any
   changeDialogState: any;
+  isProfileSet: boolean;
+  history: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -79,17 +82,27 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-end"}>
-              <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
-                Add
-                <AddIcon/>
-              </Button>
+              {this.props.isProfileSet &&
+                <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
+                  Add
+                  <AddIcon/>
+                </Button>
+              }
             </Grid>
             <Grid item xs={12} sm={12}>
               {this.props.schemaFilter == 'all' &&
                 <SchemaList schemas={this.props.schemas}/>
               }
-              {this.props.schemaFilter == 'ownedByMe' &&
+              {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
                 <UserDatasetList schemas={this.props.userSchemas} onEditClick={this.handleOnEdit}/>
+              }
+              {(this.props.schemaFilter == 'ownedByMe' && !this.props.isProfileSet) &&
+                <JumboPaper
+                  title={"Welcome,"}
+                  content={"Creating new schemas requires a profile. Please create a profile before continuing"}
+                  buttonText={"Create Profile"}
+                  handleClick={() => {this.props.history.push('/profile')}}
+                />
               }
             </Grid>
             <DatasetManager/>
@@ -105,6 +118,7 @@ function mapStateToProps(state: any, ownProps: any) {
   return {
     schemaFilter: marketplaceSelector(state).schemaFilter,
     profile: profileSelector(state),
+    isProfileSet: isProfileSet(state),
     schemas: marketplaceSelector(state).schemas,
     userSchemas: marketplaceSelector(state).userSchemas,
     datasetDialog: datasetDialogSelector(state)

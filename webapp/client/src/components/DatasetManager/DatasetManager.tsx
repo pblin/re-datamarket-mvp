@@ -22,7 +22,6 @@ import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
 import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
-import JumboPaper from "../Common/jumboPaper";
 import {withRouter} from "react-router";
 import {changeDialogState} from "../../store/marketplace/marketplaceActions";
 import {datasetDialogSelector} from "../../store/marketplace/marketplaceSelectors";
@@ -150,7 +149,6 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   render() {
-    if(this.props.isProfileSet) {
       return <div>
         <Dialog
           open={this.props.datasetDialog.open}
@@ -169,29 +167,29 @@ class DatasetManager extends React.Component<ComponentProps> {
           </DialogTitle>
           <DialogContent>
             <Grid container={true}>
-                <DatasetWizard
-                  steps={this.props.wizard.steps}
-                  onNext={this.onWizardNext}
-                  onPrev={this.onWizardPrev}
-                  currentStep={this.props.wizard.currentStep}
-                >
-                  <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
-                  <SchemaUpload
-                    onSchemaFileChange={this.onSchemaFileChange}
-                    onSchemaUpload={this.onSchemaUpload}
-                    onSchemaSelect={this.onSchemaSelect}
-                    schemaFile={this.props.schemaFile}
-                    errors={this.props.schemaFile.errors}
-                    schema={this.props.schema}
-                    displayNoSchemaError={this.props.displaySchemaError}
-                  />
-                  <SchemaList schemas={this.props.schema} onSchemaSelect={this.onSchemaSelect}></SchemaList>
-                  <PublishForm
-                    basicDetails={this.props.basicInfo}
-                    schema={this.props.schema}
-                    schemaPublishedId={this.props.datasetForm.schemaPublishedId}
-                    schemaPublished={this.props.datasetForm.schemaPublished}>
-                  </PublishForm>
+              <DatasetWizard
+                steps={this.props.wizard.steps}
+                onNext={this.onWizardNext}
+                onPrev={this.onWizardPrev}
+                currentStep={this.props.wizard.currentStep}
+              >
+                <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
+                <SchemaUpload
+                  onSchemaFileChange={this.onSchemaFileChange}
+                  onSchemaUpload={this.onSchemaUpload}
+                  onSchemaSelect={this.onSchemaSelect}
+                  schemaFile={this.props.schemaFile}
+                  errors={this.props.schemaFile.errors}
+                  schema={this.props.schema}
+                  displayNoSchemaError={this.props.displaySchemaError}
+                />
+                <SchemaList schemas={this.props.schema} onSchemaSelect={this.onSchemaSelect}></SchemaList>
+                <PublishForm
+                  basicDetails={this.props.basicInfo}
+                  schema={this.props.schema}
+                  schemaPublishedId={this.props.datasetForm.schemaPublishedId}
+                  schemaPublished={this.props.datasetForm.schemaPublished}>
+                </PublishForm>
               </DatasetWizard>
             </Grid>
           </DialogContent>
@@ -214,18 +212,6 @@ class DatasetManager extends React.Component<ComponentProps> {
           </DialogActions>
         </Dialog>
       </div>
-    } else {
-       return (
-         <div>
-           <JumboPaper
-             title={"Welcome,"}
-             content={"Creating new schemas requires a profile. Please create a profile before continuing"}
-             buttonText={"Create Profile"}
-             handleClick={() => {this.props.history.push('/profile')}}
-           />
-         </div>
-       )
-    }
   }
 }
 
