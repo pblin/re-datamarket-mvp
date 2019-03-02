@@ -32,7 +32,6 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.handleSchemaChange = this.handleSchemaChange.bind(this);
     this.getUserSchemas = this.getUserSchemas.bind(this);
     this.openDialog = this.openDialog.bind(this);
-    this.closeDialog = this.closeDialog.bind(this);
     this.handleOnEdit = this.handleOnEdit.bind(this);
   }
 
@@ -60,11 +59,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   openDialog() {
-    this.props.changeDialogState(true);
-  }
-
-  closeDialog() {
-    this.props.changeDialogState(false);
+    this.props.changeDialogState(true, 'add', undefined);
   }
 
   handleOnEdit(dataset) {

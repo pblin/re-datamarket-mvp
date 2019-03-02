@@ -72,6 +72,8 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_FORM_ACTIONS.RESET:
       newState.schema = [];
       newState.wizard.currentStep = 0;
+      newState.schemaPublished = false;
+      newState.schemaPublishedId = undefined;
       break;
     default:
       return state;

@@ -66,6 +66,9 @@ export class DatasetService {
       json_schema: JSON.stringify(schema)
     };
 
+    console.log('update body');
+    console.log(body);
+
     await fetch(`${this.baseUrl}/schema`, {
       method: 'POST',
       headers: {

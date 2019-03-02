@@ -7,11 +7,10 @@ import {
   prevStep, resetForm, updateDataset, updateDatasetForm,
 } from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
-import { submit } from 'redux-form';
+import { submit, destroy } from 'redux-form';
 import {
   Button,
   Grid,
-  //Typography,
   Dialog,
   DialogActions,
   DialogContent,
@@ -58,6 +57,7 @@ interface ComponentProps {
   updateDatasetForm: any;
   resetForm: any;
   updateDataset: any;
+  destroyBasic: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -137,6 +137,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   handleClose() {
     this.props.changeDialogState(false);
     this.props.resetForm();
+    this.props.destroyBasic();
   }
 
   handleEnter() {
@@ -255,7 +256,8 @@ function mapDispatchToProps(dispatch: any) {
     shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
     changeDialogState: (isOpen: boolean) => dispatch(changeDialogState(isOpen)),
     updateDatasetForm: (dataset: any) => dispatch(updateDatasetForm(dataset)),
-    resetForm: () => dispatch(resetForm())
+    resetForm: () => dispatch(resetForm()),
+    destroyBasic: () => dispatch(destroy('contact'))
   };
 }
 export default withRouter(
