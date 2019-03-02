@@ -22,6 +22,7 @@ const SchemaList = ({schemas, onSchemaSelect}) => {
         onRowSelect={onSchemaSelect}
       >
         <Column field="name" header="Name" sortable={true}/>
+        <Column field="label" header="Label" sortable={true}/>
         <Column field="type" header="Type" sortable={true}/>
         <Column field="description" header="Description" sortable={true}/>
       </DataTable>
