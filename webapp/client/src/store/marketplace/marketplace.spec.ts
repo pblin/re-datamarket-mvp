@@ -1,6 +1,7 @@
 import {createStore} from "redux";
 import MarketplaceState from './marketplaceReducer';
 import {datasetDialogSelector, marketplaceSelector} from "./marketplaceSelectors";
+import {changeDialogState, MARKETPLACE_ACTIONS, updateSchemaFilter} from "./marketplaceActions";
 
 describe('Marketplace State', () => {
   let store;
@@ -16,6 +17,28 @@ describe('Marketplace State', () => {
     expect(initialState.datasetDialog.open).toBe(false);
     expect(initialState.datasetDialog.mode).toBe('add');
     expect(initialState.datasetDialog.dataset).toBeFalsy();
+  });
+
+  it('should change schema filter', () => {
+    store.dispatch(updateSchemaFilter('test'));
+    expect(store.getState().schemaFilter).toBe('test');
+  });
+
+  it('should change dialog state', () => {
+    store.dispatch(changeDialogState(true, 'edit', {}));
+    expect(store.getState().datasetDialog.open).toBe(true);
+    expect(store.getState().datasetDialog.dataset).toEqual({});
+    expect(store.getState().datasetDialog.mode).toBe('edit');
+  });
+
+  it('should receive schema updates', () => {
+    store.dispatch({type: MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED, schemas:[]});
+    expect(store.getState().schemas).toEqual([]);
+  });
+
+  it('should receive user schema updates', () => {
+    store.dispatch({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas:[]});
+    expect(store.getState().userSchemas).toEqual([]);
   });
 
   //Selector Tests
@@ -35,6 +58,6 @@ describe('Marketplace State', () => {
     };
 
     expect(datasetDialogSelector(mockState)).toBe('test1234');
-  })
+  });
 });
 

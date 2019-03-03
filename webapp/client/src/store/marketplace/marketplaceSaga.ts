@@ -2,7 +2,7 @@ import {takeLatest, put} from 'redux-saga/effects';
 import {DatasetService} from "../../services/DatasetService";
 import {MARKETPLACE_ACTIONS} from "./marketplaceActions";
 
-function* GetUserSchemas() {
+export function* GetUserSchemas() {
   let profile = JSON.parse(localStorage.getItem ('profile'));
 
   const schemaService = new DatasetService();
@@ -15,7 +15,7 @@ function* GetUserSchemas() {
   }
 }
 
-function* GetAllSchemas() {
+export function* GetAllSchemas() {
   const schemaService = new DatasetService();
   const schemas = yield schemaService.getAllDatasets();
 
