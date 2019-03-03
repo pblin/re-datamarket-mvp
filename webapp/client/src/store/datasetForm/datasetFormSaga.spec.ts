@@ -1,66 +1,68 @@
-import {applyMiddleware, createStore} from "redux";
-import DatasetFormReducer from './reducers';
-import createSagaMiddleware from 'redux-saga';
+import {DatasetFormPublished, DatasetFormUpdated, watchPublish, datasetFormSagas} from "./datasetFormSaga";
 
 jest.mock('../../services/DatasetService', () => {
-  console.log('Made it into the mock');
-  /*return jest.fn().mockImplementation(() => {
-    return {
-      postDataset: async () =>  {
-        return 1234;
-      }
-    }
-  })*/
   return {
     DatasetService: jest.fn().mockImplementation(() => {
       return {
-        postDataset: async() => {
+        postDataset: async(basicInfo, schema, id) => {
+          expect(basicInfo).toEqual({});
+          expect(schema).toEqual([]);
+          expect(id).toBe('1234');
           return 1234;
+        },
+        updateDataset: async(basicInfo, schema, ownerId, datasetId) => {
+          expect(basicInfo).toEqual({});
+          expect(schema).toEqual([]);
+          expect(ownerId).toBe('1234');
+          expect(datasetId).toBe('123');
+          return 123;
         }
       }
     })
   }
-  /*return function() {
-    return {
-      DatasetService: () => {
-        return {}
-      }
-    }
-  }*/
-  /*return jest.fn().mockImplementation(() => {
-    return {
-      DatasetService: () => {
-        return {
-          postDataset: async () =>  {
-            return 1234;
-          }
-        }
-      }
-    }
-  });*/
+
 });
-import {datasetFormSagas} from "./datasetFormSaga";
-import {all} from "@redux-saga/core/effects";
+
+import {runSaga} from "@redux-saga/core";
 
 
 describe('Dataset Saga', () => {
-  let store;
 
-  beforeEach(() => {
-    const sagaMiddleware = createSagaMiddleware();
-    function* rootSaga() {
-      yield all([ ...datasetFormSagas()])
-    }
+  it("should post a new dataset", async () => {
+    const dispatched = [];
+    await runSaga({
+      dispatch: (action) => dispatched.push(action),
+      getState: () => ({ state: 'test' }),
+    }, DatasetFormPublished, {basicInfo: {}, schema: [], id: '1234'});
 
-    store = createStore(DatasetFormReducer, applyMiddleware(sagaMiddleware));
-    sagaMiddleware.run(rootSaga);
-
+    expect(dispatched[0].type).toBe('SCHEMA_PUBLISHED');
+    expect(dispatched[0].schemaId).toBe(1234);
   });
 
-  it('should post a new a new dataset', () => {
-    store.dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo: {}, schema: [], id: 1234});
-    expect(store.getState().schemaPublished).toBe(true);
-    expect(store.getState().schemaPublishedId).toBe(1234);
+  it("should update an existing dataset", async () => {
+    const dispatched = [];
+    await runSaga({
+      dispatch: (action) => dispatched.push(action),
+      getState: () => ({ state: 'test' }),
+    }, DatasetFormUpdated, {basicInfo: {}, schema: [], ownerId: '1234', datasetId: '123'});
+
+    expect(dispatched[0].type).toBe('SCHEMA_PUBLISHED');
+    expect(dispatched[0].schemaId).toBe(123);
+  });
+
+  it('should watch publish', async() => {
+    const dispatched = [];
+    await runSaga({
+      dispatch: (action) => dispatched.push(action),
+      getState: () => ({ state: 'test' }),
+    }, watchPublish);
+
+    expect(dispatched).toEqual([]);
+  });
+
+  it('should export the saga', () => {
+    const result = datasetFormSagas();
+    expect(result).toBeTruthy();
   });
 });
 
