@@ -7,6 +7,7 @@ interface FileUploadProps {
   onFileChange: any;
   upload: any;
   displayUpload: boolean;
+  fileTypes: string[];
 }
 
 export class FileUpload extends React.Component<FileUploadProps> {
@@ -41,7 +42,16 @@ export class FileUpload extends React.Component<FileUploadProps> {
     let dt = e.dataTransfer;
     let files = dt.files;
     let file = files[0];
-    this.props.onFileChange(this.props.fileId, file);
+    console.log('Here is the file');
+    console.log(file);
+    let foundFileType = this.props.fileTypes.find((type) => {
+      return file.type == type;
+    });
+
+    if(foundFileType) {
+      this.props.onFileChange(this.props.fileId, file);
+    }
+
   }
 
   async upload() {
@@ -65,7 +75,7 @@ export class FileUpload extends React.Component<FileUploadProps> {
                  id={this.props.fileId}
                  name={this.props.fileId}
                  onChange={this.handleFileChange}
-                 accept=".json,application/json"
+                 accept={this.props.fileTypes.join(',')}
           />
           {this.props.displayUpload && (
             <button type="button" onClick={this.upload}>Upload</button>

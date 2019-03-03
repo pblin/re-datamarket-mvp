@@ -53,7 +53,13 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
   renderFileUpload() {
     return (
       <Grid item xs={12} className="text-center">
-        <FileUpload fileId="schemaFile" onFileChange={this.onFileChange} upload={this.upload} displayUpload={false}/>
+        <FileUpload
+          fileId="schemaFile"
+          onFileChange={this.onFileChange}
+          upload={this.upload}
+          displayUpload={false}
+          fileTypes={['.json', 'application/json']}
+        />
       </Grid>
     )
   }
