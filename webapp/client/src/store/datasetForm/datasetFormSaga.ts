@@ -7,6 +7,8 @@ function* DatasetFormPublished(action) {
   let schema = action.schema;
   let id = action.id;
 
+  console.log('DATASERVICE');
+  console.log(DatasetService);
   const schemaService = new DatasetService();
   const schemaId = yield schemaService.postDataset(basicInfo, schema, id);
 

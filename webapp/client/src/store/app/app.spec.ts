@@ -21,7 +21,7 @@ describe('App Store', () => {
   it('app selector should retrieve the correct state', () => {
     let mockState = {
       AppState: 'test1234'
-    }
+    };
 
     expect(appSelector(mockState)).toBe('test1234');
   });
