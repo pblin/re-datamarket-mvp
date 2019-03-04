@@ -58,6 +58,7 @@
 
 .app-section-wrapper {
   width: 80%;
+  max-width: 800px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
