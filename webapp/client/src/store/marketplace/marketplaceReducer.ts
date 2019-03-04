@@ -12,7 +12,9 @@ const defaultState: MarketplaceState = {
   schemas: [],
   userSchemas: [],
   datasetDialog: {
-    open: false
+    open: false,
+    mode: 'add',
+    dataset: undefined
   }
 };
 
@@ -32,6 +34,8 @@ const reducer = function(state=defaultState, action: any) {
     case MARKETPLACE_ACTIONS.CHANGE_DIALOG_STATE:
       newState.datasetDialog = {...state.datasetDialog};
       newState.datasetDialog.open = action.isOpen;
+      newState.datasetDialog.dataset = action.dataset;
+      newState.datasetDialog.mode = action.mode;
       break;
     default:
       return state;

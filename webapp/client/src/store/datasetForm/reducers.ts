@@ -65,6 +65,15 @@ const reducer = function(state=defaultState, action: any) {
         newState.schema = [...action.value];
       }
       break;
+    case DATASET_FORM_ACTIONS.UPDATE_DATASET_FORM:
+      newState.schema = JSON.parse(action.dataset['json_schema']);
+      break;
+    case DATASET_FORM_ACTIONS.RESET:
+      newState.schema = [];
+      newState.wizard.currentStep = 0;
+      newState.schemaPublished = false;
+      newState.schemaPublishedId = undefined;
+      break;
     default:
       return state;
   }

@@ -5,12 +5,13 @@ export const uploadSchema = {
   minItems: 1,
   items: {
     "type": "object",
-    required: ["type", "name", "description"],
+    required: ["type", "name", "description", "label"],
     additionalProperties: false,
     "properties": {
       description: {type: "string"},
       type: {type: "string"},
       name: {type: "string"},
+      label: {type: "string"}
     }
   }
 };

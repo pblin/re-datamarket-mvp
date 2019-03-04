@@ -5,7 +5,11 @@ export enum DATASET_FORM_ACTIONS {
   LOAD_SCHEMA_LIST = "LOAD_SCHEMA_LIST",
   CHANGE_NO_SCHEMA_ERROR = "CHANGE_NO_SCHEMA_ERROR",
   CHANGE_SCHEMA = "CHANGE_SCHEMA",
-  SCHEMA_PUBLISHED = "SCHEMA_PUBLISHED"
+  SCHEMA_PUBLISHED = "SCHEMA_PUBLISHED",
+  UPDATE_DATASET_FORM = "UPDATE_DATASET_FORM",
+  RESET = "RESET",
+  UPDATE_DATASET = "UPDATE_DATASET",
+  DATASET_FORM_PUBLISHED = "DATASET_FORM_PUBLISHED"
 }
 
 export function nextStep() {
@@ -26,4 +30,16 @@ export function changeDisplaySchemaError(displayError: boolean) {
 
 export function changeSchema(name: string, field: string, value: any) {
   return {type: DATASET_FORM_ACTIONS.CHANGE_SCHEMA, name, field, value};
+}
+
+export function updateDatasetForm(dataset: any) {
+  return {type: DATASET_FORM_ACTIONS.UPDATE_DATASET_FORM, dataset}
+}
+
+export function updateDataset(basicInfo: any, schema: any[], ownerId: string, datasetId: string) {
+  return {type: DATASET_FORM_ACTIONS.UPDATE_DATASET, basicInfo, schema, ownerId, datasetId}
+}
+
+export function resetForm() {
+  return {type: DATASET_FORM_ACTIONS.RESET};
 }

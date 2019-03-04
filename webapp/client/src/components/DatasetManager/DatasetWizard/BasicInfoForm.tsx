@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {Grid, MenuItem, TextField} from "@material-ui/core";
+import {connect} from "react-redux";
 import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
 import "./DatasetWizard.css";
 import {ERROR_TYPE} from "../../Common/Error/ErrorType";
+import {datasetDialogSelector} from "../../../store/marketplace/marketplaceSelectors";
 
 interface BasicFormProps {
   handleSubmit: any;
@@ -37,8 +39,6 @@ const renderSelectField = ({input, label, meta, custom}) => {
 
 const renderTextField = ({input, label, meta, custom}) => {
   let helperText = meta.error != undefined && meta.touched ? meta.error: custom.helperText;
-  console.log('Placeholder');
-  console.log(custom);
   return (
     <Grid item xs={custom.gridXs} sm={custom.gridSm}>
       <TextField
@@ -178,6 +178,11 @@ const validate = (values) => {
 };
 
 class BasicInfoForm extends Component<BasicFormProps> {
+  componentDidUpdate(prevProps: Readonly<BasicFormProps>, prevState: Readonly<{}>, snapshot?: any): void {
+    //@ts-ignore
+    //this.props.initialize({name: 'test'})
+  }
+
   render() {
     return (
         <form onSubmit={this.props.handleSubmit}>
@@ -263,4 +268,36 @@ class BasicInfoForm extends Component<BasicFormProps> {
   }
 }
 
-export default reduxForm({form: 'contact', validate, destroyOnUnmount: false})(BasicInfoForm);
+function mapStateToProps(state, props) {
+    const dialog = datasetDialogSelector(state);
+
+    if(!dialog.dataset) {
+      return {}
+    }
+    return {
+      initialValues: {
+        name: dialog.dataset.name,
+        description: dialog.dataset.description,
+        searchTerms: dialog.dataset['search_terms'],
+        country: dialog.dataset.country,
+        state: dialog.dataset['state_province'],
+        sampleAPIKey: dialog.dataset['api_key'],
+        sampleDataKey: dialog.dataset['enc_data_key'],
+        endpoint: dialog.dataset['access_url'],
+        records: dialog.dataset['num_of_records'],
+        askPriceHigh: dialog.dataset['price_high'],
+        askPriceLow: dialog.dataset['price_low']
+      }
+    };
+}
+
+//@ts-ignore
+BasicInfoForm = reduxForm({
+  form: 'contact',
+  validate,
+  destroyOnUnmount: false,
+  enableReinitialize: false,
+})(BasicInfoForm);
+
+export default connect(mapStateToProps)(BasicInfoForm);
+

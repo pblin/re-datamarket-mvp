@@ -1,24 +1,26 @@
 import * as React from "react";
 import {
+  Button,
   Grid,
   ExpansionPanel,
   ExpansionPanelSummary
 } from "@material-ui/core";
 
 //TODO: Add more details
-const UserSchemaList = ({schemas}) => {
+//TODO: refactor schemas to be datasets
+const UserDatasetList = ({schemas, onEditClick}) => {
   return(
     <div>
       {schemas.map((schema, index) => (
           <ExpansionPanel key={`userSchema${index}`} expanded={false}>
             <ExpansionPanelSummary className={"schema-list"}>
               <Grid container={true} justify={"flex-start"}>
-                <Grid item xs={8} sm={6} md={7}>
+                <Grid item xs={11}>
                   <p className={"header"}>{schema.name}</p>
                   <p className={"sub-header"}>{schema.description}</p>
                 </Grid>
-                <Grid item xs={2}>
-                  User Controls go here
+                <Grid item xs={1}>
+                  <Button onClick={() =>{onEditClick(schema)}}>Edit</Button>
                 </Grid>
               </Grid>
             </ExpansionPanelSummary>
@@ -28,4 +30,4 @@ const UserSchemaList = ({schemas}) => {
   );
 };
 
-export default UserSchemaList;
+export default UserDatasetList;

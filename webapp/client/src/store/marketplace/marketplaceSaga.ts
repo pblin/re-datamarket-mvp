@@ -1,19 +1,23 @@
 import {takeLatest, put} from 'redux-saga/effects';
-import {SchemaService} from "../../services/SchemaService";
+import {DatasetService} from "../../services/DatasetService";
 import {MARKETPLACE_ACTIONS} from "./marketplaceActions";
 
-function* GetUserSchemas() {
+export function* GetUserSchemas() {
   let profile = JSON.parse(localStorage.getItem ('profile'));
 
-  const schemaService = new SchemaService();
-  const schemas = yield schemaService.getUserSchemas(profile.id);
+  const schemaService = new DatasetService();
+  if(profile.id) {
+    const schemas = yield schemaService.getUserDatasets(profile.id);
 
-  yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas})
+    yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas})
+  } else {
+    yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas: []})
+  }
 }
 
-function* GetAllSchemas() {
-  const schemaService = new SchemaService();
-  const schemas = yield schemaService.getAllSchemas();
+export function* GetAllSchemas() {
+  const schemaService = new DatasetService();
+  const schemas = yield schemaService.getAllDatasets();
 
   yield put({type: MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED, schemas});
 }

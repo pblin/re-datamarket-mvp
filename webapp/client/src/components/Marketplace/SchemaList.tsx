@@ -10,12 +10,19 @@ import {
 } from "@material-ui/core";
 
 //TODO: Add more details
-const SchemaList = ({schemas}) => {
+const SchemaList = ({schemas, history}) => {
+  const handleClick = (schema) => {
+    console.log('Clicked on the dataset');
+    console.log(schema);
+    console.log(history);
+    history.push(`/dataset/${schema.id}`);
+  };
+
   return(
     <div>
       {schemas.map((schema, index) => (
           <ExpansionPanel key={`schema${index}`} expanded={false}>
-            <ExpansionPanelSummary className={"schema-list"}>
+            <ExpansionPanelSummary className={"schema-list"} onClick={() => handleClick(schema)}>
               <Grid container={true} justify={"flex-start"}>
                 <Grid item xs={4} sm={2} md={1}>
                   <div className={"fake-image"}>
