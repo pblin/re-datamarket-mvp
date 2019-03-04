@@ -32,11 +32,11 @@
 
 .fake-image {
   border: 1px solid black;
-  height: 100%;
-  width: 90%;
-  min-width: 70px;
-  min-height: 70px;
+  margin-right: 20px;
+  width: 70px;
+  height: 70px;
   background: #cccccc;
+  float: left;
 }
 
 .fake-image p {

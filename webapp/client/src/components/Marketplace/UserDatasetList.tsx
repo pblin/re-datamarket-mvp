@@ -16,6 +16,9 @@ const UserDatasetList = ({schemas, onEditClick}) => {
             <ExpansionPanelSummary className={"schema-list"}>
               <Grid container={true} justify={"flex-start"}>
                 <Grid item xs={11}>
+                  <div className={"fake-image"}>
+                    <p>70 x 70</p>
+                  </div>
                   <p className={"header"}>{schema.name}</p>
                   <p className={"sub-header"}>{schema.description}</p>
                 </Grid>
