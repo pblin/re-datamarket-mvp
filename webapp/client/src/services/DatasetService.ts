@@ -81,7 +81,7 @@ export class DatasetService {
   }
 
   async getUserDatasets(id: string) {
-    const results = await fetch(`${config.serverBase}/schema/${id}`);
+    const results = await fetch(`${config.serverBase}/schema/user/${id}`);
     if(results.status !== 200) {
       return [];
     } else {
@@ -91,6 +91,17 @@ export class DatasetService {
 
   async getAllDatasets() {
     const results = await fetch(`${config.serverBase}/marketplace`);
+    if(results.status !== 200) {
+      return [];
+    } else {
+      return results.json();
+    }
+  }
+
+  async getDataset(datasetId: string) {
+    const results = await fetch(`${config.serverBase}/marketplace/dataset/${datasetId}`);
+    console.log('Dataset result');
+    console.log(results.status);
     if(results.status !== 200) {
       return [];
     } else {

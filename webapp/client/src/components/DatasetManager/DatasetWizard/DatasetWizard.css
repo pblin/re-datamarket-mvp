@@ -56,7 +56,8 @@
 }
 
 .schema-dt .p-sortable-column-icon{
-  color: black !important;
+  color: #6e6e6e !important;
+  font-weight: bold;
 }
 
 .schema-dt .p-datatable-tbody {
@@ -83,9 +84,11 @@
 .schema-dt .p-datatable .p-datatable-thead tr th {
   border: none;
   background: #FFFFFF;
-  font-size: 13px;
+  font-size: 15px;
   font-family: Roboto;
-  color: black !important;
+  color: #636363 !important;
+  font-weight: bold;
   text-align: left;
   border-bottom: 1px solid #e1e1e1;
+  border-top: 1px solid #e1e1e1;
 }
