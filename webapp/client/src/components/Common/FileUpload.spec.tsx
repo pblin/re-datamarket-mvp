@@ -1,5 +1,5 @@
 import {FileUpload} from "./FileUpload";
-import {shallow, mount} from "enzyme";
+import {shallow} from "enzyme";
 import * as React from "react";
 
 //TODO: CREATE SETUP FILE
