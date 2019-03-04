@@ -42,8 +42,6 @@ export class FileUpload extends React.Component<FileUploadProps> {
     let dt = e.dataTransfer;
     let files = dt.files;
     let file = files[0];
-    console.log('Here is the file');
-    console.log(file);
     let foundFileType = this.props.fileTypes.find((type) => {
       return file.type == type;
     });
