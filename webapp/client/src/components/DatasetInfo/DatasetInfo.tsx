@@ -3,6 +3,9 @@ import {connect} from "react-redux";
 import {getDatasetInfo} from "../../store/datasetInfo/datasetInfoActions";
 import {datasetInfoSelector} from "../../store/datasetInfo/datasetInfoSelector";
 import SchemaList from "../DatasetManager/SchemaList/SchemaList";
+import MarketplaceToolbar from "../Marketplace/MarketplaceToolbar";
+import {ToolbarOption} from "../Marketplace/ToolbarOption";
+import "./datasetInfo.css";
 
 interface ComponentProps {
   match: any;
@@ -12,6 +15,10 @@ interface ComponentProps {
 
 class DatasetInfo extends React.Component<ComponentProps> {
   pageId: string;
+  toolbarOptions: ToolbarOption[] = [
+    new ToolbarOption('Schema', 'schema')
+  ];
+
   componentWillMount(): void {
     this.pageId = this.props.match.params.id;
     this.props.getDatasetInfo(this.pageId);
@@ -21,9 +28,18 @@ class DatasetInfo extends React.Component<ComponentProps> {
 
   };
 
+  onMenuChange() {
+
+  }
+
   render() {
     return (
-      <div>
+      <div className={"dataset-info-view"}>
+        <MarketplaceToolbar
+          toolbarOptions={this.toolbarOptions}
+          onSchemaFilterChange={this.onMenuChange}
+          schemaFilter={'schema'}
+        />
         <SchemaList schemas={this.props.dataset.schema} onSchemaSelect={this.onSchemaSelect}/>
       </div>
     )
