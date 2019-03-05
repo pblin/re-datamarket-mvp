@@ -2,6 +2,7 @@ import * as React from "react";
 import {Paper, IconButton, InputBase, Divider} from "@material-ui/core";
 //import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+import "../common.css";
 
 const FilterMenu = ({placeholder, onSearchChange, searchVal, onSearch}) => {
   const handleKeyPress = (e) => {
@@ -15,11 +16,11 @@ const FilterMenu = ({placeholder, onSearchChange, searchVal, onSearch}) => {
   };
 
   return(
-    <Paper elevation={1}>
+    <Paper elevation={1} className={"filter-menu"}>
       {/*<IconButton aria-label="Menu">
         <MenuIcon />
       </IconButton>*/}
-      <InputBase placeholder={placeholder} onChange={onSearchChange} value={searchVal} onKeyPress={handleKeyPress}/>
+      <InputBase placeholder={placeholder} onChange={onSearchChange} value={searchVal} onKeyPress={handleKeyPress} className={"search"}/>
       <IconButton aria-label="Search" onClick={handleSearchClick}>
         <SearchIcon />
       </IconButton>

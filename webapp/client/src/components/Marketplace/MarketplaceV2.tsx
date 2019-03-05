@@ -107,7 +107,11 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   onSearch(search: string) {
     console.log('On Search');
     console.log(search);
-    this.props.searchDatasets(search);
+    if(search != '') {
+      this.props.searchDatasets(search);
+    } else {
+      this.props.getAllSchemas();
+    }
   }
 
   render() {
@@ -120,7 +124,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         />
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
-            <Grid container={true} justify={"flex-end"}>
+            <Grid container={true} justify={"flex-start"}>
               {this.props.schemaFilter == 'all' &&
                 <FilterMenu
                   placeholder={"Search Marketplace"}
