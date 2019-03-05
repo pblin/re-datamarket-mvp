@@ -59,8 +59,6 @@ const reducer = function(state=defaultState, action: any) {
       newState.search = action.search;
       break;
     case MARKETPLACE_ACTIONS.DATASETS_SEARCHED:
-      console.log('THE DATASETS WERE SEARCHED');
-      console.log(action);
       newState.schemas = [...state.schemas];
       newState.schemas = action.datasets;
       break;

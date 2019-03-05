@@ -13,10 +13,18 @@ describe("<FileUpload></FileUpload>", () => {
 
   beforeEach(() => {
     mockParent = {
-      onFileChange: jest.fn()
+      onFileChange: jest.fn(),
+      onFileTypeMismatch: jest.fn()
     };
     wrapper = shallow(
-      <FileUpload fileId={'1234'} onFileChange={mockParent.onFileChange} displayUpload={true} fileTypes={['.json']} upload={()=>{}}/>
+      <FileUpload
+        fileId={'1234'}
+        onFileChange={mockParent.onFileChange}
+        displayUpload={true}
+        fileTypes={['.json']}
+        onFileTypeMismatch={mockParent.onFileTypeMismatch}
+        upload={()=>{}}
+      />
     );
   });
 
@@ -39,12 +47,14 @@ describe("<FileUpload></FileUpload>", () => {
 
     const preventDefaultSpy = jest.spyOn(mockEvent, "preventDefault");
     const stopPropagationSpy = jest.spyOn(mockEvent, "stopPropagation");
+    const fileMismatchSpy = jest.spyOn(mockParent, 'onFileTypeMismatch');
 
     //@ts-ignore
     wrapper.instance().handleDrop(mockEvent);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
     expect(stopPropagationSpy).toHaveBeenCalled();
+    expect(fileMismatchSpy).toHaveBeenCalled();
   });
 
   it("Handles file drop with correct filetype", () => {
