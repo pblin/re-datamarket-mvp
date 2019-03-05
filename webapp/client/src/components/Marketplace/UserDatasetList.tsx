@@ -13,7 +13,7 @@ import TrashIcon from "@material-ui/icons/Delete";
 //TODO: refactor schemas to be datasets
 const UserDatasetList = ({schemas, onEditClick, onDeleteClick}) => {
   return(
-    <div>
+    <div className={"schema-list"}>
       {schemas.map((schema, index) => (
           <ExpansionPanel key={`userSchema${index}`} expanded={false}>
             <ExpansionPanelSummary className={"schema-list"}>

@@ -17,7 +17,7 @@ import {
   datasetDialogSelector,
   marketplaceSelector
 } from "../../store/marketplace/marketplaceSelectors";
-import {Grid, Button, Dialog} from "@material-ui/core";
+import {Grid, Button, Dialog, DialogContent, DialogActions, DialogTitle} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManager from '../DatasetManager/DatasetManager'
@@ -48,6 +48,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.openDialog = this.openDialog.bind(this);
     this.handleOnEdit = this.handleOnEdit.bind(this);
     this.handleOnDelete = this.handleOnDelete.bind(this);
+    this.onConfirmationClose = this.onConfirmationClose.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -82,6 +83,10 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     console.log('Handling on delete');
     console.log(dataset);
     this.props.changeConfirmDeleteDialog(true, dataset);
+  }
+
+  onConfirmationClose() {
+    this.props.changeConfirmDeleteDialog(false, {name: ''});
   }
 
   render() {
@@ -122,8 +127,17 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
               }
             </Grid>
             <DatasetManager/>
-            <Dialog open={this.props.confirmDeleteDialog.open}>
-              Do you want to delete
+            <Dialog open={this.props.confirmDeleteDialog.open} maxWidth={"sm"} fullWidth={true}>
+              <DialogTitle>
+                {this.props.confirmDeleteDialog.dataset.name}
+              </DialogTitle>
+              <DialogContent>
+                Do you want to delete?
+              </DialogContent>
+              <DialogActions>
+                <Button>Ok</Button>
+                <Button onClick={this.onConfirmationClose}>Cancel</Button>
+              </DialogActions>
             </Dialog>
           </div>
         </Grid>

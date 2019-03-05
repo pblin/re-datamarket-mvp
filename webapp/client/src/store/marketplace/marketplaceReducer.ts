@@ -19,7 +19,9 @@ const defaultState: MarketplaceState = {
   },
   confirmDeleteDialog: {
     open: false,
-    dataset: undefined
+    dataset: {
+      name: ''
+    }
   }
 };
 
