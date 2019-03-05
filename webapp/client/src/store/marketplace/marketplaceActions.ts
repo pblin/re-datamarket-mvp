@@ -7,7 +7,8 @@ export enum MARKETPLACE_ACTIONS {
   CHANGE_DIALOG_STATE = "CHANGE_DIALOG_STATE",
   CHANGE_CONFIRM_DIALOG_STATE = "CHANGE_CONFIRM_DIALOG_STATE",
   DELETE_DATASET = "DELETE_DATASET",
-  DATASET_DELETED = "DATASET_DELETED"
+  DATASET_DELETED = "DATASET_DELETED",
+  CHANGE_SEARCH = "CHANGE_SEARCH"
 }
 
 export function updateSchemaFilter(schemaFilter) {
@@ -20,4 +21,8 @@ export function changeDialogState(isOpen, mode?, dataset?) {
 
 export function changeConfirmDialogState(isOpen, dataset) {
   return {type: MARKETPLACE_ACTIONS.CHANGE_CONFIRM_DIALOG_STATE, isOpen, dataset};
+}
+
+export function changeSearch(search: string) {
+  return {type: MARKETPLACE_ACTIONS.CHANGE_SEARCH, search}
 }

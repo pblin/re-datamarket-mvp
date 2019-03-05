@@ -6,6 +6,7 @@ interface MarketplaceState {
   userSchemas: any[];
   datasetDialog: any;
   confirmDeleteDialog: any;
+  search: string;
 }
 
 const defaultState: MarketplaceState = {
@@ -22,7 +23,8 @@ const defaultState: MarketplaceState = {
     dataset: {
       name: ''
     }
-  }
+  },
+  search: ''
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -52,6 +54,9 @@ const reducer = function(state=defaultState, action: any) {
     case MARKETPLACE_ACTIONS.DATASET_DELETED:
       newState.schemas = [...newState.schemas.filter(schema => schema.id != action.datasetId)];
       newState.userSchemas = [...newState.userSchemas.filter(schema => schema.id != action.datasetId)];
+      break;
+    case MARKETPLACE_ACTIONS.CHANGE_SEARCH:
+      newState.search = action.search;
       break;
     default:
       return state;

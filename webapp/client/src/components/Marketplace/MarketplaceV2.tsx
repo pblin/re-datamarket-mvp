@@ -4,7 +4,7 @@ import {withRouter} from "react-router";
 import './marketplace.css';
 import {
   changeConfirmDialogState,
-  changeDialogState,
+  changeDialogState, changeSearch,
   MARKETPLACE_ACTIONS,
   updateSchemaFilter
 } from "../../store/marketplace/marketplaceActions";
@@ -14,7 +14,7 @@ import {isProfileSet, profileSelector} from "../../store/profile/profileSelector
 import SchemaList from "./SchemaList";
 import {
   confirmDeleteDialogSelector,
-  datasetDialogSelector,
+  datasetDialogSelector, MarketplaceSelector,
   marketplaceSelector
 } from "../../store/marketplace/marketplaceSelectors";
 import {Grid, Button, Dialog, DialogContent, DialogActions, DialogTitle} from "@material-ui/core";
@@ -22,6 +22,7 @@ import AddIcon from "@material-ui/icons/Add";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManager from '../DatasetManager/DatasetManager'
 import JumboPaper from "../Common/jumboPaper";
+import FilterMenu from "../Common/Filter/FilterMenu";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -39,6 +40,8 @@ interface ComponentProps {
   confirmDeleteDialog: any;
   changeConfirmDeleteDialog: any;
   deleteDataset: any;
+  marketplace: any;
+  changeSearch: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -51,6 +54,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.handleOnDelete = this.handleOnDelete.bind(this);
     this.onConfirmationClose = this.onConfirmationClose.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -76,26 +80,26 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   handleOnEdit(dataset) {
-    console.log('Handling on edit');
-    console.log(dataset);
     this.props.changeDialogState(true, 'edit', dataset);
   }
 
   handleOnDelete(dataset) {
-    console.log('Handling on delete');
-    console.log(dataset);
     this.props.changeConfirmDeleteDialog(true, dataset);
   }
 
+  //Confirm Dialog TODO: Consider moving dialog to seperate component
   onConfirmationClose() {
     this.props.changeConfirmDeleteDialog(false, {name: ''});
   }
 
   confirmDelete() {
-    console.log('DELETE');
-    console.log(this.props.confirmDeleteDialog.dataset.id);
     this.props.deleteDataset(this.props.confirmDeleteDialog.dataset.id);
     this.props.changeConfirmDeleteDialog(false, {name: ''});
+  }
+
+  //Filter menu
+  onSearchChange(e) {
+    this.props.changeSearch(e.target.value);
   }
 
   render() {
@@ -109,6 +113,10 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-end"}>
+              <FilterMenu
+                placeholder={"Search Marketplace"}
+                searchVal = {this.props.marketplace.search}
+                onSearchChange={this.onSearchChange}/>
               {this.props.isProfileSet &&
                 <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
                   Add
@@ -163,7 +171,8 @@ function mapStateToProps(state: any, ownProps: any) {
     schemas: marketplaceSelector(state).schemas,
     userSchemas: marketplaceSelector(state).userSchemas,
     datasetDialog: datasetDialogSelector(state),
-    confirmDeleteDialog: confirmDeleteDialogSelector(state)
+    confirmDeleteDialog: confirmDeleteDialogSelector(state),
+    marketplace: MarketplaceSelector(state)
   }
 }
 
@@ -174,7 +183,8 @@ function mapDispatchToProps(dispatch: any) {
     getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS}),
     changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id)),
     changeConfirmDeleteDialog: (isOpen, dataset) => dispatch(changeConfirmDialogState(isOpen, dataset)),
-    deleteDataset: (datasetId: string) => dispatch({type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId })
+    deleteDataset: (datasetId: string) => dispatch({type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId }),
+    changeSearch: (search: string) => dispatch(changeSearch(search))
   };
 }
 export default withRouter(
