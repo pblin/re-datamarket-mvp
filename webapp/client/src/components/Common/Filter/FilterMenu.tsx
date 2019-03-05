@@ -3,14 +3,24 @@ import {Paper, IconButton, InputBase, Divider} from "@material-ui/core";
 //import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 
-const FilterMenu = ({placeholder, onSearchChange, searchVal}) => {
+const FilterMenu = ({placeholder, onSearchChange, searchVal, onSearch}) => {
+  const handleKeyPress = (e) => {
+    if(e.which == 13) {
+      onSearch(searchVal);
+    }
+  };
+
+  const handleSearchClick = () => {
+    onSearch(searchVal);
+  };
+
   return(
     <Paper elevation={1}>
       {/*<IconButton aria-label="Menu">
         <MenuIcon />
       </IconButton>*/}
-      <InputBase placeholder={placeholder} onChange={onSearchChange} value={searchVal} />
-      <IconButton aria-label="Search">
+      <InputBase placeholder={placeholder} onChange={onSearchChange} value={searchVal} onKeyPress={handleKeyPress}/>
+      <IconButton aria-label="Search" onClick={handleSearchClick}>
         <SearchIcon />
       </IconButton>
       <Divider />

@@ -154,11 +154,8 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   handleEnter() {
-    console.log('Entering Modal');
-    console.log(this.props.datasetDialog);
     if(this.props.datasetDialog.dataset) {
       this.props.updateDatasetForm(this.props.datasetDialog.dataset);
-      console.log(this.props.datasetDialog.dataset);
     }
   }
 

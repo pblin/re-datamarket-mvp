@@ -42,6 +42,7 @@ interface ComponentProps {
   deleteDataset: any;
   marketplace: any;
   changeSearch: any;
+  searchDatasets: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -55,6 +56,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.onConfirmationClose = this.onConfirmationClose.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
+    this.onSearch = this.onSearch.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -102,6 +104,12 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.props.changeSearch(e.target.value);
   }
 
+  onSearch(search: string) {
+    console.log('On Search');
+    console.log(search);
+    this.props.searchDatasets(search);
+  }
+
   render() {
     return (
       <div>
@@ -116,6 +124,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
               <FilterMenu
                 placeholder={"Search Marketplace"}
                 searchVal = {this.props.marketplace.search}
+                onSearch={this.onSearch}
                 onSearchChange={this.onSearchChange}/>
               {this.props.isProfileSet &&
                 <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
@@ -184,7 +193,8 @@ function mapDispatchToProps(dispatch: any) {
     changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id)),
     changeConfirmDeleteDialog: (isOpen, dataset) => dispatch(changeConfirmDialogState(isOpen, dataset)),
     deleteDataset: (datasetId: string) => dispatch({type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId }),
-    changeSearch: (search: string) => dispatch(changeSearch(search))
+    changeSearch: (search: string) => dispatch(changeSearch(search)),
+    searchDatasets: (terms: string) => dispatch({type: MARKETPLACE_ACTIONS.SEARCH_DATASETS, terms})
   };
 }
 export default withRouter(

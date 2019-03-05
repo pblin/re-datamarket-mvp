@@ -100,8 +100,6 @@ export class DatasetService {
 
   async getDataset(datasetId: string) {
     const results = await fetch(`${config.serverBase}/marketplace/dataset/${datasetId}`);
-    console.log('Dataset result');
-    console.log(results.status);
     if(results.status !== 200) {
       return [];
     } else {
@@ -117,6 +115,15 @@ export class DatasetService {
       throw new Error(`Deleting of asset ${datasetId} was not successful`);
     } else {
       return;
+    }
+  }
+
+  async searchDatasets(terms) {
+    const results = await fetch(`${config.serverBase}/marketplace/search?terms=${terms}`);
+    if(results.status !== 200) {
+      return [];
+    } else {
+      return results.json();
     }
   }
 
