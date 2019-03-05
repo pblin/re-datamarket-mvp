@@ -14,7 +14,8 @@ const SchemaList = ({schemas, history}) => {
   const handleClick = (schema) => {
     history.push(`/dataset/${schema.id}`);
   };
-
+  console.log('HERE ARE THE SCHEMAS');
+  console.log(schemas);
   return(
     <div>
       {schemas.map((schema, index) => (
@@ -31,7 +32,9 @@ const SchemaList = ({schemas, history}) => {
                 </Grid>
                 <Hidden xsDown>
                   <Grid item xs={2}>
-                    <p> Tags Will Go Here</p>
+                    {schema['search_terms'].map((tag) => (
+                      <p className={"search-tag"}>{tag}</p>
+                    ))}
                   </Grid>
                   <Grid item xs={2}>
                     Content
