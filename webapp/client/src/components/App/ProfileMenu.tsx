@@ -4,10 +4,7 @@ import {Link} from "react-router-dom";
 
 const ProfileMenu = ({profile, open, onClickAway}) => {
 
-  console.log('IS PROFILE MENU OPEN');
-  console.log(open);
   let handleClose = (item) => {
-    console.log('Handling Close');
     onClickAway(item);
   };
 

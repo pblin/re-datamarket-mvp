@@ -4,6 +4,7 @@ import {DATASET_FORM_ACTIONS} from "./actions";
 interface DatasetFormState {
   wizard: {
     steps: WizardStep[],
+    editSteps: WizardStep[],
     currentStep: number
   },
   schema: any[] //TODO: typecheck
@@ -19,6 +20,11 @@ const defaultState: DatasetFormState = {
       {label: 'Upload Schema', completed: false},
       {label: 'Review', completed: false},
       {label: 'Publish', completed: false, nextButtonValue: 'Publish'}
+    ],
+    editSteps: [
+      {label: 'Dataset Info', completed: false},
+      {label: 'Manage Schema', completed: false},
+      {label: 'Republish', nextButtonValue: 'Update Dataset'}
     ],
     currentStep: 0
   },

@@ -89,3 +89,22 @@
 .file-input + label * {
   pointer-events: none;
 }
+
+/*Filter Menu*/
+
+.filter-menu {
+  padding: 0px 0px 0px 0px !important;
+  font-size: 14px;
+  height: 36px;
+  margin-bottom: 5px;
+  margin-right: 20px;
+}
+
+.filter-menu button {
+  padding: 5px 5px 5px 0px;
+}
+
+.filter-menu .search {
+  padding: 2px 20px;
+  display: inline-block;
+}

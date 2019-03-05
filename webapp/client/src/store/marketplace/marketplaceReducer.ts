@@ -5,6 +5,8 @@ interface MarketplaceState {
   schemas: any[];
   userSchemas: any[];
   datasetDialog: any;
+  confirmDeleteDialog: any;
+  search: string;
 }
 
 const defaultState: MarketplaceState = {
@@ -15,7 +17,14 @@ const defaultState: MarketplaceState = {
     open: false,
     mode: 'add',
     dataset: undefined
-  }
+  },
+  confirmDeleteDialog: {
+    open: false,
+    dataset: {
+      name: ''
+    }
+  },
+  search: ''
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -36,6 +45,22 @@ const reducer = function(state=defaultState, action: any) {
       newState.datasetDialog.open = action.isOpen;
       newState.datasetDialog.dataset = action.dataset;
       newState.datasetDialog.mode = action.mode;
+      break;
+    case MARKETPLACE_ACTIONS.CHANGE_CONFIRM_DIALOG_STATE:
+      newState.confirmDeleteDialog = {...state.confirmDeleteDialog};
+      newState.confirmDeleteDialog.open = action.isOpen;
+      newState.confirmDeleteDialog.dataset = action.dataset;
+      break;
+    case MARKETPLACE_ACTIONS.DATASET_DELETED:
+      newState.schemas = [...newState.schemas.filter(schema => schema.id != action.datasetId)];
+      newState.userSchemas = [...newState.userSchemas.filter(schema => schema.id != action.datasetId)];
+      break;
+    case MARKETPLACE_ACTIONS.CHANGE_SEARCH:
+      newState.search = action.search;
+      break;
+    case MARKETPLACE_ACTIONS.DATASETS_SEARCHED:
+      newState.schemas = [...state.schemas];
+      newState.schemas = action.datasets;
       break;
     default:
       return state;

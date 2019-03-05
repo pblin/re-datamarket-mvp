@@ -81,7 +81,7 @@ export class DatasetService {
   }
 
   async getUserDatasets(id: string) {
-    const results = await fetch(`${config.serverBase}/schema/${id}`);
+    const results = await fetch(`${config.serverBase}/schema/user/${id}`);
     if(results.status !== 200) {
       return [];
     } else {
@@ -91,6 +91,35 @@ export class DatasetService {
 
   async getAllDatasets() {
     const results = await fetch(`${config.serverBase}/marketplace`);
+    if(results.status !== 200) {
+      return [];
+    } else {
+      return results.json();
+    }
+  }
+
+  async getDataset(datasetId: string) {
+    const results = await fetch(`${config.serverBase}/marketplace/dataset/${datasetId}`);
+    if(results.status !== 200) {
+      return [];
+    } else {
+      return results.json();
+    }
+  }
+
+  async deleteDataset(datasetId: string) {
+    const results = await fetch(`${config.serverBase}/schema/dataset/${datasetId}`, {
+      method: 'DELETE'
+    });
+    if(results.status !== 200) {
+      throw new Error(`Deleting of asset ${datasetId} was not successful`);
+    } else {
+      return;
+    }
+  }
+
+  async searchDatasets(terms) {
+    const results = await fetch(`${config.serverBase}/marketplace/search?terms=${terms}`);
     if(results.status !== 200) {
       return [];
     } else {

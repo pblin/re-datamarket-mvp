@@ -8,6 +8,7 @@ interface FileUploadProps {
   upload: any;
   displayUpload: boolean;
   fileTypes: string[];
+  onFileTypeMismatch: any;
 }
 
 export class FileUpload extends React.Component<FileUploadProps> {
@@ -48,8 +49,9 @@ export class FileUpload extends React.Component<FileUploadProps> {
 
     if(foundFileType) {
       this.props.onFileChange(this.props.fileId, file);
+    } else {
+      this.props.onFileTypeMismatch(file.type)
     }
-
   }
 
   async upload() {

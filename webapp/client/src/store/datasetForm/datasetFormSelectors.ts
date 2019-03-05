@@ -1,9 +1,10 @@
 //Will take advantage of this lib: https://github.com/reduxjs/reselect
 import {createSelector} from "reselect";
+import {datasetDialogSelector} from "../marketplace/marketplaceSelectors";
 
 export const basicFormSelector = state => state.form.contact;
 export const schemaSelector = state => state.DatasetFormState.schema;
-
+export const wizardSelector = state => state.DatasetFormState.wizard;
 
 export const basicInfo = createSelector(
   [basicFormSelector],
@@ -17,3 +18,15 @@ export const basicInfo = createSelector(
     }
   }
 );
+
+export const getWizardSteps = createSelector(
+  [
+    wizardSelector,
+    datasetDialogSelector
+  ],(wizard, dialog) => {
+
+  if(dialog.mode == 'edit') {
+    return wizard.editSteps;
+  }
+  return wizard.steps;
+});

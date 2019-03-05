@@ -21,6 +21,7 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
     this.renderFileContent = this.renderFileContent.bind(this);
     this.renderFileUpload = this.renderFileUpload.bind(this);
     this.onSchemaChange = this.onSchemaChange.bind(this);
+    this.onFileTypeMismatch = this.onFileTypeMismatch.bind(this);
   }
 
   onFileChange(fileId: string, file: File) {
@@ -29,6 +30,10 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
 
   onSchemaChange(name: string, field: string, value: any) {
     this.props.onSchemaSelect(name, field, value);
+  }
+
+  onFileTypeMismatch() {
+
   }
 
   upload(fileId: string) {
@@ -59,6 +64,7 @@ export class SchemaUpload extends React.Component<SchemaUploadProps> {
           upload={this.upload}
           displayUpload={false}
           fileTypes={['.json', 'application/json']}
+          onFileTypeMismatch={this.onFileTypeMismatch}
         />
       </Grid>
     )

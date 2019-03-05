@@ -2,17 +2,27 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import './marketplace.css';
-import {changeDialogState, MARKETPLACE_ACTIONS, updateSchemaFilter} from "../../store/marketplace/marketplaceActions";
+import {
+  changeConfirmDialogState,
+  changeDialogState, changeSearch,
+  MARKETPLACE_ACTIONS,
+  updateSchemaFilter
+} from "../../store/marketplace/marketplaceActions";
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
 import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import SchemaList from "./SchemaList";
-import {datasetDialogSelector, marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
-import {Grid, Button} from "@material-ui/core";
+import {
+  confirmDeleteDialogSelector,
+  datasetDialogSelector, MarketplaceSelector,
+  marketplaceSelector
+} from "../../store/marketplace/marketplaceSelectors";
+import {Grid, Button, Dialog, DialogContent, DialogActions, DialogTitle} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManager from '../DatasetManager/DatasetManager'
 import JumboPaper from "../Common/jumboPaper";
+import FilterMenu from "../Common/Filter/FilterMenu";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -27,6 +37,12 @@ interface ComponentProps {
   changeDialogState: any;
   isProfileSet: boolean;
   history: any;
+  confirmDeleteDialog: any;
+  changeConfirmDeleteDialog: any;
+  deleteDataset: any;
+  marketplace: any;
+  changeSearch: any;
+  searchDatasets: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -36,6 +52,11 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.getUserSchemas = this.getUserSchemas.bind(this);
     this.openDialog = this.openDialog.bind(this);
     this.handleOnEdit = this.handleOnEdit.bind(this);
+    this.handleOnDelete = this.handleOnDelete.bind(this);
+    this.onConfirmationClose = this.onConfirmationClose.bind(this);
+    this.confirmDelete = this.confirmDelete.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
+    this.onSearch = this.onSearch.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -61,9 +82,36 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   handleOnEdit(dataset) {
-    console.log('Handling on edit');
-    console.log(dataset);
     this.props.changeDialogState(true, 'edit', dataset);
+  }
+
+  handleOnDelete(dataset) {
+    this.props.changeConfirmDeleteDialog(true, dataset);
+  }
+
+  //Confirm Dialog TODO: Consider moving dialog to seperate component
+  onConfirmationClose() {
+    this.props.changeConfirmDeleteDialog(false, {name: ''});
+  }
+
+  confirmDelete() {
+    this.props.deleteDataset(this.props.confirmDeleteDialog.dataset.id);
+    this.props.changeConfirmDeleteDialog(false, {name: ''});
+  }
+
+  //Filter menu
+  onSearchChange(e) {
+    this.props.changeSearch(e.target.value);
+  }
+
+  onSearch(search: string) {
+    console.log('On Search');
+    console.log(search);
+    if(search != '') {
+      this.props.searchDatasets(search);
+    } else {
+      this.props.getAllSchemas();
+    }
   }
 
   render() {
@@ -76,7 +124,14 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         />
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
-            <Grid container={true} justify={"flex-end"}>
+            <Grid container={true} justify={"flex-start"}>
+              {this.props.schemaFilter == 'all' &&
+                <FilterMenu
+                  placeholder={"Search Marketplace"}
+                  searchVal={this.props.marketplace.search}
+                  onSearch={this.onSearch}
+                  onSearchChange={this.onSearchChange}/>
+              }
               {this.props.isProfileSet &&
                 <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
                   Add
@@ -92,7 +147,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
-                <UserDatasetList schemas={this.props.userSchemas} onEditClick={this.handleOnEdit}/>
+                <UserDatasetList schemas={this.props.userSchemas} onEditClick={this.handleOnEdit} onDeleteClick={this.handleOnDelete}/>
               }
               {(this.props.schemaFilter == 'ownedByMe' && !this.props.isProfileSet) &&
                 <JumboPaper
@@ -104,6 +159,18 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
               }
             </Grid>
             <DatasetManager/>
+            <Dialog open={this.props.confirmDeleteDialog.open} maxWidth={"sm"} fullWidth={true}>
+              <DialogTitle>
+                {this.props.confirmDeleteDialog.dataset.name}
+              </DialogTitle>
+              <DialogContent>
+                Do you want to delete?
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.confirmDelete}>Ok</Button>
+                <Button onClick={this.onConfirmationClose}>Cancel</Button>
+              </DialogActions>
+            </Dialog>
           </div>
         </Grid>
       </div>
@@ -112,14 +179,15 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
-  console.log(state);
   return {
     schemaFilter: marketplaceSelector(state).schemaFilter,
     profile: profileSelector(state),
     isProfileSet: isProfileSet(state),
     schemas: marketplaceSelector(state).schemas,
     userSchemas: marketplaceSelector(state).userSchemas,
-    datasetDialog: datasetDialogSelector(state)
+    datasetDialog: datasetDialogSelector(state),
+    confirmDeleteDialog: confirmDeleteDialogSelector(state),
+    marketplace: MarketplaceSelector(state)
   }
 }
 
@@ -128,7 +196,11 @@ function mapDispatchToProps(dispatch: any) {
     updateSchemaFilter: (filter: string) => dispatch(updateSchemaFilter(filter)),
     getUserSchemas: (id) => dispatch({type: MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, id}),
     getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS}),
-    changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id))
+    changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id)),
+    changeConfirmDeleteDialog: (isOpen, dataset) => dispatch(changeConfirmDialogState(isOpen, dataset)),
+    deleteDataset: (datasetId: string) => dispatch({type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId }),
+    changeSearch: (search: string) => dispatch(changeSearch(search)),
+    searchDatasets: (terms: string) => dispatch({type: MARKETPLACE_ACTIONS.SEARCH_DATASETS, terms})
   };
 }
 export default withRouter(

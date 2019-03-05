@@ -4,7 +4,13 @@ export enum MARKETPLACE_ACTIONS {
   SCHEMAS_RETRIEVED = "SCHEMAS_RETRIEVED",
   USER_SCHEMAS_RETRIEVED = "USER_SCHEMAS_RETRIEVED",
   GET_ALL_SCHEMAS = "GET_ALL_SCHEMAS",
-  CHANGE_DIALOG_STATE = "CHANGE_DIALOG_STATE"
+  CHANGE_DIALOG_STATE = "CHANGE_DIALOG_STATE",
+  CHANGE_CONFIRM_DIALOG_STATE = "CHANGE_CONFIRM_DIALOG_STATE",
+  DELETE_DATASET = "DELETE_DATASET",
+  DATASET_DELETED = "DATASET_DELETED",
+  CHANGE_SEARCH = "CHANGE_SEARCH",
+  SEARCH_DATASETS = "SEARCH_DATASETS",
+  DATASETS_SEARCHED = "DATASETS_SEARCHED"
 }
 
 export function updateSchemaFilter(schemaFilter) {
@@ -13,4 +19,12 @@ export function updateSchemaFilter(schemaFilter) {
 
 export function changeDialogState(isOpen, mode?, dataset?) {
   return {type: MARKETPLACE_ACTIONS.CHANGE_DIALOG_STATE, isOpen, mode, dataset};
+}
+
+export function changeConfirmDialogState(isOpen, dataset) {
+  return {type: MARKETPLACE_ACTIONS.CHANGE_CONFIRM_DIALOG_STATE, isOpen, dataset};
+}
+
+export function changeSearch(search: string) {
+  return {type: MARKETPLACE_ACTIONS.CHANGE_SEARCH, search}
 }
