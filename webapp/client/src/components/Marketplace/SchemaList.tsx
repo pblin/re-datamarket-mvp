@@ -57,10 +57,10 @@ const SchemaList = ({schemas, history}) => {
                         <Tooltip title={"File Type"} placement={"top-start"}>
                           <p className={"descriptor"}><AttachmentIcon/> JSON </p>
                         </Tooltip>
-                        <Tooltip title={"Low Asking Price"} placement={"top-start"}>
+                        <Tooltip title={"High Asking Price"} placement={"top-start"}>
                           <p className={"descriptor money"}><DollarIcon/> {schema["price_high"]} </p>
                         </Tooltip>
-                        <Tooltip title={"High Asking Price"} placement={"top-start"}>
+                        <Tooltip title={"Low Asking Price"} placement={"top-start"}>
                           <p className={"descriptor money"}><DollarIcon/> {schema["price_low"]} </p>
                         </Tooltip>
                       </Grid>

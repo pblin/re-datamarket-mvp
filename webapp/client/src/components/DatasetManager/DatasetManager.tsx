@@ -17,7 +17,7 @@ import {
   DialogTitle
 } from "@material-ui/core";
 import {PublishForm} from "./DatasetWizard/PublishForm";
-import {basicInfo, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
+import {basicInfo, getWizardSteps, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
@@ -57,6 +57,7 @@ interface ComponentProps {
   resetForm: any;
   updateDataset: any;
   destroyBasic: any;
+  steps: any[];
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -70,6 +71,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.handleClose = this.handleClose.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
     this.update = this.update.bind(this);
+    this.onEditWizardNext = this.onEditWizardNext.bind(this);
   }
 
   onSchemaFileChange(fileId: string, file: File) {
@@ -100,12 +102,20 @@ class DatasetManager extends React.Component<ComponentProps> {
         }
         break;
       case 3:
-        if(this.props.datasetDialog.mode == 'add') {
-          this.publish();
-        } else {
-          this.update();
-        }
+        this.publish();
         return;
+    }
+    this.props.nextStep();
+  }
+
+  onEditWizardNext() {
+    switch(this.props.wizard.currentStep) {
+      case 0:
+        this.props.submitBasicInfoForm();
+        return;
+      case 2:
+        this.update();
+      return;
     }
     this.props.nextStep();
   }
@@ -148,6 +158,76 @@ class DatasetManager extends React.Component<ComponentProps> {
     }
   }
 
+  renderBasicInfoForm() {
+    return <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
+  }
+
+  renderSchemaUpload() {
+    return <SchemaUpload
+      onSchemaFileChange={this.onSchemaFileChange}
+      onSchemaUpload={this.onSchemaUpload}
+      onSchemaSelect={this.onSchemaSelect}
+      schemaFile={this.props.schemaFile}
+      errors={this.props.schemaFile.errors}
+      schema={this.props.schema}
+      displayNoSchemaError={this.props.displaySchemaError}
+    />;
+  }
+
+  renderSchemaList() {
+      return <SchemaList schemas={this.props.schema} onSchemaSelect={this.onSchemaSelect}></SchemaList>;
+  }
+
+  renderPublishForm() {
+      return    <PublishForm
+        basicDetails={this.props.basicInfo}
+        schema={this.props.schema}
+        schemaPublishedId={this.props.datasetForm.schemaPublishedId}
+        schemaPublished={this.props.datasetForm.schemaPublished}>
+      </PublishForm>
+  }
+
+  renderWizard() {
+    if(this.props.datasetDialog.mode == 'add') {
+      return <DatasetWizard
+        steps={this.props.steps}
+        onNext={this.onWizardNext}
+        onPrev={this.onWizardPrev}
+        currentStep={this.props.wizard.currentStep}
+      >
+        {this.renderBasicInfoForm()}
+        {this.renderSchemaUpload()}
+        {this.renderSchemaList()}
+        {this.renderPublishForm()}
+      </DatasetWizard>
+    } else {
+      return <DatasetWizard
+        steps={this.props.steps}
+        onNext={this.onEditWizardNext}
+        onPrev={this.onWizardPrev}
+        currentStep={this.props.wizard.currentStep}
+      >
+        {this.renderBasicInfoForm()}
+        {this.renderSchemaList()}
+        {this.renderPublishForm()}
+      </DatasetWizard>
+    }
+  }
+
+  renderWizardNextButton(currentStep, length, isSchemaPublished, mode) {
+      if((currentStep != length - 1) || (currentStep == length - 1 && isSchemaPublished) ) {
+        if(mode == 'add') {
+          return <Button onClick={this.onWizardNext} variant="contained" color="primary" className={"wizard-button"}>
+            {this.renderTitle(this.props.steps[this.props.wizard.currentStep].nextButtonValue)}
+          </Button>
+        } else {
+          return <Button onClick={this.onEditWizardNext} variant="contained" color="primary" className={"wizard-button"}>
+            {this.renderTitle(this.props.steps[this.props.wizard.currentStep].nextButtonValue)}
+          </Button>
+        }
+      }
+  }
+
   render() {
       return <div>
         <Dialog
@@ -167,30 +247,7 @@ class DatasetManager extends React.Component<ComponentProps> {
           </DialogTitle>
           <DialogContent>
             <Grid container={true}>
-              <DatasetWizard
-                steps={this.props.wizard.steps}
-                onNext={this.onWizardNext}
-                onPrev={this.onWizardPrev}
-                currentStep={this.props.wizard.currentStep}
-              >
-                <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
-                <SchemaUpload
-                  onSchemaFileChange={this.onSchemaFileChange}
-                  onSchemaUpload={this.onSchemaUpload}
-                  onSchemaSelect={this.onSchemaSelect}
-                  schemaFile={this.props.schemaFile}
-                  errors={this.props.schemaFile.errors}
-                  schema={this.props.schema}
-                  displayNoSchemaError={this.props.displaySchemaError}
-                />
-                <SchemaList schemas={this.props.schema} onSchemaSelect={this.onSchemaSelect}></SchemaList>
-                <PublishForm
-                  basicDetails={this.props.basicInfo}
-                  schema={this.props.schema}
-                  schemaPublishedId={this.props.datasetForm.schemaPublishedId}
-                  schemaPublished={this.props.datasetForm.schemaPublished}>
-                </PublishForm>
-              </DatasetWizard>
+              {this.renderWizard()}
             </Grid>
           </DialogContent>
           <DialogActions>
@@ -200,11 +257,7 @@ class DatasetManager extends React.Component<ComponentProps> {
                   Previous
                 </Button>
               }
-              {(this.props.wizard.currentStep != 3 || (this.props.wizard.currentStep == 3 && !this.props.datasetForm.schemaPublished))  &&
-                <Button onClick={this.onWizardNext} variant="contained" color="primary" className={"wizard-button"}>
-                  {this.renderTitle(this.props.wizard.steps[this.props.wizard.currentStep].nextButtonValue)}
-                </Button>
-              }
+              {this.renderWizardNextButton(this.props.wizard.cuurentStep, this.props.steps.length, this.props.datasetForm.schemaPublished, this.props.datasetDialog.mode)}
               <Button onClick={this.handleClose} className={"cancel-btn"}>
                 Cancel
               </Button>
@@ -226,7 +279,8 @@ function mapStateToProps(state: any, ownProps: any) {
     profile: profileSelector(state),
     isProfileSet: isProfileSet(state),
     datasetDialog: datasetDialogSelector(state),
-    datasetForm: state.DatasetFormState
+    datasetForm: state.DatasetFormState,
+    steps: getWizardSteps(state),
   }
 }
 
