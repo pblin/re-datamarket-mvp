@@ -6,8 +6,13 @@ import {
   Grid,
   Hidden,
   ExpansionPanel,
-  ExpansionPanelSummary
+  ExpansionPanelSummary,
+  Tooltip
 } from "@material-ui/core";
+import AlbumIcon from "@material-ui/icons/Album";
+import LocationIcon from "@material-ui/icons/AddLocation";
+import DollarIcon from "@material-ui/icons/AttachMoney";
+import AttachmentIcon from "@material-ui/icons/Attachment";
 
 //TODO: Add more details
 const SchemaList = ({schemas, history}) => {
@@ -19,10 +24,10 @@ const SchemaList = ({schemas, history}) => {
   return(
     <div>
       {schemas.map((schema, index) => (
-          <ExpansionPanel key={`schema${index}`} expanded={false}>
+          <ExpansionPanel key={`schema${index}`} expanded={false} className={"schema-panel"}>
             <ExpansionPanelSummary className={"schema-list"} onClick={() => handleClick(schema)}>
-              <Grid container={true} justify={"flex-start"}>
-                <Grid item xs={10} sm={8} >
+              <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
+                <Grid item xs={10} sm={7} >
                   <div className={"fake-image"}>
                     <p>70 x 70</p>
                   </div>
@@ -36,10 +41,31 @@ const SchemaList = ({schemas, history}) => {
                       <p key={`tag-${tag}`} className={"search-tag"}>{tag}</p>
                     ))}
                   </Grid>
-                  <Grid item xs={3}>
-                    <p className={"descriptor"}>Records {schema["num_of_records"]} </p>
-                    <p className={"descriptor"}>Country {schema["country"]} </p>
-                    <p className={"descriptor"}>{schema["state_province"]} </p>
+                  <Grid item xs={4}>
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <Tooltip title={"Number of records"} placement={"top-start"}>
+                          <p className={"descriptor"}><AlbumIcon/> {schema["num_of_records"]} </p>
+                        </Tooltip>
+                        <Tooltip title={"Country"} placement={"top-start"}>
+                        <p className={"descriptor"}><LocationIcon/> {schema["country"]} </p>
+                        </Tooltip>
+                        <Tooltip title={"State/Province"} placement={"top-start"}>
+                          <p className={"descriptor"}><LocationIcon/> {schema["state_province"]} </p>
+                        </Tooltip>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Tooltip title={"File Type"} placement={"top-start"}>
+                          <p className={"descriptor"}><AttachmentIcon/> JSON </p>
+                        </Tooltip>
+                        <Tooltip title={"Low Asking Price"} placement={"top-start"}>
+                          <p className={"descriptor money"}><DollarIcon/> {schema["price_high"]} </p>
+                        </Tooltip>
+                        <Tooltip title={"High Asking Price"} placement={"top-start"}>
+                          <p className={"descriptor money"}><DollarIcon/> {schema["price_low"]} </p>
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Hidden>
               </Grid>

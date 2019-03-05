@@ -29,9 +29,26 @@
   font-size: 12px;
   /* rgba(0,0,0,.4)*/
 }
+.schema-panel {
+  border: none;
+}
+.schema-panel:hover {
+  background-color: rgba(0,0,0,.02);
+}
 
 .descriptor {
   margin-bottom: 0px;
+  font-size: 15px;
+  color: #b3b3b3;
+  font-weight: bolder;
+}
+
+.descriptor svg {
+  font-size: 15px;
+}
+
+.money {
+  color: #85bb65;
 }
 
 .search-tag {
