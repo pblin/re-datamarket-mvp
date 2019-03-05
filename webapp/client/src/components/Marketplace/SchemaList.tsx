@@ -19,8 +19,7 @@ const SchemaList = ({schemas, history}) => {
   const handleClick = (schema) => {
     history.push(`/dataset/${schema.id}`);
   };
-  console.log('HERE ARE THE SCHEMAS');
-  console.log(schemas);
+  
   return(
     <div>
       {schemas.map((schema, index) => (

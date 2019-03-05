@@ -11,7 +11,7 @@ import TrashIcon from "@material-ui/icons/Delete";
 
 //TODO: Add more details
 //TODO: refactor schemas to be datasets
-const UserDatasetList = ({schemas, onEditClick}) => {
+const UserDatasetList = ({schemas, onEditClick, onDeleteClick}) => {
   return(
     <div>
       {schemas.map((schema, index) => (
@@ -28,7 +28,7 @@ const UserDatasetList = ({schemas, onEditClick}) => {
                 <Grid item xs={6} sm={3} className={"action-container"}>
                   <Grid container justify={"flex-end"}>
                     <IconButton onClick={() =>{onEditClick(schema)}}> <EditIcon/></IconButton>
-                    <IconButton> <TrashIcon/></IconButton>
+                    <IconButton onClick={()=>{onDeleteClick(schema)}}> <TrashIcon/></IconButton>
                   </Grid>
                 </Grid>
               </Grid>

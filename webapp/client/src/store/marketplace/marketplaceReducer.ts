@@ -5,6 +5,7 @@ interface MarketplaceState {
   schemas: any[];
   userSchemas: any[];
   datasetDialog: any;
+  confirmDeleteDialog: any;
 }
 
 const defaultState: MarketplaceState = {
@@ -14,6 +15,10 @@ const defaultState: MarketplaceState = {
   datasetDialog: {
     open: false,
     mode: 'add',
+    dataset: undefined
+  },
+  confirmDeleteDialog: {
+    open: false,
     dataset: undefined
   }
 };
@@ -36,6 +41,11 @@ const reducer = function(state=defaultState, action: any) {
       newState.datasetDialog.open = action.isOpen;
       newState.datasetDialog.dataset = action.dataset;
       newState.datasetDialog.mode = action.mode;
+      break;
+    case MARKETPLACE_ACTIONS.CHANGE_CONFIRM_DIALOG_STATE:
+      newState.confirmDeleteDialog = {...state.confirmDeleteDialog};
+      newState.confirmDeleteDialog.open = action.isOpen;
+      newState.confirmDeleteDialog.dataset = action.dataset;
       break;
     default:
       return state;

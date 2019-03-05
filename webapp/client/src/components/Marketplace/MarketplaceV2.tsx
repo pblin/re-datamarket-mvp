@@ -2,13 +2,22 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import './marketplace.css';
-import {changeDialogState, MARKETPLACE_ACTIONS, updateSchemaFilter} from "../../store/marketplace/marketplaceActions";
+import {
+  changeConfirmDialogState,
+  changeDialogState,
+  MARKETPLACE_ACTIONS,
+  updateSchemaFilter
+} from "../../store/marketplace/marketplaceActions";
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
 import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import SchemaList from "./SchemaList";
-import {datasetDialogSelector, marketplaceSelector} from "../../store/marketplace/marketplaceSelectors";
-import {Grid, Button} from "@material-ui/core";
+import {
+  confirmDeleteDialogSelector,
+  datasetDialogSelector,
+  marketplaceSelector
+} from "../../store/marketplace/marketplaceSelectors";
+import {Grid, Button, Dialog} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManager from '../DatasetManager/DatasetManager'
@@ -27,6 +36,8 @@ interface ComponentProps {
   changeDialogState: any;
   isProfileSet: boolean;
   history: any;
+  confirmDeleteDialog: any;
+  changeConfirmDeleteDialog: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -36,6 +47,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.getUserSchemas = this.getUserSchemas.bind(this);
     this.openDialog = this.openDialog.bind(this);
     this.handleOnEdit = this.handleOnEdit.bind(this);
+    this.handleOnDelete = this.handleOnDelete.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -66,6 +78,12 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.props.changeDialogState(true, 'edit', dataset);
   }
 
+  handleOnDelete(dataset) {
+    console.log('Handling on delete');
+    console.log(dataset);
+    this.props.changeConfirmDeleteDialog(true, dataset);
+  }
+
   render() {
     return (
       <div>
@@ -92,7 +110,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
-                <UserDatasetList schemas={this.props.userSchemas} onEditClick={this.handleOnEdit}/>
+                <UserDatasetList schemas={this.props.userSchemas} onEditClick={this.handleOnEdit} onDeleteClick={this.handleOnDelete}/>
               }
               {(this.props.schemaFilter == 'ownedByMe' && !this.props.isProfileSet) &&
                 <JumboPaper
@@ -104,6 +122,9 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
               }
             </Grid>
             <DatasetManager/>
+            <Dialog open={this.props.confirmDeleteDialog.open}>
+              Do you want to delete
+            </Dialog>
           </div>
         </Grid>
       </div>
@@ -112,14 +133,14 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
-  console.log(state);
   return {
     schemaFilter: marketplaceSelector(state).schemaFilter,
     profile: profileSelector(state),
     isProfileSet: isProfileSet(state),
     schemas: marketplaceSelector(state).schemas,
     userSchemas: marketplaceSelector(state).userSchemas,
-    datasetDialog: datasetDialogSelector(state)
+    datasetDialog: datasetDialogSelector(state),
+    confirmDeleteDialog: confirmDeleteDialogSelector(state)
   }
 }
 
@@ -128,7 +149,8 @@ function mapDispatchToProps(dispatch: any) {
     updateSchemaFilter: (filter: string) => dispatch(updateSchemaFilter(filter)),
     getUserSchemas: (id) => dispatch({type: MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, id}),
     getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS}),
-    changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id))
+    changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id)),
+    changeConfirmDeleteDialog: (isOpen, dataset) => dispatch(changeConfirmDialogState(isOpen, dataset))
   };
 }
 export default withRouter(
