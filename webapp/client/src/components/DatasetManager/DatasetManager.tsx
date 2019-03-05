@@ -72,6 +72,7 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.handleEnter = this.handleEnter.bind(this);
     this.update = this.update.bind(this);
     this.onEditWizardNext = this.onEditWizardNext.bind(this);
+    this.cleanup = this.cleanup.bind(this);
   }
 
   onSchemaFileChange(fileId: string, file: File) {
@@ -145,6 +146,9 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   handleClose() {
     this.props.changeDialogState(false);
+  }
+
+  cleanup() {
     this.props.resetForm();
     this.props.destroyBasic();
   }
@@ -228,6 +232,28 @@ class DatasetManager extends React.Component<ComponentProps> {
       }
   }
 
+  renderDialogTitle() {
+      if(this.props.datasetDialog.mode == 'add') {
+        return <DialogTitle>
+          <p className={"dialog-header"}>
+            <span className={"bold"}>CREATE</span> A DATASET
+          </p>
+          <p  className={"dialog-subheader"}>
+            Fill out this form to publish a new dataset to the marketplace.
+          </p>
+        </DialogTitle>
+      } else {
+        return <DialogTitle>
+          <p className={"dialog-header"}>
+            <span className={"bold"}>EDIT</span> DATASET
+          </p>
+          <p  className={"dialog-subheader"}>
+            Fill out this form to republish an existing dataset to the marketplace.
+          </p>
+        </DialogTitle>
+      }
+  }
+
   render() {
       return <div>
         <Dialog
@@ -235,16 +261,10 @@ class DatasetManager extends React.Component<ComponentProps> {
           fullWidth={true}
           maxWidth={"md"}
           onEnter={this.handleEnter}
+          onExited={this.cleanup}
           onClose={this.handleClose}
         >
-          <DialogTitle>
-            <p className={"dialog-header"}>
-              <span className={"bold"}>CREATE</span> A DATASET
-            </p>
-            <p  className={"dialog-subheader"}>
-              Fill out this form to publish a new dataset to the marketplace.
-            </p>
-          </DialogTitle>
+          {this.renderDialogTitle()}
           <DialogContent>
             <Grid container={true}>
               {this.renderWizard()}
