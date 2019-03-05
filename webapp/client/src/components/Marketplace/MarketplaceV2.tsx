@@ -121,11 +121,13 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-end"}>
-              <FilterMenu
-                placeholder={"Search Marketplace"}
-                searchVal = {this.props.marketplace.search}
-                onSearch={this.onSearch}
-                onSearchChange={this.onSearchChange}/>
+              {this.props.schemaFilter == 'all' &&
+                <FilterMenu
+                  placeholder={"Search Marketplace"}
+                  searchVal={this.props.marketplace.search}
+                  onSearch={this.onSearch}
+                  onSearchChange={this.onSearchChange}/>
+              }
               {this.props.isProfileSet &&
                 <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
                   Add
