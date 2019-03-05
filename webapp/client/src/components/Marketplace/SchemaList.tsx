@@ -31,13 +31,15 @@ const SchemaList = ({schemas, history}) => {
                   <p className={"description"}><b>ProfileName</b> <span>Date goes here</span></p>
                 </Grid>
                 <Hidden xsDown>
-                  <Grid item xs={2}>
+                  <Grid item xs={1}>
                     {schema['search_terms'].map((tag) => (
-                      <p className={"search-tag"}>{tag}</p>
+                      <p key={`tag-${tag}`} className={"search-tag"}>{tag}</p>
                     ))}
                   </Grid>
-                  <Grid item xs={2}>
-                    Content
+                  <Grid item xs={3}>
+                    <p className={"descriptor"}>Records {schema["num_of_records"]} </p>
+                    <p className={"descriptor"}>Country {schema["country"]} </p>
+                    <p className={"descriptor"}>{schema["state_province"]} </p>
                   </Grid>
                 </Hidden>
               </Grid>

@@ -30,6 +30,10 @@
   /* rgba(0,0,0,.4)*/
 }
 
+.descriptor {
+  margin-bottom: 0px;
+}
+
 .search-tag {
   margin-bottom: 0px;
   font-weight: bolder;
