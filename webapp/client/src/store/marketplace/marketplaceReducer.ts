@@ -49,6 +49,10 @@ const reducer = function(state=defaultState, action: any) {
       newState.confirmDeleteDialog.open = action.isOpen;
       newState.confirmDeleteDialog.dataset = action.dataset;
       break;
+    case MARKETPLACE_ACTIONS.DATASET_DELETED:
+      newState.schemas = [...newState.schemas.filter(schema => schema.id != action.datasetId)];
+      newState.userSchemas = [...newState.userSchemas.filter(schema => schema.id != action.datasetId)];
+      break;
     default:
       return state;
   }

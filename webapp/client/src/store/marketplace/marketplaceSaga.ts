@@ -22,9 +22,24 @@ export function* GetAllSchemas() {
   yield put({type: MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED, schemas});
 }
 
+export function* DeleteDataset(action) {
+  let datasetId = action.datasetId;
+  const datasetService = new DatasetService();
+
+  try {
+    yield datasetService.deleteDataset(datasetId);
+    yield put({type: MARKETPLACE_ACTIONS.DATASET_DELETED, datasetId})
+  } catch(e) {
+    //TODO: THROW AN ERROR HERE
+    console.log('HAD AN ERROR');
+    console.log(e);
+  }
+}
+
 export function* watchMarketplace() {
   yield takeLatest(MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, GetUserSchemas);
   yield takeLatest(MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS, GetAllSchemas);
+  yield takeLatest(MARKETPLACE_ACTIONS.DELETE_DATASET, DeleteDataset);
 }
 
 export function marketplaceSagas() {

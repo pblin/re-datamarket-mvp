@@ -38,6 +38,7 @@ interface ComponentProps {
   history: any;
   confirmDeleteDialog: any;
   changeConfirmDeleteDialog: any;
+  deleteDataset: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -49,6 +50,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.handleOnEdit = this.handleOnEdit.bind(this);
     this.handleOnDelete = this.handleOnDelete.bind(this);
     this.onConfirmationClose = this.onConfirmationClose.bind(this);
+    this.confirmDelete = this.confirmDelete.bind(this);
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -86,6 +88,13 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   onConfirmationClose() {
+    this.props.changeConfirmDeleteDialog(false, {name: ''});
+  }
+
+  confirmDelete() {
+    console.log('DELETE');
+    console.log(this.props.confirmDeleteDialog.dataset.id);
+    this.props.deleteDataset(this.props.confirmDeleteDialog.dataset.id);
     this.props.changeConfirmDeleteDialog(false, {name: ''});
   }
 
@@ -135,7 +144,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 Do you want to delete?
               </DialogContent>
               <DialogActions>
-                <Button>Ok</Button>
+                <Button onClick={this.confirmDelete}>Ok</Button>
                 <Button onClick={this.onConfirmationClose}>Cancel</Button>
               </DialogActions>
             </Dialog>
@@ -164,7 +173,8 @@ function mapDispatchToProps(dispatch: any) {
     getUserSchemas: (id) => dispatch({type: MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, id}),
     getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS}),
     changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id)),
-    changeConfirmDeleteDialog: (isOpen, dataset) => dispatch(changeConfirmDialogState(isOpen, dataset))
+    changeConfirmDeleteDialog: (isOpen, dataset) => dispatch(changeConfirmDialogState(isOpen, dataset)),
+    deleteDataset: (datasetId: string) => dispatch({type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId })
   };
 }
 export default withRouter(

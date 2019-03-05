@@ -109,4 +109,15 @@ export class DatasetService {
     }
   }
 
+  async deleteDataset(datasetId: string) {
+    const results = await fetch(`${config.serverBase}/schema/dataset/${datasetId}`, {
+      method: 'DELETE'
+    });
+    if(results.status !== 200) {
+      throw new Error(`Deleting of asset ${datasetId} was not successful`);
+    } else {
+      return;
+    }
+  }
+
 }
