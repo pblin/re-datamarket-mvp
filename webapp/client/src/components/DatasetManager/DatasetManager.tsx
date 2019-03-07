@@ -155,7 +155,11 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   handleEnter() {
     if(this.props.datasetDialog.dataset) {
-      this.props.updateDatasetForm(this.props.datasetDialog.dataset);
+      let dataset = Object.assign({}, this.props.datasetDialog.dataset);
+      if(Array.isArray(dataset['search_terms'])) {
+        dataset['search_terms'] = dataset['search_terms'].join(',')
+      }
+      this.props.updateDatasetForm(dataset);
     }
   }
 

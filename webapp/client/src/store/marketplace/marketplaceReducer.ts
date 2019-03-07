@@ -64,18 +64,17 @@ const reducer = function(state=defaultState, action: any) {
       newState.schemas = action.datasets;
       break;
     case DATASET_FORM_ACTIONS.DATASET_PUBLISHED:
-      console.log('THE DATASET WAS PUBLISHED');
       //TODO: when user clicks on filter, rerun the call (or when a user updates or adds a new dataset)
       newState.userSchemas = [action.dataset, ...state.userSchemas];
       newState.schemas = [action.dataset, ...state.schemas];
       break;
     case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
-      console.log('THE DATASET WAS REPUBLISHED');
       //TODO: FIX THIS LOGIC
       newState.userSchemas = [action.dataset, ...state.userSchemas.filter(dataset => dataset.id != action.dataset.id)];
-      action.dataset['search_terms'] = action.dataset['search_terms'].split(',');
+      if(!Array.isArray(action.dataset['search_terms'])) {
+        action.dataset['search_terms'] = action.dataset['search_terms'].split(',');
+      }
       newState.schemas = [action.dataset, ...state.schemas.filter(dataset => dataset.id != action.dataset.id)];
-
       break;
     default:
       return state;
