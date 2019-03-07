@@ -7,10 +7,10 @@ export function* DatasetFormPublished(action) {
   let schema = action.schema;
   let id = action.id;
 
-  const schemaService = new DatasetService();
-  const schemaId = yield schemaService.postDataset(basicInfo, schema, id);
+  const datasetService = new DatasetService();
+  const dataset = yield datasetService.postDataset(basicInfo, schema, id);
 
-  yield put({type: 'SCHEMA_PUBLISHED', schemaId})
+  yield put({type: DATASET_FORM_ACTIONS.DATASET_PUBLISHED, dataset})
 }
 
 export function* DatasetFormUpdated(action) {
@@ -19,10 +19,10 @@ export function* DatasetFormUpdated(action) {
   let ownerId = action.ownerId;
   let datasetId = action.datasetId;
 
-  const schemaService = new DatasetService();
-  const schemaId = yield schemaService.updateDataset(basicInfo, schema, ownerId, datasetId);
+  const datasetService = new DatasetService();
+  const dataset = yield datasetService.updateDataset(basicInfo, schema, ownerId, datasetId);
 
-  yield put({type: 'SCHEMA_PUBLISHED', schemaId})
+  yield put({type: DATASET_FORM_ACTIONS.DATASET_PUBLISHED, dataset})
 }
 
 export function* watchPublish() {

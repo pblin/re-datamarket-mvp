@@ -46,7 +46,7 @@ export class PublishForm extends React.Component<PublishFormProps> {
           </Grid>
         </div>)}
         {this.props.schemaPublished && (
-          <div>Schema was published
+          <div>Dataset was published
             <Link to={`/dataset/${this.props.schemaPublishedId}`}>Go to details</Link>
           </div>
         )}
