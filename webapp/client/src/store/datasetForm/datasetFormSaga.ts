@@ -22,7 +22,7 @@ export function* DatasetFormUpdated(action) {
   const datasetService = new DatasetService();
   const dataset = yield datasetService.updateDataset(basicInfo, schema, ownerId, datasetId);
 
-  yield put({type: DATASET_FORM_ACTIONS.DATASET_PUBLISHED, dataset})
+  yield put({type: DATASET_FORM_ACTIONS.DATASET_REPUBLISHED, dataset})
 }
 
 export function* watchPublish() {

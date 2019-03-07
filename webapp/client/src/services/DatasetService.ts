@@ -78,7 +78,11 @@ export class DatasetService {
       body: JSON.stringify(body)
     });
 
-    body['search_terms'] = basicInfo.searchTerms.split(',');
+    if(Array.isArray(basicInfo.searchTerms)) {
+      body['search_terms'] = basicInfo.searchTerms.join(',');
+    } else {
+      body['search_terms'] = basicInfo.searchTerms.split(',');
+    }
     return body;
   }
 
