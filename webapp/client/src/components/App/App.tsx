@@ -33,7 +33,7 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
 //import HistoryIcon from "@material-ui/icons/History";
 //import MessageIcon from "@material-ui/icons/Message";
-//import NotificationsIcon from "@material-ui/icons/Notifications";
+import NotificationsIcon from "@material-ui/icons/Notifications";
 import ExploreIcon from "@material-ui/icons/Explore";
 //import CloudIcon from "@material-ui/icons/CloudUpload";
 import ProfileMenu from "./ProfileMenu";
@@ -139,7 +139,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     new AppLink('Marketplace', '/marketplace', (<DashboardIcon/>)),
     new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
     //new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
-    //new AppLink('News', '/news', (<NotificationsIcon/>))
+    new AppLink('News', 'https://medium.com/rebloc', (<NotificationsIcon/>), 'global')
   ];
 
   userAppLinks: AppLink[] = [
@@ -261,9 +261,18 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
           <Divider />
           <List>
               {this.appLinks.map((link, index) => (
-                  <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
-                    <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
-                  </ListItem>
+                  <>
+                    {link.type == 'app' &&
+                        <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                          <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
+                        </ListItem>
+                    }
+                    {link.type == 'global' &&
+                    <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                      <a href={link.url}>{link.icon} <div>{link.title}</div></a>
+                    </ListItem>
+                    }
+                  </>
               ))}
           </List>
           <Divider />

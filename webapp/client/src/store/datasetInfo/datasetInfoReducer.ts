@@ -1,12 +1,12 @@
 import {DATASET_INFO_ACTIONS} from "./datasetInfoActions";
 
 interface DatasetInfoState {
-  dataset: undefined,
+  dataset: any,
   schema: any[]
 }
 
 const defaultState: DatasetInfoState = {
-  dataset: undefined,
+  dataset: {},
   schema: []
 };
 
@@ -15,6 +15,7 @@ const reducer = function(state=defaultState, action: any) {
 
   switch(action.type) {
     case DATASET_INFO_ACTIONS.DATASET_INFO_RETRIEVED:
+      newState.dataset = action.dataset;
       newState.schema = JSON.parse(action.dataset['json_schema']);
       break;
     default:

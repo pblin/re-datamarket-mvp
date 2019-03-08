@@ -39,7 +39,7 @@ const UserDatasetList = ({schemas, onEditClick, onDeleteClick, onAddClicked}) =>
 
   const renderJumboPaper = () => {
     return  <JumboPaper
-      title={"No Datasets found"}
+      title={"No Datasets Found"}
       content={"Create a new Dataset by clicking on the button below"}
       buttonText={"Create Dataset"}
       handleClick={() => {onAddClicked()}}

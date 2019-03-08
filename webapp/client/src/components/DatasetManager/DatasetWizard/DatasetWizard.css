@@ -76,6 +76,7 @@
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
+  margin-bottom: 0px;
 }
 
 .schema-dt .p-datatable .p-datatable-tbody tr {

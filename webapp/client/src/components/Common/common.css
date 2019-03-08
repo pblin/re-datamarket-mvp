@@ -107,4 +107,5 @@
 .filter-menu .search {
   padding: 2px 20px;
   display: inline-block;
+  width: 300px;
 }
