@@ -1,3 +1,26 @@
 .dataset-info-view .marketplace-toolbar {
   margin-bottom: 20px;
 }
+
+.dataset-info-view .info-panel {
+  border: 1px solid #dedfe0;
+  box-sizing: border-box;
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #47494d;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.dataset-info-view .info-panel p {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  margin-left: 20px;
+  line-height: 50px;
+  display: inline-block;
+}
+
+.dataset-info-view .info-panel svg {
+  font-size: 15px;
+  margin-right: 5px;
+}

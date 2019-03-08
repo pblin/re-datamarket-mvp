@@ -155,7 +155,11 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   handleEnter() {
     if(this.props.datasetDialog.dataset) {
-      this.props.updateDatasetForm(this.props.datasetDialog.dataset);
+      let dataset = Object.assign({}, this.props.datasetDialog.dataset);
+      if(Array.isArray(dataset['search_terms'])) {
+        dataset['search_terms'] = dataset['search_terms'].join(',')
+      }
+      this.props.updateDatasetForm(dataset);
     }
   }
 
@@ -183,8 +187,9 @@ class DatasetManager extends React.Component<ComponentProps> {
       return    <PublishForm
         basicDetails={this.props.basicInfo}
         schema={this.props.schema}
-        schemaPublishedId={this.props.datasetForm.schemaPublishedId}
-        schemaPublished={this.props.datasetForm.schemaPublished}>
+        schemaPublishedId={this.props.datasetForm.datasetPublishedId}
+        handleClose={this.handleClose}
+        schemaPublished={this.props.datasetForm.datasetPublished}>
       </PublishForm>
   }
 
@@ -215,8 +220,8 @@ class DatasetManager extends React.Component<ComponentProps> {
     }
   }
 
-  renderWizardNextButton(currentStep, length, isSchemaPublished, mode) {
-      if((currentStep != length - 1) || (currentStep == length - 1 && isSchemaPublished) ) {
+  renderWizardNextButton(currentStep, length, isDatasetPublished, mode) {
+      if((currentStep != length - 1) || (currentStep == length - 1 && isDatasetPublished) ) {
         if(mode == 'add') {
           return <Button onClick={this.onWizardNext} variant="contained" color="primary" className={"wizard-button"}>
             {this.renderTitle(this.props.steps[this.props.wizard.currentStep].nextButtonValue)}
@@ -274,7 +279,7 @@ class DatasetManager extends React.Component<ComponentProps> {
                   Previous
                 </Button>
               }
-              {this.renderWizardNextButton(this.props.wizard.cuurentStep, this.props.steps.length, this.props.datasetForm.schemaPublished, this.props.datasetDialog.mode)}
+              {this.renderWizardNextButton(this.props.wizard.cuurentStep, this.props.steps.length, this.props.datasetForm.datasetPublished, this.props.datasetDialog.mode)}
               <Button onClick={this.handleClose} className={"cancel-btn"}>
                 Cancel
               </Button>

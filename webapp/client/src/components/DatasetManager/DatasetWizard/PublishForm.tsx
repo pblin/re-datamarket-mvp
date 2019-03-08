@@ -8,6 +8,7 @@ interface PublishFormProps {
   schema: any;
   schemaPublished: boolean;
   schemaPublishedId: string;
+  handleClose: any;
 }
 
 export class PublishForm extends React.Component<PublishFormProps> {
@@ -22,7 +23,7 @@ export class PublishForm extends React.Component<PublishFormProps> {
     return (
       <Grid container={true} justify={'flex-start'}>
         {!this.props.schemaPublished && (<div>
-          <Grid item xs={4}>
+          <Grid item xs={12}>
             Basic Information
             <Divider/>
             <Typography><b>Dataset Name:</b> {this.props.basicDetails.name}</Typography>
@@ -37,7 +38,7 @@ export class PublishForm extends React.Component<PublishFormProps> {
             <Typography><b>Low Asking Price:</b> {this.props.basicDetails.askPriceLow}$</Typography>
             <Typography><b>High Asking Price:</b> {this.props.basicDetails.askPriceHigh}$</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={12}>
           Schema
           <Divider/>
         {this.props.schema.map((schema, index) => (
@@ -46,8 +47,8 @@ export class PublishForm extends React.Component<PublishFormProps> {
           </Grid>
         </div>)}
         {this.props.schemaPublished && (
-          <div>Schema was published
-            <Link to={`/dataset/${this.props.schemaPublishedId}`}>Go to details</Link>
+          <div>Dataset was published
+            <Link to={`/dataset/${this.props.schemaPublishedId}`} onClick={this.props.handleClose}>Go to details</Link>
           </div>
         )}
       </Grid>

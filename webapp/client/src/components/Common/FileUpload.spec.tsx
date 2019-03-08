@@ -2,12 +2,6 @@ import {FileUpload} from "./FileUpload";
 import {shallow} from "enzyme";
 import * as React from "react";
 
-//TODO: CREATE SETUP FILE
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-configure({ adapter: new Adapter() });
-
 describe("<FileUpload></FileUpload>", () => {
   let wrapper, mockParent;
 

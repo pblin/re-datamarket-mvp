@@ -40,7 +40,8 @@ export class DatasetService {
       body: JSON.stringify(body)
     });
 
-    return uid;
+    body['search_terms'] = basicInfo.searchTerms.split(',');
+    return body;
   }
 
   async updateDataset(basicInfo: any, schema: any[], ownerId: string, schemaId: string) {
@@ -77,7 +78,12 @@ export class DatasetService {
       body: JSON.stringify(body)
     });
 
-    return schemaId;
+    if(Array.isArray(basicInfo.searchTerms)) {
+      body['search_terms'] = basicInfo.searchTerms.join(',');
+    } else {
+      body['search_terms'] = basicInfo.searchTerms.split(',');
+    }
+    return body;
   }
 
   async getUserDatasets(id: string) {

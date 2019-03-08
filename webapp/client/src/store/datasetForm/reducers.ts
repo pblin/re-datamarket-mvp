@@ -9,8 +9,8 @@ interface DatasetFormState {
   },
   schema: any[] //TODO: typecheck
   displayNoSchemaError: boolean;
-  schemaPublished: boolean;
-  schemaPublishedId: string;
+  datasetPublished: boolean;
+  datasetPublishedId: string;
 }
 
 const defaultState: DatasetFormState = {
@@ -30,8 +30,8 @@ const defaultState: DatasetFormState = {
   },
   schema: [],
   displayNoSchemaError: false,
-  schemaPublished: false,
-  schemaPublishedId: undefined
+  datasetPublished: false,
+  datasetPublishedId: undefined
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -61,9 +61,13 @@ const reducer = function(state=defaultState, action: any) {
       newState.schema = [...newState.schema.filter(sch => sch.name != action.name)];
       newState.schema.splice(index, 0, found);
       break;
-    case DATASET_FORM_ACTIONS.SCHEMA_PUBLISHED:
-      newState.schemaPublishedId = action.schemaId;
-      newState.schemaPublished = true;
+    case DATASET_FORM_ACTIONS.DATASET_PUBLISHED:
+      newState.datasetPublishedId = action.dataset.id;
+      newState.datasetPublished = true;
+      break;
+    case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
+      newState.datasetPublishedId = action.dataset.id;
+      newState.datasetPublished = true;
       break;
     case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:
       if(action.value) {
@@ -77,8 +81,8 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_FORM_ACTIONS.RESET:
       newState.schema = [];
       newState.wizard.currentStep = 0;
-      newState.schemaPublished = false;
-      newState.schemaPublishedId = undefined;
+      newState.datasetPublished = false;
+      newState.datasetPublishedId = undefined;
       break;
     default:
       return state;

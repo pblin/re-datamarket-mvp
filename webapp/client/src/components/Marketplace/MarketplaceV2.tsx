@@ -105,13 +105,24 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   onSearch(search: string) {
-    console.log('On Search');
-    console.log(search);
     if(search != '') {
       this.props.searchDatasets(search);
     } else {
       this.props.getAllSchemas();
     }
+  }
+
+  renderAddButton() {
+    if(!this.props.isProfileSet) {
+      return null;
+    }
+    if(this.props.schemaFilter == 'all' || (this.props.schemaFilter == 'ownedByMe') && this.props.userSchemas.length) {
+      return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
+        Add
+        <AddIcon/>
+      </Button>
+    }
+    return null;
   }
 
   render() {
@@ -132,11 +143,8 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                   onSearch={this.onSearch}
                   onSearchChange={this.onSearchChange}/>
               }
-              {this.props.isProfileSet &&
-                <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
-                  Add
-                  <AddIcon/>
-                </Button>
+              {
+                this.renderAddButton()
               }
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -147,12 +155,17 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
-                <UserDatasetList schemas={this.props.userSchemas} onEditClick={this.handleOnEdit} onDeleteClick={this.handleOnDelete}/>
+                <UserDatasetList
+                  schemas={this.props.userSchemas}
+                  onEditClick={this.handleOnEdit}
+                  onDeleteClick={this.handleOnDelete}
+                  onAddClicked={this.openDialog}
+                />
               }
               {(this.props.schemaFilter == 'ownedByMe' && !this.props.isProfileSet) &&
                 <JumboPaper
                   title={"Welcome,"}
-                  content={"Creating new schemas requires a profile. Please create a profile before continuing"}
+                  content={"Creating new datasets requires a profile. Please create a profile before continuing"}
                   buttonText={"Create Profile"}
                   handleClick={() => {this.props.history.push('/profile')}}
                 />

@@ -24,6 +24,7 @@
 
 #root {
   overflow-x: hidden;
+  padding-bottom: 20px;
 }
 
 @keyframes App-logo-spin {
@@ -61,10 +62,20 @@
 /* WRAPPER */
 
 .app-section-wrapper {
+   width: 80%;
+   max-width: 800px;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   margin-top: 30px;
+ }
+
+.app-section-wrapper-lg {
   width: 80%;
-  max-width: 700px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 30px;
 }
+
+

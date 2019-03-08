@@ -37,7 +37,7 @@ const SchemaList = ({schemas, history}) => {
                 <Hidden xsDown>
                   <Grid item xs={1}>
                     {schema['search_terms'].map((tag) => (
-                      <p key={`tag-${tag}`} className={"search-tag"}>{tag}</p>
+                      <p key={`tag-${tag}-${index * Math.random()}`} className={"search-tag"}>{tag}</p>
                     ))}
                   </Grid>
                   <Grid item xs={4}>

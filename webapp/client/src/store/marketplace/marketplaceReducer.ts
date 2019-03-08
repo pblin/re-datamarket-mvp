@@ -1,4 +1,5 @@
 import {MARKETPLACE_ACTIONS} from "./marketplaceActions";
+import {DATASET_FORM_ACTIONS} from "../datasetForm/actions";
 
 interface MarketplaceState {
   schemaFilter: string;
@@ -61,6 +62,19 @@ const reducer = function(state=defaultState, action: any) {
     case MARKETPLACE_ACTIONS.DATASETS_SEARCHED:
       newState.schemas = [...state.schemas];
       newState.schemas = action.datasets;
+      break;
+    case DATASET_FORM_ACTIONS.DATASET_PUBLISHED:
+      //TODO: when user clicks on filter, rerun the call (or when a user updates or adds a new dataset)
+      newState.userSchemas = [action.dataset, ...state.userSchemas];
+      newState.schemas = [action.dataset, ...state.schemas];
+      break;
+    case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
+      //TODO: FIX THIS LOGIC
+      newState.userSchemas = [action.dataset, ...state.userSchemas.filter(dataset => dataset.id != action.dataset.id)];
+      if(!Array.isArray(action.dataset['search_terms'])) {
+        action.dataset['search_terms'] = action.dataset['search_terms'].split(',');
+      }
+      newState.schemas = [action.dataset, ...state.schemas.filter(dataset => dataset.id != action.dataset.id)];
       break;
     default:
       return state;
