@@ -10,7 +10,7 @@ export function* GetDatasetInfo(action) {
 
   console.log('In the saga');
   console.log(dataset);
-  yield put({type: DATASET_INFO_ACTIONS.DATASET_INFO_RETRIEVED, dataset: dataset[0]})
+  yield put({type: DATASET_INFO_ACTIONS.DATASET_INFO_RETRIEVED, dataset: dataset})
 }
 
 export function* watchDatasetInfo() {
