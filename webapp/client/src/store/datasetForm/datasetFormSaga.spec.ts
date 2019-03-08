@@ -35,8 +35,7 @@ describe('Dataset Saga', () => {
       getState: () => ({ state: 'test' }),
     }, DatasetFormPublished, {basicInfo: {}, schema: [], id: '1234'});
 
-    expect(dispatched[0].type).toBe('SCHEMA_PUBLISHED');
-    expect(dispatched[0].schemaId).toBe(1234);
+    expect(dispatched[0].type).toBe('DATASET_PUBLISHED');
   });
 
   it("should update an existing dataset", async () => {
@@ -46,8 +45,7 @@ describe('Dataset Saga', () => {
       getState: () => ({ state: 'test' }),
     }, DatasetFormUpdated, {basicInfo: {}, schema: [], ownerId: '1234', datasetId: '123'});
 
-    expect(dispatched[0].type).toBe('SCHEMA_PUBLISHED');
-    expect(dispatched[0].schemaId).toBe(123);
+    expect(dispatched[0].type).toBe('DATASET_REPUBLISHED');
   });
 
   it('should watch publish', async() => {

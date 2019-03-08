@@ -93,9 +93,9 @@ describe('Dataset Form Store', () => {
   });
 
   it("the dataset should be published", () => {
-    store.dispatch({type: DATASET_FORM_ACTIONS.SCHEMA_PUBLISHED, schemaId: 1234});
-    expect(store.getState().schemaPublished).toBeTruthy();
-    expect(store.getState().schemaPublishedId).toBe(1234);
+    store.dispatch({type: DATASET_FORM_ACTIONS.DATASET_PUBLISHED, dataset: {id: 1234}});
+    expect(store.getState().datasetPublished).toBeTruthy();
+    expect(store.getState().datasetPublishedId).toBe(1234);
   });
 
   it("should update the dataset form", () => {
