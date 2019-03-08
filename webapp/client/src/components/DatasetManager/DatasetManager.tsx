@@ -188,6 +188,7 @@ class DatasetManager extends React.Component<ComponentProps> {
         basicDetails={this.props.basicInfo}
         schema={this.props.schema}
         schemaPublishedId={this.props.datasetForm.datasetPublishedId}
+        handleClose={this.handleClose}
         schemaPublished={this.props.datasetForm.datasetPublished}>
       </PublishForm>
   }

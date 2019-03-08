@@ -8,6 +8,7 @@ interface PublishFormProps {
   schema: any;
   schemaPublished: boolean;
   schemaPublishedId: string;
+  handleClose: any;
 }
 
 export class PublishForm extends React.Component<PublishFormProps> {
@@ -47,7 +48,7 @@ export class PublishForm extends React.Component<PublishFormProps> {
         </div>)}
         {this.props.schemaPublished && (
           <div>Dataset was published
-            <Link to={`/dataset/${this.props.schemaPublishedId}`}>Go to details</Link>
+            <Link to={`/dataset/${this.props.schemaPublishedId}`} onClick={this.props.handleClose}>Go to details</Link>
           </div>
         )}
       </Grid>
