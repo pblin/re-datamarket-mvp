@@ -14,6 +14,7 @@ interface BasicFormProps {
 }
 /* Redo search terms with https://material-ui.com/demos/autocomplete/ */
 /* https://stackoverflow.com/questions/23618744/rendering-comma-separated-list-of-links */
+/*http://primefaces.org/primereact/#/chips */
 const renderSelectField = ({input, label, meta, custom}) => {
   let helperText = meta.error != undefined && meta.touched ? meta.error: custom.helperText;
 

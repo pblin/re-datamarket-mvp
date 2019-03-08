@@ -6,13 +6,14 @@ import './main.css';
 import JumboPaper from "../components/Common/jumboPaper";
 import history from "../utils/history";
 import {connect} from "react-redux";
-import {profileSelector} from "../store/profile/profileSelector";
+import {isProfileSet, profileSelector} from "../store/profile/profileSelector";
 import {getProfile} from "../store/profile/profileActions";
 
 interface HomeProps {
   auth: Auth0Authentication;
   getProfile: any;
   profile: any;
+  isProfileSet: boolean;
 }
 class Home extends React.Component<HomeProps> {
   @autobind
@@ -25,7 +26,6 @@ class Home extends React.Component<HomeProps> {
   }
 
   componentWillMount(): void {
-    console.log('GETTING PROFILE');
     this.props.getProfile();
   }
 
@@ -42,7 +42,7 @@ class Home extends React.Component<HomeProps> {
   }
 
   renderJumboPaper() {
-    if(!this.props.profile && this.props.auth.authenticated) {
+    if(!this.props.isProfileSet && this.props.auth.authenticated) {
       return (
         <JumboPaper
           title={"Welcome to ReBloc,"}
@@ -50,7 +50,7 @@ class Home extends React.Component<HomeProps> {
           handleClick={this.navToProfile}
           buttonText={"Create Profile"}/>
       )
-    } else if(this.props.profile && this.props.auth.authenticated) {
+    } else if(this.props.isProfileSet && this.props.auth.authenticated) {
        return (
          <JumboPaper
            title={`Welcome back to ReBloc, ${this.props.profile['first_name']} ${this.props.profile['last_name']}`}
@@ -64,8 +64,6 @@ class Home extends React.Component<HomeProps> {
 
   render() {
     const { authenticated } = this.props.auth;
-    console.log('HERE ARE THE HOME PROPS');
-    console.log(this.props);
     return (
       <div>
         {!authenticated && (
@@ -129,7 +127,8 @@ function init() {
 
 function mapStateToProps(state) {
     return {
-      profile: profileSelector(state)
+      profile: profileSelector(state),
+      isProfileSet: isProfileSet(state)
     };
 }
 
