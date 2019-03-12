@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Menu, MenuItem, ClickAwayListener, Paper, Divider} from "@material-ui/core";
+import {Menu, MenuItem, ClickAwayListener, Paper, Divider, Typography} from "@material-ui/core";
 import {Link} from "react-router-dom";
 
 const ProfileMenu = ({profile, open, onClickAway}) => {
@@ -15,15 +15,15 @@ const ProfileMenu = ({profile, open, onClickAway}) => {
                  open={open}>
             {(profile['first_name'] && profile['last_name']) && (
               <div>
-                <MenuItem><p>Signed in as {profile['first_name']} {profile['last_name']}</p></MenuItem>
+                <MenuItem><Typography>Signed in as {profile['first_name']} {profile['last_name']}</Typography></MenuItem>
                 <Divider />
               </div>
             )
             }
             <MenuItem onClick={() => handleClose('profile')}>
-              <Link to="/profile"><div>My Profile</div></Link>
+              <Typography><Link to="/profile">My Profile</Link></Typography>
             </MenuItem>
-            <MenuItem onClick={() => handleClose('logout')}>Logout</MenuItem>
+            <MenuItem onClick={() => handleClose('logout')}><Typography>Logout</Typography></MenuItem>
           </Menu>
         </Paper>
       </ClickAwayListener>

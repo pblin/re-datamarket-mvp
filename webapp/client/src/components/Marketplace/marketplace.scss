@@ -1,3 +1,5 @@
+@import '../../styles/vars';
+
 .marketplace-toolbar {
   border: 1px solid black;
   min-height: 0px !important;
@@ -6,12 +8,10 @@
 }
 
 .add-schema {
-  background-color: #668eac !important;
   margin-bottom: 10px !important;
 }
 
 .schema-list {
-  font-family: "Times New Roman", Times, serif;
   margin-bottom: 5px;
 }
 
@@ -22,6 +22,7 @@
 
 .schema-list .sub-header {
   margin-bottom: 0px;
+  font-family: $app-sub-font;
 }
 
 .schema-list .description {
@@ -37,33 +38,29 @@
   background-color: rgba(0,0,0,.02);
 }
 
-.descriptor {
-  margin-bottom: 0px;
-  font-size: 15px;
-  color: #b3b3b3;
-  font-weight: bolder;
-  line-height: 0;
-}
-
-.descriptor svg {
-  font-size: 15px;
-}
-
 .money {
   color: #85bb65;
 }
 
-.search-tag {
-  margin-bottom: 0px;
-  font-weight: bolder;
-  font-size: 15px;
-  font-family: "Times New Roman";
-  color: #6996b6;
-  line-height: 16px;
-}
+.marketplace {
+  .search-tag {
+    margin-bottom: 0px;
+    font-weight: bolder;
+    color: $secondary-main;
+    line-height: 16px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
-.search-tag:hover {
-  text-decoration: underline;
+  .descriptor {
+    margin-bottom: 0px;
+    color: $primary-light;
+  }
+
+  .descriptor svg {
+    font-size: 15px;
+  }
 }
 
 .fake-image {

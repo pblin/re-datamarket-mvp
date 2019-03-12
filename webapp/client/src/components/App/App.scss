@@ -1,5 +1,11 @@
+@import '../../styles/vars';
+
 .App {
   text-align: left;
+}
+
+#avatar {
+  background: $secondary-main;
 }
 
 .App-logo {
@@ -8,7 +14,6 @@
 }
 
 .App-header {
-  background-color: #222;
   height: 150px;
   padding: 20px;
   color: white;
@@ -33,8 +38,8 @@
 }
 
 .app-link a{
-  font-sisze: 30px;
-  color: #3c4858;
+  color: $secondary-dark;
+  font-family: $app-font-main;
 }
 
 .app-link a div {

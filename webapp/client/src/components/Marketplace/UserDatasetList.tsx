@@ -3,7 +3,8 @@ import {
   IconButton,
   Grid,
   ExpansionPanel,
-  ExpansionPanelSummary
+  ExpansionPanelSummary,
+  Typography
 } from "@material-ui/core";
 
 import EditIcon from "@material-ui/icons/Edit";
@@ -20,10 +21,10 @@ const UserDatasetList = ({schemas, onEditClick, onDeleteClick, onAddClicked}) =>
           <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
             <Grid item xs={6} sm={9}>
               <div className={"fake-image-own"}>
-                <p>50 x 50</p>
+                <p>50</p>
               </div>
-              <p className={"header"}>{schema.name}</p>
-              <p className={"sub-header"}>{schema.description}</p>
+              <Typography variant={"subtitle1"} className={"header"}>{schema.name}</Typography>
+              <Typography variant={"subtitle2"} className={"sub-header"}>{schema.description}</Typography>
             </Grid>
             <Grid item xs={6} sm={3} className={"action-container"}>
               <Grid container justify={"flex-end"}>

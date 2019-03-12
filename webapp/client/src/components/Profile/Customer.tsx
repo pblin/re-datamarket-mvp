@@ -13,6 +13,7 @@ import CustomerForm from "./CustomerForm";
 import {getProfile, updateProfile} from "../../store/profile/profileActions";
 import {emailSelector, profileSelector} from "../../store/profile/profileSelector";
 import {Grid} from "@material-ui/core";
+import {withSnackbar} from "notistack";
 
 // @ts-ignore
 const styles = (theme: Theme ) => createStyles ({
@@ -48,6 +49,7 @@ interface Props {
   email: string;
   submitProfileForm: any;
   updateProfile: any;
+  enqueueSnackbar: any;
 }
 
 class Customer extends React.Component<Props> {
@@ -68,7 +70,7 @@ class Customer extends React.Component<Props> {
   }
 
   handleProfileSubmit(values) {
-    this.props.updateProfile(this.props.email, values);
+    this.props.updateProfile(this.props.email, values, this.props.enqueueSnackbar);
   }
 
   render() {
@@ -76,17 +78,16 @@ class Customer extends React.Component<Props> {
     const { authenticated } = this.props.auth;
     if ( authenticated) {
       return (
-
-        <Grid container={true} justify={'center'}>
-          <div className={classes.container}>
-            <CustomerForm onSubmit={this.handleProfileSubmit}/>
-            <Button color="primary" className={classes.button}
-                    onClick={this.props.submitProfileForm}>
-                <SaveIcon className={classNames(classes.leftIcon, classes.iconLarge)} />
-                Save
-            </Button>
-          </div>
-        </Grid>
+          <Grid container={true} justify={'center'}>
+            <div className={classes.container}>
+              <CustomerForm onSubmit={this.handleProfileSubmit}/>
+              <Button color="primary" className={classes.button}
+                      onClick={this.props.submitProfileForm}>
+                  <SaveIcon className={classNames(classes.leftIcon, classes.iconLarge)} />
+                  Save
+              </Button>
+            </div>
+          </Grid>
       );
     } else {
         // @ts-ignore
@@ -105,9 +106,11 @@ function mapStateToProps(state: any, ownProps: any) {
 function mapDispatchToProps(dispatch: any) {
   return {
     getProfile: () => dispatch(getProfile()),
-    updateProfile: (email, profile) => dispatch(updateProfile(email, profile)),
+    updateProfile: (email, profile, notify) => dispatch(updateProfile(email, profile, notify)),
     submitProfileForm: () => dispatch(submit('profile')),
   };
 }
 
+//@ts-ignore
+Customer = withSnackbar(Customer);
 export default withStyles ( styles, { withTheme: true } ) (connect(mapStateToProps, mapDispatchToProps)(Customer));

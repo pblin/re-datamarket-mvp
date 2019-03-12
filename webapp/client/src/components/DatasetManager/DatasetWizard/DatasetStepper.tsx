@@ -7,7 +7,7 @@ const DatasetStepper = ({wizardSteps, currentStep}) => {
       <div>
         <Hidden xsDown>
           <Stepper activeStep={currentStep} className={"stepper"}>
-            {wizardSteps.map( (wizardStep: WizardStep) => (<Step key={wizardStep.label} completed={wizardStep.completed}>
+            {wizardSteps.map( (wizardStep: WizardStep) => (<Step  color={"secondary"} key={wizardStep.label} completed={wizardStep.completed}>
                 <StepLabel>{wizardStep.label}</StepLabel>
             </Step>))}
           </Stepper>

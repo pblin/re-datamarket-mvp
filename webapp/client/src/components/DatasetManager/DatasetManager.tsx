@@ -223,11 +223,11 @@ class DatasetManager extends React.Component<ComponentProps> {
   renderWizardNextButton(currentStep, length, isDatasetPublished, mode) {
       if((currentStep != length - 1) || (currentStep == length - 1 && isDatasetPublished) ) {
         if(mode == 'add') {
-          return <Button onClick={this.onWizardNext} variant="contained" color="primary" className={"wizard-button"}>
+          return <Button onClick={this.onWizardNext} variant="contained" color="secondary" className={"wizard-button"}>
             {this.renderTitle(this.props.steps[this.props.wizard.currentStep].nextButtonValue)}
           </Button>
         } else {
-          return <Button onClick={this.onEditWizardNext} variant="contained" color="primary" className={"wizard-button"}>
+          return <Button onClick={this.onEditWizardNext} variant="contained" color="secondary" className={"wizard-button"}>
             {this.renderTitle(this.props.steps[this.props.wizard.currentStep].nextButtonValue)}
           </Button>
         }
@@ -240,7 +240,7 @@ class DatasetManager extends React.Component<ComponentProps> {
           <p className={"dialog-header"}>
             <span className={"bold"}>CREATE</span> A DATASET
           </p>
-          <p  className={"dialog-subheader"}>
+          <p className={"dialog-subheader"}>
             Fill out this form to publish a new dataset to the marketplace.
           </p>
         </DialogTitle>
@@ -275,7 +275,7 @@ class DatasetManager extends React.Component<ComponentProps> {
           <DialogActions>
             <Grid container={true} justify={'flex-end'}>
               {this.props.wizard.currentStep != 0 &&
-                <Button onClick={this.onWizardPrev} variant="contained" color="primary" className={"wizard-button"}>
+                <Button onClick={this.onWizardPrev} variant="contained" color="secondary" className={"wizard-button"}>
                   Previous
                 </Button>
               }

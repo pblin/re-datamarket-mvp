@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import './marketplace.css';
+import './marketplace.scss';
 import {
   changeConfirmDialogState,
   changeDialogState, changeSearch,
@@ -127,7 +127,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 
   render() {
     return (
-      <div>
+      <div className={"marketplace"}>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}
           schemaFilter={this.props.schemaFilter}
