@@ -26,6 +26,7 @@ import {withRouter} from "react-router";
 import {changeDialogState} from "../../store/marketplace/marketplaceActions";
 import {datasetDialogSelector} from "../../store/marketplace/marketplaceSelectors";
 import SchemaList from "./SchemaList/SchemaList";
+import {DATASET_STAGE} from "../Common/CommonTypes";
 
 interface ComponentProps {
   file: any[],
@@ -122,7 +123,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   publish() {
-    this.props.publishSchema(this.props.basicInfo, this.props.schema, this.props.profile.id);
+    this.props.publishSchema(this.props.basicInfo, this.props.schema, this.props.profile.id, DATASET_STAGE.SAVED);
   }
 
   update() {
@@ -135,7 +136,7 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   handleBasicFormSubmit(values) {
     console.log('BASIC FORM IS SUBMITTING');
-    this.props.nextStep();
+    this.publish();
   }
 
   renderTitle(value: string) {
@@ -310,7 +311,7 @@ function mapDispatchToProps(dispatch: any) {
   return {
     onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
     onFileChangeAndUpload: (file: any, fileId: string) => dispatch({type: "FILE_CHANGED_AND_UPLOADED", validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST', file, fileId}),
-    publishSchema: (basicInfo: any, schema: any[], id: any) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id}), //TODO: Refactor to publish dataset
+    publishSchema: (basicInfo: any, schema: any[], id: any, stage: DATASET_STAGE) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id, stage}),
     updateDataset: (basicInfo: any, schema: any[], ownerId: any, datasetId: any) => dispatch(updateDataset(basicInfo, schema, ownerId, datasetId)),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),

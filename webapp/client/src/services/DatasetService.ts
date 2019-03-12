@@ -7,7 +7,7 @@ export class DatasetService {
     this.baseUrl = location.protocol+'//'+location.hostname + ":9000";
   }
 
-  async postDataset(basicInfo: any, schema: any[], id: any) {
+  async postDataset(basicInfo: any, schema: any[], id: any, stage: any) {
     const uid = uuid();
 
     let body = {
@@ -28,7 +28,7 @@ export class DatasetService {
       date_created: new Date(),
       date_modified: new Date(),
       parameters: '{}',
-      stage: 0,
+      stage: stage,
       json_schema: JSON.stringify(schema)
     };
 
@@ -40,7 +40,7 @@ export class DatasetService {
       body: JSON.stringify(body)
     });
 
-    body['search_terms'] = basicInfo.searchTerms.split(',');
+    //body['search_terms'] = basicInfo.searchTerms.split(',');
     return body;
   }
 

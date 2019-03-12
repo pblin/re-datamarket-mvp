@@ -6,9 +6,10 @@ export function* DatasetFormPublished(action) {
   let basicInfo = action.basicInfo;
   let schema = action.schema;
   let id = action.id;
+  let stage = action.stage;
 
   const datasetService = new DatasetService();
-  const dataset = yield datasetService.postDataset(basicInfo, schema, id);
+  const dataset = yield datasetService.postDataset(basicInfo, schema, id, stage);
 
   yield put({type: DATASET_FORM_ACTIONS.DATASET_PUBLISHED, dataset})
 }
