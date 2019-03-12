@@ -23,6 +23,8 @@ function* UpdateProfile(action) {
   //UPDATE LOCAL STORAGE
   localStorage.setItem('profile', JSON.stringify(results));
 
+  action.notify('Your profile was successfully updated', {variant: 'success'});
+
   //TODO: ADD ERROR HANDLING
   //TODO: TEST FIRST TIME PROFILE
 }

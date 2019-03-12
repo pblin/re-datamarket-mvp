@@ -70,8 +70,7 @@ class Customer extends React.Component<Props> {
   }
 
   handleProfileSubmit(values) {
-    this.props.updateProfile(this.props.email, values);
-    this.props.enqueueSnackbar("Message")
+    this.props.updateProfile(this.props.email, values, this.props.enqueueSnackbar);
   }
 
   render() {
@@ -107,7 +106,7 @@ function mapStateToProps(state: any, ownProps: any) {
 function mapDispatchToProps(dispatch: any) {
   return {
     getProfile: () => dispatch(getProfile()),
-    updateProfile: (email, profile) => dispatch(updateProfile(email, profile)),
+    updateProfile: (email, profile, notify) => dispatch(updateProfile(email, profile, notify)),
     submitProfileForm: () => dispatch(submit('profile')),
   };
 }

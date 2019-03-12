@@ -42,13 +42,15 @@ app.initialize();
 class AppBootstrap extends React.Component {
   render() {
     return (
-      <SnackbarProvider maxSnack={3}>
-      <Provider store={app.store}>
-        <MuiThemeProvider theme={theme}>
-
-            <Routes />
-        </MuiThemeProvider>
-      </Provider>
+      <SnackbarProvider maxSnack={3} anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}>
+        <Provider store={app.store}>
+          <MuiThemeProvider theme={theme}>
+              <Routes />
+          </MuiThemeProvider>
+        </Provider>
       </SnackbarProvider>
     )
   }
