@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./DatasetWizard.css";
+import "./DatasetWizard.scss";
 import {Divider, Grid, Typography} from "@material-ui/core";
 import {Link} from "react-router-dom";
 

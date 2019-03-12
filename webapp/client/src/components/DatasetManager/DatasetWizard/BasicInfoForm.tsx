@@ -3,7 +3,7 @@ import {Field, reduxForm} from 'redux-form';
 import {Grid, MenuItem, TextField} from "@material-ui/core";
 import {connect} from "react-redux";
 import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
-import "./DatasetWizard.css";
+import "./DatasetWizard.scss";
 import {ERROR_TYPE} from "../../Common/Error/ErrorType";
 import {datasetDialogSelector} from "../../../store/marketplace/marketplaceSelectors";
 

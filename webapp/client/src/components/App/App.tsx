@@ -10,11 +10,8 @@ import {
   Divider,
   IconButton,
   ListItem,
- // Button,
   withStyles,
   Theme,
- // Menu,
- // MenuItem
 } from "@material-ui/core";
 
 import MenuIcon from '@material-ui/icons/Menu';
@@ -26,16 +23,13 @@ import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
 import Logo from '../../img/rebloc_logo.svg';
 import ProfileAvatar from '../Profile/ProfileAvatar';
-import "./App.css";
+import "./App.scss";
 
 //Icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
-//import HistoryIcon from "@material-ui/icons/History";
-//import MessageIcon from "@material-ui/icons/Message";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ExploreIcon from "@material-ui/icons/Explore";
-//import CloudIcon from "@material-ui/icons/CloudUpload";
 import ProfileMenu from "./ProfileMenu";
 import {updateProfileMenuOpen} from "../../store/app/appActions";
 import {appSelector} from "../../store/app/appSelector";
@@ -138,14 +132,11 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   appLinks: AppLink[] = [
     new AppLink('Marketplace', '/marketplace', (<DashboardIcon/>)),
     new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
-    //new AppLink('Dataset Manager', '/dataset-manager', (<CloudIcon/>)),
     new AppLink('News', 'https://medium.com/rebloc', (<NotificationsIcon/>), 'global')
   ];
 
   userAppLinks: AppLink[] = [
     new AppLink('Profie', '/profile', (<PersonIcon/>)),
-    //new AppLink('Order History', '/orders', <HistoryIcon/>),
-    //new AppLink('Message', '/message', (<MessageIcon/>))
   ];
 
   @autobind

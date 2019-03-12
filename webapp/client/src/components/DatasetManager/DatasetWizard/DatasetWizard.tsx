@@ -2,7 +2,7 @@ import * as React from "react";
 import DatasetStepper from './DatasetStepper';
 import {WizardStep} from "./WizardStep";
 import {Grid} from "@material-ui/core";
-import "./DatasetWizard.css";
+import "./DatasetWizard.scss";
 
 interface WizardProps {
   steps: WizardStep[],
@@ -23,7 +23,7 @@ export class DatasetWizard extends React.Component<WizardProps, WizardState> {
 
   render() {
     return (
-      <Grid container={true} justify={'center'}>
+      <Grid container={true} justify={'center'} >
         <div className="wizard-wrapper">
           <DatasetStepper
             wizardSteps={this.props.steps}
