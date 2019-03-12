@@ -127,7 +127,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 
   render() {
     return (
-      <div>
+      <div className={"marketplace"}>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}
           schemaFilter={this.props.schemaFilter}

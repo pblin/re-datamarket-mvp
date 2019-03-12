@@ -53,16 +53,16 @@
   color: #85bb65;
 }
 
-.search-tag {
-  margin-bottom: 0px;
-  font-weight: bolder;
-  font-size: 15px;
-  color: #6996b6;
-  line-height: 16px;
-}
-
-.search-tag:hover {
-  text-decoration: underline;
+.marketplace {
+  .search-tag {
+    margin-bottom: 0px;
+    font-weight: bolder;
+    color: $secondary-main;
+    line-height: 16px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .fake-image {

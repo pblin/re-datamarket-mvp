@@ -1,3 +1,5 @@
+@import '../../styles/vars';
+
 .App {
   text-align: left;
 }
@@ -32,7 +34,8 @@
 }
 
 .app-link a{
-  font-sisze: 30px;
+  color: $secondary-dark;
+  font-family: $app-font-main;
 }
 
 .app-link a div {

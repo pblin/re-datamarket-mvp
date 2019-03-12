@@ -24,7 +24,7 @@ const UserDatasetList = ({schemas, onEditClick, onDeleteClick, onAddClicked}) =>
                 <p>50</p>
               </div>
               <Typography variant={"subtitle1"} className={"header"}>{schema.name}</Typography>
-              <Typography variant={"body1"} className={"sub-header"}>{schema.description}</Typography>
+              <Typography variant={"subtitle2"} className={"sub-header"}>{schema.description}</Typography>
             </Grid>
             <Grid item xs={6} sm={3} className={"action-container"}>
               <Grid container justify={"flex-end"}>

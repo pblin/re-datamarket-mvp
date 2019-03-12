@@ -13,6 +13,10 @@ const theme = createMuiTheme({
     fontFamily: "Roboto",
     useNextVariants: true
   },
+  overrides: {
+    MuiAvatar: {
+    }
+  },
   palette: {
     primary: {
       main: '#47494D',
