@@ -16,10 +16,9 @@ interface DatasetFormState {
 const defaultState: DatasetFormState = {
   wizard: {
     steps: [
-      {label: 'Dataset Info', completed: false},
       {label: 'Upload Schema', completed: false},
       {label: 'Review', completed: false},
-      {label: 'Publish', completed: false, nextButtonValue: 'Publish'}
+      {label: 'Additional Info', completed: false, nextButtonValue: 'Save'},
     ],
     editSteps: [
       {label: 'Dataset Info', completed: false},

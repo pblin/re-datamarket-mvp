@@ -93,10 +93,10 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   onWizardNext() {
     switch(this.props.wizard.currentStep) {
-      case 0:
+      case 2:
         this.props.submitBasicInfoForm();
         return;
-      case 1:
+      case 0:
         if(!this.props.schema.length) {
           this.props.shouldDisplayNoSchemaError(true);
           return;
@@ -134,6 +134,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   handleBasicFormSubmit(values) {
+    console.log('BASIC FORM IS SUBMITTING');
     this.props.nextStep();
   }
 
@@ -201,10 +202,9 @@ class DatasetManager extends React.Component<ComponentProps> {
         onPrev={this.onWizardPrev}
         currentStep={this.props.wizard.currentStep}
       >
-        {this.renderBasicInfoForm()}
         {this.renderSchemaUpload()}
         {this.renderSchemaList()}
-        {this.renderPublishForm()}
+        {this.renderBasicInfoForm()}
       </DatasetWizard>
     } else {
       return <DatasetWizard
