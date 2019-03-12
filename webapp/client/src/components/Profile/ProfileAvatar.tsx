@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Avatar, Typography} from '@material-ui/core';
+import {Avatar} from '@material-ui/core';
 import PersonIcon from "@material-ui/icons/Person";
 
 export interface ProfileProps {
@@ -11,7 +11,7 @@ class ProfileAvatar extends Component <ProfileProps, {}> {
         if (this.props.initial !== null && this.props.initial != '') {
             return (
                 <Avatar id="avatar" color={"primary"} className={"avatar"}>
-                  <Typography>{this.props.initial} </Typography>
+                  {this.props.initial}
                 </Avatar>
             );
         } else {

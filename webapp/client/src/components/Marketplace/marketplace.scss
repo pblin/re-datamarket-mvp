@@ -38,17 +38,6 @@
   background-color: rgba(0,0,0,.02);
 }
 
-.descriptor {
-  margin-bottom: 0px;
-  font-size: 15px;
-  font-weight: bolder;
-  line-height: 0;
-}
-
-.descriptor svg {
-  font-size: 15px;
-}
-
 .money {
   color: #85bb65;
 }
@@ -62,6 +51,15 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  .descriptor {
+    margin-bottom: 0px;
+    color: $primary-light;
+  }
+
+  .descriptor svg {
+    font-size: 15px;
   }
 }
 

@@ -21,7 +21,7 @@ const ProfileMenu = ({profile, open, onClickAway}) => {
             )
             }
             <MenuItem onClick={() => handleClose('profile')}>
-              <Link to="/profile"><Typography>My Profile</Typography></Link>
+              <Typography><Link to="/profile">My Profile</Link></Typography>
             </MenuItem>
             <MenuItem onClick={() => handleClose('logout')}><Typography>Logout</Typography></MenuItem>
           </Menu>
