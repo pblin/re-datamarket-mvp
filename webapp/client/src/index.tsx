@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 import './index.css';
 import 'typeface-roboto';
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
+import {SnackbarProvider} from "notistack";
 
 const theme = createMuiTheme({
   typography: {
@@ -37,11 +38,24 @@ const theme = createMuiTheme({
 const app = AppStore.getInstance();
 app.initialize();
 
+
+class AppBootstrap extends React.Component {
+  render() {
+    return (
+      <SnackbarProvider maxSnack={3}>
+      <Provider store={app.store}>
+        <MuiThemeProvider theme={theme}>
+
+            <Routes />
+        </MuiThemeProvider>
+      </Provider>
+      </SnackbarProvider>
+    )
+  }
+}
+
 ReactDOM.render(
-  <Provider store={app.store}>
-    <MuiThemeProvider theme={theme}>
-      <Routes />
-    </MuiThemeProvider>
-  </Provider>,
+  <AppBootstrap />
+  ,
   document.getElementById('root') as HTMLElement);
 registerServiceWorker();

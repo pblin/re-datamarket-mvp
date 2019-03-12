@@ -207,80 +207,80 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     }
 
     return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          className={classes.appBar}
-          position={"static"}
-        >
-          <Toolbar disableGutters={!open}>
-            {authenticated && (<IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classes.menuButton}
-            >
-              <MenuIcon />
-            </IconButton>)}
-            <Link to={"/home"}><img src={Logo} className={classes.appLogo + ' ' + (authenticated ? '': classes.marginLeft50)}/></Link>
-            <div className={classes.grow}></div>
-            { (profileObj !== '' && authenticated) && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
-            {/*!authenticated && (
-              <Button color="inherit" type="submit" onClick={this.login} className={classes.loginBtn}>Login</Button>
-            )
-            */}
-          </Toolbar>
-          <ProfileMenu
-            open={this.props.profileMenuOpen}
-            onClickAway={this.handleProfileMenuClickAway}
-            profile={profileObj}/>
-        </AppBar>
-        <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-              {this.appLinks.map((link, index) => (
-                  <>
-                    {link.type == 'app' &&
-                        <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
-                          <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
-                        </ListItem>
-                    }
-                    {link.type == 'global' &&
-                    <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
-                      <a href={link.url}>{link.icon} <div>{link.title}</div></a>
-                    </ListItem>
-                    }
-                  </>
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar
+            className={classes.appBar}
+            position={"static"}
+          >
+            <Toolbar disableGutters={!open}>
+              {authenticated && (<IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerOpen}
+                className={classes.menuButton}
+              >
+                <MenuIcon />
+              </IconButton>)}
+              <Link to={"/home"}><img src={Logo} className={classes.appLogo + ' ' + (authenticated ? '': classes.marginLeft50)}/></Link>
+              <div className={classes.grow}></div>
+              { (profileObj !== '' && authenticated) && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
+              {/*!authenticated && (
+                <Button color="inherit" type="submit" onClick={this.login} className={classes.loginBtn}>Login</Button>
+              )
+              */}
+            </Toolbar>
+            <ProfileMenu
+              open={this.props.profileMenuOpen}
+              onClickAway={this.handleProfileMenuClickAway}
+              profile={profileObj}/>
+          </AppBar>
+          <Drawer
+            className={classes.drawer}
+            variant="persistent"
+            anchor="left"
+            open={open}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <div className={classes.drawerHeader}>
+              <IconButton onClick={this.handleDrawerClose}>
+                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              </IconButton>
+            </div>
+            <Divider />
+            <List>
+                {this.appLinks.map((link, index) => (
+                    <>
+                      {link.type == 'app' &&
+                          <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                            <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
+                          </ListItem>
+                      }
+                      {link.type == 'global' &&
+                      <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                        <a href={link.url}>{link.icon} <div>{link.title}</div></a>
+                      </ListItem>
+                      }
+                    </>
+                ))}
+            </List>
+            <Divider />
+            <List>
+              {this.userAppLinks.map((link, index) => (
+                <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                  <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
+                </ListItem>
               ))}
-          </List>
-          <Divider />
-          <List>
-            {this.userAppLinks.map((link, index) => (
-              <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
-                <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-        <main
-          className={classes.content}
-        >
-          <div className={classes.drawerHeader} />
-        </main>
-      </div>
+            </List>
+          </Drawer>
+          <main
+            className={classes.content}
+          >
+            <div className={classes.drawerHeader} />
+          </main>
+        </div>
     );
   }
 }
@@ -298,8 +298,6 @@ function mapDispatchToProps(dispatch: any) {
     getProfile: () => dispatch(getProfile())
   }
 }
-
-
 
 export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(PersistentDrawerLeft));
 
