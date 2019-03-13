@@ -16,7 +16,6 @@ import {
   DialogContent,
   DialogTitle
 } from "@material-ui/core";
-import {PublishForm} from "./DatasetWizard/PublishForm";
 import {basicInfo, getWizardSteps, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {getFileState} from "../../store/file/fileSelectors";
@@ -71,8 +70,6 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.onSchemaUpload = this.onSchemaUpload.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
-    this.update = this.update.bind(this);
-    this.onEditWizardNext = this.onEditWizardNext.bind(this);
     this.cleanup = this.cleanup.bind(this);
   }
 
@@ -110,24 +107,8 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.props.nextStep();
   }
 
-  onEditWizardNext() {
-    switch(this.props.wizard.currentStep) {
-      case 0:
-        this.props.submitBasicInfoForm();
-        return;
-      case 2:
-        this.update();
-      return;
-    }
-    this.props.nextStep();
-  }
-
   publish() {
     this.props.publishSchema(this.props.basicInfo, this.props.schema, this.props.profile.id, DATASET_STAGE.SAVED);
-  }
-
-  update() {
-    this.props.updateDataset(this.props.basicInfo, this.props.schema, this.props.profile.id, this.props.datasetDialog.dataset.id);
   }
 
   onWizardPrev() {
@@ -185,16 +166,6 @@ class DatasetManager extends React.Component<ComponentProps> {
       return <SchemaList schemas={this.props.schema} onSchemaSelect={this.onSchemaSelect}></SchemaList>;
   }
 
-  renderPublishForm() {
-      return    <PublishForm
-        basicDetails={this.props.basicInfo}
-        schema={this.props.schema}
-        schemaPublishedId={this.props.datasetForm.datasetPublishedId}
-        handleClose={this.handleClose}
-        schemaPublished={this.props.datasetForm.datasetPublished}>
-      </PublishForm>
-  }
-
   renderWizard() {
     if(this.props.datasetDialog.mode == 'add') {
       return <DatasetWizard
@@ -207,17 +178,6 @@ class DatasetManager extends React.Component<ComponentProps> {
         {this.renderSchemaList()}
         {this.renderBasicInfoForm()}
       </DatasetWizard>
-    } else {
-      return <DatasetWizard
-        steps={this.props.steps}
-        onNext={this.onEditWizardNext}
-        onPrev={this.onWizardPrev}
-        currentStep={this.props.wizard.currentStep}
-      >
-        {this.renderBasicInfoForm()}
-        {this.renderSchemaList()}
-        {this.renderPublishForm()}
-      </DatasetWizard>
     }
   }
 
@@ -225,10 +185,6 @@ class DatasetManager extends React.Component<ComponentProps> {
       if((currentStep != length - 1) || (currentStep == length - 1 && isDatasetPublished) ) {
         if(mode == 'add') {
           return <Button onClick={this.onWizardNext} variant="contained" color="secondary" className={"wizard-button"}>
-            {this.renderTitle(this.props.steps[this.props.wizard.currentStep].nextButtonValue)}
-          </Button>
-        } else {
-          return <Button onClick={this.onEditWizardNext} variant="contained" color="secondary" className={"wizard-button"}>
             {this.renderTitle(this.props.steps[this.props.wizard.currentStep].nextButtonValue)}
           </Button>
         }
@@ -243,15 +199,6 @@ class DatasetManager extends React.Component<ComponentProps> {
           </p>
           <p className={"dialog-subheader"}>
             Fill out this form to publish a new dataset to the marketplace.
-          </p>
-        </DialogTitle>
-      } else {
-        return <DialogTitle>
-          <p className={"dialog-header"}>
-            <span className={"bold"}>EDIT</span> DATASET
-          </p>
-          <p  className={"dialog-subheader"}>
-            Fill out this form to republish an existing dataset to the marketplace.
           </p>
         </DialogTitle>
       }

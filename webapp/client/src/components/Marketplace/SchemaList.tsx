@@ -15,7 +15,6 @@ import LocationIcon from "@material-ui/icons/AddLocation";
 import DollarIcon from "@material-ui/icons/AttachMoney";
 import AttachmentIcon from "@material-ui/icons/Attachment";
 
-//TODO: Add more details
 const SchemaList = ({schemas, history}) => {
   const handleClick = (schema) => {
     history.push(`/dataset/${schema.id}`);

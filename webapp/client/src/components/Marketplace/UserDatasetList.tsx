@@ -7,16 +7,24 @@ import {
   Typography
 } from "@material-ui/core";
 
-import EditIcon from "@material-ui/icons/Edit";
 import TrashIcon from "@material-ui/icons/Delete";
 import JumboPaper from "../Common/jumboPaper";
 
 //TODO: Add more details
 //TODO: refactor schemas to be datasets
-const UserDatasetList = ({schemas, onEditClick, onDeleteClick, onAddClicked}) => {
+const UserDatasetList = ({schemas, onDeleteClick, onAddClicked, history}) => {
+  const handleClick = (schema) => {
+    history.push(`/dataset/${schema.id}`);
+  };
+
+  const handleDelete = (event, schema) => {
+    event.stopPropagation();
+    onDeleteClick(schema)
+  };
+
   const renderSchemaList = () => {
     return <div>{schemas.map((schema, index) => (
-      <ExpansionPanel key={`userSchema${index}`} expanded={false}>
+      <ExpansionPanel key={`userSchema${index}`} expanded={false} onClick={() => handleClick(schema)}>
         <ExpansionPanelSummary className={"schema-list"}>
           <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
             <Grid item xs={6} sm={9}>
@@ -28,8 +36,7 @@ const UserDatasetList = ({schemas, onEditClick, onDeleteClick, onAddClicked}) =>
             </Grid>
             <Grid item xs={6} sm={3} className={"action-container"}>
               <Grid container justify={"flex-end"}>
-                <IconButton onClick={() =>{onEditClick(schema)}}> <EditIcon/></IconButton>
-                <IconButton onClick={()=>{onDeleteClick(schema)}}> <TrashIcon/></IconButton>
+                <IconButton onClick={(e)=>{handleDelete(e, schema)}}> <TrashIcon/></IconButton>
               </Grid>
             </Grid>
           </Grid>
