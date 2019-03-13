@@ -2,7 +2,7 @@ import * as React from "react";
 import {Paper, IconButton, InputBase, Divider} from "@material-ui/core";
 //import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import "../common.css";
+import "../common.scss";
 
 const FilterMenu = ({placeholder, onSearchChange, searchVal, onSearch}) => {
   const handleKeyPress = (e) => {

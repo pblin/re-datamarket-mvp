@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./common.css";
+import "./common.scss";
 import {Grid, Typography, Paper, Button} from "@material-ui/core";
 
 //TODO: Create Jumbo Button Component

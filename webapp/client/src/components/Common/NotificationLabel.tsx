@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./common.css";
+import "./common.scss";
 
 const NotificationLabel = ({children, type}) => {
   return(
