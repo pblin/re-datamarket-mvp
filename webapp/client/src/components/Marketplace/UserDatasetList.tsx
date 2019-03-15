@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   IconButton,
+  Chip,
   Grid,
   ExpansionPanel,
   ExpansionPanelSummary,
@@ -22,6 +23,16 @@ const UserDatasetList = ({schemas, onDeleteClick, onAddClicked, history}) => {
     onDeleteClick(schema)
   };
 
+  const renderChips = (schema) => {
+    console.log('rendering chips');
+    console.log(schema);
+    if(schema.stage == 2) {
+      return <Chip label={"Saved"} className={"save-chip"}/>;
+    } else if(schema.stage == 3) {
+      return <Chip label={"Published"} className={"published-chip"} />  ;
+    }
+  };
+
   const renderSchemaList = () => {
     return <div>{schemas.map((schema, index) => (
       <ExpansionPanel key={`userSchema${index}`} expanded={false} onClick={() => handleClick(schema)}>
@@ -32,7 +43,9 @@ const UserDatasetList = ({schemas, onDeleteClick, onAddClicked, history}) => {
                 <p>50</p>
               </div>
               <Typography variant={"subtitle1"} className={"header"}>{schema.name}</Typography>
-              <Typography variant={"subtitle2"} className={"sub-header"}>{schema.description}</Typography>
+              <Typography variant={"subtitle2"} className={"sub-header"}>
+                {schema.description} {renderChips(schema)}
+              </Typography>
             </Grid>
             <Grid item xs={6} sm={3} className={"action-container"}>
               <Grid container justify={"flex-end"}>
