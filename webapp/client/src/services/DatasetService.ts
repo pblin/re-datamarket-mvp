@@ -7,28 +7,28 @@ export class DatasetService {
     this.baseUrl = location.protocol+'//'+location.hostname + ":9000";
   }
 
-  async postDataset(basicInfo: any, schema: any[], id: any) {
+  async postDataset(basicInfo: any, schema: any[], id: any, stage: any) {
     const uid = uuid();
 
     let body = {
       id: uid,
-      name: basicInfo.name,
-      description: basicInfo.description,
-      access_url: basicInfo.endpoint,
-      api_key: basicInfo.sampleAPIKey,
-      enc_data_key: basicInfo.sampleDataKey,
-      search_terms: `{${basicInfo.searchTerms}}`, //TODO: ALLOW AN ARRAY OF SEARCH TERMS
+      name: basicInfo.name || null,
+      description: basicInfo.description || null,
+      access_url: basicInfo.endpoint || null,
+      api_key: basicInfo.sampleAPIKey || null,
+      enc_data_key: basicInfo.sampleDataKey || null,
+      search_terms: basicInfo.searchTerms ? `{${basicInfo.searchTerms}}`: null,
       delivery_method: 'API',
       dataset_owner_id: id,
-      price_low: basicInfo.askPriceLow,
-      price_high: basicInfo.askPriceHigh,
-      num_of_records: basicInfo.records,
-      country: basicInfo.country,
+      price_low: basicInfo.askPriceLow || null,
+      price_high: basicInfo.askPriceHigh || null,
+      num_of_records: basicInfo.records || null,
+      country: basicInfo.country || null,
       state_province: basicInfo.state,
       date_created: new Date(),
       date_modified: new Date(),
       parameters: '{}',
-      stage: 0,
+      stage: stage,
       json_schema: JSON.stringify(schema)
     };
 
@@ -40,7 +40,7 @@ export class DatasetService {
       body: JSON.stringify(body)
     });
 
-    body['search_terms'] = basicInfo.searchTerms.split(',');
+    //body['search_terms'] = basicInfo.searchTerms.split(',');
     return body;
   }
 
@@ -104,8 +104,13 @@ export class DatasetService {
     }
   }
 
-  async getDataset(datasetId: string) {
-    const results = await fetch(`${config.serverBase}/marketplace/dataset/${datasetId}`);
+  async getDataset(datasetId: string, ownderId? : string) {
+    let url = `${config.serverBase}/schema/dataset/${datasetId}`;
+    if(ownderId) {
+      url += `?userid=${ownderId}`;
+    }
+
+    const results = await fetch(url);
     if(results.status !== 200) {
       return [];
     } else {

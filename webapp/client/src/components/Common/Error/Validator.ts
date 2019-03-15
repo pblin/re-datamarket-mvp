@@ -13,17 +13,17 @@ export function validate(val: any, errorType: ErrorType) {
     case ERROR_TYPE.LENGTH:
       return val.length == errorType.val;
     case ERROR_TYPE.MAX:
-      return val <= errorType.val;
+      return (val <= errorType.val || val == undefined);
     case ERROR_TYPE.MIN:
-      return val >= errorType.val;
+      return (val >= errorType.val || val == undefined);
     case ERROR_TYPE.MAX_LENGTH:
       return val.length <= errorType.val;
     case ERROR_TYPE.MIN_LENGTH:
       return val.length >= errorType.val;
     case ERROR_TYPE.GREATER_THAN:
-      return val > errorType.val;
+      return (val > errorType.val || val == undefined);
     case ERROR_TYPE.LESS_THAN:
-      return val < errorType.val;
+      return (val < errorType.val || val == undefined);
     case ERROR_TYPE.IS_URL:
       return isURL(val);
     case ERROR_TYPE.PATTERN:

@@ -1,3 +1,5 @@
+@import '../../styles/vars';
+
 .notification-label {
   padding: 13px;
   margin-bottom: 20px;
@@ -49,42 +51,48 @@
 }
 
 /* File Upload */
-
 .drop-zone {
   border: 1px dotted black;
+  .upload-icon {
+    width: 60px;
+    height: 60px;
+    color: $secondary-main;
+  }
+  .file-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+
+    &:focus + label {
+      outline: 1px dotted #000;
+      outline: -webkit-focus-ring-color auto 5px;
+    }
+  }
+  .file-input-label {
+    background-color: $secondary-main;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: 500;
+    margin-top: 25px;
+    cursor: pointer;
+    &:hover {
+      background-color: $secondary-dark;
+    }
+    p {
+      color: #fff;
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
 }
 
-.drop-zone .upload-icon {
-  width: 60px;
-  height: 60px;
-  color: #3f51b5;
-}
-
-.drop-zone .file-input {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-
-.drop-zone .file-input-label {
-  border: 1px solid black !important;
-  color: white;
-  background-color: #3f51b5;
-  border-radius: 5px;
-  padding: 10px;
-  font-weight: 500;
-  margin-top: 25px;
-  cursor: pointer;
-}
-
-.file-input:focus + label {
-  /* keyboard navigation */
+/*.file-input:focus + label {
   outline: 1px dotted #000;
   outline: -webkit-focus-ring-color auto 5px;
-}
+}*/
 
 .file-input + label * {
   pointer-events: none;

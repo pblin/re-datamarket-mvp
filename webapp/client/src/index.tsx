@@ -15,7 +15,10 @@ const theme = createMuiTheme({
     useNextVariants: true
   },
   overrides: {
-    MuiAvatar: {
+    MuiStepIcon: {
+      active: {
+        color: '#6996B6 !important'
+      }
     }
   },
   palette: {

@@ -82,81 +82,21 @@ const validate = (values) => {
       ]
     },
     {
-      fieldName: 'searchTerms',
-      errors: [
-        {type: ERROR_TYPE.REQUIRED}
-      ],
-      errorMessages: [
-        'Error Message is required'
-      ]
-    },
-    {
-      fieldName: 'state',
-      errors: [
-        {type: ERROR_TYPE.REQUIRED}
-      ],
-      errorMessages: [
-        'Please select a state/province'
-      ]
-    },
-    {
-      fieldName: 'sampleAPIKey',
-      errors: [
-        {type: ERROR_TYPE.REQUIRED}
-      ],
-      errorMessages: [
-        'Please provide a sample api key'
-      ]
-    },
-    {
-      fieldName: 'sampleDataKey',
-      errors: [
-        {type: ERROR_TYPE.REQUIRED}
-      ],
-      errorMessages: [
-        'Please provide a sample data key'
-      ]
-    },
-    {
-      fieldName: 'country',
-      errors: [
-        {type: ERROR_TYPE.REQUIRED}
-      ],
-      errorMessages: [
-        'Please select a country'
-      ]
-    },
-    {
-      fieldName: 'endpoint',
-      errors: [
-        {type: ERROR_TYPE.REQUIRED},
-        {type: ERROR_TYPE.IS_URL}
-      ],
-      errorMessages: [
-        'Endpoint is required',
-        'Please enter a valid endpoint'
-      ]
-    },
-    {
       fieldName: 'records',
       errors: [
-        {type: ERROR_TYPE.REQUIRED},
         {type: ERROR_TYPE.GREATER_THAN, val: 0}
       ],
       errorMessages: [
-        'Records are required',
         'Please ensure that the number of records are greater than 0'
       ]
     },
     {
       fieldName: 'askPriceLow',
       errors:[
-        {type: ERROR_TYPE.REQUIRED},
         {type: ERROR_TYPE.LESS_THAN, val: values.askPriceHigh},
         {type: ERROR_TYPE.MIN, val: 0}
       ],
       errorMessages: [
-        'Please enter a valid ask price',
         'Please ensure that the low ask price is not greater than the high ask price',
         'Please enter a positive asking price'
       ]
@@ -164,12 +104,10 @@ const validate = (values) => {
     {
       fieldName: 'askPriceHigh',
       errors:[
-        {type: ERROR_TYPE.REQUIRED},
         {type: ERROR_TYPE.GREATER_THAN, val: values.askPriceLow},
         {type: ERROR_TYPE.MIN, val: 0}
       ],
       errorMessages: [
-        'Please enter a valid ask price',
         'Please ensure that the high ask price is not less than the low ask price',
         'Please enter a positive asking price'
       ]
@@ -190,14 +128,14 @@ class BasicInfoForm extends Component<BasicFormProps> {
         <form onSubmit={this.props.handleSubmit}>
           <Grid spacing={24} container={true} >
             <Field
-              label="Name"
+              label="Name(Required)"
               component={renderTextField}
               name="name"
               type="text"
               custom={ {gridXs: 12, gridSm: 6, placeholder: "Name of the dataset"} }
             />
             <Field
-              label="Description"
+              label="Description(Required)"
               component={renderTextField}
               name="description"
               type="text"

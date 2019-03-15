@@ -51,7 +51,6 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.handleSchemaChange = this.handleSchemaChange.bind(this);
     this.getUserSchemas = this.getUserSchemas.bind(this);
     this.openDialog = this.openDialog.bind(this);
-    this.handleOnEdit = this.handleOnEdit.bind(this);
     this.handleOnDelete = this.handleOnDelete.bind(this);
     this.onConfirmationClose = this.onConfirmationClose.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
@@ -79,10 +78,6 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 
   openDialog() {
     this.props.changeDialogState(true, 'add', undefined);
-  }
-
-  handleOnEdit(dataset) {
-    this.props.changeDialogState(true, 'edit', dataset);
   }
 
   handleOnDelete(dataset) {
@@ -157,9 +152,9 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
                 <UserDatasetList
                   schemas={this.props.userSchemas}
-                  onEditClick={this.handleOnEdit}
                   onDeleteClick={this.handleOnDelete}
                   onAddClicked={this.openDialog}
+                  history={this.props.history}
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && !this.props.isProfileSet) &&

@@ -64,9 +64,7 @@ const reducer = function(state=defaultState, action: any) {
       newState.schemas = action.datasets;
       break;
     case DATASET_FORM_ACTIONS.DATASET_PUBLISHED:
-      //TODO: when user clicks on filter, rerun the call (or when a user updates or adds a new dataset)
       newState.userSchemas = [action.dataset, ...state.userSchemas];
-      newState.schemas = [action.dataset, ...state.schemas];
       break;
     case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
       //TODO: FIX THIS LOGIC

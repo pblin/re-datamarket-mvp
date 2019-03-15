@@ -6,10 +6,21 @@ export function* GetDatasetInfo(action) {
   let datasetId = action.datasetId;
 
   const datasetService = new DatasetService();
-  const dataset = yield datasetService.getDataset(datasetId);
 
-  console.log('In the saga');
+  const profile = JSON.parse(localStorage.getItem ('profile'));
+
+  let dataset;
+  if(!profile.id) {
+    dataset = yield datasetService.getDataset(datasetId);
+  } else {
+    dataset = yield datasetService.getDataset(datasetId, profile.id);
+  }
+
+
+  console.log('Here is the profile');
+  console.log(profile);
   console.log(dataset);
+
   yield put({type: DATASET_INFO_ACTIONS.DATASET_INFO_RETRIEVED, dataset: dataset})
 }
 

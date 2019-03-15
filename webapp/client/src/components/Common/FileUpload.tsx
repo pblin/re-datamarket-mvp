@@ -69,7 +69,7 @@ export class FileUpload extends React.Component<FileUploadProps> {
           <Grid item xs={12}>
             <Typography>Drag And Drop Files Here To Upload</Typography>
           </Grid>
-          <label htmlFor={this.props.fileId} className="file-input-label">Or Select A File To Upload</label>
+          <label htmlFor={this.props.fileId} className="file-input-label"><Typography>Or Select A File To Upload</Typography></label>
           <input className={"file-input"}
                  type="file"
                  id={this.props.fileId}

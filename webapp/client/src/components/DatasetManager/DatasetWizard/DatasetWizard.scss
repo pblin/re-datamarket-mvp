@@ -1,3 +1,5 @@
+@import '../../../styles/vars';
+
 .wizard-wrapper {
   width: 90%;
   display: flex;
@@ -49,6 +51,38 @@
 /*Datatable*/
 .schema-dt {
   margin-bottom: 20px;
+  width: 100%;
+  overflow-x: auto;
+  .table {
+    width: 100%;
+    thead tr, tfoot td > div {
+      height: 40px !important;
+      min-height: 40px;
+    }
+    th {
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+  }
+  p {
+    font-size: 12px;
+    padding: 5px 5px 5px 10px;
+
+    &.description-field {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      width: 400px;
+    }
+  }
+  .name-field {
+    font-weight: bold;
+  }
+  .type-field {
+    font-weight: 900;
+    color: $secondary-dark;
+  }
 }
 
 .schema .p-datatable {
