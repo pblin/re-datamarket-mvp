@@ -24,7 +24,6 @@ describe("<FileUpload></FileUpload>", () => {
 
   it("Renders the file upload component", () => {
       expect(wrapper).toBeTruthy();
-      expect(wrapper.find('.file-input-label').text()).toBe('Or Select A File To Upload');
   });
 
 
