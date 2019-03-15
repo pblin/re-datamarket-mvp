@@ -104,8 +104,13 @@ export class DatasetService {
     }
   }
 
-  async getDataset(datasetId: string) {
-    const results = await fetch(`${config.serverBase}/marketplace/dataset/${datasetId}`);
+  async getDataset(datasetId: string, ownderId? : string) {
+    let url = `${config.serverBase}/schema/dataset/${datasetId}`;
+    if(ownderId) {
+      url += `?userid=${ownderId}`;
+    }
+
+    const results = await fetch(url);
     if(results.status !== 200) {
       return [];
     } else {

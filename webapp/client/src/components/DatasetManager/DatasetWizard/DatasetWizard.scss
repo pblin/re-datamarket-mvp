@@ -1,3 +1,5 @@
+@import '../../../styles/vars';
+
 .wizard-wrapper {
   width: 90%;
   display: flex;
@@ -53,6 +55,25 @@
   overflow-x: auto;
   .table {
     width: 100%;
+    thead tr, tfoot td > div {
+      height: 40px !important;
+      min-height: 40px;
+    }
+    th {
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+  }
+  p {
+    font-size: 12px;
+    padding: 5px 5px 5px 10px;
+  }
+  .name-field {
+    font-weight: bold;
+  }
+  .type-field {
+    font-weight: 900;
+    color: $secondary-dark;
   }
 }
 
