@@ -67,6 +67,14 @@
   p {
     font-size: 12px;
     padding: 5px 5px 5px 10px;
+
+    &.description-field {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      width: 400px;
+    }
   }
   .name-field {
     font-weight: bold;

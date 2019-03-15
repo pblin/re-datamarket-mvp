@@ -94,7 +94,7 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
                 <TableCell align="left"><Typography className={"name-field"}>{schema.name}</Typography></TableCell>
                 <TableCell align="left">{this.renderLabelField(schema)}</TableCell>
                 <TableCell align="left">{this.renderTypeField(schema)}</TableCell>
-                <TableCell align="left"><Typography>{schema.description}</Typography></TableCell>
+                <TableCell align="left"><Typography className={"description-field"}>{schema.description}</Typography></TableCell>
               </TableRow>
             ))}
           </TableBody>

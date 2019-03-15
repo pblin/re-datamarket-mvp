@@ -60,6 +60,11 @@ class DatasetInfo extends React.Component<ComponentProps> {
           onSchemaFilterChange={this.onMenuChange}
           schemaFilter={'schema'}
         />
+        {this.props.isOwner && (<>
+          {this.toolbarActions.map((action) => (
+            <Button variant="contained" color="secondary">{action.label}</Button>
+          ))}
+        </>)}
         <Grid container justify={"center"}>
           <div className={"app-section-wrapper-lg"}>
             <Grid xs={12} className="info-panel">
@@ -67,9 +72,6 @@ class DatasetInfo extends React.Component<ComponentProps> {
                 <Paper>
                   <Typography><DescriptionIcon/>{this.props.dataset.name}</Typography>
                   <Typography><DescriptionIcon/>{this.props.dataset.description} {this.props.isOwner.toString()}</Typography>
-                  {this.toolbarActions.map((action) => (
-                    <Button variant="contained" color="secondary">{action.label}</Button>
-                  ))}
                 </Paper>
               </Grid>
             </Grid>
