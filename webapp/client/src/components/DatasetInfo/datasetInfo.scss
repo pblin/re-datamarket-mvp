@@ -1,3 +1,5 @@
+@import '../../styles/vars';
+
 .dataset-info-view .marketplace-toolbar {
   margin-bottom: 20px;
 }
@@ -23,4 +25,32 @@
 .dataset-info-view .info-panel svg {
   font-size: 15px;
   margin-right: 5px;
+}
+
+.dataset-info-view {
+  .card-content-title {
+    color: $secondary-main;
+    font-weight: 500;
+  }
+
+  .card-content-sub-title {
+    font-weight: bold;
+    padding-top: 10px;
+  }
+
+  .card-content-sub-desc {
+    padding-bottom: 10px;
+  }
+
+  .card-content-price {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 10px;
+    font-weight: bolder;
+  }
+
+  .dataset-buy {
+    width: 100%;
+    margin-top: 10px;
+  }
 }
