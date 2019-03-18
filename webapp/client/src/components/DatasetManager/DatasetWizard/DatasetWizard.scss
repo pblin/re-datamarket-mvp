@@ -55,7 +55,7 @@
   overflow-x: auto;
   .table {
     width: 100%;
-    thead tr, tfoot td > div {
+    thead tr, tfoot td > div, tfoot tr {
       height: 40px !important;
       min-height: 40px;
     }

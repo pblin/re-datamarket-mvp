@@ -80,8 +80,8 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.schemas.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map(schema => (
-              <TableRow>
+            {this.props.schemas.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((schema,index) => (
+              <TableRow key={`table-row${index}`}>
                 <TableCell align="left">{this.renderLabelField(schema)}</TableCell>
                 <TableCell align="left">{this.renderTypeField(schema)}</TableCell>
                 <TableCell align="left">
@@ -91,14 +91,16 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
             ))}
           </TableBody>
           <TableFooter className={"table-footer"}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              count={this.props.schemas.length}
-              onChangePage={this.handlePageChange}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage}
-              page={this.state.page}
-              rowsPerPage={this.state.rowsPerPage}
-            />
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                count={this.props.schemas.length}
+                onChangePage={this.handlePageChange}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                page={this.state.page}
+                rowsPerPage={this.state.rowsPerPage}
+              />
+            </TableRow>
           </TableFooter>
         </Table>
       </Paper>

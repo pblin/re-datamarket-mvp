@@ -91,24 +91,11 @@ const validate = (values) => {
       ]
     },
     {
-      fieldName: 'askPriceLow',
-      errors:[
-        {type: ERROR_TYPE.LESS_THAN, val: values.askPriceHigh},
-        {type: ERROR_TYPE.MIN, val: 0}
-      ],
-      errorMessages: [
-        'Please ensure that the low ask price is not greater than the high ask price',
-        'Please enter a positive asking price'
-      ]
-    },
-    {
       fieldName: 'askPriceHigh',
       errors:[
-        {type: ERROR_TYPE.GREATER_THAN, val: values.askPriceLow},
         {type: ERROR_TYPE.MIN, val: 0}
       ],
       errorMessages: [
-        'Please ensure that the high ask price is not less than the low ask price',
         'Please enter a positive asking price'
       ]
     }
@@ -186,21 +173,14 @@ class BasicInfoForm extends Component<BasicFormProps> {
               component={renderTextField}
               name="records"
               type="number"
-              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Total Amount Of Records"} }
+              custom={ {gridXs: 12, gridSm: 6, type: 'number', placeholder: "Total Amount Of Records"} }
             />
             <Field
-              label="Ask Price (Low)"
-              component={renderTextField}
-              name="askPriceLow"
-              type="number"
-              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Lowest Asking Price"} }
-            />
-            <Field
-              label="Ask Price (High)"
+              label="Asking Price"
               component={renderTextField}
               name="askPriceHigh"
               type="number"
-              custom={ {gridXs: 12, gridSm: 4, type: 'number', placeholder: "Highest Asking Price"} }
+              custom={ {gridXs: 12, gridSm: 6, type: 'number', placeholder: "Asking Price"} }
             />
           </Grid>
         </form>

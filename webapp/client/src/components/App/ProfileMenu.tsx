@@ -5,7 +5,9 @@ import {Link} from "react-router-dom";
 const ProfileMenu = ({profile, open, onClickAway}) => {
 
   let handleClose = (item) => {
-    onClickAway(item);
+    if(open == true) {
+      onClickAway(item);
+    }
   };
 
   return(
