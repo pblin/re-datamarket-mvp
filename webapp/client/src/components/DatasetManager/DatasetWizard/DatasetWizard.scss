@@ -55,13 +55,16 @@
   overflow-x: auto;
   .table {
     width: 100%;
-    thead tr, tfoot td > div {
+    thead tr, tfoot td > div, tfoot tr {
       height: 40px !important;
       min-height: 40px;
     }
     th {
       padding-top: 0px;
       padding-bottom: 0px;
+      p {
+        font-weight: bold;
+      }
     }
   }
   p {
