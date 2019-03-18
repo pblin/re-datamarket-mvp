@@ -116,7 +116,6 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   handleBasicFormSubmit(values) {
-    console.log('BASIC FORM IS SUBMITTING');
     this.publish();
   }
 

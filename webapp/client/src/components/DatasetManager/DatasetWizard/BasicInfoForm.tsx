@@ -11,6 +11,7 @@ interface BasicFormProps {
   handleSubmit: any;
   pristine: boolean;
   invalid: boolean;
+  mode?: string;
 }
 /* Redo search terms with https://material-ui.com/demos/autocomplete/ */
 /* https://stackoverflow.com/questions/23618744/rendering-comma-separated-list-of-links */

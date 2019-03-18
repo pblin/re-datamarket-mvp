@@ -16,6 +16,7 @@ import {
 import "./datasetInfo.scss";
 import {ToolbarAction} from "../Marketplace/ToolbarAction";
 import BasicInfoCard from "./BasicInfoCard";
+import BasicInfoFormCard from "./BasicInfoFormCard";
 
 interface ComponentProps {
   match: any;
@@ -93,6 +94,9 @@ class DatasetInfo extends React.Component<ComponentProps> {
                     onBuy={this.buyDataset}
                     onGetSampleData={this.getSampleData}
                   />
+                }
+                {this.props.isOwner &&
+                  <BasicInfoFormCard/>
                 }
               </Grid>
               <Grid item xs={12} sm={8}>
