@@ -1,12 +1,13 @@
 import * as React from "react";
 import {
+  Button,
   Card,
   CardContent,
   CardHeader
 } from "@material-ui/core";
 import BasicInfoForm from "../DatasetManager/DatasetWizard/BasicInfoForm";
 
-const BasicInfoFormCard = () => {
+const BasicInfoFormCard = ({onSave, onSubmit}) => {
   return(
     <Card>
       <CardHeader
@@ -14,7 +15,10 @@ const BasicInfoFormCard = () => {
         subheader={``}
       ></CardHeader>
       <CardContent>
-        <BasicInfoForm mode={'card'}/>
+        <BasicInfoForm mode={'card'} onSubmit={onSubmit}/>
+        <Button color={"secondary"} variant={"contained"} className={"dataset-buy"} onClick={onSave}>
+          SAVE
+        </Button>
       </CardContent>
     </Card>
   );

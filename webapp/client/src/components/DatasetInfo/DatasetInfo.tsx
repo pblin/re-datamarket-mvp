@@ -16,7 +16,8 @@ import {
 import "./datasetInfo.scss";
 import {ToolbarAction} from "../Marketplace/ToolbarAction";
 import BasicInfoCard from "./BasicInfoCard";
-import BasicInfoFormCard from "./BasicInfoFormCard";
+//import BasicInfoFormCard from "./BasicInfoFormCard";
+import {submit} from 'redux-form';
 
 interface ComponentProps {
   match: any;
@@ -26,6 +27,7 @@ interface ComponentProps {
   isOwner: boolean;
   datasetInfo: any;
   changeMoreOptionsMenu: any;
+  submitBasicInfoForm: any;
 }
 
 class DatasetInfo extends React.Component<ComponentProps> {
@@ -35,6 +37,9 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.onMoreOptionsMenuChange = this.onMoreOptionsMenuChange.bind(this);
     this.buyDataset = this.buyDataset.bind(this);
     this.getSampleData = this.getSampleData.bind(this);
+    this.saveBasicInfo = this.saveBasicInfo.bind(this);
+    this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
   }
 
   pageId: string;
@@ -60,16 +65,22 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.props.getDatasetInfo(this.pageId);
   }
 
-  onSchemaSelect = () => {
+  onMenuChange() {}
 
-  };
-
-  onMenuChange() {
-
+  onUpdate() {
   }
 
   onMoreOptionsMenuChange(isOpen) {
     this.props.changeMoreOptionsMenu(isOpen);
+  }
+
+  saveBasicInfo() {
+    console.log('Save basic info called');
+    this.props.submitBasicInfoForm();
+  }
+
+  handleBasicFormSubmit() {
+    console.log('Basic Form Submitted');
   }
 
   render() {
@@ -81,29 +92,26 @@ class DatasetInfo extends React.Component<ComponentProps> {
           toolbarOptions={this.toolbarOptions}
           onSchemaFilterChange={this.onMenuChange}
           schemaFilter={'schema'}
+          hasPublish={this.props.isOwner}
         />
         <Grid container justify={"center"}>
           <div className={"app-section-wrapper-90"}>
             <Grid container spacing={16}>
               <Grid item xs={12} sm={4}>
-                {!this.props.isOwner &&
                   <BasicInfoCard
                     dataset={this.props.dataset}
                     onMoreOptions={this.onMoreOptionsMenuChange}
                     isMoreOptionsOpened={this.props.datasetInfo.moreOptionsOpened}
                     onBuy={this.buyDataset}
                     onGetSampleData={this.getSampleData}
+                    mode={this.props.isOwner ? 'owner': 'public'}
+                    onUpdate={this.onUpdate}
                   />
-                }
-                {this.props.isOwner &&
-                  <BasicInfoFormCard/>
-                }
               </Grid>
               <Grid item xs={12} sm={8}>
-                <SchemaList schemas={this.props.schema} onSchemaSelect={this.onSchemaSelect}/>
+                <SchemaList schemas={this.props.schema}/>
               </Grid>
             </Grid>
-
           </div>
         </Grid>
       </div>
@@ -123,7 +131,8 @@ function mapStateToProps(state: any, ownProps: any) {
 function mapDispatchToProps(dispatch: any) {
   return {
     getDatasetInfo: (datasetId: string) => dispatch(getDatasetInfo(datasetId)),
-    changeMoreOptionsMenu: (isOpen) => dispatch(changeMoreOptionMenu(isOpen))
+    changeMoreOptionsMenu: (isOpen) => dispatch(changeMoreOptionMenu(isOpen)),
+    submitBasicInfoForm: () => dispatch(submit('contact')),
   };
 }
 

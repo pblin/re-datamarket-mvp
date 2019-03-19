@@ -9,12 +9,12 @@ import {
   TableFooter,
   TablePagination,
   Typography,
-  Tooltip
+  Tooltip,
+  Toolbar
 } from "@material-ui/core";
 
 interface SchemaProps {
   schemas: any[];
-  onSchemaSelect: any;
 }
 
 interface SchemaState {
@@ -71,6 +71,9 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
   render() {
     return(
       <Paper className={"schema-dt"}>
+        <Toolbar>
+          <Typography variant={"h6"}>Schema</Typography>
+        </Toolbar>
         <Table className={"table"}>
           <TableHead>
             <TableRow>

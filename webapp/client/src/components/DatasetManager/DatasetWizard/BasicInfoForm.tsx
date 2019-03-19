@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
 import "./DatasetWizard.scss";
 import {ERROR_TYPE} from "../../Common/Error/ErrorType";
-import {datasetDialogSelector} from "../../../store/marketplace/marketplaceSelectors";
+import {datasetInfoSelector} from "../../../store/datasetInfo/datasetInfoSelector";
 
 interface BasicFormProps {
   handleSubmit: any;
@@ -105,48 +105,50 @@ const validate = (values) => {
   return errors;
 };
 
-class BasicInfoForm extends Component<BasicFormProps> {
-  componentDidUpdate(prevProps: Readonly<BasicFormProps>, prevState: Readonly<{}>, snapshot?: any): void {
-    //@ts-ignore
-    //this.props.initialize({name: 'test'})
+const renderGrid = (mode, orig, newSize = 12) => {
+  if(mode != 'card') {
+    return orig;
   }
+  return newSize;
+};
 
+class BasicInfoForm extends Component<BasicFormProps> {
   render() {
     return (
-        <form onSubmit={this.props.handleSubmit}>
+        <form onSubmit={this.props.handleSubmit} className={this.props.mode == 'card' ? 'card-mode': ''}>
           <Grid spacing={24} container={true} >
             <Field
               label="Name(Required)"
               component={renderTextField}
               name="name"
               type="text"
-              custom={ {gridXs: 12, gridSm: 6, placeholder: "Name of the dataset"} }
+              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 6), placeholder: "Name of the dataset"} }
             />
             <Field
               label="Description(Required)"
               component={renderTextField}
               name="description"
               type="text"
-              custom={ {gridXs: 12, gridSm: 6, placeholder: "Description about the dataset"} }
+              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 6), placeholder: "Description about the dataset"} }
             />
             <Field
               label="Search Terms"
               component={renderTextField}
               name="searchTerms"
               type="text"
-              custom={ {gridXs: 12, gridSm: 4, placeholder: "Term1,Term2,Term3"} }
+              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4), placeholder: "Term1,Term2,Term3"} }
             />
             <Field
               label="Country"
               component={renderSelectField}
               name="country"
-              custom={ {gridXs: 12, gridSm: 4, options: ['USA']} }
+              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 6), options: ['USA']} }
             />
             <Field
               label="State"
               component={renderSelectField}
               name="state"
-              custom={ {gridXs: 12, gridSm: 4, options: ['New York']} }
+              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 6), options: ['New York']} }
             />
             <Field
               label="Sample Api Key"
@@ -190,24 +192,24 @@ class BasicInfoForm extends Component<BasicFormProps> {
 }
 
 function mapStateToProps(state, props) {
-    const dialog = datasetDialogSelector(state);
+    const dataset = datasetInfoSelector(state);
 
-    if(!dialog.dataset) {
+    if(!dataset) {
       return {}
     }
     return {
       initialValues: {
-        name: dialog.dataset.name,
-        description: dialog.dataset.description,
-        searchTerms: dialog.dataset['search_terms'],
-        country: dialog.dataset.country,
-        state: dialog.dataset['state_province'],
-        sampleAPIKey: dialog.dataset['api_key'],
-        sampleDataKey: dialog.dataset['enc_data_key'],
-        endpoint: dialog.dataset['access_url'],
-        records: dialog.dataset['num_of_records'],
-        askPriceHigh: dialog.dataset['price_high'],
-        askPriceLow: dialog.dataset['price_low']
+        name: dataset.name,
+        description: dataset.description,
+        searchTerms: dataset['search_terms'],
+        country: dataset.country,
+        state: dataset['state_province'],
+        sampleAPIKey: dataset['api_key'],
+        sampleDataKey: dataset['enc_data_key'],
+        endpoint: dataset['access_url'],
+        records: dataset['num_of_records'],
+        askPriceHigh: dataset['price_high'],
+        askPriceLow: dataset['price_low']
       }
     };
 }
