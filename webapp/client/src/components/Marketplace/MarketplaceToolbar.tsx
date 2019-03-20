@@ -1,7 +1,15 @@
 import * as React from "react";
 import {Button, FormControl, Hidden, MenuItem, Select, Toolbar} from "@material-ui/core";
 
-const MarketplaceToolbar = ({onSchemaFilterChange, schemaFilter, toolbarOptions, hasPublish}) => {
+const MarketplaceToolbar = (
+  {
+    onSchemaFilterChange,
+    schemaFilter,
+    toolbarOptions,
+    hasPublish,
+    onSave = () => {},
+    onPublish = () => {}
+  }) => {
 
   const handleSchemaChange = (event) => {
     onSchemaFilterChange(event.target.value);
@@ -33,7 +41,7 @@ const MarketplaceToolbar = ({onSchemaFilterChange, schemaFilter, toolbarOptions,
         </FormControl>
       </Hidden>
       {hasPublish && <>
-        <Button className={"toolbar-btn"} variant={"outlined"} color={"secondary"}>Save</Button>
+        <Button className={"toolbar-btn"} variant={"outlined"} color={"secondary"} onClick={onSave}>Save</Button>
         <Button className={"toolbar-btn"} variant={"contained"} color={"secondary"}>Publish</Button>
       </>}
     </Toolbar>

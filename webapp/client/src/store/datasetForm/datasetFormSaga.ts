@@ -25,6 +25,8 @@ export function* DatasetFormUpdated(action) {
   const datasetService = new DatasetService();
   const dataset = yield datasetService.updateDataset(basicInfo, schema, ownerId, datasetId, stage);
 
+  //TODO: HANDLE ERROR CASE
+  action.notify(action.message, {variant: 'success'});
   yield put({type: DATASET_FORM_ACTIONS.DATASET_REPUBLISHED, dataset})
 }
 

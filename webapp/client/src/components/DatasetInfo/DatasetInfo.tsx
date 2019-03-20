@@ -17,6 +17,9 @@ import "./datasetInfo.scss";
 import BasicInfoCard from "./BasicInfoCard";
 import {submit} from 'redux-form';
 import {changeSchema, updateDataset} from "../../store/datasetInfo/datasetInfoActions";
+import {profileSelector} from "../../store/profile/profileSelector";
+import {DATASET_STAGE} from "../Common/CommonTypes";
+import {withSnackbar} from "notistack";
 
 interface ComponentProps {
   match: any;
@@ -28,6 +31,9 @@ interface ComponentProps {
   changeMoreOptionsMenu: any;
   submitBasicInfoForm: any;
   changeSchema: any;
+  updateDataset: any;
+  profile: any;
+  enqueueSnackbar: any;
 }
 
 class DatasetInfo extends React.Component<ComponentProps> {
@@ -41,6 +47,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.onSchemaChange = this.onSchemaChange.bind(this);
+    this.saveDataset = this.saveDataset.bind(this);
   }
 
   pageId: string;
@@ -84,6 +91,19 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.props.changeSchema(value, field, index);
   }
 
+  saveDataset() {
+    console.log('Saving the dataset');
+    this.props.updateDataset(
+      this.props.dataset,
+      this.props.schema,
+      this.props.profile.id,
+      this.props.dataset.id,
+      DATASET_STAGE.SAVED,
+      this.props.enqueueSnackbar,
+      `The Dataset was saved successfully`
+    )
+  }
+
   render() {
     console.log(this.props.dataset);
     return (
@@ -94,6 +114,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
           onSchemaFilterChange={this.onMenuChange}
           schemaFilter={'schema'}
           hasPublish={this.props.isOwner}
+          onSave={this.saveDataset}
         />
         <Grid container justify={"center"}>
           <div className={"app-section-wrapper-90"}>
@@ -128,7 +149,8 @@ function mapStateToProps(state: any, ownProps: any) {
     dataset: datasetInfoSelector(state),
     datasetInfo: datasetSelector(state),
     schema: schemaSelector(state),
-    isOwner: isOwner(state)
+    isOwner: isOwner(state),
+    profile: profileSelector(state)
   }
 }
 
@@ -139,10 +161,11 @@ function mapDispatchToProps(dispatch: any) {
     changeMoreOptionsMenu: (isOpen) => dispatch(changeMoreOptionMenu(isOpen)),
     submitBasicInfoForm: () => dispatch(submit('contact')),
     changeSchema: (val, field, index) => dispatch(changeSchema(val, field, index)),
-    updateDataset: (basicInfo, schema, ownerId, datasetId, stage) =>
-      dispatch(updateDataset(basicInfo, schema, ownerId, datasetId, stage))
+    updateDataset: (basicInfo, schema, ownerId, datasetId, stage, notify, message) =>
+      dispatch(updateDataset(basicInfo, schema, ownerId, datasetId, stage, notify, message))
   };
 }
-
+//@ts-ignore
+DatasetInfo = withSnackbar(DatasetInfo);
 export default connect(mapStateToProps, mapDispatchToProps)(DatasetInfo);
 
