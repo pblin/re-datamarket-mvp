@@ -44,7 +44,7 @@ export class DatasetService {
     return body;
   }
 
-  async updateDataset(basicInfo: any, schema: any[], ownerId: string, schemaId: string) {
+  async updateDataset(basicInfo: any, schema: any[], ownerId: string, schemaId: string, stage: number) {
     let body = {
       id: schemaId,
       name: basicInfo.name,
@@ -60,10 +60,9 @@ export class DatasetService {
       num_of_records: basicInfo.records,
       country: basicInfo.country,
       state_province: basicInfo.state,
-      date_created: new Date(),
       date_modified: new Date(),
       parameters: '{}',
-      stage: 0,
+      stage: stage,
       json_schema: JSON.stringify(schema)
     };
 
@@ -78,11 +77,6 @@ export class DatasetService {
       body: JSON.stringify(body)
     });
 
-    if(Array.isArray(basicInfo.searchTerms)) {
-      body['search_terms'] = basicInfo.searchTerms.join(',');
-    } else {
-      body['search_terms'] = basicInfo.searchTerms.split(',');
-    }
     return body;
   }
 

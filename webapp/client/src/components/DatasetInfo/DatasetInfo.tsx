@@ -16,7 +16,7 @@ import {
 import "./datasetInfo.scss";
 import BasicInfoCard from "./BasicInfoCard";
 import {submit} from 'redux-form';
-import {changeSchema} from "../../store/datasetInfo/datasetInfoActions";
+import {changeSchema, updateDataset} from "../../store/datasetInfo/datasetInfoActions";
 
 interface ComponentProps {
   match: any;
@@ -132,12 +132,15 @@ function mapStateToProps(state: any, ownProps: any) {
   }
 }
 
+//TODO: Write update dataset action creator
 function mapDispatchToProps(dispatch: any) {
   return {
     getDatasetInfo: (datasetId: string) => dispatch(getDatasetInfo(datasetId)),
     changeMoreOptionsMenu: (isOpen) => dispatch(changeMoreOptionMenu(isOpen)),
     submitBasicInfoForm: () => dispatch(submit('contact')),
-    changeSchema: (val, field, index) => dispatch(changeSchema(val, field, index))
+    changeSchema: (val, field, index) => dispatch(changeSchema(val, field, index)),
+    updateDataset: (basicInfo, schema, ownerId, datasetId, stage) =>
+      dispatch(updateDataset(basicInfo, schema, ownerId, datasetId, stage))
   };
 }
 
