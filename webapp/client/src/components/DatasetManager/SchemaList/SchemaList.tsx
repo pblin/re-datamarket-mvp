@@ -13,6 +13,8 @@ import {
   Toolbar
 } from "@material-ui/core";
 
+import InlineEditForm from '../../Common/InlineEditForm/InlineEditForm';
+
 interface SchemaProps {
   schemas: any[];
 }
@@ -68,6 +70,11 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
     this.setState({page: 0, rowsPerPage: event.target.value})
   }
 
+  handleSubmit(vals) {
+    console.log('Handling Submit')
+    console.log(vals);
+  }
+
   render() {
     return(
       <Paper className={"schema-dt"}>
@@ -83,14 +90,27 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.schemas.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((schema,index) => (
-              <TableRow key={`table-row${index}`}>
-                <TableCell align="left">{this.renderLabelField(schema)}</TableCell>
-                <TableCell align="left">{this.renderTypeField(schema)}</TableCell>
-                <TableCell align="left">
-                  <Tooltip title={schema.description}><Typography className={"description-field"}>{schema.description}</Typography></Tooltip>
-                </TableCell>
-              </TableRow>
+            {this.props.schemas.slice(
+              this.state.page * this.state.rowsPerPage,
+              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+              .map((schema,index) => (
+                <TableRow key={`table-row${index}`}>
+                  <TableCell align="left">{this.renderLabelField(schema)}</TableCell>
+                  <TableCell align="left">{this.renderTypeField(schema)}</TableCell>
+                  <TableCell align="left">
+                    <Tooltip title={schema.description}>
+                        <InlineEditForm
+                          form={`description${index}`}
+                          initialValues = {
+                            {inlineField: schema.description}
+                          }
+                          onSubmit={this.handleSubmit}
+                        >
+                          <Typography className={"description-field"}>{schema.description}</Typography>
+                        </InlineEditForm>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
             ))}
           </TableBody>
           <TableFooter className={"table-footer"}>
