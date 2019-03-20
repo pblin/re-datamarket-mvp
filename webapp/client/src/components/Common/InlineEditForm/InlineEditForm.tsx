@@ -8,6 +8,8 @@ interface InlineEditProps {
   initialValues: any;
   onSubmit: any;
   handleSubmit: any;
+  index: number;
+  field: string;
 }
 
 interface InlineEditState {

@@ -23,6 +23,10 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_INFO_ACTIONS.CHANGE_MORE_OPTION_MENU:
       newState.moreOptionsOpened = action.isOpen;
       break;
+    case DATASET_INFO_ACTIONS.CHANGE_SCHEMA:
+      newState.schema = [...newState.schema];
+      newState.schema[action.index][action.field] = action.val;
+      break;
     default:
       return state;
   }

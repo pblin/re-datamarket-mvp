@@ -14,10 +14,9 @@ import {
   Grid
 } from "@material-ui/core";
 import "./datasetInfo.scss";
-import {ToolbarAction} from "../Marketplace/ToolbarAction";
 import BasicInfoCard from "./BasicInfoCard";
-//import BasicInfoFormCard from "./BasicInfoFormCard";
 import {submit} from 'redux-form';
+import {changeSchema} from "../../store/datasetInfo/datasetInfoActions";
 
 interface ComponentProps {
   match: any;
@@ -28,6 +27,7 @@ interface ComponentProps {
   datasetInfo: any;
   changeMoreOptionsMenu: any;
   submitBasicInfoForm: any;
+  changeSchema: any;
 }
 
 class DatasetInfo extends React.Component<ComponentProps> {
@@ -40,16 +40,12 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.saveBasicInfo = this.saveBasicInfo.bind(this);
     this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
+    this.onSchemaChange = this.onSchemaChange.bind(this);
   }
 
   pageId: string;
   toolbarOptions: ToolbarOption[] = [
     new ToolbarOption('Schema', 'schema')
-  ];
-
-  toolbarActions: ToolbarAction[] = [
-    new ToolbarAction('Buy Dataset', this.buyDataset),
-    new ToolbarAction('Get Sample Data', this.getSampleData)
   ];
 
   buyDataset() {
@@ -83,6 +79,11 @@ class DatasetInfo extends React.Component<ComponentProps> {
     console.log('Basic Form Submitted');
   }
 
+  onSchemaChange(value, field, index) {
+    console.log('Schema is changing', value, field, index);
+    this.props.changeSchema(value, field, index);
+  }
+
   render() {
     console.log(this.props.dataset);
     return (
@@ -109,7 +110,10 @@ class DatasetInfo extends React.Component<ComponentProps> {
                   />
               </Grid>
               <Grid item xs={12} sm={8}>
-                <SchemaList schemas={this.props.schema}/>
+                <SchemaList
+                  schemas={this.props.schema}
+                  onSchemaChange={this.onSchemaChange}
+                />
               </Grid>
             </Grid>
           </div>
@@ -133,6 +137,7 @@ function mapDispatchToProps(dispatch: any) {
     getDatasetInfo: (datasetId: string) => dispatch(getDatasetInfo(datasetId)),
     changeMoreOptionsMenu: (isOpen) => dispatch(changeMoreOptionMenu(isOpen)),
     submitBasicInfoForm: () => dispatch(submit('contact')),
+    changeSchema: (val, field, index) => dispatch(changeSchema(val, field, index))
   };
 }
 

@@ -17,6 +17,7 @@ import InlineEditForm from '../../Common/InlineEditForm/InlineEditForm';
 
 interface SchemaProps {
   schemas: any[];
+  onSchemaChange?: any;
 }
 
 interface SchemaState {
@@ -40,6 +41,7 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
 
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   renderLabelField(schema) {
@@ -70,9 +72,10 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
     this.setState({page: 0, rowsPerPage: event.target.value})
   }
 
-  handleSubmit(vals) {
-    console.log('Handling Submit')
-    console.log(vals);
+  handleSubmit(values, action, form) {
+    if(this.props.onSchemaChange) {
+      this.props.onSchemaChange(values.inlineField, form.field, form.index);
+    }
   }
 
   render() {
@@ -105,6 +108,8 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
                             {inlineField: schema.description}
                           }
                           onSubmit={this.handleSubmit}
+                          index={index}
+                          field={"description"}
                         >
                           <Typography className={"description-field"}>{schema.description}</Typography>
                         </InlineEditForm>
