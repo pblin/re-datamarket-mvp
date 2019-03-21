@@ -1,31 +1,39 @@
 import * as React from "react";
 import {
   Button,
-  Card,
-  CardContent,
-  CardHeader
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+  Typography
 } from "@material-ui/core";
 import BasicInfoForm from "../DatasetManager/DatasetWizard/BasicInfoForm";
 
-const BasicInfoFormCard = ({onSave, onSubmit}) => {
+const BasicInfoModal = ({onSave, onSubmit}) => {
   return(
-    <Card>
-      <CardHeader
-        title={`Update Dataset Information`}
-        subheader={``}
-      ></CardHeader>
-      <CardContent>
-        <BasicInfoForm mode={'card'} onSubmit={onSubmit}/>
-        <Button
-          color={"secondary"}
-          variant={"contained"}
-          className={"dataset-buy"}
-          onClick={onSave}>
-          SAVE
-        </Button>
-      </CardContent>
-    </Card>
+    <Dialog open={false} maxWidth={"md"}>
+      <DialogTitle>
+        <Typography className={"dialog-header"}>
+          <span className={"bold"}>UPDATE DATASET INFO</span>
+        </Typography>
+        <Typography className={"dialog-subheader"}>
+         Update Dataset Information Here
+        </Typography>
+      </DialogTitle>
+        <DialogContent>
+          <BasicInfoForm onSubmit={onSubmit}/>
+        </DialogContent>
+       <DialogActions>
+         <Button
+           color={"secondary"}
+           variant={"contained"}
+           className={"dataset-buy"}
+           onClick={onSave}>
+           SAVE
+         </Button>
+       </DialogActions>
+    </Dialog>
   );
 };
 
-export default BasicInfoFormCard;
+export default BasicInfoModal;

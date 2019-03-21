@@ -20,6 +20,7 @@ import {changeSchema, updateDataset} from "../../store/datasetInfo/datasetInfoAc
 import {profileSelector} from "../../store/profile/profileSelector";
 import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
+import BasicInfoModal from "./BasicInfoFormCard";
 
 interface ComponentProps {
   match: any;
@@ -151,6 +152,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
             </Grid>
           </div>
         </Grid>
+        <BasicInfoModal onSave={()=>{}} onSubmit={()=>{}}/>
       </div>
     )
   }
