@@ -69,12 +69,22 @@ const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGe
         <Divider/>
         <Typography className={"card-content-price"}> {renderPrice(dataset['price_high'])}</Typography>
         {mode == 'public' &&
-          <Button color={"secondary"} variant={"contained"} className={"dataset-buy"} onClick={onBuy}>
+          <Button
+            color={"secondary"}
+            variant={"contained"}
+            className={"dataset-buy"}
+            onClick={onBuy}
+          >
             Buy
           </Button>
         }
         { mode == 'owner' &&
-          <Button color={"secondary"} variant={"contained"} className={"dataset-buy"} onClick={onUpdate}>
+          <Button
+            color={"secondary"}
+            variant={"contained"}
+            className={"dataset-buy"}
+            onClick={onUpdate}
+          >
             Update Information
           </Button>
         }
@@ -84,7 +94,9 @@ const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGe
           open={isMoreOptionsOpened}
           anchorEl={document.getElementById('card-more-options')}
         >
-          <MenuItem onClick={handleSampleData}><Typography>Get Sample Data</Typography></MenuItem>
+          <MenuItem onClick={handleSampleData}>
+            <Typography>Get Sample Data</Typography>
+          </MenuItem>
         </Menu>
       </ClickAwayListener>
     </Card>

@@ -24,12 +24,16 @@ export class InlineEditForm extends React.Component<InlineEditProps, InlineEditS
       mode: 'display'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   handleSubmit(values) {
     this.setState({mode: 'display'});
-    console.log(this.props);
     this.props.handleSubmit(values);
+  }
+
+  handleBlur() {
+    this.setState({mode: 'display'});
   }
 
   render() {
@@ -39,8 +43,13 @@ export class InlineEditForm extends React.Component<InlineEditProps, InlineEditS
           <div onClick={() => this.setState({mode: 'edit'})}>{this.props.children}</div>
         }
         { this.state.mode == 'edit' &&
-          <form onSubmit={(values) => this.handleSubmit(values) }>
-            <Field name="inlineField" component="input" />
+          <form onSubmit={(values) => this.handleSubmit(values)}>
+            <Field
+              name="inlineField"
+              component="input"
+              onBlur={this.handleBlur}
+              autoFocus
+            />
           </form>
         }
       </div>

@@ -16,7 +16,11 @@ const BasicInfoFormCard = ({onSave, onSubmit}) => {
       ></CardHeader>
       <CardContent>
         <BasicInfoForm mode={'card'} onSubmit={onSubmit}/>
-        <Button color={"secondary"} variant={"contained"} className={"dataset-buy"} onClick={onSave}>
+        <Button
+          color={"secondary"}
+          variant={"contained"}
+          className={"dataset-buy"}
+          onClick={onSave}>
           SAVE
         </Button>
       </CardContent>

@@ -98,12 +98,25 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
               this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
               .map((schema,index) => (
                 <TableRow key={`table-row${index}`}>
-                  <TableCell align="left">{this.renderLabelField(schema)}</TableCell>
+                  <TableCell align="left">
+                    <InlineEditForm
+                      form={`label${index}`}
+                      id={`label${index}`}
+                      initialValues = {
+                        {inlineField: schema.label}
+                      }
+                      onSubmit={this.handleSubmit}
+                      index={index}
+                      field={"label"}
+                    >
+                    {this.renderLabelField(schema)}
+                    </InlineEditForm>
+                  </TableCell>
                   <TableCell align="left">{this.renderTypeField(schema)}</TableCell>
                   <TableCell align="left">
-                    <Tooltip title={schema.description}>
                         <InlineEditForm
                           form={`description${index}`}
+                          id={`description${index}`}
                           initialValues = {
                             {inlineField: schema.description}
                           }
@@ -111,9 +124,10 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
                           index={index}
                           field={"description"}
                         >
-                          <Typography className={"description-field"}>{schema.description}</Typography>
+                          <Tooltip title={schema.description}>
+                            <Typography className={"description-field"}>{schema.description}</Typography>
+                          </Tooltip>
                         </InlineEditForm>
-                    </Tooltip>
                   </TableCell>
                 </TableRow>
             ))}
