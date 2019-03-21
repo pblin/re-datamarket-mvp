@@ -32,6 +32,12 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_INFO_ACTIONS.CHANGE_BASIC_INFO_FORM:
       newState.isBasicFormOpen = action.isOpen;
       break;
+    case DATASET_INFO_ACTIONS.UPDATE_DATASET_INFO:
+      newState.dataset = Object.assign({}, newState.dataset, action.dataset);
+      newState.dataset['search_terms'] =  newState.dataset['search_terms'] ?
+        newState.dataset['search_terms'].split(','): null;
+      newState.dataset['price_high'] = Number(newState.dataset['price_high']);
+      break;
     default:
       return state;
   }

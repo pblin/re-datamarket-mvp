@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import BasicInfoForm from "../DatasetManager/DatasetWizard/BasicInfoForm";
 
-const BasicInfoModal = ({onSave, onSubmit, isOpen = false}) => {
+const BasicInfoModal = ({onSave, onSubmit, isOpen = false, onCancel}) => {
   return(
     <Dialog open={isOpen} maxWidth={"sm"}>
       <DialogTitle>
@@ -26,8 +26,13 @@ const BasicInfoModal = ({onSave, onSubmit, isOpen = false}) => {
        <DialogActions>
          <Button
            color={"secondary"}
+           variant={"outlined"}
+           onClick={onCancel}>
+           CANCEL
+         </Button>
+         <Button
+           color={"secondary"}
            variant={"contained"}
-           className={"dataset-buy"}
            onClick={onSave}>
            SAVE
          </Button>

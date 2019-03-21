@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {changeMoreOptionMenu, getDatasetInfo} from "../../store/datasetInfo/datasetInfoActions";
+import {changeMoreOptionMenu, getDatasetInfo, updateDatasetInfo} from "../../store/datasetInfo/datasetInfoActions";
 import {
   canPublish,
   datasetInfoSelector,
@@ -86,6 +86,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
   handleBasicFormSubmit(values) {
     console.log('Basic Form Submitted');
     console.log(values);
+    this.props.action.updateDatasetInfo(values);
     this.props.action.changeBasicInfoForm(false);
   }
 
@@ -159,6 +160,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
           onSave={this.saveBasicInfo}
           onSubmit={this.handleBasicFormSubmit}
           isOpen={this.props.datasetInfo.isBasicFormOpen}
+          onCancel={() => this.props.action.changeBasicInfoForm(false)}
         />
       </div>
     )
@@ -188,6 +190,7 @@ function mapDispatchToProps(dispatch: any) {
         getDatasetInfo,
         changeMoreOptionMenu,
         updateDataset,
+        updateDatasetInfo,
         changeBasicInfoForm,
         changeSchema
       }, dispatch)

@@ -83,7 +83,7 @@ const validate = (values) => {
       ]
     },
     {
-      fieldName: 'records',
+      fieldName: 'num_of_records',
       errors: [
         {type: ERROR_TYPE.GREATER_THAN, val: 0}
       ],
@@ -92,7 +92,7 @@ const validate = (values) => {
       ]
     },
     {
-      fieldName: 'askPriceHigh',
+      fieldName: 'price_high',
       errors:[
         {type: ERROR_TYPE.MIN, val: 0}
       ],
@@ -134,7 +134,7 @@ class BasicInfoForm extends Component<BasicFormProps> {
             <Field
               label="Search Terms"
               component={renderTextField}
-              name="searchTerms"
+              name="search_terms"
               type="text"
               custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4), placeholder: "Term1,Term2,Term3"} }
             />
@@ -147,41 +147,41 @@ class BasicInfoForm extends Component<BasicFormProps> {
             <Field
               label="State"
               component={renderSelectField}
-              name="state"
+              name="state_province"
               custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 6), options: ['New York']} }
             />
             <Field
               label="Sample Api Key"
               component={renderTextField}
-              name="sampleAPIKey"
+              name="api_key"
               type="text"
               custom={ {gridXs: 12, gridSm: 6, placeholder: "Provide a sample API key"} }
             />
             <Field
               label="Sample Data Key"
               component={renderTextField}
-              name="sampleDataKey"
+              name="enc_data_key"
               type="text"
               custom={ {gridXs: 12, gridSm: 6, placeholder: "Provide a sample access data key"} }
             />
             <Field
               label="Endpoint"
               component={renderTextField}
-              name="endpoint"
+              name="access_url"
               type="text"
               custom={ {gridXs: 12, gridSm: 12, placeholder: "http://{DATASET ENDPOINT}"} }
             />
             <Field
               label="# of records"
               component={renderTextField}
-              name="records"
+              name="num_of_records"
               type="number"
               custom={ {gridXs: 12, gridSm: 6, type: 'number', placeholder: "Total Amount Of Records"} }
             />
             <Field
               label="Asking Price"
               component={renderTextField}
-              name="askPriceHigh"
+              name="price_high"
               type="number"
               custom={ {gridXs: 12, gridSm: 6, type: 'number', placeholder: "Asking Price"} }
             />
@@ -201,15 +201,15 @@ function mapStateToProps(state, props) {
       initialValues: {
         name: dataset.name,
         description: dataset.description,
-        searchTerms: dataset['search_terms'],
+        search_terms: dataset['search_terms'],
         country: dataset.country,
-        state: dataset['state_province'],
-        sampleAPIKey: dataset['api_key'],
-        sampleDataKey: dataset['enc_data_key'],
-        endpoint: dataset['access_url'],
-        records: dataset['num_of_records'],
-        askPriceHigh: dataset['price_high'],
-        askPriceLow: dataset['price_low']
+        state_province: dataset['state_province'],
+        api_key: dataset['api_key'],
+        enc_data_key: dataset['enc_data_key'],
+        access_url: dataset['access_url'],
+        num_of_records: dataset['num_of_records'],
+        price_high: dataset['price_high'],
+        price_low: dataset['price_low']
       }
     };
 }
