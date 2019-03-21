@@ -16,7 +16,7 @@ import { Grid } from "@material-ui/core";
 import "./datasetInfo.scss";
 import BasicInfoCard from "./BasicInfoCard";
 import {submit} from 'redux-form';
-import {changeSchema, updateDataset} from "../../store/datasetInfo/datasetInfoActions";
+import {changeSchema, updateDataset, changeBasicInfoForm} from "../../store/datasetInfo/datasetInfoActions";
 import {profileSelector} from "../../store/profile/profileSelector";
 import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
@@ -71,6 +71,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
   onMenuChange() {}
 
   onUpdate() {
+    this.props.action.changeBasicInfoForm(true);
   }
 
   onMoreOptionsMenuChange(isOpen) {
@@ -82,8 +83,10 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.props.submitBasicInfoForm();
   }
 
-  handleBasicFormSubmit() {
+  handleBasicFormSubmit(values) {
     console.log('Basic Form Submitted');
+    console.log(values);
+    this.props.action.changeBasicInfoForm(false);
   }
 
   onSchemaChange(value, field, index) {
@@ -152,7 +155,11 @@ class DatasetInfo extends React.Component<ComponentProps> {
             </Grid>
           </div>
         </Grid>
-        <BasicInfoModal onSave={()=>{}} onSubmit={()=>{}}/>
+        <BasicInfoModal
+          onSave={this.saveBasicInfo}
+          onSubmit={this.handleBasicFormSubmit}
+          isOpen={this.props.datasetInfo.isBasicFormOpen}
+        />
       </div>
     )
   }
@@ -181,6 +188,7 @@ function mapDispatchToProps(dispatch: any) {
         getDatasetInfo,
         changeMoreOptionMenu,
         updateDataset,
+        changeBasicInfoForm,
         changeSchema
       }, dispatch)
   };

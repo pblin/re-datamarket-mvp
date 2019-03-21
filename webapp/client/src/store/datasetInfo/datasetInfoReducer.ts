@@ -3,13 +3,15 @@ import {DATASET_INFO_ACTIONS} from "./datasetInfoActions";
 interface DatasetInfoState {
   dataset: any,
   schema: any[],
-  moreOptionsOpened: boolean
+  moreOptionsOpened: boolean,
+  isBasicFormOpen: boolean;
 }
 
 const defaultState: DatasetInfoState = {
   dataset: {},
   schema: [],
-  moreOptionsOpened: false
+  moreOptionsOpened: false,
+  isBasicFormOpen: false
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -26,6 +28,9 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_INFO_ACTIONS.CHANGE_SCHEMA:
       newState.schema = [...newState.schema];
       newState.schema[action.index][action.field] = action.val;
+      break;
+    case DATASET_INFO_ACTIONS.CHANGE_BASIC_INFO_FORM:
+      newState.isBasicFormOpen = action.isOpen;
       break;
     default:
       return state;

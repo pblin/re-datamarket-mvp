@@ -9,9 +9,9 @@ import {
 } from "@material-ui/core";
 import BasicInfoForm from "../DatasetManager/DatasetWizard/BasicInfoForm";
 
-const BasicInfoModal = ({onSave, onSubmit}) => {
+const BasicInfoModal = ({onSave, onSubmit, isOpen = false}) => {
   return(
-    <Dialog open={false} maxWidth={"md"}>
+    <Dialog open={isOpen} maxWidth={"sm"}>
       <DialogTitle>
         <Typography className={"dialog-header"}>
           <span className={"bold"}>UPDATE DATASET INFO</span>
