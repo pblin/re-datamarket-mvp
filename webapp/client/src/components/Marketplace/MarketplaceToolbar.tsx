@@ -8,7 +8,8 @@ const MarketplaceToolbar = (
     toolbarOptions,
     hasPublish,
     onSave = () => {},
-    onPublish = () => {}
+    onPublish = () => {},
+    canPublish = false
   }) => {
 
   const handleSchemaChange = (event) => {
@@ -42,7 +43,12 @@ const MarketplaceToolbar = (
       </Hidden>
       {hasPublish && <>
         <Button className={"toolbar-btn"} variant={"outlined"} color={"secondary"} onClick={onSave}>Save</Button>
-        <Button className={"toolbar-btn"} variant={"contained"} color={"secondary"}>Publish</Button>
+        <Button
+          className={"toolbar-btn"}
+          variant={"contained"}
+          color={"secondary"}
+          disabled={!canPublish}
+          onClick={onPublish}>Publish</Button>
       </>}
     </Toolbar>
   );

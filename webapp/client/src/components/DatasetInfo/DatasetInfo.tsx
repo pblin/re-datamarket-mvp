@@ -1,7 +1,9 @@
 import * as React from "react";
 import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import {changeMoreOptionMenu, getDatasetInfo} from "../../store/datasetInfo/datasetInfoActions";
 import {
+  canPublish,
   datasetInfoSelector,
   datasetSelector,
   isOwner,
@@ -10,9 +12,7 @@ import {
 import SchemaList from "../DatasetManager/SchemaList/SchemaList";
 import MarketplaceToolbar from "../Marketplace/MarketplaceToolbar";
 import {ToolbarOption} from "../Marketplace/ToolbarOption";
-import {
-  Grid
-} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import "./datasetInfo.scss";
 import BasicInfoCard from "./BasicInfoCard";
 import {submit} from 'redux-form';
@@ -23,17 +23,15 @@ import {withSnackbar} from "notistack";
 
 interface ComponentProps {
   match: any;
-  getDatasetInfo: any;
   dataset: any;
   schema: any;
   isOwner: boolean;
   datasetInfo: any;
-  changeMoreOptionsMenu: any;
   submitBasicInfoForm: any;
-  changeSchema: any;
-  updateDataset: any;
   profile: any;
   enqueueSnackbar: any;
+  action: any;
+  canPublish: boolean;
 }
 
 class DatasetInfo extends React.Component<ComponentProps> {
@@ -48,6 +46,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.onUpdate = this.onUpdate.bind(this);
     this.onSchemaChange = this.onSchemaChange.bind(this);
     this.saveDataset = this.saveDataset.bind(this);
+    this.publishDataset = this.publishDataset.bind(this);
   }
 
   pageId: string;
@@ -65,7 +64,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
 
   componentWillMount(): void {
     this.pageId = this.props.match.params.id;
-    this.props.getDatasetInfo(this.pageId);
+    this.props.action.getDatasetInfo(this.pageId);
   }
 
   onMenuChange() {}
@@ -74,7 +73,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
   }
 
   onMoreOptionsMenuChange(isOpen) {
-    this.props.changeMoreOptionsMenu(isOpen);
+    this.props.action.changeMoreOptionMenu(isOpen);
   }
 
   saveBasicInfo() {
@@ -87,13 +86,12 @@ class DatasetInfo extends React.Component<ComponentProps> {
   }
 
   onSchemaChange(value, field, index) {
-    console.log('Schema is changing', value, field, index);
-    this.props.changeSchema(value, field, index);
+    this.props.action.changeSchema(value, field, index);
   }
 
   saveDataset() {
     console.log('Saving the dataset');
-    this.props.updateDataset(
+    this.props.action.updateDataset(
       this.props.dataset,
       this.props.schema,
       this.props.profile.id,
@@ -101,6 +99,18 @@ class DatasetInfo extends React.Component<ComponentProps> {
       DATASET_STAGE.SAVED,
       this.props.enqueueSnackbar,
       `The Dataset was saved successfully`
+    )
+  }
+
+  publishDataset() {
+    this.props.action.updateDataset(
+      this.props.dataset,
+      this.props.schema,
+      this.props.profile.id,
+      this.props.dataset.id,
+      DATASET_STAGE.PUBLISHED,
+      this.props.enqueueSnackbar,
+      `The Dataset was published successfully`
     )
   }
 
@@ -115,6 +125,8 @@ class DatasetInfo extends React.Component<ComponentProps> {
           schemaFilter={'schema'}
           hasPublish={this.props.isOwner}
           onSave={this.saveDataset}
+          onPublish={this.publishDataset}
+          canPublish={this.props.canPublish}
         />
         <Grid container justify={"center"}>
           <div className={"app-section-wrapper-90"}>
@@ -145,24 +157,30 @@ class DatasetInfo extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
+  console.log('can publish');
+  console.log(state);
+  console.log(canPublish(state));
   return {
     dataset: datasetInfoSelector(state),
     datasetInfo: datasetSelector(state),
     schema: schemaSelector(state),
     isOwner: isOwner(state),
-    profile: profileSelector(state)
+    profile: profileSelector(state),
+    canPublish: canPublish(state)
   }
 }
 
 //TODO: Write update dataset action creator
 function mapDispatchToProps(dispatch: any) {
   return {
-    getDatasetInfo: (datasetId: string) => dispatch(getDatasetInfo(datasetId)),
-    changeMoreOptionsMenu: (isOpen) => dispatch(changeMoreOptionMenu(isOpen)),
     submitBasicInfoForm: () => dispatch(submit('contact')),
-    changeSchema: (val, field, index) => dispatch(changeSchema(val, field, index)),
-    updateDataset: (basicInfo, schema, ownerId, datasetId, stage, notify, message) =>
-      dispatch(updateDataset(basicInfo, schema, ownerId, datasetId, stage, notify, message))
+    action: bindActionCreators(
+      {
+        getDatasetInfo,
+        changeMoreOptionMenu,
+        updateDataset,
+        changeSchema
+      }, dispatch)
   };
 }
 //@ts-ignore
