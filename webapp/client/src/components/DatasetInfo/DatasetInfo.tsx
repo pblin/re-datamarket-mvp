@@ -21,6 +21,16 @@ import {profileSelector} from "../../store/profile/profileSelector";
 import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
 import BasicInfoModal from "./BasicInfoFormCard";
+// payment and sample
+import StripeCheckout from 'react-stripe-checkout';
+import axios from 'axios';
+import {STRIPETOKEN, STRIPECHECKOUT } from '../ConfigEnv';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 interface ComponentProps {
   match: any;
@@ -55,12 +65,69 @@ class DatasetInfo extends React.Component<ComponentProps> {
     new ToolbarOption('Schema', 'schema')
   ];
 
+  onToken = token => {
+    const body = {
+      amount: this.props.dataset.price_high,
+      description:this.props.dataset.description,
+      product: this.props.dataset.id,
+      stripeTokenType: token.type,
+      stripeEmail: token.email,
+      stripeToken: token.id,
+      token: token
+  };
+  axios
+      .post(STRIPECHECKOUT, body)
+      .then(response => {
+        console.log(response);
+        alert("Payment OK");
+      })
+      .catch(error => {
+        console.log("Payment Error: ", error);
+        alert("Payment Error");
+      });
+  };
   buyDataset() {
-    //Add buy dataset code here
+    const publishableKey = STRIPETOKEN;
+      let chargeAmount = this.props.dataset.price_high;
+      console.log(chargeAmount);      
+     
+      return (
+          <StripeCheckout
+              name="Rebloc"
+              description={this.props.dataset.description}
+              panelLabel="Pay {{chargeAmount}}" 
+              amount={chargeAmount} //Amount in cents $9.99
+              token={this.onToken}
+              label="Pay with 💳"
+              locale="auto"
+              stripeKey={publishableKey}
+              image="https://www.rebloc.io/img/favicon.png" //Pop-in header image
+              billingAddress={false}
+          />
+      );
   }
 
   getSampleData() {
-    //Add get sample data here
+    return (
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+        <DialogTitle id="alert-dialog-title">{"Dowload Sample Data"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Download encrypted sample data zip file from {this.props.dataset.access_url}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
   }
 
   componentWillMount(): void {
