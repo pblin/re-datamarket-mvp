@@ -15,7 +15,7 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PersonIcon from "@material-ui/icons/Person";
 
-const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGetSampleData}) => {
+const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGetSampleData, onUpdate, mode}) => {
   const renderSearchTerms = (terms: any[]) => {
     if(!terms) {
       return;
@@ -68,16 +68,35 @@ const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGe
         <Typography className={"card-content-sub-desc"}>{dataset['num_of_records']}</Typography>
         <Divider/>
         <Typography className={"card-content-price"}> {renderPrice(dataset['price_high'])}</Typography>
-        <Button color={"secondary"} variant={"contained"} className={"dataset-buy"} onClick={onBuy}>
-          Buy
-        </Button>
+        {mode == 'public' &&
+          <Button
+            color={"secondary"}
+            variant={"contained"}
+            className={"dataset-buy"}
+            onClick={onBuy}
+          >
+            Buy
+          </Button>
+        }
+        { mode == 'owner' &&
+          <Button
+            color={"secondary"}
+            variant={"contained"}
+            className={"dataset-buy"}
+            onClick={onUpdate}
+          >
+            Update Information
+          </Button>
+        }
       </CardContent>
       <ClickAwayListener onClickAway={handleClose}>{/*TODO: Fix clickaway*/}
         <Menu
           open={isMoreOptionsOpened}
           anchorEl={document.getElementById('card-more-options')}
         >
-          <MenuItem onClick={handleSampleData}><Typography>Get Sample Data</Typography></MenuItem>
+          <MenuItem onClick={handleSampleData}>
+            <Typography>Get Sample Data</Typography>
+          </MenuItem>
         </Menu>
       </ClickAwayListener>
     </Card>

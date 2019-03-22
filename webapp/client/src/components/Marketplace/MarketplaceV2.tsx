@@ -127,6 +127,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
           onSchemaFilterChange={this.handleSchemaChange}
           schemaFilter={this.props.schemaFilter}
           toolbarOptions={this.toolbarOptions}
+          hasPublish={false}
         />
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>

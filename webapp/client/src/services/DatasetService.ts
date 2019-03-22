@@ -44,26 +44,26 @@ export class DatasetService {
     return body;
   }
 
-  async updateDataset(basicInfo: any, schema: any[], ownerId: string, schemaId: string) {
+  async updateDataset(basicInfo: any, schema: any[], ownerId: string, schemaId: string, stage: number) {
     let body = {
       id: schemaId,
-      name: basicInfo.name,
-      description: basicInfo.description,
-      access_url: basicInfo.endpoint,
-      api_key: basicInfo.sampleAPIKey,
-      enc_data_key: basicInfo.sampleDataKey,
-      search_terms: `{${basicInfo.searchTerms}}`, //TODO: ALLOW AN ARRAY OF SEARCH TERMS
+      name: basicInfo.name || null,
+      description: basicInfo.description || null,
+      access_url: basicInfo['access_url'] || null,
+      api_key: basicInfo['api_key'] || null,
+      enc_data_key: basicInfo['enc_data_key'] || null,
+      search_terms: basicInfo['search_terms'] ? `{${basicInfo['search_terms']}}`: null,
       delivery_method: 'API',
       dataset_owner_id: ownerId,
-      price_low: basicInfo.askPriceLow,
-      price_high: basicInfo.askPriceHigh,
-      num_of_records: basicInfo.records,
-      country: basicInfo.country,
-      state_province: basicInfo.state,
-      date_created: new Date(),
+      price_low: basicInfo['price_low'] || null,
+      price_high: basicInfo['price_high'] || null,
+      num_of_records: basicInfo['num_of_records'] || null,
+      country: basicInfo.country || null,
+      state_province: basicInfo['state_province'] || null,
+      date_created: basicInfo['date_created'],
       date_modified: new Date(),
       parameters: '{}',
-      stage: 0,
+      stage: stage,
       json_schema: JSON.stringify(schema)
     };
 
@@ -78,11 +78,6 @@ export class DatasetService {
       body: JSON.stringify(body)
     });
 
-    if(Array.isArray(basicInfo.searchTerms)) {
-      body['search_terms'] = basicInfo.searchTerms.join(',');
-    } else {
-      body['search_terms'] = basicInfo.searchTerms.split(',');
-    }
     return body;
   }
 

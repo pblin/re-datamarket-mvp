@@ -9,12 +9,15 @@ import {
   TableFooter,
   TablePagination,
   Typography,
-  Tooltip
+  Tooltip,
+  Toolbar
 } from "@material-ui/core";
+
+import InlineEditForm from '../../Common/InlineEditForm/InlineEditForm';
 
 interface SchemaProps {
   schemas: any[];
-  onSchemaSelect: any;
+  onSchemaChange?: any;
 }
 
 interface SchemaState {
@@ -38,6 +41,7 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
 
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   renderLabelField(schema) {
@@ -68,9 +72,18 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
     this.setState({page: 0, rowsPerPage: event.target.value})
   }
 
+  handleSubmit(values, action, form) {
+    if(this.props.onSchemaChange) {
+      this.props.onSchemaChange(values.inlineField, form.field, form.index);
+    }
+  }
+
   render() {
     return(
       <Paper className={"schema-dt"}>
+        <Toolbar>
+          <Typography variant={"h6"}>Schema</Typography>
+        </Toolbar>
         <Table className={"table"}>
           <TableHead>
             <TableRow>
@@ -80,14 +93,43 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.schemas.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((schema,index) => (
-              <TableRow key={`table-row${index}`}>
-                <TableCell align="left">{this.renderLabelField(schema)}</TableCell>
-                <TableCell align="left">{this.renderTypeField(schema)}</TableCell>
-                <TableCell align="left">
-                  <Tooltip title={schema.description}><Typography className={"description-field"}>{schema.description}</Typography></Tooltip>
-                </TableCell>
-              </TableRow>
+            {this.props.schemas.slice(
+              this.state.page * this.state.rowsPerPage,
+              this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+              .map((schema,index) => (
+                <TableRow key={`table-row${index}`}>
+                  <TableCell align="left">
+                    <InlineEditForm
+                      form={`label${index}`}
+                      id={`label${index}`}
+                      initialValues = {
+                        {inlineField: schema.label}
+                      }
+                      onSubmit={this.handleSubmit}
+                      index={index}
+                      field={"label"}
+                    >
+                    {this.renderLabelField(schema)}
+                    </InlineEditForm>
+                  </TableCell>
+                  <TableCell align="left">{this.renderTypeField(schema)}</TableCell>
+                  <TableCell align="left">
+                        <InlineEditForm
+                          form={`description${index}`}
+                          id={`description${index}`}
+                          initialValues = {
+                            {inlineField: schema.description}
+                          }
+                          onSubmit={this.handleSubmit}
+                          index={index}
+                          field={"description"}
+                        >
+                          <Tooltip title={schema.description}>
+                            <Typography className={"description-field"}>{schema.description}</Typography>
+                          </Tooltip>
+                        </InlineEditForm>
+                  </TableCell>
+                </TableRow>
             ))}
           </TableBody>
           <TableFooter className={"table-footer"}>

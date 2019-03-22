@@ -62,6 +62,7 @@
     th {
       padding-top: 0px;
       padding-bottom: 0px;
+      border: none;
       p {
         font-weight: bold;
       }
@@ -135,4 +136,13 @@
   text-align: left;
   /*border-bottom: 1px solid #e1e1e1;
   border-top: 1px solid #e1e1e1;*/
+}
+
+
+/* Basic Info Form */
+.card-mode {
+  .basic-form-input {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
 }
