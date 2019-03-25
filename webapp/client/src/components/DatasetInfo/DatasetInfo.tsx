@@ -5,7 +5,9 @@ import {
   changeMoreOptionMenu,
   getDatasetInfo,
   updateDatasetInfo,
-  changeUploadDialog
+  changeUploadDialog,
+  changeSampleDialog,
+  changeBuyDatasetDialog
 } from "../../store/datasetInfo/datasetInfoActions";
 import {
   canPublish,
@@ -28,17 +30,9 @@ import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
 import BasicInfoModal from "./BasicInfoFormCard";
 import BasicInfoOwnerCard from './BasicInfoOwnerCard';
-// payment and sample
-import StripeCheckout from 'react-stripe-checkout';
-//import axios from 'axios';
-import {STRIPETOKEN, /*STRIPECHECKOUT */} from '../ConfigEnv';
 import SchemaUploadDialog from "./SchemaUploadDialog";
-/*import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';*/
+import SampleDataDialog from "./SampleDataDialog";
+import BuyDatasetDialog from "./BuyDatasetDialog";
 
 interface ComponentProps {
   match: any;
@@ -86,59 +80,14 @@ class DatasetInfo extends React.Component<ComponentProps> {
       token: token
   };
     console.log(body);
-  /*axios
-      .post(STRIPECHECKOUT, body)
-      .then(response => {
-        console.log(response);
-        alert("Payment OK");
-      })
-      .catch(error => {
-        console.log("Payment Error: ", error);
-        alert("Payment Error");
-      });*/
   };
   buyDataset() {
-    const publishableKey = STRIPETOKEN;
-      let chargeAmount = this.props.dataset.price_high;
-      console.log(chargeAmount);      
-     
-      return (
-          <StripeCheckout
-              name="Rebloc"
-              description={this.props.dataset.description}
-              panelLabel="Pay {{chargeAmount}}" 
-              amount={chargeAmount} //Amount in cents $9.99
-              token={this.onToken}
-              label="Pay with 💳"
-              locale="auto"
-              stripeKey={publishableKey}
-              image="https://www.rebloc.io/img/favicon.png" //Pop-in header image
-              billingAddress={false}
-          />
-      );
+    console.log('Buying dataset')
+    this.props.action.changeBuyDatasetDialog(true);
   }
 
   getSampleData() {
-    /*return (
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-        <DialogTitle id="alert-dialog-title">{"Dowload Sample Data"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Download encrypted sample data zip file from {this.props.dataset.access_url}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );*/
+    this.props.action.changeSampleDialog(true);
   }
 
   componentWillMount(): void {
@@ -243,8 +192,6 @@ class DatasetInfo extends React.Component<ComponentProps> {
                     isMoreOptionsOpened={this.props.datasetInfo.moreOptionsOpened}
                     onBuy={this.buyDataset}
                     onGetSampleData={this.getSampleData}
-                    mode={this.props.isOwner ? 'owner': 'public'}
-                    onUpdate={this.onUpdate}
                   />
                 }
               </Grid>
@@ -269,6 +216,17 @@ class DatasetInfo extends React.Component<ComponentProps> {
         <SchemaUploadDialog
           isOpen={this.props.datasetInfo.isFileUploadOpen}
           onCancel={() => this.props.action.changeUploadDialog(false)}
+        />
+        <SampleDataDialog
+          isOpen={this.props.datasetInfo.isSampleDataOpen}
+          onCancel={() => this.props.action.changeSampleDialog(false)}
+          accessUrl={this.props.dataset['access_url']}
+        />
+        <BuyDatasetDialog
+          isOpen={this.props.datasetInfo.isBuyDatasetOpen}
+          user={this.props.profile}
+          dataset={this.props.dataset}
+          onCancel={() => this.props.action.changeBuyDatasetDialog(false)}
         />
       </div>
     )
@@ -302,7 +260,9 @@ function mapDispatchToProps(dispatch: any) {
         updateDatasetInfo,
         changeBasicInfoForm,
         changeSchema,
-        changeUploadDialog
+        changeUploadDialog,
+        changeSampleDialog,
+        changeBuyDatasetDialog
       }, dispatch)
   };
 }

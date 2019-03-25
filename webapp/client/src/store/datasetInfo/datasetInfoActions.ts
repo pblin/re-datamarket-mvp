@@ -7,7 +7,9 @@ export enum DATASET_INFO_ACTIONS {
   CHANGE_MORE_OPTION_MENU = "CHANGE_MORE_OPTION_MENU",
   CHANGE_SCHEMA = "CHANGE_SCHEMA",
   CHANGE_BASIC_INFO_FORM = "CHANGE_BASIC_INFO_FORM",
-  CHANGE_UPLOAD_DIALOG = "CHANGE_UPLOAD_DIALOG"
+  CHANGE_UPLOAD_DIALOG = "CHANGE_UPLOAD_DIALOG",
+  CHANGE_SAMPLE_DIALOG = "CHANGE_SAMPLE_DIALOG",
+  CHANGE_BUY_DATASET_DIALOG = "CHANGE_BUY_DATASET_DIALOG"
 };
 
 export function getDatasetInfo(datasetId: string) {
@@ -33,6 +35,14 @@ export function changeBasicInfoForm(isOpen: boolean) {
 
 export function changeUploadDialog(isOpen: boolean) {
   return {type: DATASET_INFO_ACTIONS.CHANGE_UPLOAD_DIALOG, isOpen};
+}
+
+export function changeSampleDialog(isOpen: boolean) {
+  return {type: DATASET_INFO_ACTIONS.CHANGE_SAMPLE_DIALOG, isOpen};
+}
+
+export function changeBuyDatasetDialog(isOpen: boolean) {
+  return {type: DATASET_INFO_ACTIONS.CHANGE_BUY_DATASET_DIALOG, isOpen};
 }
 
 export function updateDatasetInfo(dataset) {

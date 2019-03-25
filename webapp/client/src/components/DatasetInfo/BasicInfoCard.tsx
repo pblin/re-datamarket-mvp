@@ -15,7 +15,7 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PersonIcon from "@material-ui/icons/Person";
 
-const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGetSampleData, onUpdate, mode}) => {
+const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGetSampleData}) => {
   const renderSearchTerms = (terms: any[]) => {
     if(!terms) {
       return;
@@ -68,7 +68,6 @@ const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGe
         <Typography className={"card-content-sub-desc"}>{dataset['num_of_records']}</Typography>
         <Divider/>
         <Typography className={"card-content-price"}> {renderPrice(dataset['price_high'])}</Typography>
-        {mode == 'public' &&
           <Button
             color={"secondary"}
             variant={"contained"}
@@ -77,17 +76,6 @@ const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGe
           >
             Buy
           </Button>
-        }
-        { mode == 'owner' &&
-          <Button
-            color={"secondary"}
-            variant={"contained"}
-            className={"dataset-buy"}
-            onClick={onUpdate}
-          >
-            Update Information
-          </Button>
-        }
       </CardContent>
       <ClickAwayListener onClickAway={handleClose}>{/*TODO: Fix clickaway*/}
         <Menu

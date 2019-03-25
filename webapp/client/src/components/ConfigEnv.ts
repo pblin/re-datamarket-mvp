@@ -16,5 +16,5 @@ dotenv.config({ path: path });
 
 export const APIKEY = process.env.REACT_APP_APIKEY;
 export const GRAPHQL = process.env.REACT_APP_GRAPHQL;
-export const STRIPETOKEN = process.env.REACT_APP_STRIPETOKEN
-export const STRIPECHECKOUT = process.env.REACT_APP_STRIPECHECKOUT
+export const STRIPETOKEN = process.env.REACT_APP_STRIPETOKEN;
+export const STRIPECHECKOUT = process.env.REACT_APP_STRIPECHECKOUT;
