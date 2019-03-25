@@ -9,7 +9,9 @@ const MarketplaceToolbar = (
     hasPublish,
     onSave = () => {},
     onPublish = () => {},
-    canPublish = false
+    unPublish = () => {},
+    canPublish = false,
+    isPublished = false
   }) => {
 
   const handleSchemaChange = (event) => {
@@ -20,6 +22,8 @@ const MarketplaceToolbar = (
     onSchemaFilterChange(val);
   };
 
+  console.log('is published');
+  console.log(isPublished);
   return(
     <Toolbar className="marketplace-toolbar">
       <Hidden xsDown>
@@ -41,7 +45,7 @@ const MarketplaceToolbar = (
           </Select>
         </FormControl>
       </Hidden>
-      {hasPublish && <>
+      {(hasPublish && !isPublished) &&  <>
         <Button className={"toolbar-btn"} variant={"outlined"} color={"secondary"} onClick={onSave}>Save</Button>
         <Button
           className={"toolbar-btn"}
@@ -49,6 +53,9 @@ const MarketplaceToolbar = (
           color={"secondary"}
           disabled={!canPublish}
           onClick={onPublish}>Publish</Button>
+      </>}
+      {(hasPublish && isPublished) && <>
+        <Button className={"toolbar-btn"} variant="contained" color={"secondary"} onClick={unPublish}>UnPublish</Button>
       </>}
     </Toolbar>
   );

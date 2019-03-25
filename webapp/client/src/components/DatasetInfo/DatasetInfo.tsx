@@ -6,7 +6,7 @@ import {
   canPublish,
   datasetInfoSelector,
   datasetSelector,
-  isOwner,
+  isOwner, isPublished,
   schemaSelector
 } from "../../store/datasetInfo/datasetInfoSelector";
 import SchemaList from "../DatasetManager/SchemaList/SchemaList";
@@ -21,16 +21,17 @@ import {profileSelector} from "../../store/profile/profileSelector";
 import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
 import BasicInfoModal from "./BasicInfoFormCard";
+import BasicInfoOwnerCard from './BasicInfoOwnerCard';
 // payment and sample
 import StripeCheckout from 'react-stripe-checkout';
-import axios from 'axios';
-import {STRIPETOKEN, STRIPECHECKOUT } from '../ConfigEnv';
-import Dialog from '@material-ui/core/Dialog';
+//import axios from 'axios';
+import {STRIPETOKEN, /*STRIPECHECKOUT */} from '../ConfigEnv';
+/*import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';*/
 
 interface ComponentProps {
   match: any;
@@ -43,6 +44,7 @@ interface ComponentProps {
   enqueueSnackbar: any;
   action: any;
   canPublish: boolean;
+  isPublished: boolean;
 }
 
 class DatasetInfo extends React.Component<ComponentProps> {
@@ -58,6 +60,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.onSchemaChange = this.onSchemaChange.bind(this);
     this.saveDataset = this.saveDataset.bind(this);
     this.publishDataset = this.publishDataset.bind(this);
+    this.unpublishDataset = this.unpublishDataset.bind(this);
   }
 
   pageId: string;
@@ -75,7 +78,8 @@ class DatasetInfo extends React.Component<ComponentProps> {
       stripeToken: token.id,
       token: token
   };
-  axios
+    console.log(body);
+  /*axios
       .post(STRIPECHECKOUT, body)
       .then(response => {
         console.log(response);
@@ -84,7 +88,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
       .catch(error => {
         console.log("Payment Error: ", error);
         alert("Payment Error");
-      });
+      });*/
   };
   buyDataset() {
     const publishableKey = STRIPETOKEN;
@@ -108,7 +112,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
   }
 
   getSampleData() {
-    return (
+    /*return (
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -127,7 +131,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
           </Button>
         </DialogActions>
       </Dialog>
-    );
+    );*/
   }
 
   componentWillMount(): void {
@@ -186,6 +190,18 @@ class DatasetInfo extends React.Component<ComponentProps> {
     )
   }
 
+  unpublishDataset() {
+    this.props.action.updateDataset(
+      this.props.dataset,
+      this.props.schema,
+      this.props.profile.id,
+      this.props.dataset.id,
+      DATASET_STAGE.SAVED,
+      this.props.enqueueSnackbar,
+      `The Dataset was un-published successfully`
+    )
+  }
+
   render() {
     console.log(this.props.dataset);
     return (
@@ -196,14 +212,24 @@ class DatasetInfo extends React.Component<ComponentProps> {
           onSchemaFilterChange={this.onMenuChange}
           schemaFilter={'schema'}
           hasPublish={this.props.isOwner}
+          isPublished={this.props.isPublished}
           onSave={this.saveDataset}
           onPublish={this.publishDataset}
           canPublish={this.props.canPublish}
+          unPublish={this.unpublishDataset}
         />
         <Grid container justify={"center"}>
           <div className={"app-section-wrapper-90"}>
             <Grid container spacing={16}>
               <Grid item xs={12} sm={4}>
+                {this.props.isOwner &&
+                  <BasicInfoOwnerCard
+                    dataset={this.props.dataset}
+                    onUpdate={this.onUpdate}
+                    isPublished={this.props.isPublished}
+                  />
+                }
+                {!this.props.isOwner &&
                   <BasicInfoCard
                     dataset={this.props.dataset}
                     onMoreOptions={this.onMoreOptionsMenuChange}
@@ -213,6 +239,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
                     mode={this.props.isOwner ? 'owner': 'public'}
                     onUpdate={this.onUpdate}
                   />
+                }
               </Grid>
               <Grid item xs={12} sm={8}>
                 <SchemaList
@@ -244,7 +271,8 @@ function mapStateToProps(state: any, ownProps: any) {
     schema: schemaSelector(state),
     isOwner: isOwner(state),
     profile: profileSelector(state),
-    canPublish: canPublish(state)
+    canPublish: canPublish(state),
+    isPublished: isPublished(state)
   }
 }
 

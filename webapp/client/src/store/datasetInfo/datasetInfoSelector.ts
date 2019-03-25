@@ -1,9 +1,23 @@
 import {createSelector} from "reselect";
 import {profileSelector} from "../profile/profileSelector";
+import {DATASET_STAGE} from "../../components/Common/CommonTypes";
 
 export const datasetInfoSelector = state => state.DatasetInfoState.dataset;
 export const schemaSelector = state => state.DatasetInfoState.schema;
 export const datasetSelector = state => state.DatasetInfoState;
+
+
+export const isPublished = createSelector([datasetInfoSelector],
+  (dataset) => {
+    console.log('STAGE EEE');
+    console.log(dataset);
+    if(dataset.stage == DATASET_STAGE.PUBLISHED) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+);
 
 export const isOwner = createSelector(
   [datasetInfoSelector, profileSelector],
