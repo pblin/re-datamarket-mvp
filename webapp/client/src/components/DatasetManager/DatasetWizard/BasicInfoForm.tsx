@@ -192,8 +192,10 @@ class BasicInfoForm extends Component<BasicFormProps> {
 }
 
 function mapStateToProps(state, props) {
-    const dataset = datasetInfoSelector(state);
-
+    let dataset;
+    if(props.mode == 'edit') {
+      dataset = datasetInfoSelector(state);
+    }
     if(!dataset) {
       return {}
     }
@@ -218,8 +220,8 @@ function mapStateToProps(state, props) {
 BasicInfoForm = reduxForm({
   form: 'contact',
   validate,
-  destroyOnUnmount: false,
-  enableReinitialize: false,
+  destroyOnUnmount: true,
+  enableReinitialize: true,
 })(BasicInfoForm);
 
 export default connect(mapStateToProps)(BasicInfoForm);

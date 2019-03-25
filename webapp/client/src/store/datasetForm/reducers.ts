@@ -57,10 +57,6 @@ const reducer = function(state=defaultState, action: any) {
       newState.datasetPublishedId = action.dataset.id;
       newState.datasetPublished = true;
       break;
-    case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
-      newState.datasetPublishedId = action.dataset.id;
-      newState.datasetPublished = true;
-      break;
     case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:
       if(action.value) {
         newState.displayNoSchemaError = false;

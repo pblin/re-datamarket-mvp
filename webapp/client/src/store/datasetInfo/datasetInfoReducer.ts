@@ -6,13 +6,15 @@ interface DatasetInfoState {
   schema: any[],
   moreOptionsOpened: boolean,
   isBasicFormOpen: boolean;
+  isFileUploadOpen: boolean;
 }
 
 const defaultState: DatasetInfoState = {
   dataset: {},
   schema: [],
   moreOptionsOpened: false,
-  isBasicFormOpen: false
+  isBasicFormOpen: false,
+  isFileUploadOpen: false
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -32,6 +34,9 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case DATASET_INFO_ACTIONS.CHANGE_BASIC_INFO_FORM:
       newState.isBasicFormOpen = action.isOpen;
+      break;
+    case DATASET_INFO_ACTIONS.CHANGE_UPLOAD_DIALOG:
+      newState.isFileUploadOpen = action.isOpen;
       break;
     case DATASET_INFO_ACTIONS.UPDATE_DATASET_INFO:
       newState.dataset = Object.assign({}, newState.dataset, action.dataset);

@@ -21,6 +21,7 @@ interface SchemaProps {
   onSchemaChange?: any;
   allowUpload?: boolean;
   canEdit?: boolean;
+  onUpload?: any;
 }
 
 interface SchemaState {
@@ -87,7 +88,7 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
         <Toolbar>
           <Typography variant={"h6"} className={"grow"}>Schema</Typography>
           { this.props.allowUpload &&
-            <Button variant="outlined" color="primary">Upload New File</Button>
+            <Button variant="outlined" color="primary" onClick={this.props.onUpload}>Upload New File</Button>
           }
         </Toolbar>
         <Table className={"table"}>

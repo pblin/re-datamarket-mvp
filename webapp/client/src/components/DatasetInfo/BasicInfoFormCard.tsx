@@ -21,7 +21,7 @@ const BasicInfoModal = ({onSave, onSubmit, isOpen = false, onCancel}) => {
         </Typography>
       </DialogTitle>
         <DialogContent>
-          <BasicInfoForm onSubmit={onSubmit}/>
+          <BasicInfoForm onSubmit={onSubmit} mode={'edit'}/>
         </DialogContent>
        <DialogActions>
          <Button

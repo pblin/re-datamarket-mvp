@@ -1,12 +1,18 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {changeMoreOptionMenu, getDatasetInfo, updateDatasetInfo} from "../../store/datasetInfo/datasetInfoActions";
+import {
+  changeMoreOptionMenu,
+  getDatasetInfo,
+  updateDatasetInfo,
+  changeUploadDialog
+} from "../../store/datasetInfo/datasetInfoActions";
 import {
   canPublish,
   datasetInfoSelector,
   datasetSelector,
-  isOwner, isPublished,
+  isOwner,
+  isPublished,
   schemaSelector
 } from "../../store/datasetInfo/datasetInfoSelector";
 import SchemaList from "../DatasetManager/SchemaList/SchemaList";
@@ -26,6 +32,7 @@ import BasicInfoOwnerCard from './BasicInfoOwnerCard';
 import StripeCheckout from 'react-stripe-checkout';
 //import axios from 'axios';
 import {STRIPETOKEN, /*STRIPECHECKOUT */} from '../ConfigEnv';
+import SchemaUploadDialog from "./SchemaUploadDialog";
 /*import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -247,6 +254,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
                   onSchemaChange={this.onSchemaChange}
                   canEdit={(!this.props.isPublished && this.props.isOwner)}
                   allowUpload={(!this.props.isPublished && this.props.isOwner)}
+                  onUpload={() => this.props.action.changeUploadDialog(true)}
                 />
               </Grid>
             </Grid>
@@ -257,6 +265,10 @@ class DatasetInfo extends React.Component<ComponentProps> {
           onSubmit={this.handleBasicFormSubmit}
           isOpen={this.props.datasetInfo.isBasicFormOpen}
           onCancel={() => this.props.action.changeBasicInfoForm(false)}
+        />
+        <SchemaUploadDialog
+          isOpen={this.props.datasetInfo.isFileUploadOpen}
+          onCancel={() => this.props.action.changeUploadDialog(false)}
         />
       </div>
     )
@@ -289,7 +301,8 @@ function mapDispatchToProps(dispatch: any) {
         updateDataset,
         updateDatasetInfo,
         changeBasicInfoForm,
-        changeSchema
+        changeSchema,
+        changeUploadDialog
       }, dispatch)
   };
 }
