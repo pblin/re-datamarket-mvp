@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 
 const SchemaUploadDialog = ({isOpen = false, onCancel}) => {
   return(
-    <Dialog open={isOpen} maxWidth={"lg"}>
+    <Dialog open={isOpen} maxWidth={"sm"} fullWidth={true}>
       <DialogTitle>
         <Typography className={"dialog-header"}>
           <span className={"bold"}>UPLOAD NEW SCHEMA</span>

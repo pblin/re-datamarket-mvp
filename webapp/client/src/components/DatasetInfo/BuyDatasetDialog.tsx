@@ -33,6 +33,8 @@ const BuyDatasetDialog = ({isOpen = false, onCancel, dataset, user}) => {
       open={isOpen}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      fullWidth={true}
+      maxWidth={"sm"}
     >
       <DialogTitle id="alert-dialog-title">Buy Dataset</DialogTitle>
       <DialogContent>
