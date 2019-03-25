@@ -66,14 +66,6 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_FORM_ACTIONS.DATASET_PUBLISHED:
       newState.userSchemas = [action.dataset, ...state.userSchemas];
       break;
-    case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
-      //TODO: FIX THIS LOGIC
-      newState.userSchemas = [action.dataset, ...state.userSchemas.filter(dataset => dataset.id != action.dataset.id)];
-      if(!Array.isArray(action.dataset['search_terms'])) {
-        action.dataset['search_terms'] = action.dataset['search_terms'].split(',');
-      }
-      newState.schemas = [action.dataset, ...state.schemas.filter(dataset => dataset.id != action.dataset.id)];
-      break;
     default:
       return state;
   }

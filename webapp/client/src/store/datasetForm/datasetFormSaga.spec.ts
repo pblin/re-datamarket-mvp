@@ -43,7 +43,7 @@ describe('Dataset Saga', () => {
     await runSaga({
       dispatch: (action) => dispatched.push(action),
       getState: () => ({ state: 'test' }),
-    }, DatasetFormUpdated, {basicInfo: {}, schema: [], ownerId: '1234', datasetId: '123'});
+    }, DatasetFormUpdated, {basicInfo: {}, schema: [], ownerId: '1234', datasetId: '123', notify: () =>{}});
 
     expect(dispatched[0].type).toBe('DATASET_REPUBLISHED');
   });

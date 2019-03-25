@@ -16,11 +16,6 @@ export function* GetDatasetInfo(action) {
     dataset = yield datasetService.getDataset(datasetId, profile.id);
   }
 
-
-  console.log('Here is the profile');
-  console.log(profile);
-  console.log(dataset);
-
   yield put({type: DATASET_INFO_ACTIONS.DATASET_INFO_RETRIEVED, dataset: dataset})
 }
 

@@ -146,7 +146,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   @autobind
   logout() {
-    console.log('Logging out');
     this.props.auth.logout();
     //window.location.replace('/home');
   }
@@ -164,7 +163,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   componentDidMount(): void {
     if(!this.props.profile) {
-      console.log('getting profile');
       this.props.getProfile();
     }
   }
@@ -254,12 +252,12 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
                 {this.appLinks.map((link, index) => (
                     <>
                       {link.type == 'app' &&
-                          <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                          <ListItem button key={`link-item${index}`} onClick={this.handleDrawerClose} className="app-link">
                             <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
                           </ListItem>
                       }
                       {link.type == 'global' &&
-                      <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                      <ListItem button key={`link-item${index}`} onClick={this.handleDrawerClose} className="app-link">
                         <a href={link.url}>{link.icon} <div>{link.title}</div></a>
                       </ListItem>
                       }
@@ -269,7 +267,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             <Divider />
             <List>
               {this.userAppLinks.map((link, index) => (
-                <ListItem button key={link.title} onClick={this.handleDrawerClose} className="app-link">
+                <ListItem button key={`link-item-user${index}`} onClick={this.handleDrawerClose} className="app-link">
                   <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
                 </ListItem>
               ))}
