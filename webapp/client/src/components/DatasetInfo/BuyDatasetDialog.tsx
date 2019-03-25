@@ -13,7 +13,7 @@ import {StripeService} from "../../services/StripeService";
 const BuyDatasetDialog = ({isOpen = false, onCancel, dataset, user}) => {
   const onToken = async (token) => {
     const body = {
-      amount: dataset.price_high,
+      amount: Number(dataset.price_high * 100),
       description: dataset.description,
       product: dataset.id,
       stripeTokenType: token.type,
