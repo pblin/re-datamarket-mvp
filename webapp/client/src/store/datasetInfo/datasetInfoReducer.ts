@@ -1,4 +1,5 @@
 import {DATASET_INFO_ACTIONS} from "./datasetInfoActions";
+import {DATASET_FORM_ACTIONS} from "../datasetForm/actions";
 
 interface DatasetInfoState {
   dataset: any,
@@ -35,8 +36,13 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_INFO_ACTIONS.UPDATE_DATASET_INFO:
       newState.dataset = Object.assign({}, newState.dataset, action.dataset);
       newState.dataset['search_terms'] =  newState.dataset['search_terms'] ?
-        newState.dataset['search_terms'].split(','): null;
+      newState.dataset['search_terms'].split(','): null;
       newState.dataset['price_high'] = Number(newState.dataset['price_high']);
+      break;
+    case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
+      //TODO: REFACTOR THIS
+      newState.dataset = {...newState.dataset};
+      newState.dataset.stage = action.dataset.stage;
       break;
     default:
       return state;

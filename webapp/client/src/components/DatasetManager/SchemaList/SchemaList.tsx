@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   Paper,
+  Button,
   Table,
   TableHead,
   TableBody,
@@ -18,6 +19,8 @@ import InlineEditForm from '../../Common/InlineEditForm/InlineEditForm';
 interface SchemaProps {
   schemas: any[];
   onSchemaChange?: any;
+  allowUpload?: boolean;
+  canEdit?: boolean;
 }
 
 interface SchemaState {
@@ -82,7 +85,10 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
     return(
       <Paper className={"schema-dt"}>
         <Toolbar>
-          <Typography variant={"h6"}>Schema</Typography>
+          <Typography variant={"h6"} className={"grow"}>Schema</Typography>
+          { this.props.allowUpload &&
+            <Button variant="outlined" color="primary">Upload New File</Button>
+          }
         </Toolbar>
         <Table className={"table"}>
           <TableHead>
@@ -99,35 +105,47 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
               .map((schema,index) => (
                 <TableRow key={`table-row${index}`}>
                   <TableCell align="left">
-                    <InlineEditForm
-                      form={`label${index}`}
-                      id={`label${index}`}
-                      initialValues = {
-                        {inlineField: schema.label}
-                      }
-                      onSubmit={this.handleSubmit}
-                      index={index}
-                      field={"label"}
-                    >
-                    {this.renderLabelField(schema)}
-                    </InlineEditForm>
+                    {this.props.canEdit &&
+                      <InlineEditForm
+                        form={`label${index}`}
+                        id={`label${index}`}
+                        initialValues = {
+                          {inlineField: schema.label}
+                        }
+                        onSubmit={this.handleSubmit}
+                        index={index}
+                        field={"label"}
+                      >
+                        {this.renderLabelField(schema)}
+                      </InlineEditForm>
+                    }
+                    {!this.props.canEdit &&
+                      <>{this.renderLabelField(schema)}</>
+                    }
                   </TableCell>
                   <TableCell align="left">{this.renderTypeField(schema)}</TableCell>
                   <TableCell align="left">
-                        <InlineEditForm
-                          form={`description${index}`}
-                          id={`description${index}`}
-                          initialValues = {
-                            {inlineField: schema.description}
-                          }
-                          onSubmit={this.handleSubmit}
-                          index={index}
-                          field={"description"}
-                        >
-                          <Tooltip title={schema.description}>
-                            <Typography className={"description-field"}>{schema.description}</Typography>
-                          </Tooltip>
-                        </InlineEditForm>
+                        {this.props.canEdit &&
+                          <InlineEditForm
+                            form={`description${index}`}
+                            id={`description${index}`}
+                            initialValues = {
+                              {inlineField: schema.description}
+                            }
+                            onSubmit={this.handleSubmit}
+                            index={index}
+                            field={"description"}
+                          >
+                            <Tooltip title={schema.description}>
+                              <Typography className={"description-field"}>{schema.description}</Typography>
+                            </Tooltip>
+                          </InlineEditForm>
+                        }
+                      { !this.props.canEdit &&
+                        <Tooltip title={schema.description}>
+                          <Typography className={"description-field"}>{schema.description}</Typography>
+                        </Tooltip>
+                      }
                   </TableCell>
                 </TableRow>
             ))}

@@ -245,6 +245,8 @@ class DatasetInfo extends React.Component<ComponentProps> {
                 <SchemaList
                   schemas={this.props.schema}
                   onSchemaChange={this.onSchemaChange}
+                  canEdit={(!this.props.isPublished && this.props.isOwner)}
+                  allowUpload={(!this.props.isPublished && this.props.isOwner)}
                 />
               </Grid>
             </Grid>

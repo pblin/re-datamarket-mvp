@@ -47,6 +47,7 @@ export class InlineEditForm extends React.Component<InlineEditProps, InlineEditS
             <Field
               name="inlineField"
               component="input"
+              className={"inline-edit-form"}
               onBlur={this.handleBlur}
               autoFocus
             />
