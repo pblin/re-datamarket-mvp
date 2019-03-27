@@ -50,9 +50,6 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case DATASET_INFO_ACTIONS.UPDATE_DATASET_INFO:
       newState.dataset = Object.assign({}, newState.dataset, action.dataset);
-      newState.dataset['search_terms'] =  newState.dataset['search_terms'] ?
-      newState.dataset['search_terms'].split(','): null;
-      newState.dataset['price_high'] = Number(newState.dataset['price_high']);
       break;
     case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
       //TODO: REFACTOR THIS

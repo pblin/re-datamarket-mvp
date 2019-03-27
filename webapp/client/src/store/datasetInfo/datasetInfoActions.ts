@@ -46,5 +46,13 @@ export function changeBuyDatasetDialog(isOpen: boolean) {
 }
 
 export function updateDatasetInfo(dataset) {
+  if(!(dataset['search_terms'] instanceof Array)) {
+    dataset['search_terms'] =  dataset['search_terms'] ?
+      dataset['search_terms'].split(','): null;
+  }
+
+  //Convert price to number
+  dataset['price_high'] = Number(dataset['price_high']);
+
   return {type: DATASET_INFO_ACTIONS.UPDATE_DATASET_INFO, dataset}
 }

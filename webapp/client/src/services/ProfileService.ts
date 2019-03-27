@@ -21,6 +21,8 @@ export class ProfileService {
       phone: profile.phone
     };
 
+    console.log(body);
+
     const results = await fetch(`${config.serverBase}/profile`, {
       method: 'POST',
       headers: {
@@ -29,6 +31,7 @@ export class ProfileService {
       body: JSON.stringify(body)
     });
 
+    console.log('Made it here')
     return results.json();
   }
 }

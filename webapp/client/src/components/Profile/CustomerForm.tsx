@@ -4,7 +4,7 @@ import {Grid, TextField} from "@material-ui/core";
 import {ReduxFormValidator} from "../Common/Error/ReduxFormValidator";;
 import {ERROR_TYPE} from "../Common/Error/ErrorType";
 import {connect} from "react-redux";
-import {profileSelector} from "../../store/profile/profileSelector";
+import {emailSelector, profileSelector} from "../../store/profile/profileSelector";
 
 interface CustomerFormProps {
    onSubmit: any;
@@ -115,17 +115,17 @@ class CustomerForm extends Component<CustomerFormProps> {
 
 function mapStateToProps(state) {
     let profile = profileSelector(state);
+    let email = emailSelector(state);
 
     if(!profile) {
       return {};
     }
 
-    console.log(profile);
     return {
       initialValues: {
         firstName: profile['first_name'],
         lastName: profile['last_name'],
-        primaryEmail: profile['primary_email'],
+        primaryEmail: profile['primary_email'] || email,
         secondaryEmail: profile['secondary_email'],
         phone: profile['phone'],
         address: profile['address']
