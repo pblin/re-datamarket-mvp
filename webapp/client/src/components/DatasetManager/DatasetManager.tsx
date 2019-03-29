@@ -16,7 +16,12 @@ import {
   DialogContent,
   DialogTitle
 } from "@material-ui/core";
-import {basicInfo, getWizardSteps, schemaSelector} from "../../store/datasetForm/datasetFormSelectors";
+import {
+  basicInfo,
+  datasetFormSelector,
+  getWizardSteps,
+  schemaSelector
+} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
 import {getFileState} from "../../store/file/fileSelectors";
 import {uploadSchema} from "../Util/SchemaValidator";
@@ -57,6 +62,7 @@ interface ComponentProps {
   resetForm: any;
   updateDataset: any;
   destroyBasic: any;
+  schemaName: string;
   steps: any[];
 }
 
@@ -103,7 +109,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   publish() {
-    this.props.publishSchema(this.props.basicInfo, this.props.schema, this.props.profile.id, DATASET_STAGE.SAVED);
+    this.props.publishSchema(this.props.basicInfo, this.props.schema, this.props.profile.id, DATASET_STAGE.SAVED, this.props.schemaName);
   }
 
   onWizardPrev() {
@@ -156,7 +162,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   renderSchemaList() {
-      return <SchemaList schemas={this.props.schema}></SchemaList>;
+      return <SchemaList schemas={this.props.schema} schemaName={this.props.schemaName}></SchemaList>;
   }
 
   renderWizard() {
@@ -238,6 +244,7 @@ function mapStateToProps(state: any, ownProps: any) {
     wizard: state.DatasetFormState.wizard,
     basicInfo: basicInfo(state),
     schema: Object.assign([], schemaSelector(state)),
+    schemaName: datasetFormSelector(state).schemaName,
     displaySchemaError: state.DatasetFormState.displayNoSchemaError,
     profile: profileSelector(state),
     isProfileSet: isProfileSet(state),
@@ -248,10 +255,11 @@ function mapStateToProps(state: any, ownProps: any) {
 }
 
 function mapDispatchToProps(dispatch: any) {
+  //TODO: replace with action creators, and bindActionCreators
   return {
     onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
     onFileChangeAndUpload: (file: any, fileId: string) => dispatch({type: "FILE_CHANGED_AND_UPLOADED", validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST', file, fileId}),
-    publishSchema: (basicInfo: any, schema: any[], id: any, stage: DATASET_STAGE) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id, stage}),
+    publishSchema: (basicInfo: any, schema: any[], id: any, stage: DATASET_STAGE, schemaName) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id, stage, schemaName}),
     updateDataset: (basicInfo: any, schema: any[], ownerId: any, datasetId: any) => dispatch(updateDataset(basicInfo, schema, ownerId, datasetId)),
     nextStep: () => dispatch(nextStep()),
     prevStep: () => dispatch(prevStep()),

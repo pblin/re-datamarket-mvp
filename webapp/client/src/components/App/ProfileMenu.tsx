@@ -11,8 +11,8 @@ const ProfileMenu = ({profile, open, onClickAway}) => {
   };
 
   return(
-      <ClickAwayListener onClickAway={() => handleClose('clickAway')}>
-        <Paper>
+      <Paper>
+        <ClickAwayListener onClickAway={() => handleClose('clickAway')}>
           <Menu  anchorEl={document.getElementById('avatar')}
                  open={open}>
             {(profile['first_name'] && profile['last_name']) && (
@@ -27,8 +27,8 @@ const ProfileMenu = ({profile, open, onClickAway}) => {
             </MenuItem>
             <MenuItem onClick={() => handleClose('logout')}><Typography>Logout</Typography></MenuItem>
           </Menu>
-        </Paper>
-      </ClickAwayListener>
+        </ClickAwayListener>
+      </Paper>
   );
 };
 

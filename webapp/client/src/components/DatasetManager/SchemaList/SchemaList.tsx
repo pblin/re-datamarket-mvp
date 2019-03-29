@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   Paper,
-  Button,
   Table,
   TableHead,
   TableBody,
@@ -19,9 +18,8 @@ import InlineEditForm from '../../Common/InlineEditForm/InlineEditForm';
 interface SchemaProps {
   schemas: any[];
   onSchemaChange?: any;
-  allowUpload?: boolean;
   canEdit?: boolean;
-  onUpload?: any;
+  schemaName?: string;
 }
 
 interface SchemaState {
@@ -86,10 +84,7 @@ export default class SchemaList extends React.Component<SchemaProps, SchemaState
     return(
       <Paper className={"schema-dt"}>
         <Toolbar>
-          <Typography variant={"h6"} className={"grow"}>Schema</Typography>
-          { this.props.allowUpload &&
-            <Button variant="outlined" color="primary" onClick={this.props.onUpload}>Upload New File</Button>
-          }
+          <Typography variant={"h6"} className={"grow"}>{this.props.schemaName || 'Schema'}</Typography>
         </Toolbar>
         <Table className={"table"}>
           <TableHead>

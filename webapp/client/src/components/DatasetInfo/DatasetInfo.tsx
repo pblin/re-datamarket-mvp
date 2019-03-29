@@ -30,7 +30,6 @@ import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
 import BasicInfoModal from "./BasicInfoFormCard";
 import BasicInfoOwnerCard from './BasicInfoOwnerCard';
-import SchemaUploadDialog from "./SchemaUploadDialog";
 import SampleDataDialog from "./SampleDataDialog";
 import BuyDatasetDialog from "./BuyDatasetDialog";
 
@@ -69,20 +68,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
     new ToolbarOption('Schema', 'schema')
   ];
 
-  onToken = token => {
-    const body = {
-      amount: this.props.dataset.price_high,
-      description:this.props.dataset.description,
-      product: this.props.dataset.id,
-      stripeTokenType: token.type,
-      stripeEmail: token.email,
-      stripeToken: token.id,
-      token: token
-  };
-    console.log(body);
-  };
   buyDataset() {
-    console.log('Buying dataset')
     this.props.action.changeBuyDatasetDialog(true);
   }
 
@@ -106,13 +92,10 @@ class DatasetInfo extends React.Component<ComponentProps> {
   }
 
   saveBasicInfo() {
-    console.log('Save basic info called');
     this.props.submitBasicInfoForm();
   }
 
   handleBasicFormSubmit(values) {
-    console.log('Basic Form Submitted');
-    console.log(values);
     this.props.action.updateDatasetInfo(values);
     this.props.action.changeBasicInfoForm(false);
   }
@@ -121,8 +104,8 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.props.action.changeSchema(value, field, index);
   }
 
+  //TODO: Save, Publish, and Unpublish can be turned into one function
   saveDataset() {
-    console.log('Saving the dataset');
     this.props.action.updateDataset(
       this.props.dataset,
       this.props.schema,
@@ -199,9 +182,8 @@ class DatasetInfo extends React.Component<ComponentProps> {
                 <SchemaList
                   schemas={this.props.schema}
                   onSchemaChange={this.onSchemaChange}
+                  schemaName={this.props.dataset.table_name}
                   canEdit={(!this.props.isPublished && this.props.isOwner)}
-                  allowUpload={(!this.props.isPublished && this.props.isOwner)}
-                  onUpload={() => this.props.action.changeUploadDialog(true)}
                 />
               </Grid>
             </Grid>
@@ -212,10 +194,6 @@ class DatasetInfo extends React.Component<ComponentProps> {
           onSubmit={this.handleBasicFormSubmit}
           isOpen={this.props.datasetInfo.isBasicFormOpen}
           onCancel={() => this.props.action.changeBasicInfoForm(false)}
-        />
-        <SchemaUploadDialog
-          isOpen={this.props.datasetInfo.isFileUploadOpen}
-          onCancel={() => this.props.action.changeUploadDialog(false)}
         />
         <SampleDataDialog
           isOpen={this.props.datasetInfo.isSampleDataOpen}
@@ -234,9 +212,6 @@ class DatasetInfo extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
-  console.log('can publish');
-  console.log(state);
-  console.log(canPublish(state));
   return {
     dataset: datasetInfoSelector(state),
     datasetInfo: datasetSelector(state),

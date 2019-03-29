@@ -11,6 +11,7 @@ interface DatasetFormState {
   displayNoSchemaError: boolean;
   datasetPublished: boolean;
   datasetPublishedId: string;
+  schemaName: string;
 }
 
 const defaultState: DatasetFormState = {
@@ -30,7 +31,8 @@ const defaultState: DatasetFormState = {
   schema: [],
   displayNoSchemaError: false,
   datasetPublished: false,
-  datasetPublishedId: undefined
+  datasetPublishedId: undefined,
+  schemaName: 'Schema'
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -59,8 +61,11 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST:
       if(action.value) {
+        console.log('Action Value');
+        console.log(action.value);
         newState.displayNoSchemaError = false;
-        newState.schema = [...action.value];
+        newState.schema = [...action.value.fields];
+        newState.schemaName = action.value.schema_name;
       }
       break;
     case DATASET_FORM_ACTIONS.UPDATE_DATASET_FORM:

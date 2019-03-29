@@ -16,7 +16,7 @@ const SampleDataDialog = ({isOpen = false, onCancel, accessUrl = ''}) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{"Dowload Sample Data"}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{"Download Sample Data"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           <Typography>Download encrypted sample data zip file from {accessUrl}</Typography>
