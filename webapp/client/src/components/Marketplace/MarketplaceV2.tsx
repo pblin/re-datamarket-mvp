@@ -4,8 +4,10 @@ import {withRouter} from "react-router";
 import './marketplace.scss';
 import {
   changeConfirmDialogState,
-  changeDialogState, changeSearch,
+  changeDialogState,
+  changeSearch,
   MARKETPLACE_ACTIONS,
+  getUserDatasets,
   updateSchemaFilter
 } from "../../store/marketplace/marketplaceActions";
 import MarketplaceToolbar from './MarketplaceToolbar';
@@ -14,7 +16,8 @@ import {isProfileSet, profileSelector} from "../../store/profile/profileSelector
 import SchemaList from "./SchemaList";
 import {
   confirmDeleteDialogSelector,
-  datasetDialogSelector, MarketplaceSelector,
+  datasetDialogSelector,
+  MarketplaceSelector,
   marketplaceSelector
 } from "../../store/marketplace/marketplaceSelectors";
 import {Grid, Button, Dialog, DialogContent, DialogActions, DialogTitle} from "@material-ui/core";
@@ -23,33 +26,29 @@ import UserDatasetList from "./UserDatasetList";
 import DatasetManager from '../DatasetManager/DatasetManager'
 import JumboPaper from "../Common/jumboPaper";
 import FilterMenu from "../Common/Filter/FilterMenu";
+import {bindActionCreators} from "redux";
 
 interface ComponentProps {
   schemaFilter: string;
-  updateSchemaFilter: any;
   profile: any;
   getProfile: any;
-  getUserSchemas: any;
   getAllSchemas: any;
   schemas: any[];
-  userSchemas: any[];
+  userDatasets: any[];
   datasetDialog: any
-  changeDialogState: any;
   isProfileSet: boolean;
   history: any;
   confirmDeleteDialog: any;
-  changeConfirmDeleteDialog: any;
   deleteDataset: any;
   marketplace: any;
-  changeSearch: any;
   searchDatasets: any;
+  actions: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
   constructor(props: any) {
     super(props);
     this.handleSchemaChange = this.handleSchemaChange.bind(this);
-    this.getUserSchemas = this.getUserSchemas.bind(this);
     this.openDialog = this.openDialog.bind(this);
     this.handleOnDelete = this.handleOnDelete.bind(this);
     this.onConfirmationClose = this.onConfirmationClose.bind(this);
@@ -63,40 +62,36 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     new ToolbarOption('OWNED BY ME',  'ownedByMe')
   ];
 
-  getUserSchemas(id: string) {
-    this.props.getUserSchemas(id);
-  }
-
   componentDidMount() {
     this.props.getAllSchemas();
-    this.props.getUserSchemas();
+    this.props.actions.getUserDatasets();
   }
 
   handleSchemaChange(val) {
-    this.props.updateSchemaFilter(val);
+    this.props.actions.updateSchemaFilter(val);
   }
 
   openDialog() {
-    this.props.changeDialogState(true, 'add', undefined);
+    this.props.actions.changeDialogState(true, 'add', undefined);
   }
 
   handleOnDelete(dataset) {
-    this.props.changeConfirmDeleteDialog(true, dataset);
+    this.props.actions.changeConfirmDialogState(true, dataset);
   }
 
   //Confirm Dialog TODO: Consider moving dialog to seperate component
   onConfirmationClose() {
-    this.props.changeConfirmDeleteDialog(false, {name: ''});
+    this.props.actions.changeConfirmDialogState(false, {name: ''});
   }
 
   confirmDelete() {
     this.props.deleteDataset(this.props.confirmDeleteDialog.dataset.id);
-    this.props.changeConfirmDeleteDialog(false, {name: ''});
+    this.props.actions.changeConfirmDialogState(false, {name: ''});
   }
 
   //Filter menu
   onSearchChange(e) {
-    this.props.changeSearch(e.target.value);
+    this.props.actions.changeSearch(e.target.value);
   }
 
   onSearch(search: string) {
@@ -111,7 +106,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     if(!this.props.isProfileSet) {
       return null;
     }
-    if(this.props.schemaFilter == 'all' || (this.props.schemaFilter == 'ownedByMe') && this.props.userSchemas.length) {
+    if(this.props.schemaFilter == 'all' || (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
       return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
         Add
         <AddIcon/>
@@ -152,7 +147,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
                 <UserDatasetList
-                  schemas={this.props.userSchemas}
+                  schemas={this.props.userDatasets}
                   onDeleteClick={this.handleOnDelete}
                   onAddClicked={this.openDialog}
                   history={this.props.history}
@@ -193,7 +188,7 @@ function mapStateToProps(state: any, ownProps: any) {
     profile: profileSelector(state),
     isProfileSet: isProfileSet(state),
     schemas: marketplaceSelector(state).schemas,
-    userSchemas: marketplaceSelector(state).userSchemas,
+    userDatasets: marketplaceSelector(state).userDatasets,
     datasetDialog: datasetDialogSelector(state),
     confirmDeleteDialog: confirmDeleteDialogSelector(state),
     marketplace: MarketplaceSelector(state)
@@ -202,14 +197,16 @@ function mapStateToProps(state: any, ownProps: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    updateSchemaFilter: (filter: string) => dispatch(updateSchemaFilter(filter)),
-    getUserSchemas: (id) => dispatch({type: MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, id}),
     getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS}),
-    changeDialogState: (isOpen, mode, id) => dispatch(changeDialogState(isOpen, mode, id)),
-    changeConfirmDeleteDialog: (isOpen, dataset) => dispatch(changeConfirmDialogState(isOpen, dataset)),
     deleteDataset: (datasetId: string) => dispatch({type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId }),
-    changeSearch: (search: string) => dispatch(changeSearch(search)),
-    searchDatasets: (terms: string) => dispatch({type: MARKETPLACE_ACTIONS.SEARCH_DATASETS, terms})
+    searchDatasets: (terms: string) => dispatch({type: MARKETPLACE_ACTIONS.SEARCH_DATASETS, terms}),
+    actions: bindActionCreators({
+      updateSchemaFilter,
+      changeDialogState,
+      changeSearch,
+      changeConfirmDialogState,
+      getUserDatasets
+    }, dispatch)
   };
 }
 export default withRouter(

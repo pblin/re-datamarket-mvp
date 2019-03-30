@@ -4,7 +4,7 @@ import {DATASET_FORM_ACTIONS} from "../datasetForm/actions";
 interface MarketplaceState {
   schemaFilter: string;
   schemas: any[];
-  userSchemas: any[];
+  userDatasets: any[];
   datasetDialog: any;
   confirmDeleteDialog: any;
   search: string;
@@ -13,7 +13,7 @@ interface MarketplaceState {
 const defaultState: MarketplaceState = {
   schemaFilter: 'all',
   schemas: [],
-  userSchemas: [],
+  userDatasets: [],
   datasetDialog: {
     open: false,
     mode: 'add',
@@ -38,8 +38,8 @@ const reducer = function(state=defaultState, action: any) {
     case MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED:
       newState.schemas = action.schemas;
       break;
-    case MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED:
-      newState.userSchemas = action.schemas;
+    case MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED:
+      newState.userDatasets = action.datasets;
       break;
     case MARKETPLACE_ACTIONS.CHANGE_DIALOG_STATE:
       newState.datasetDialog = {...state.datasetDialog};
@@ -54,7 +54,7 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case MARKETPLACE_ACTIONS.DATASET_DELETED:
       newState.schemas = [...newState.schemas.filter(schema => schema.id != action.datasetId)];
-      newState.userSchemas = [...newState.userSchemas.filter(schema => schema.id != action.datasetId)];
+      newState.userDatasets = [...newState.userDatasets.filter(schema => schema.id != action.datasetId)];
       break;
     case MARKETPLACE_ACTIONS.CHANGE_SEARCH:
       newState.search = action.search;
@@ -64,7 +64,7 @@ const reducer = function(state=defaultState, action: any) {
       newState.schemas = action.datasets;
       break;
     case DATASET_FORM_ACTIONS.DATASET_SAVED:
-      newState.userSchemas = [action.dataset, ...state.userSchemas];
+      newState.userDatasets = [action.dataset, ...state.userDatasets];
       break;
     default:
       return state;
