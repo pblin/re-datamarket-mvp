@@ -1,9 +1,9 @@
 export enum MARKETPLACE_ACTIONS {
   CHANGE_SCHEMA_FILTER = "CHANGE_SCHEMA_FILTER",
   GET_USER_DATASETS = "GET_USER_DATASETS",
-  SCHEMAS_RETRIEVED = "SCHEMAS_RETRIEVED",
+  DATASETS_RETRIEVED = "DATASETS_RETRIEVED",
   USER_DATASETS_RETRIEVED = "USER_DATASETS_RETRIEVED",
-  GET_ALL_SCHEMAS = "GET_ALL_SCHEMAS",
+  GET_ALL_DATASETS = "GET_ALL_DATASETS",
   CHANGE_DIALOG_STATE = "CHANGE_DIALOG_STATE",
   CHANGE_CONFIRM_DIALOG_STATE = "CHANGE_CONFIRM_DIALOG_STATE",
   DELETE_DATASET = "DELETE_DATASET",
@@ -33,6 +33,18 @@ export function getUserDatasets() {
   return {type: MARKETPLACE_ACTIONS.GET_USER_DATASETS}
 }
 
+export function getAllDatasets() {
+  return {type: MARKETPLACE_ACTIONS.GET_ALL_DATASETS}
+}
+
 export function userDatasetsRetrieved(datasets) {
   return {type: MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED, datasets}
+}
+
+export function deleteDataset(datasetId) {
+  return {type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId };
+}
+
+export function searchDatasets(terms) {
+  return {type: MARKETPLACE_ACTIONS.SEARCH_DATASETS, terms};
 }

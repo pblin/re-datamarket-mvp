@@ -6,9 +6,11 @@ import {
   changeConfirmDialogState,
   changeDialogState,
   changeSearch,
-  MARKETPLACE_ACTIONS,
   getUserDatasets,
-  updateSchemaFilter
+  updateSchemaFilter,
+  searchDatasets,
+  deleteDataset,
+  getAllDatasets
 } from "../../store/marketplace/marketplaceActions";
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
@@ -32,16 +34,13 @@ interface ComponentProps {
   schemaFilter: string;
   profile: any;
   getProfile: any;
-  getAllSchemas: any;
-  schemas: any[];
+  datasets: any[];
   userDatasets: any[];
   datasetDialog: any
   isProfileSet: boolean;
   history: any;
   confirmDeleteDialog: any;
-  deleteDataset: any;
   marketplace: any;
-  searchDatasets: any;
   actions: any;
 }
 
@@ -63,7 +62,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   ];
 
   componentDidMount() {
-    this.props.getAllSchemas();
+    this.props.actions.getAllDatasets();
     this.props.actions.getUserDatasets();
   }
 
@@ -85,7 +84,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   confirmDelete() {
-    this.props.deleteDataset(this.props.confirmDeleteDialog.dataset.id);
+    this.props.actions.deleteDataset(this.props.confirmDeleteDialog.dataset.id);
     this.props.actions.changeConfirmDialogState(false, {name: ''});
   }
 
@@ -96,9 +95,9 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 
   onSearch(search: string) {
     if(search != '') {
-      this.props.searchDatasets(search);
+      this.props.actions.searchDatasets(search);
     } else {
-      this.props.getAllSchemas();
+      this.props.actions.getAllDatasets();
     }
   }
 
@@ -141,7 +140,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
             <Grid item xs={12} sm={12}>
               {this.props.schemaFilter == 'all' &&
                 <SchemaList
-                  schemas={this.props.schemas}
+                  schemas={this.props.datasets}
                   history={this.props.history}
                 />
               }
@@ -187,7 +186,7 @@ function mapStateToProps(state: any, ownProps: any) {
     schemaFilter: marketplaceSelector(state).schemaFilter,
     profile: profileSelector(state),
     isProfileSet: isProfileSet(state),
-    schemas: marketplaceSelector(state).schemas,
+    datasets: marketplaceSelector(state).datasets,
     userDatasets: marketplaceSelector(state).userDatasets,
     datasetDialog: datasetDialogSelector(state),
     confirmDeleteDialog: confirmDeleteDialogSelector(state),
@@ -197,15 +196,15 @@ function mapStateToProps(state: any, ownProps: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    getAllSchemas: () => dispatch({type: MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS}),
-    deleteDataset: (datasetId: string) => dispatch({type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId }),
-    searchDatasets: (terms: string) => dispatch({type: MARKETPLACE_ACTIONS.SEARCH_DATASETS, terms}),
     actions: bindActionCreators({
       updateSchemaFilter,
       changeDialogState,
       changeSearch,
       changeConfirmDialogState,
-      getUserDatasets
+      getUserDatasets,
+      searchDatasets,
+      deleteDataset,
+      getAllDatasets
     }, dispatch)
   };
 }
