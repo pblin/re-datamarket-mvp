@@ -35,7 +35,7 @@ describe('Dataset Saga', () => {
       getState: () => ({ state: 'test' }),
     }, DatasetFormPublished, {basicInfo: {}, schema: [], id: '1234'});
 
-    expect(dispatched[0].type).toBe('DATASET_PUBLISHED');
+    expect(dispatched[0].type).toBe('DATASET_SAVED');
   });
 
   it("should update an existing dataset", async () => {

@@ -7,6 +7,7 @@ import {
   prevStep,
   resetForm,
   updateDatasetForm,
+  saveDatasetForm
 } from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit, destroy } from 'redux-form';
@@ -49,7 +50,6 @@ interface ComponentProps {
   schema: any[],
   noSchemaError: any;
   displaySchemaError: boolean;
-  publishSchema: any;
   profile: any;
   getProfile: any;
   isProfileSet: boolean;
@@ -104,7 +104,13 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   publish() {
-    this.props.publishSchema(this.props.basicInfo, this.props.schema, this.props.profile.id, DATASET_STAGE.SAVED, this.props.schemaName);
+    this.props.actions.saveDatasetForm(
+      this.props.basicInfo,
+      this.props.schema,
+      this.props.profile.id,
+      DATASET_STAGE.SAVED,
+      this.props.schemaName
+    );
   }
 
   onWizardPrev() {
@@ -250,17 +256,16 @@ function mapStateToProps(state: any, ownProps: any) {
 }
 
 function mapDispatchToProps(dispatch: any) {
-  //TODO: replace with action creators, and bindActionCreators
   return {
     onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
     onFileChangeAndUpload: (file: any, fileId: string) => dispatch({type: "FILE_CHANGED_AND_UPLOADED", validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST', file, fileId}),
-    publishSchema: (basicInfo: any, schema: any[], id: any, stage: DATASET_STAGE, schemaName) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id, stage, schemaName}),
     actions: bindActionCreators({
       nextStep,
       prevStep,
       changeDisplaySchemaError,
       changeDialogState,
       updateDatasetForm,
+      saveDatasetForm,
       resetForm,
       submit,
       destroy

@@ -1,5 +1,4 @@
 import {DATASET_INFO_ACTIONS} from "./datasetInfoActions";
-import {DATASET_FORM_ACTIONS} from "../datasetForm/actions";
 
 interface DatasetInfoState {
   dataset: any,
@@ -51,8 +50,7 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_INFO_ACTIONS.UPDATE_DATASET_INFO:
       newState.dataset = Object.assign({}, newState.dataset, action.dataset);
       break;
-    case DATASET_FORM_ACTIONS.DATASET_REPUBLISHED:
-      //TODO: REFACTOR THIS
+    case DATASET_INFO_ACTIONS.DATASET_UPDATED:
       newState.dataset = {...newState.dataset};
       newState.dataset.stage = action.dataset.stage;
       break;

@@ -63,7 +63,7 @@ const reducer = function(state=defaultState, action: any) {
       newState.schemas = [...state.schemas];
       newState.schemas = action.datasets;
       break;
-    case DATASET_FORM_ACTIONS.DATASET_PUBLISHED:
+    case DATASET_FORM_ACTIONS.DATASET_SAVED:
       newState.userSchemas = [action.dataset, ...state.userSchemas];
       break;
     default:
