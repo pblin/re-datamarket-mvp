@@ -11,7 +11,6 @@ import {
 import TrashIcon from "@material-ui/icons/Delete";
 import JumboPaper from "../Common/jumboPaper";
 
-//TODO: Add more details
 //TODO: refactor schemas to be datasets
 const UserDatasetList = ({schemas, onDeleteClick, onAddClicked, history}) => {
   const handleClick = (schema) => {

@@ -25,22 +25,6 @@ export const uploadSchema = {
   }
 };
 
-export const uploadSchemaBackup = {
-  type: "array",
-  minItems: 1,
-  items: {
-    "type": "object",
-    required: ["type", "name", "description", "label"],
-    additionalProperties: false,
-    "properties": {
-      description: {type: "string"},
-      type: {type: "string"},
-      name: {type: "string"},
-      label: {type: "string"}
-    }
-  }
-};
-
 export class SchemaValidator {
   async validate(schema: any, data: any) {
     return new Promise((resolve) => {

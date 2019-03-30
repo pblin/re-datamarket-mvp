@@ -4,7 +4,9 @@ import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
 import {
   changeDisplaySchemaError,
   nextStep,
-  prevStep, resetForm, updateDataset, updateDatasetForm,
+  prevStep,
+  resetForm,
+  updateDatasetForm,
 } from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
 import { submit, destroy } from 'redux-form';
@@ -31,6 +33,7 @@ import {changeDialogState} from "../../store/marketplace/marketplaceActions";
 import {datasetDialogSelector} from "../../store/marketplace/marketplaceSelectors";
 import SchemaList from "./SchemaList/SchemaList";
 import {DATASET_STAGE} from "../Common/CommonTypes";
+import {bindActionCreators} from "redux";
 
 interface ComponentProps {
   file: any[],
@@ -38,32 +41,24 @@ interface ComponentProps {
   datasetFileChange: any,
   onFileUpload: any,
   onFileChangeAndUpload: any,
-  submitBasicInfoForm: any,
   submittingBasicForm: any,
   updateBasicInfo: any,
   wizard: any,
   basicInfo: any,
-  nextStep: any,
-  prevStep: any,
   schemaFile: any,
   schema: any[],
   noSchemaError: any;
-  shouldDisplayNoSchemaError: any;
   displaySchemaError: boolean;
   publishSchema: any;
   profile: any;
   getProfile: any;
   isProfileSet: boolean;
   history: any;
-  changeDialogState: any;
   datasetDialog: any;
   datasetForm: any;
-  updateDatasetForm: any;
-  resetForm: any;
-  updateDataset: any;
-  destroyBasic: any;
   schemaName: string;
   steps: any[];
+  actions: any;
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -81,7 +76,7 @@ class DatasetManager extends React.Component<ComponentProps> {
 
   onSchemaFileChange(fileId: string, file: File) {
     if(this.props.displaySchemaError) {
-      this.props.shouldDisplayNoSchemaError(false);
+      this.props.actions.changeDisplaySchemaError(false);
     }
     this.props.onFileChangeAndUpload(file, fileId);
   }
@@ -93,11 +88,11 @@ class DatasetManager extends React.Component<ComponentProps> {
   onWizardNext() {
     switch(this.props.wizard.currentStep) {
       case 2:
-        this.props.submitBasicInfoForm();
+        this.props.actions.submit('contact');
         return;
       case 0:
         if(!this.props.schema.length) {
-          this.props.shouldDisplayNoSchemaError(true);
+          this.props.actions.changeDisplaySchemaError(true);
           return;
         }
         break;
@@ -105,7 +100,7 @@ class DatasetManager extends React.Component<ComponentProps> {
         this.publish();
         return;
     }
-    this.props.nextStep();
+    this.props.actions.nextStep();
   }
 
   publish() {
@@ -113,7 +108,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   onWizardPrev() {
-    this.props.prevStep();
+    this.props.actions.prevStep();
   }
 
   handleBasicFormSubmit(values) {
@@ -128,12 +123,12 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   handleClose() {
-    this.props.changeDialogState(false);
+    this.props.actions.changeDialogState(false);
   }
 
   cleanup() {
-    this.props.resetForm();
-    this.props.destroyBasic();
+    this.props.actions.resetForm();
+    this.props.actions.destroy('contact');
   }
 
   handleEnter() {
@@ -142,7 +137,7 @@ class DatasetManager extends React.Component<ComponentProps> {
       if(Array.isArray(dataset['search_terms'])) {
         dataset['search_terms'] = dataset['search_terms'].join(',')
       }
-      this.props.updateDatasetForm(dataset);
+      this.props.actions.updateDatasetForm(dataset);
     }
   }
 
@@ -260,15 +255,16 @@ function mapDispatchToProps(dispatch: any) {
     onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
     onFileChangeAndUpload: (file: any, fileId: string) => dispatch({type: "FILE_CHANGED_AND_UPLOADED", validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST', file, fileId}),
     publishSchema: (basicInfo: any, schema: any[], id: any, stage: DATASET_STAGE, schemaName) => dispatch({type: "DATASET_FORM_PUBLISHED", basicInfo, schema, id, stage, schemaName}),
-    updateDataset: (basicInfo: any, schema: any[], ownerId: any, datasetId: any) => dispatch(updateDataset(basicInfo, schema, ownerId, datasetId)),
-    nextStep: () => dispatch(nextStep()),
-    prevStep: () => dispatch(prevStep()),
-    submitBasicInfoForm: () => dispatch(submit('contact')),
-    shouldDisplayNoSchemaError: (shouldDisplay: boolean) => dispatch(changeDisplaySchemaError(shouldDisplay)),
-    changeDialogState: (isOpen: boolean) => dispatch(changeDialogState(isOpen)),
-    updateDatasetForm: (dataset: any) => dispatch(updateDatasetForm(dataset)),
-    resetForm: () => dispatch(resetForm()),
-    destroyBasic: () => dispatch(destroy('contact'))
+    actions: bindActionCreators({
+      nextStep,
+      prevStep,
+      changeDisplaySchemaError,
+      changeDialogState,
+      updateDatasetForm,
+      resetForm,
+      submit,
+      destroy
+    }, dispatch)
   };
 }
 export default withRouter(

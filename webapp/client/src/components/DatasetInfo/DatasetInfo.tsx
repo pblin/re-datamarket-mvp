@@ -2,12 +2,15 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {
+  changeBasicInfoForm,
+  changeBuyDatasetDialog,
   changeMoreOptionMenu,
-  getDatasetInfo,
-  updateDatasetInfo,
-  changeUploadDialog,
   changeSampleDialog,
-  changeBuyDatasetDialog
+  changeSchema,
+  changeUploadDialog,
+  getDatasetInfo,
+  updateDataset,
+  updateDatasetInfo
 } from "../../store/datasetInfo/datasetInfoActions";
 import {
   canPublish,
@@ -20,11 +23,10 @@ import {
 import SchemaList from "../DatasetManager/SchemaList/SchemaList";
 import MarketplaceToolbar from "../Marketplace/MarketplaceToolbar";
 import {ToolbarOption} from "../Marketplace/ToolbarOption";
-import { Grid } from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import "./datasetInfo.scss";
 import BasicInfoCard from "./BasicInfoCard";
 import {submit} from 'redux-form';
-import {changeSchema, updateDataset, changeBasicInfoForm} from "../../store/datasetInfo/datasetInfoActions";
 import {profileSelector} from "../../store/profile/profileSelector";
 import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
@@ -61,6 +63,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.saveDataset = this.saveDataset.bind(this);
     this.publishDataset = this.publishDataset.bind(this);
     this.unpublishDataset = this.unpublishDataset.bind(this);
+    this.updateDataset = this.updateDataset.bind(this);
   }
 
   pageId: string;
@@ -80,8 +83,6 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.pageId = this.props.match.params.id;
     this.props.action.getDatasetInfo(this.pageId);
   }
-
-  onMenuChange() {}
 
   onUpdate() {
     this.props.action.changeBasicInfoForm(true);
@@ -104,51 +105,36 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.props.action.changeSchema(value, field, index);
   }
 
-  //TODO: Save, Publish, and Unpublish can be turned into one function
-  saveDataset() {
+  updateDataset(type: DATASET_STAGE, message: string) {
     this.props.action.updateDataset(
       this.props.dataset,
       this.props.schema,
       this.props.profile.id,
       this.props.dataset.id,
-      DATASET_STAGE.SAVED,
+      type,
       this.props.enqueueSnackbar,
-      `The Dataset was saved successfully`
+      message
     )
+  }
+
+  saveDataset() {
+    this.updateDataset(DATASET_STAGE.SAVED,`The Dataset was saved successfully` );
   }
 
   publishDataset() {
-    this.props.action.updateDataset(
-      this.props.dataset,
-      this.props.schema,
-      this.props.profile.id,
-      this.props.dataset.id,
-      DATASET_STAGE.PUBLISHED,
-      this.props.enqueueSnackbar,
-      `The Dataset was published successfully`
-    )
+    this.updateDataset(DATASET_STAGE.PUBLISHED,`The Dataset was published successfully` );
   }
 
   unpublishDataset() {
-    this.props.action.updateDataset(
-      this.props.dataset,
-      this.props.schema,
-      this.props.profile.id,
-      this.props.dataset.id,
-      DATASET_STAGE.SAVED,
-      this.props.enqueueSnackbar,
-      `The Dataset was un-published successfully`
-    )
+    this.updateDataset( DATASET_STAGE.SAVED,   `The Dataset was un-published successfully`);
   }
 
   render() {
-    console.log(this.props.dataset);
     return (
       <div className={"dataset-info-view"}>
-        {/*TODO: ADD buy button and sample data button here*/}
         <MarketplaceToolbar
           toolbarOptions={this.toolbarOptions}
-          onSchemaFilterChange={this.onMenuChange}
+          onSchemaFilterChange={() => {}}
           schemaFilter={'schema'}
           hasPublish={this.props.isOwner}
           isPublished={this.props.isPublished}
@@ -223,7 +209,6 @@ function mapStateToProps(state: any, ownProps: any) {
   }
 }
 
-//TODO: Write update dataset action creator
 function mapDispatchToProps(dispatch: any) {
   return {
     submitBasicInfoForm: () => dispatch(submit('contact')),
