@@ -12,8 +12,8 @@ describe('Marketplace State', () => {
   it("Should set initial state", () => {
     let initialState = store.getState();
     expect(initialState.schemaFilter).toBe('all');
-    expect(initialState.schemas).toEqual([]);
-    expect(initialState.userSchemas).toEqual([]);
+    expect(initialState.datasets).toEqual([]);
+    expect(initialState.userDatasets).toEqual([]);
     expect(initialState.datasetDialog.open).toBe(false);
     expect(initialState.datasetDialog.mode).toBe('add');
     expect(initialState.datasetDialog.dataset).toBeFalsy();
@@ -32,13 +32,13 @@ describe('Marketplace State', () => {
   });
 
   it('should receive schema updates', () => {
-    store.dispatch({type: MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED, schemas:[]});
-    expect(store.getState().schemas).toEqual([]);
+    store.dispatch({type: MARKETPLACE_ACTIONS.DATASETS_RETRIEVED, datasets:[]});
+    expect(store.getState().datasets).toEqual([]);
   });
 
   it('should receive user schema updates', () => {
-    store.dispatch({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas:[]});
-    expect(store.getState().userSchemas).toEqual([]);
+    store.dispatch({type: MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED, datasets:[]});
+    expect(store.getState().userDatasets).toEqual([]);
   });
 
   //Selector Tests

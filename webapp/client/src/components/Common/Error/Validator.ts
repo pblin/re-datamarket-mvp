@@ -25,7 +25,7 @@ export function validate(val: any, errorType: ErrorType) {
     case ERROR_TYPE.LESS_THAN:
       return (val < errorType.val || val == undefined);
     case ERROR_TYPE.IS_URL:
-      return isURL(val);
+      return isURL(val) || val == undefined;
     case ERROR_TYPE.PATTERN:
       return errorType.val.test(val)
   }

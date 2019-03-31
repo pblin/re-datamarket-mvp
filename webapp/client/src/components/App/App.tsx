@@ -18,6 +18,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
+import {bindActionCreators} from "redux";
 import autobind from 'autobind-decorator';
 import {Link} from "react-router-dom";
 import {AppLink} from "./AppLink";
@@ -49,12 +50,6 @@ const styles = (theme: Theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     background: '#47494d'
-  },
-  loginBtn: {
-    background: "#d15f3e",
-    marginRight: "50px",
-    fontWeight: 600,
-    padding: "6px 22px"
   },
   marginLeft50: {
     marginLeft: "50px"
@@ -113,9 +108,8 @@ interface AppProps {
   theme?: any;
   auth: Auth0Authentication;
   profileMenuOpen: boolean;
-  updateProfileMenuOpen: any;
-  getProfile: any;
   profile: any;
+  actions: any;
 }
 
 class PersistentDrawerLeft extends React.Component <AppProps> {
@@ -158,12 +152,12 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   handleProfileMenuOpen = () => {
-    this.props.updateProfileMenuOpen(true);
+    this.props.actions.updateProfileMenuOpen(true);
   };
 
   componentDidMount(): void {
     if(!this.props.profile) {
-      this.props.getProfile();
+      this.props.actions.getProfile();
     }
   }
 
@@ -171,14 +165,14 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   handleProfileMenuClickAway(itemPressed) {
     switch(itemPressed) {
       case 'clickAway':
-        this.props.updateProfileMenuOpen(false);
+        this.props.actions.updateProfileMenuOpen(false);
         break;
       case 'logout':
         this.logout();
-        this.props.updateProfileMenuOpen(false);
+        this.props.actions.updateProfileMenuOpen(false);
         break;
       case 'profile':
-        this.props.updateProfileMenuOpen(false);
+        this.props.actions.updateProfileMenuOpen(false);
         break;
     }
   };
@@ -223,10 +217,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
               <Link to={"/home"}><img src={Logo} className={classes.appLogo + ' ' + (authenticated ? '': classes.marginLeft50)}/></Link>
               <div className={classes.grow}></div>
               { (profileObj !== '' && authenticated) && (<div className={classes.avatar} onClick={this.handleProfileMenuOpen}><ProfileAvatar initial={initial}/></div> )}
-              {/*!authenticated && (
-                <Button color="inherit" type="submit" onClick={this.login} className={classes.loginBtn}>Login</Button>
-              )
-              */}
             </Toolbar>
             <ProfileMenu
               open={this.props.profileMenuOpen}
@@ -292,8 +282,10 @@ function mapStateToProps (state: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    updateProfileMenuOpen: (isOpen: boolean) => dispatch(updateProfileMenuOpen(isOpen)),
-    getProfile: () => dispatch(getProfile())
+    actions: bindActionCreators({
+      getProfile,
+      updateProfileMenuOpen
+    }, dispatch)
   }
 }
 

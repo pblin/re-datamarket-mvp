@@ -1,17 +1,26 @@
 import Ajv from 'ajv';
 
 export const uploadSchema = {
-  type: "array",
-  minItems: 1,
-  items: {
-    "type": "object",
-    required: ["type", "name", "description", "label"],
-    additionalProperties: false,
-    "properties": {
-      description: {type: "string"},
-      type: {type: "string"},
-      name: {type: "string"},
-      label: {type: "string"}
+  type: "object",
+  required: ['fields', 'schema_name'],
+  properties: {
+    fields: {
+      type: "array",
+      minItems: 1,
+      items: {
+        "type": "object",
+        required: ["type", "name", "description", "label"],
+        additionalProperties: false,
+        "properties": {
+          description: {type: "string"},
+          type: {type: "string"},
+          name: {type: "string"},
+          label: {type: "string"}
+        }
+      }
+    },
+    "schema_name": {
+      type: "string"
     }
   }
 };
