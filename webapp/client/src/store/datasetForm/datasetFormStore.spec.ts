@@ -64,12 +64,16 @@ describe('Dataset Form Store', () => {
     expect(store.getState().wizard.currentStep).toBe(store.getState().wizard.steps.length - 1);
   });
 
-  it("should load the schema", () => {
-    store.dispatch({type: DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST, value:[
-        {name: 'test'},
-        {},
-        {}
-    ]});
+  it("should load the dataset", () => {
+    store.dispatch({type: DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST, value:{
+        fields: [
+          {name: 'test'},
+          {},
+          {}
+        ],
+        schemaName: 'test'
+      }
+    });
     expect(store.getState().schema.length).toBe(3);
     expect(store.getState().schema[0].name).toBe('test');
   });
