@@ -17,6 +17,10 @@ export function* GetDatasetInfo(action) {
     dataset = yield datasetService.getDataset(datasetId, profile.id);
   }
 
+  dataset['json_schema'] = JSON.parse(dataset['json_schema']);
+  if( !(dataset['json_schema'] instanceof Array) ) {
+    dataset['json_schema'] = [];
+  }
   yield put({type: DATASET_INFO_ACTIONS.DATASET_INFO_RETRIEVED, dataset: dataset})
 }
 
