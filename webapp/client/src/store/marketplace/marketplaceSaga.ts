@@ -1,25 +1,25 @@
 import {takeLatest, put} from 'redux-saga/effects';
 import {DatasetService} from "../../services/DatasetService";
-import {MARKETPLACE_ACTIONS} from "./marketplaceActions";
+import {MARKETPLACE_ACTIONS, userDatasetsRetrieved} from "./marketplaceActions";
 
-export function* GetUserSchemas() {
+export function* GetUserDatasets() {
   let profile = JSON.parse(localStorage.getItem ('profile'));
 
-  const schemaService = new DatasetService();
+  const datasetService = new DatasetService();
   if(profile.id) {
-    const schemas = yield schemaService.getUserDatasets(profile.id);
+    const datasets = yield datasetService.getUserDatasets(profile.id);
 
-    yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas})
+    yield put(userDatasetsRetrieved(datasets))
   } else {
-    yield put({type: MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED, schemas: []})
+    yield put(userDatasetsRetrieved([]));
   }
 }
 
-export function* GetAllSchemas() {
-  const schemaService = new DatasetService();
-  const schemas = yield schemaService.getAllDatasets();
+export function* GetAllDatasets() {
+  const datasetService = new DatasetService();
+  const datasets = yield datasetService.getAllDatasets();
 
-  yield put({type: MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED, schemas});
+  yield put({type: MARKETPLACE_ACTIONS.DATASETS_RETRIEVED, datasets});
 }
 
 export function* DeleteDataset(action) {
@@ -43,8 +43,8 @@ export function* SearchDatasets(action) {
 }
 
 export function* watchMarketplace() {
-  yield takeLatest(MARKETPLACE_ACTIONS.GET_USER_SCHEMAS, GetUserSchemas);
-  yield takeLatest(MARKETPLACE_ACTIONS.GET_ALL_SCHEMAS, GetAllSchemas);
+  yield takeLatest(MARKETPLACE_ACTIONS.GET_USER_DATASETS, GetUserDatasets);
+  yield takeLatest(MARKETPLACE_ACTIONS.GET_ALL_DATASETS, GetAllDatasets);
   yield takeLatest(MARKETPLACE_ACTIONS.DELETE_DATASET, DeleteDataset);
   yield takeLatest(MARKETPLACE_ACTIONS.SEARCH_DATASETS, SearchDatasets);
 }

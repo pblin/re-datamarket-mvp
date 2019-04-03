@@ -1,5 +1,3 @@
-import {DATASET_FORM_ACTIONS} from "../datasetForm/actions";
-
 export enum DATASET_INFO_ACTIONS {
   GET_DATASET_INFO = "GET_DATASET_INFO",
   UPDATE_DATASET_INFO = "UPDATE_DATASET_INFO",
@@ -9,7 +7,9 @@ export enum DATASET_INFO_ACTIONS {
   CHANGE_BASIC_INFO_FORM = "CHANGE_BASIC_INFO_FORM",
   CHANGE_UPLOAD_DIALOG = "CHANGE_UPLOAD_DIALOG",
   CHANGE_SAMPLE_DIALOG = "CHANGE_SAMPLE_DIALOG",
-  CHANGE_BUY_DATASET_DIALOG = "CHANGE_BUY_DATASET_DIALOG"
+  CHANGE_BUY_DATASET_DIALOG = "CHANGE_BUY_DATASET_DIALOG",
+  UPDATE_DATASET = "UPDATE_DATASET",
+  DATASET_UPDATED = "DATASET_UPDATED"
 };
 
 export function getDatasetInfo(datasetId: string) {
@@ -25,8 +25,7 @@ export function changeSchema(val: any, field: any, index: number) {
 }
 
 export function updateDataset(basicInfo, schema, ownerId, datasetId, stage, notify, message) {
-  //TODO: Move this enum value to DATASET_INFO_ACTIONS
-  return {type: DATASET_FORM_ACTIONS.UPDATE_DATASET, basicInfo, schema, ownerId, datasetId, stage, notify, message};
+  return {type: DATASET_INFO_ACTIONS.UPDATE_DATASET, basicInfo, schema, ownerId, datasetId, stage, notify, message};
 }
 
 export function changeBasicInfoForm(isOpen: boolean) {
@@ -46,5 +45,13 @@ export function changeBuyDatasetDialog(isOpen: boolean) {
 }
 
 export function updateDatasetInfo(dataset) {
+  if(!(dataset['search_terms'] instanceof Array)) {
+    dataset['search_terms'] =  dataset['search_terms'] ?
+      dataset['search_terms'].split(','): null;
+  }
+
+  //Convert price to number
+  dataset['price_high'] = Number(dataset['price_high']);
+
   return {type: DATASET_INFO_ACTIONS.UPDATE_DATASET_INFO, dataset}
 }

@@ -7,7 +7,7 @@ export class DatasetService {
     this.baseUrl = location.protocol+'//'+location.hostname + ":9000";
   }
 
-  async postDataset(basicInfo: any, schema: any[], id: any, stage: any) {
+  async postDataset(basicInfo: any, schema: any[], id: any, stage: any, schemaName: string) {
     const uid = uuid();
 
     let body = {
@@ -29,7 +29,8 @@ export class DatasetService {
       date_modified: new Date(),
       parameters: '{}',
       stage: stage,
-      json_schema: JSON.stringify(schema)
+      json_schema: JSON.stringify(schema),
+      table_name: schemaName
     };
 
     await fetch(`${this.baseUrl}/schema`, {

@@ -2,12 +2,15 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {
+  changeBasicInfoForm,
+  changeBuyDatasetDialog,
   changeMoreOptionMenu,
-  getDatasetInfo,
-  updateDatasetInfo,
-  changeUploadDialog,
   changeSampleDialog,
-  changeBuyDatasetDialog
+  changeSchema,
+  changeUploadDialog,
+  getDatasetInfo,
+  updateDataset,
+  updateDatasetInfo
 } from "../../store/datasetInfo/datasetInfoActions";
 import {
   canPublish,
@@ -20,17 +23,15 @@ import {
 import SchemaList from "../DatasetManager/SchemaList/SchemaList";
 import MarketplaceToolbar from "../Marketplace/MarketplaceToolbar";
 import {ToolbarOption} from "../Marketplace/ToolbarOption";
-import { Grid } from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import "./datasetInfo.scss";
 import BasicInfoCard from "./BasicInfoCard";
 import {submit} from 'redux-form';
-import {changeSchema, updateDataset, changeBasicInfoForm} from "../../store/datasetInfo/datasetInfoActions";
 import {profileSelector} from "../../store/profile/profileSelector";
 import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
 import BasicInfoModal from "./BasicInfoFormCard";
 import BasicInfoOwnerCard from './BasicInfoOwnerCard';
-import SchemaUploadDialog from "./SchemaUploadDialog";
 import SampleDataDialog from "./SampleDataDialog";
 import BuyDatasetDialog from "./BuyDatasetDialog";
 
@@ -62,6 +63,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.saveDataset = this.saveDataset.bind(this);
     this.publishDataset = this.publishDataset.bind(this);
     this.unpublishDataset = this.unpublishDataset.bind(this);
+    this.updateDataset = this.updateDataset.bind(this);
   }
 
   pageId: string;
@@ -69,20 +71,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
     new ToolbarOption('Schema', 'schema')
   ];
 
-  onToken = token => {
-    const body = {
-      amount: this.props.dataset.price_high,
-      description:this.props.dataset.description,
-      product: this.props.dataset.id,
-      stripeTokenType: token.type,
-      stripeEmail: token.email,
-      stripeToken: token.id,
-      token: token
-  };
-    console.log(body);
-  };
   buyDataset() {
-    console.log('Buying dataset')
     this.props.action.changeBuyDatasetDialog(true);
   }
 
@@ -95,8 +84,6 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.props.action.getDatasetInfo(this.pageId);
   }
 
-  onMenuChange() {}
-
   onUpdate() {
     this.props.action.changeBasicInfoForm(true);
   }
@@ -106,13 +93,10 @@ class DatasetInfo extends React.Component<ComponentProps> {
   }
 
   saveBasicInfo() {
-    console.log('Save basic info called');
     this.props.submitBasicInfoForm();
   }
 
   handleBasicFormSubmit(values) {
-    console.log('Basic Form Submitted');
-    console.log(values);
     this.props.action.updateDatasetInfo(values);
     this.props.action.changeBasicInfoForm(false);
   }
@@ -121,51 +105,36 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.props.action.changeSchema(value, field, index);
   }
 
-  saveDataset() {
-    console.log('Saving the dataset');
+  updateDataset(type: DATASET_STAGE, message: string) {
     this.props.action.updateDataset(
       this.props.dataset,
       this.props.schema,
       this.props.profile.id,
       this.props.dataset.id,
-      DATASET_STAGE.SAVED,
+      type,
       this.props.enqueueSnackbar,
-      `The Dataset was saved successfully`
+      message
     )
+  }
+
+  saveDataset() {
+    this.updateDataset(DATASET_STAGE.SAVED,`The Dataset was saved successfully` );
   }
 
   publishDataset() {
-    this.props.action.updateDataset(
-      this.props.dataset,
-      this.props.schema,
-      this.props.profile.id,
-      this.props.dataset.id,
-      DATASET_STAGE.PUBLISHED,
-      this.props.enqueueSnackbar,
-      `The Dataset was published successfully`
-    )
+    this.updateDataset(DATASET_STAGE.PUBLISHED,`The Dataset was published successfully` );
   }
 
   unpublishDataset() {
-    this.props.action.updateDataset(
-      this.props.dataset,
-      this.props.schema,
-      this.props.profile.id,
-      this.props.dataset.id,
-      DATASET_STAGE.SAVED,
-      this.props.enqueueSnackbar,
-      `The Dataset was un-published successfully`
-    )
+    this.updateDataset( DATASET_STAGE.SAVED,   `The Dataset was un-published successfully`);
   }
 
   render() {
-    console.log(this.props.dataset);
     return (
       <div className={"dataset-info-view"}>
-        {/*TODO: ADD buy button and sample data button here*/}
         <MarketplaceToolbar
           toolbarOptions={this.toolbarOptions}
-          onSchemaFilterChange={this.onMenuChange}
+          onSchemaFilterChange={() => {}}
           schemaFilter={'schema'}
           hasPublish={this.props.isOwner}
           isPublished={this.props.isPublished}
@@ -199,9 +168,8 @@ class DatasetInfo extends React.Component<ComponentProps> {
                 <SchemaList
                   schemas={this.props.schema}
                   onSchemaChange={this.onSchemaChange}
+                  schemaName={this.props.dataset.table_name}
                   canEdit={(!this.props.isPublished && this.props.isOwner)}
-                  allowUpload={(!this.props.isPublished && this.props.isOwner)}
-                  onUpload={() => this.props.action.changeUploadDialog(true)}
                 />
               </Grid>
             </Grid>
@@ -212,10 +180,6 @@ class DatasetInfo extends React.Component<ComponentProps> {
           onSubmit={this.handleBasicFormSubmit}
           isOpen={this.props.datasetInfo.isBasicFormOpen}
           onCancel={() => this.props.action.changeBasicInfoForm(false)}
-        />
-        <SchemaUploadDialog
-          isOpen={this.props.datasetInfo.isFileUploadOpen}
-          onCancel={() => this.props.action.changeUploadDialog(false)}
         />
         <SampleDataDialog
           isOpen={this.props.datasetInfo.isSampleDataOpen}
@@ -234,9 +198,6 @@ class DatasetInfo extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
-  console.log('can publish');
-  console.log(state);
-  console.log(canPublish(state));
   return {
     dataset: datasetInfoSelector(state),
     datasetInfo: datasetSelector(state),
@@ -248,7 +209,6 @@ function mapStateToProps(state: any, ownProps: any) {
   }
 }
 
-//TODO: Write update dataset action creator
 function mapDispatchToProps(dispatch: any) {
   return {
     submitBasicInfoForm: () => dispatch(submit('contact')),

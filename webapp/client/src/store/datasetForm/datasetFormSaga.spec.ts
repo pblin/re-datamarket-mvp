@@ -1,4 +1,4 @@
-import {DatasetFormPublished, DatasetFormUpdated, watchPublish, datasetFormSagas} from "./datasetFormSaga";
+import {DatasetFormSaved, watchPublish, datasetFormSagas} from "./datasetFormSaga";
 
 jest.mock('../../services/DatasetService', () => {
   return {
@@ -33,19 +33,9 @@ describe('Dataset Saga', () => {
     await runSaga({
       dispatch: (action) => dispatched.push(action),
       getState: () => ({ state: 'test' }),
-    }, DatasetFormPublished, {basicInfo: {}, schema: [], id: '1234'});
+    }, DatasetFormSaved, {basicInfo: {}, schema: [], id: '1234'});
 
-    expect(dispatched[0].type).toBe('DATASET_PUBLISHED');
-  });
-
-  it("should update an existing dataset", async () => {
-    const dispatched = [];
-    await runSaga({
-      dispatch: (action) => dispatched.push(action),
-      getState: () => ({ state: 'test' }),
-    }, DatasetFormUpdated, {basicInfo: {}, schema: [], ownerId: '1234', datasetId: '123', notify: () =>{}});
-
-    expect(dispatched[0].type).toBe('DATASET_REPUBLISHED');
+    expect(dispatched[0].type).toBe('DATASET_SAVED');
   });
 
   it('should watch publish', async() => {

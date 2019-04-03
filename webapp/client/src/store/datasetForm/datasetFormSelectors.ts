@@ -4,6 +4,7 @@ import {datasetDialogSelector} from "../marketplace/marketplaceSelectors";
 
 export const basicFormSelector = state => state.form.contact;
 export const schemaSelector = state => state.DatasetFormState.schema;
+export const datasetFormSelector = state => state.DatasetFormState;
 export const wizardSelector = state => state.DatasetFormState.wizard;
 
 export const basicInfo = createSelector(

@@ -99,7 +99,16 @@ const validate = (values) => {
       errorMessages: [
         'Please enter a positive asking price'
       ]
-    }
+    },
+    {
+      fieldName: 'access_url',
+      errors: [
+        {type: ERROR_TYPE.IS_URL}
+      ],
+      errorMessages: [
+        'Please enter a valid endpoint'
+      ]
+    },
   ]);
 
   return errors;

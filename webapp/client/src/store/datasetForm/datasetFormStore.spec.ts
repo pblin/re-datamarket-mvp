@@ -64,12 +64,16 @@ describe('Dataset Form Store', () => {
     expect(store.getState().wizard.currentStep).toBe(store.getState().wizard.steps.length - 1);
   });
 
-  it("should load the schema", () => {
-    store.dispatch({type: DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST, value:[
-        {name: 'test'},
-        {},
-        {}
-    ]});
+  it("should load the dataset", () => {
+    store.dispatch({type: DATASET_FORM_ACTIONS.LOAD_SCHEMA_LIST, value:{
+        fields: [
+          {name: 'test'},
+          {},
+          {}
+        ],
+        schemaName: 'test'
+      }
+    });
     expect(store.getState().schema.length).toBe(3);
     expect(store.getState().schema[0].name).toBe('test');
   });
@@ -80,7 +84,7 @@ describe('Dataset Form Store', () => {
   });
 
   it("the dataset should be published", () => {
-    store.dispatch({type: DATASET_FORM_ACTIONS.DATASET_PUBLISHED, dataset: {id: 1234}});
+    store.dispatch({type: DATASET_FORM_ACTIONS.DATASET_SAVED, dataset: {id: 1234}});
     expect(store.getState().datasetPublished).toBeTruthy();
     expect(store.getState().datasetPublishedId).toBe(1234);
   });

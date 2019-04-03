@@ -1,15 +1,16 @@
+import {DATASET_STAGE} from "../../components/Common/CommonTypes";
+
 export enum DATASET_FORM_ACTIONS {
   NEXT_STEP = "NEXT_STEP",
   PREV_STEP = "PREV_STEP",
   GOTO_STEP = "GOTO_STEP",
   LOAD_SCHEMA_LIST = "LOAD_SCHEMA_LIST",
   CHANGE_NO_SCHEMA_ERROR = "CHANGE_NO_SCHEMA_ERROR",
-  DATASET_PUBLISHED = "DATASET_PUBLISHED",
-  DATASET_REPUBLISHED = "DATASET_REPUBLISHED",
+  DATASET_SAVED = "DATASET_SAVED",
   UPDATE_DATASET_FORM = "UPDATE_DATASET_FORM",
   RESET = "RESET",
   UPDATE_DATASET = "UPDATE_DATASET",
-  DATASET_FORM_PUBLISHED = "DATASET_FORM_PUBLISHED"
+  DATASET_FORM_SAVED = "DATASET_FORM_SAVED",
 }
 
 export function nextStep() {
@@ -36,6 +37,11 @@ export function updateDataset(basicInfo: any, schema: any[], ownerId: string, da
   return {type: DATASET_FORM_ACTIONS.UPDATE_DATASET, basicInfo, schema, ownerId, datasetId}
 }
 
+export function saveDatasetForm(basicInfo: any, schema: any[], id: any, stage: DATASET_STAGE, schemaName: string) {
+  return {type: DATASET_FORM_ACTIONS.DATASET_FORM_SAVED, basicInfo, schema, id, stage, schemaName}
+}
+
 export function resetForm() {
   return {type: DATASET_FORM_ACTIONS.RESET};
 }
+

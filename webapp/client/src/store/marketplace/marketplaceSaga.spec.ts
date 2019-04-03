@@ -13,7 +13,7 @@ jest.mock('../../services/DatasetService', () => {
   }
 
 });
-import {GetUserSchemas, GetAllSchemas, watchMarketplace, marketplaceSagas} from "./marketplaceSaga";
+import {GetUserDatasets, GetAllDatasets, watchMarketplace, marketplaceSagas} from "./marketplaceSaga";
 import {runSaga} from "@redux-saga/core";
 import {MARKETPLACE_ACTIONS} from "./marketplaceActions";
 
@@ -26,10 +26,10 @@ describe('Marketplace Saga', () => {
     await runSaga({
       dispatch: (action) => dispatched.push(action),
       getState: () => ({ state: 'test' }),
-    }, GetAllSchemas);
+    }, GetAllDatasets);
 
-    expect(dispatched[0].type).toBe(MARKETPLACE_ACTIONS.SCHEMAS_RETRIEVED);
-    expect(dispatched[0].schemas).toEqual([{test: 1234}]);
+    expect(dispatched[0].type).toBe(MARKETPLACE_ACTIONS.DATASETS_RETRIEVED);
+    expect(dispatched[0].datasets).toEqual([{test: 1234}]);
   });
 
   it("should get user datasets", async () => {
@@ -39,10 +39,10 @@ describe('Marketplace Saga', () => {
     await runSaga({
       dispatch: (action) => dispatched.push(action),
       getState: () => ({ state: 'test' }),
-    }, GetUserSchemas);
+    }, GetUserDatasets);
 
-    expect(dispatched[0].type).toBe(MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED);
-    expect(dispatched[0].schemas).toEqual([{test: 12345}]);
+    expect(dispatched[0].type).toBe(MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED);
+    expect(dispatched[0].datasets).toEqual([{test: 12345}]);
   });
 
   it("should get empty set for user datasets when profile is not set", async () => {
@@ -52,10 +52,10 @@ describe('Marketplace Saga', () => {
     await runSaga({
       dispatch: (action) => dispatched.push(action),
       getState: () => ({ state: 'test' }),
-    }, GetUserSchemas);
+    }, GetUserDatasets);
 
-    expect(dispatched[0].type).toBe(MARKETPLACE_ACTIONS.USER_SCHEMAS_RETRIEVED);
-    expect(dispatched[0].schemas).toEqual([]);
+    expect(dispatched[0].type).toBe(MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED);
+    expect(dispatched[0].datasets).toEqual([]);
   });
 
   it('should watch marketplace', async() => {
