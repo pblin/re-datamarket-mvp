@@ -28,7 +28,7 @@ const PrivateRoute = ({component: Component, authenticated, ...rest}) => {
         : <Redirect to={{pathname: '/home', state: {from: props.location}}} />}
     />
   )
-}
+};
 
 const Routes: SFC<{}> = () => {
   return (

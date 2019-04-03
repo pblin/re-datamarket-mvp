@@ -9,8 +9,6 @@ function* GetProfile(action) {
   let profile = localStorage.getItem ('profile');
   let email = localStorage.getItem('email');
 
-  console.log('Getting profile');
-  console.log(email);
   yield put({type: PROFILE_ACTIONS.SET_PROFILE, profile, email});
 }
 
