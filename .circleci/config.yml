@@ -24,9 +24,9 @@ jobs:
           name: push file to server 
           command: |
             rsh  mvp@demo-app.rebloc.io "if [ ! -d 'webapp' ]; then mkdir -p webapp; fi"
-            scp -r ./webapp/* mvp@demo-app.rebloc.io:/home/mvp/webapp/
-            rsh mvp@demo-app.rebloc.io "cd webapp/client && yarn install"
-            rsh mvp@demo-app.rebloc.io "cd webapp/server && yarn install && cd ../client && yarn build"
+            scp -r ./webapp/client/* mvp@demo-app.rebloc.io:/home/mvp/webapp/client
+            scp ./webapp/server/server.js mvp@demo-app.rebloc.io:/home/mvp/webapp/server/server.js
+            rsh mvp@demo-app.rebloc.io "cd webapp/client && yarn"
             rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/client && cp /var/local/democonfig/client/configuration.ts ./webapp/client/src/auth"
             rsh mvp@demo-app.rebloc.io "/var/local/democonfig/check-n-restart.sh"
 workflows:
