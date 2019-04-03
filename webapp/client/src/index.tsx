@@ -8,6 +8,8 @@ import './index.css';
 import 'typeface-roboto';
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import {SnackbarProvider} from "notistack";
+import {AppEventEmitter} from "./utils/AppEventEmitter";
+//import {unregister} from "./registerServiceWorker";
 
 const theme = createMuiTheme({
   typography: {
@@ -42,7 +44,16 @@ const app = AppStore.getInstance();
 app.initialize();
 
 
+
 class AppBootstrap extends React.Component {
+  constructor(props) {
+    super(props);
+    AppEventEmitter.getInstance().on('authenticated', () => {
+      //Need to force re-render on authentication, or routes wont work correctly
+      this.forceUpdate();
+    });
+  }
+
   render() {
     return (
       <SnackbarProvider maxSnack={3} anchorOrigin={{
@@ -63,4 +74,5 @@ ReactDOM.render(
   <AppBootstrap />
   ,
   document.getElementById('root') as HTMLElement);
-registerServiceWorker();
+
+  registerServiceWorker();

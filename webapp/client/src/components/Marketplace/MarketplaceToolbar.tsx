@@ -22,8 +22,6 @@ const MarketplaceToolbar = (
     onSchemaFilterChange(val);
   };
 
-  console.log('is published');
-  console.log(isPublished);
   return(
     <Toolbar className="marketplace-toolbar">
       <Hidden xsDown>

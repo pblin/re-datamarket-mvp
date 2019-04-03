@@ -6,7 +6,10 @@ import {Auth0DecodedHash, WebAuth} from 'auth0-js';
 import 'graphql-request';
 import {AppStore} from "../store/AppStore";
 import {ProfileService} from "../services/ProfileService";
+import {PROFILE_ACTIONS} from "../store/profile/profileActions";
+import {AppEventEmitter} from "../utils/AppEventEmitter";
 
+//TODO: ADD HOME ROUTE CONFIGURATION
 /**
  * Web based Auth0 authentication
  *
@@ -48,10 +51,13 @@ export class WebAuthentication implements Auth0Authentication {
     this.auth0.parseHash({},( e: any, result: any) => {
       if (result && result.accessToken && result.idToken) {
         this.setSession(result);
-        history.replace('/home');
-
+        AppEventEmitter.getInstance().emit('authenticated');
+        //history.replace('/home');
+        //history.push('/home');
+        //TODO: Create app wide event emitter for app authentication
       } else if (e) {
-        history.replace('/home');
+        //history.replace('/home');
+        history.push('/home');
         // tslint:disable-next-line:no-console
         console.error(e);
         alert(`Error: ${e.error}. Check the console for further details.`);
@@ -66,7 +72,8 @@ export class WebAuthentication implements Auth0Authentication {
 
     // @ts-ignore
     localStorage.setItem ('profile', JSON.stringify(profile));
-    location.reload();
+    AppStore.getInstance().store.dispatch({type: PROFILE_ACTIONS.GET_PROFILE});
+    //location.reload();
   } 
 
   @autobind
@@ -82,11 +89,9 @@ export class WebAuthentication implements Auth0Authentication {
     localStorage.setItem('idTokenPayload', JSON.stringify(idTokenPayload));
     localStorage.setItem('pendingProfileQuery', 'n');
     this.findUser(idTokenPayload.email);
-    AppStore.getInstance();
 
     // navigate to the home route
-    history.replace('/home');
-
+    history.push('/home');
   }
 
   @autobind
@@ -100,8 +105,7 @@ export class WebAuthentication implements Auth0Authentication {
     localStorage.removeItem('profile');
     localStorage.removeItem('pendingProfileQuery');
     // navigate to the home route
-    history.replace('/home');
-
+    history.push('/home');
     let ssoLogOutUrl = 'https://rebloc.auth0.com/v2/logout';
     window.location.replace(ssoLogOutUrl);
   }
