@@ -6,8 +6,6 @@ import { Redirect } from 'auth0-js';
 import 'graphql-request';
 import { submit } from 'redux-form';
 import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
-import classNames from 'classnames';
 import {connect} from "react-redux";
 import CustomerForm from "./CustomerForm";
 import {getProfile, updateProfile} from "../../store/profile/profileActions";
@@ -81,9 +79,10 @@ class Customer extends React.Component<Props> {
           <Grid container={true} justify={'center'}>
             <div className={classes.container}>
               <CustomerForm onSubmit={this.handleProfileSubmit}/>
-              <Button color="primary" className={classes.button}
+              <Button color="secondary"
+                      className={classes.button}
+                      variant={"contained"}
                       onClick={this.props.submitProfileForm}>
-                  <SaveIcon className={classNames(classes.leftIcon, classes.iconLarge)} />
                   Save
               </Button>
             </div>

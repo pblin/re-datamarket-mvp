@@ -9,11 +9,13 @@ import Button from "@material-ui/core/Button";
 import StripeCheckout from "react-stripe-checkout";
 import {STRIPETOKEN} from '../ConfigEnv';
 import {StripeService} from "../../services/StripeService";
+import {EmailService} from "../../services/EmailService";
 
 const BuyDatasetDialog = ({isOpen = false, onCancel, dataset, user}) => {
   const onToken = async (token) => {
+    const price = Number(dataset.price_high * 100);
     const body = {
-      amount: Number(dataset.price_high * 100),
+      amount: price,
       description: dataset.description,
       product: dataset.id,
       stripeTokenType: token.type,
@@ -23,9 +25,10 @@ const BuyDatasetDialog = ({isOpen = false, onCancel, dataset, user}) => {
     };
 
     const stripeService = new StripeService();
-    const results = await stripeService.checkout(body, user.id);
-    console.log('PAYMENT RESULTS');
-    console.log(results);
+    const emailService = new EmailService();
+    await stripeService.checkout(body, user.id);
+
+    await emailService.retrieveReciept(token.email, dataset.id, dataset.name, price / 100);
   };
 
   return(

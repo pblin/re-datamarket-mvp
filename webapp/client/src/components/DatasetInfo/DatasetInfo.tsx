@@ -10,7 +10,10 @@ import {
   changeUploadDialog,
   getDatasetInfo,
   updateDataset,
-  updateDatasetInfo
+  updateDatasetInfo,
+  getSampleData,
+  changeSendEmailDialog,
+  sendEmail
 } from "../../store/datasetInfo/datasetInfoActions";
 import {
   canPublish,
@@ -34,6 +37,8 @@ import BasicInfoModal from "./BasicInfoFormCard";
 import BasicInfoOwnerCard from './BasicInfoOwnerCard';
 import SampleDataDialog from "./SampleDataDialog";
 import BuyDatasetDialog from "./BuyDatasetDialog";
+import SendEmailDialog from "./SendEmailDialog";
+import {DatasetInquiryPayload} from "../../services/payloads/EmailPayload";
 
 interface ComponentProps {
   match: any;
@@ -64,6 +69,8 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.publishDataset = this.publishDataset.bind(this);
     this.unpublishDataset = this.unpublishDataset.bind(this);
     this.updateDataset = this.updateDataset.bind(this);
+    this.onSend = this.onSend.bind(this);
+    this.onSendEmailSubmit = this.onSendEmailSubmit.bind(this);
   }
 
   pageId: string;
@@ -117,6 +124,15 @@ class DatasetInfo extends React.Component<ComponentProps> {
     )
   }
 
+  onSend() {
+    this.props.action.getSampleData(
+      this.props.profile['primary_email'],
+      this.props.dataset.id,
+      this.props.dataset.name,
+      this.props.enqueueSnackbar
+    );
+  }
+
   saveDataset() {
     this.updateDataset(DATASET_STAGE.SAVED,`The Dataset was saved successfully` );
   }
@@ -127,6 +143,18 @@ class DatasetInfo extends React.Component<ComponentProps> {
 
   unpublishDataset() {
     this.updateDataset( DATASET_STAGE.SAVED,   `The Dataset was un-published successfully`);
+  }
+
+  onSendEmailSubmit(values) {
+    this.props.action.sendEmail(
+      new DatasetInquiryPayload(
+        this.props.dataset.dataset_owner_id,
+        this.props.profile.primary_email,
+        values.subject,
+        values.message,
+        this.props.dataset.id,
+        this.props.dataset.name),
+      this.props.enqueueSnackbar);
   }
 
   render() {
@@ -161,6 +189,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
                     isMoreOptionsOpened={this.props.datasetInfo.moreOptionsOpened}
                     onBuy={this.buyDataset}
                     onGetSampleData={this.getSampleData}
+                    handleSendEmail={() => this.props.action.changeSendEmailDialog(true)}
                   />
                 }
               </Grid>
@@ -184,6 +213,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
         <SampleDataDialog
           isOpen={this.props.datasetInfo.isSampleDataOpen}
           onCancel={() => this.props.action.changeSampleDialog(false)}
+          onSend={this.onSend}
           accessUrl={this.props.dataset['access_url']}
         />
         <BuyDatasetDialog
@@ -191,6 +221,12 @@ class DatasetInfo extends React.Component<ComponentProps> {
           user={this.props.profile}
           dataset={this.props.dataset}
           onCancel={() => this.props.action.changeBuyDatasetDialog(false)}
+        />
+        <SendEmailDialog
+          isOpen={this.props.datasetInfo.isSendEmailOpen}
+          onCancel={() => {this.props.action.changeSendEmailDialog(false)}}
+          onSendEmail={() => {this.props.action.submit('sendEmail')}}
+          onSubmit={this.onSendEmailSubmit}
         />
       </div>
     )
@@ -222,7 +258,11 @@ function mapDispatchToProps(dispatch: any) {
         changeSchema,
         changeUploadDialog,
         changeSampleDialog,
-        changeBuyDatasetDialog
+        changeBuyDatasetDialog,
+        changeSendEmailDialog,
+        getSampleData,
+        sendEmail,
+        submit
       }, dispatch)
   };
 }
