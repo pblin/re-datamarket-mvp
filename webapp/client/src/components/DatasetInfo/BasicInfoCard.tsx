@@ -15,7 +15,15 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PersonIcon from "@material-ui/icons/Person";
 
-const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGetSampleData}) => {
+const BasicInfoCard = (
+  {
+    dataset,
+    isMoreOptionsOpened,
+    onMoreOptions,
+    onBuy,
+    onGetSampleData,
+    handleSendEmail
+  }) => {
   const renderSearchTerms = (terms: any[]) => {
     if(!terms) {
       return;
@@ -77,16 +85,19 @@ const BasicInfoCard = ({dataset, isMoreOptionsOpened, onMoreOptions, onBuy, onGe
             Buy
           </Button>
       </CardContent>
-      <ClickAwayListener onClickAway={handleClose}>{/*TODO: Fix clickaway*/}
         <Menu
           open={isMoreOptionsOpened}
           anchorEl={document.getElementById('card-more-options')}
         >
-          <MenuItem onClick={handleSampleData}>
-            <Typography>Get Sample Data</Typography>
-          </MenuItem>
+          <ClickAwayListener onClickAway={handleClose}>{/*TODO: Fix clickaway*/}
+            <MenuItem onClick={handleSampleData}>
+              <Typography>Get Sample Data</Typography>
+            </MenuItem>
+            <MenuItem onClick={handleSendEmail}>
+              <Typography>Send Email To The Owner</Typography>
+            </MenuItem>
+          </ClickAwayListener>
         </Menu>
-      </ClickAwayListener>
     </Card>
   );
 };
