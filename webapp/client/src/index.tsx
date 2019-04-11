@@ -1,7 +1,7 @@
 import {AppStore} from './store/AppStore';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
+//import registerServiceWorker from './registerServiceWorker';
 import Routes from './utils/Routes';
 import {Provider} from "react-redux";
 import './index.css';
@@ -9,7 +9,7 @@ import 'typeface-roboto';
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import {SnackbarProvider} from "notistack";
 import {AppEventEmitter} from "./utils/AppEventEmitter";
-//import {unregister} from "./registerServiceWorker";
+import {unregister} from "./registerServiceWorker";
 
 const theme = createMuiTheme({
   typography: {
@@ -75,4 +75,6 @@ ReactDOM.render(
   ,
   document.getElementById('root') as HTMLElement);
 
-  registerServiceWorker();
+  unregister();
+//TODO: Register Web Worker only during production
+  //registerServiceWorker();
