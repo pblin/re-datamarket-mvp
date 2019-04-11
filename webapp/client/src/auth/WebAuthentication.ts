@@ -98,7 +98,7 @@ export class WebAuthentication implements Auth0Authentication {
     // navigate to the home route
     history.push('/home');
     //TODO: Add returnTo for different envs
-    //TODO: If env prod , dont sent the clientId
+    //TODO: If env prod , dont send the clientId
     //TODO: HTTPS_ON
     //TODO: HTTPS_ON = no
     let ssoLogOutUrl = `https://rebloc.auth0.com/v2/logout?returnTo=https://localhost:3000&client_id=${AUTH_CONFIG.clientId}`;
