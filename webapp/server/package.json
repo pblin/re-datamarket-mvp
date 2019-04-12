@@ -3,8 +3,17 @@
   "version": "1.0.0",
   "main": "server.js",
   "license": "MIT",
+  "scripts": {
+    "start:server": "yarn run ts-node server.ts"
+  },
   "dependencies": {
+    "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "http-proxy-middleware": "^0.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.24",
+    "ts-node": "^8.0.2",
+    "typescript": "^2.4.2"
   }
 }

@@ -3,24 +3,36 @@ const https = require('https');
 const http = require('http');
 const express = require('express');
 const path = require('path');
-const port = process.env.PORT || 3000;
 const app = express();
 
-const SSL_KEY = process.env.SSL_KEY;
-const SSL_PEM = process.env.SSL_PEM;
-const KEY_PASS = process.env.KEY_PASS;
-const HTTPS_ON = process.env.HTTPS_ON || 'NO';
+import {
+    SSL_KEY,
+    SSL_PEM,
+    KEY_PASS,
+    HTTPS_ON,
+    HTTP_API_URL,
+    HTTPS_API_URL,
+    PORT
+} from './config/ConfigEnv';
 
 //TODO: Seperate Proxy to a different file
 const proxy = require('http-proxy-middleware');
-//TODO: Add env var for server api endpoint
-//TODO: Configure secure based on proxy
-app.use(proxy('/api', {
-    target: 'https://localhost:9000/',
-    secure: false,
-    changeOrigin: true,
-    pathRewrite: {'^/api' : ''}
-}));
+
+if(HTTPS_ON == 'YES') {
+    app.use(proxy('/api', {
+        target: `${HTTPS_API_URL}`,
+        secure: process.env.NODE_ENV == 'production' ? true: false,
+        changeOrigin: true,
+        pathRewrite: {'^/api' : ''}
+    }));
+} else {
+    app.use(proxy('/api', {
+        target: `${HTTP_API_URL}`,
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: {'^/api' : ''}
+    }));
+}
 
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'build')));
@@ -33,7 +45,6 @@ app.get('/*', function (req, res) {
 });
 
 //SET UP PROXY
-
 if (HTTPS_ON == 'YES') {
     const credentials = {
         key: fs.readFileSync(SSL_KEY),
@@ -41,11 +52,11 @@ if (HTTPS_ON == 'YES') {
         passphrase: KEY_PASS
     };
     let httpsServer = https.createServer(credentials, app);
-    httpsServer.listen(port);
-    console.info(`Rebloc mvp running on port ${port}.`);
+    httpsServer.listen(PORT);
+    console.info(`Rebloc mvp running on port ${PORT}.`);
 }
 else {
     let httpServer = http.createServer(app);
-    httpServer.listen(port);
-    console.info(`Rebloc mvp running on port ${port}`);
+    httpServer.listen(PORT);
+    console.info(`Rebloc mvp running on port ${PORT}`);
 }

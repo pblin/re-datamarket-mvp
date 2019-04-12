@@ -26,7 +26,7 @@ export class WebAuthentication implements Auth0Authentication {
   auth0: WebAuth = new WebAuth({
     domain: AUTH_CONFIG.domain,
     clientID: AUTH_CONFIG.clientId,
-    redirectUri: AUTH_CONFIG.redirectUri,
+    redirectUri: AUTH_CONFIG.callbackUrl,
     audience: `https://${AUTH_CONFIG.domain}/userinfo`,
     responseType: 'token id_token',
     scope: 'openid openid profile email'
@@ -97,11 +97,15 @@ export class WebAuthentication implements Auth0Authentication {
     localStorage.removeItem('pendingProfileQuery');
     // navigate to the home route
     history.push('/home');
-    //TODO: Add returnTo for different envs
-    //TODO: If env prod , dont send the clientId
-    //TODO: HTTPS_ON
-    //TODO: HTTPS_ON = no
-    let ssoLogOutUrl = `https://rebloc.auth0.com/v2/logout?returnTo=https://localhost:3000&client_id=${AUTH_CONFIG.clientId}`;
+
+    let ssoLogOutUrl;
+    const baseUrl = location.protocol+'//'+location.hostname + ":3000";
+    if(process.env.NODE_ENV == 'development'){
+      ssoLogOutUrl = `https://rebloc.auth0.com/v2/logout?returnTo=${baseUrl}&client_id=${AUTH_CONFIG.clientId}`;
+    } else {
+      ssoLogOutUrl = `https://rebloc.auth0.com/v2/logout?returnTo=${baseUrl}`;
+    }
+
     window.location.replace(ssoLogOutUrl);
   }
 }

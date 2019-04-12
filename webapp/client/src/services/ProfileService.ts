@@ -11,7 +11,6 @@ export class ProfileService {
   }
 
   async updateProfile(email: string, profile: any) {
-    console.log('profileService updateProfile');
     const body = {
       primaryEmail: email,
       secondaryEmail: profile.secondaryEmail,
@@ -21,8 +20,6 @@ export class ProfileService {
       phone: profile.phone
     };
 
-    console.log(body);
-
     const results = await fetch(`${config.serverBase}/profile`, {
       method: 'POST',
       headers: {
@@ -31,7 +28,6 @@ export class ProfileService {
       body: JSON.stringify(body)
     });
 
-    console.log('Made it here')
     return results.json();
   }
 }

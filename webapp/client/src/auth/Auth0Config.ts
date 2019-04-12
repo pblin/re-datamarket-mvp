@@ -17,5 +17,5 @@ export interface Auth0Config {
    */
   clientId: string;
 
-  redirectUri: string;
+  callbackUrl: string
 }
