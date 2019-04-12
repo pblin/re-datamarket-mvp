@@ -8,6 +8,7 @@ interface DatasetInfoState {
   isFileUploadOpen: boolean;
   isSampleDataOpen: boolean;
   isBuyDatasetOpen: boolean;
+  isSendEmailOpen: boolean;
 }
 
 const defaultState: DatasetInfoState = {
@@ -17,7 +18,8 @@ const defaultState: DatasetInfoState = {
   isBasicFormOpen: false,
   isFileUploadOpen: false,
   isSampleDataOpen: false,
-  isBuyDatasetOpen: false
+  isBuyDatasetOpen: false,
+  isSendEmailOpen: false
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -35,6 +37,7 @@ const reducer = function(state=defaultState, action: any) {
       newState.schema = [...newState.schema];
       newState.schema[action.index][action.field] = action.val;
       break;
+      //TODO: REFACTOR DIALOG UPDATES INTO ONE ACTION/REDUCER
     case DATASET_INFO_ACTIONS.CHANGE_BASIC_INFO_FORM:
       newState.isBasicFormOpen = action.isOpen;
       break;
@@ -46,6 +49,9 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case DATASET_INFO_ACTIONS.CHANGE_BUY_DATASET_DIALOG:
       newState.isBuyDatasetOpen = action.isOpen;
+      break;
+    case DATASET_INFO_ACTIONS.CHANGE_SEND_EMAIL_DIALOG:
+      newState.isSendEmailOpen = action.isOpen;
       break;
     case DATASET_INFO_ACTIONS.UPDATE_DATASET_INFO:
       newState.dataset = Object.assign({}, newState.dataset, action.dataset);
