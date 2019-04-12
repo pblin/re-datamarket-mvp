@@ -73,11 +73,6 @@ ReactDOM.render(
   ,
   document.getElementById('root') as HTMLElement);
 
-  unregister();
-console.log('CURRENT ENV');
-console.log(process.env.NODE_ENV);
-console.log(process.env.HTTP_API_URL);
-
 if(process.env.NODE_ENV == 'production') {
   registerServiceWorker();
 } else {
