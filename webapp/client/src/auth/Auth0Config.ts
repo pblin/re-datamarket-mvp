@@ -16,10 +16,6 @@ export interface Auth0Config {
    * @memberof Auth0Config
    */
   clientId: string;
-  /**
-   * @property
-   * @type {string}
-   * @memberof Auth0Config
-   */
-  callbackUrl: string;
+
+  callbackUrl: string
 }

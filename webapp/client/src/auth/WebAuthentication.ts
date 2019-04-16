@@ -9,7 +9,6 @@ import {ProfileService} from "../services/ProfileService";
 import {PROFILE_ACTIONS} from "../store/profile/profileActions";
 import {AppEventEmitter} from "../utils/AppEventEmitter";
 
-//TODO: ADD HOME ROUTE CONFIGURATION
 /**
  * Web based Auth0 authentication
  *
@@ -30,7 +29,7 @@ export class WebAuthentication implements Auth0Authentication {
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience: `https://${AUTH_CONFIG.domain}/userinfo`,
     responseType: 'token id_token',
-    scope: 'openid openid profile email',
+    scope: 'openid openid profile email'
   });
 
   get authenticated(): boolean {
@@ -47,20 +46,14 @@ export class WebAuthentication implements Auth0Authentication {
 
   @autobind
   handleAuthentication(): void {
-    //TODO: ADD TYPES BACK(moving to react-scripts broke this)
     this.auth0.parseHash({},( e: any, result: any) => {
       if (result && result.accessToken && result.idToken) {
         this.setSession(result);
         AppEventEmitter.getInstance().emit('authenticated');
-        //history.replace('/home');
-        //history.push('/home');
-        //TODO: Create app wide event emitter for app authentication
       } else if (e) {
-        //history.replace('/home');
         history.push('/home');
-        // tslint:disable-next-line:no-console
+        //TODO: CREATE LOGGER FOT THE APPLICATION
         console.error(e);
-        alert(`Error: ${e.error}. Check the console for further details.`);
       }
     });
   }
@@ -70,10 +63,8 @@ export class WebAuthentication implements Auth0Authentication {
     const profileService = new ProfileService();
     const profile = await profileService.getProfile(userEmail);
 
-    // @ts-ignore
     localStorage.setItem ('profile', JSON.stringify(profile));
     AppStore.getInstance().store.dispatch({type: PROFILE_ACTIONS.GET_PROFILE});
-    //location.reload();
   } 
 
   @autobind
@@ -106,7 +97,15 @@ export class WebAuthentication implements Auth0Authentication {
     localStorage.removeItem('pendingProfileQuery');
     // navigate to the home route
     history.push('/home');
-    let ssoLogOutUrl = 'https://rebloc.auth0.com/v2/logout';
+
+    let ssoLogOutUrl;
+    const baseUrl = location.protocol+'//'+location.hostname + ":3000";
+    if(process.env.NODE_ENV == 'development'){
+      ssoLogOutUrl = `https://rebloc.auth0.com/v2/logout?returnTo=${baseUrl}&client_id=${AUTH_CONFIG.clientId}`;
+    } else {
+      ssoLogOutUrl = `https://rebloc.auth0.com/v2/logout?returnTo=${baseUrl}`;
+    }
+
     window.location.replace(ssoLogOutUrl);
   }
 }

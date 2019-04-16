@@ -8,7 +8,7 @@ jobs:
   build-and-test:
     docker:
       - image: circleci/node:10.15.0
-    working_directory: ~/demo
+    working_directory: ~/app
     steps:
       - checkout
       - run:
@@ -21,14 +21,20 @@ jobs:
     steps:
       - checkout
       - run:
-          name: push file to server 
+          name: build & push docker image
+          command: |
+            scp mvp@demo-app.rebloc.io:/var/local/democonfig/client/.env webapp/client/.env
+            scp mvp@demo-app.rebloc.io:/var/local/democonfig/client/configuration.ts ./webapp/client/src/auth
+            scp mvp@demo-app.rebloc.io:/home/mvp/tls/* webapp/server
+            cd webapp && docker build --rm -t bernardlin/reblocapp:beta -f Dockerfile.app .
+            docker login -u $DOCKER_LOGIN --password $DOCKER_PWD 
+            docker push bernardlin/reblocapp:beta
+      - run:
+          name: Build & push docker image
           command: |
             rsh  mvp@demo-app.rebloc.io "if [ ! -d 'webapp' ]; then mkdir -p webapp; fi"
-            scp -r ./webapp/client/* mvp@demo-app.rebloc.io:/home/mvp/webapp/client/
-            scp ./webapp/server/*.js mvp@demo-app.rebloc.io:/home/mvp/webapp/server/
-            rsh mvp@demo-app.rebloc.io "cd webapp/client && yarn"
-            rsh mvp@demo-app.rebloc.io "cp /var/local/democonfig/client/.env ./webapp/client && cp /var/local/democonfig/client/configuration.ts ./webapp/client/src/auth"
-            rsh mvp@demo-app.rebloc.io "/var/local/democonfig/check-n-restart.sh"
+            scp -r ./webapp/start_webapp.sh mvp@demo-app.rebloc.io:/home/mvp/webapp/start_webapp.sh
+            rsh mvp@demo-app.rebloc.io "docker pull bernardlin/reblocapp:beta && bash /home/mvp/webapp/start_webapp.sh bernardlin/reblocapp:beta"
 workflows:
   version: 2
   build-test-and-deploy:
