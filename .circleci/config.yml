@@ -26,7 +26,7 @@ jobs:
             scp mvp@demo-app.rebloc.io:/var/local/democonfig/client/.env webapp/client/.env
             scp mvp@demo-app.rebloc.io:/var/local/democonfig/client/configuration.ts ./webapp/client/src/auth
             scp mvp@demo-app.rebloc.io:/var/local/democonfig/server/*.pem webapp/server
-            docker build --rm -t bernardlin/reblocapp:beta -f Dockerfile.app .
+            cd webapp && docker build --rm -t bernardlin/reblocapp:beta -f Dockerfile.app .
             docker login -u $DOCKER_LOGIN --password $DOCKER_PWD 
             docker push bernardlin/reblocapp:beta
       - run:
