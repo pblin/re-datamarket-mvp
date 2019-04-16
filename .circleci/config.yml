@@ -23,7 +23,7 @@ jobs:
       - run:
           name: build & push docker image
           command: |
-            scp mvp@demo-app.rebloc.io:/var/local/democonfig/client/.env.dev webapp/client/.env
+            scp mvp@demo-app.rebloc.io:/var/local/democonfig/client/.env webapp/client/.env
             scp mvp@demo-app.rebloc.io:/var/local/democonfig/client/configuration.ts ./webapp/client/src/auth
             scp mvp@demo-app.rebloc.io:/var/local/democonfig/server/*.pem webapp/server
             docker build --rm -t bernardlin/reblocapp:beta -f Dockerfile.app .
