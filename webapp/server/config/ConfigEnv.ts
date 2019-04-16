@@ -3,6 +3,7 @@ import * as path from 'path';
 
 dotenv.config();
 let configPath;
+
 switch (process.env.NODE_ENV) {
     case 'test':
         configPath = path.join(__dirname, '.env.test');
@@ -25,3 +26,9 @@ export const HTTPS_ON = process.env.HTTPS_ON || 'NO';
 export const HTTP_API_URL = process.env.HTTP_API_URL;
 export const HTTPS_API_URL = process.env.HTTPS_API_URL;
 export const PORT = process.env.PORT || 3000;
+
+console.info("KEY=" + SSL_KEY);
+console.info("HTTPS=" + HTTPS_ON);
+console.info("HTTPS=" + HTTPS_API_URL);
+console.info("PEM=" + SSL_PEM);
+

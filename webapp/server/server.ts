@@ -49,14 +49,15 @@ if (HTTPS_ON == 'YES') {
     const credentials = {
         key: fs.readFileSync(SSL_KEY),
         cert: fs.readFileSync(SSL_PEM),
+        rejectUnauthorized: false,
         passphrase: KEY_PASS
     };
     let httpsServer = https.createServer(credentials, app);
     httpsServer.listen(PORT);
-    console.info(`Rebloc mvp running on port ${PORT}.`);
+    console.info(`Rebloc mvp running on https port ${PORT}.`);
 }
 else {
     let httpServer = http.createServer(app);
     httpServer.listen(PORT);
-    console.info(`Rebloc mvp running on port ${PORT}`);
+    console.info(`Rebloc mvp running on http port ${PORT}`);
 }
