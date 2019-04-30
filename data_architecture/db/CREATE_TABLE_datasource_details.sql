@@ -18,6 +18,7 @@ CREATE TABLE marketplace.data_source_detail
     num_of_records integer,
     price_low numeric,
     price_high numeric,
+    pricing_unit character varying(4),
     json_schema text COLLATE pg_catalog."default",
     stage integer,
     table_name text COLLATE pg_catalog."default",
