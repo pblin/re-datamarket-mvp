@@ -122,3 +122,20 @@
 .inline-edit-form {
   width: 100%;
 }
+
+/* Common Table SCSS*/
+.common-table {
+  width: 100%;
+  thead tr, tfoot td > div, tfoot tr {
+    height: 40px !important;
+    min-height: 40px;
+  }
+  th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border: none;
+    p {
+      font-weight: bold;
+    }
+  }
+}

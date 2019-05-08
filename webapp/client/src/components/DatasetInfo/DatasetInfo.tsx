@@ -39,6 +39,7 @@ import SampleDataDialog from "./SampleDataDialog";
 import BuyDatasetDialog from "./BuyDatasetDialog";
 import SendEmailDialog from "./SendEmailDialog";
 import {DatasetInquiryPayload} from "../../services/payloads/EmailPayload";
+import DynamicTable from '../Common/Table/DynamicTable';
 
 interface ComponentProps {
   match: any;
@@ -199,6 +200,11 @@ class DatasetInfo extends React.Component<ComponentProps> {
                   onSchemaChange={this.onSchemaChange}
                   schemaName={this.props.dataset.table_name}
                   canEdit={(!this.props.isPublished && this.props.isOwner)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={8}>
+                <DynamicTable
+                  data={[{test: 1234, test2: 'test', test3: true}]}
                 />
               </Grid>
             </Grid>
