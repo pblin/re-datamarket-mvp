@@ -132,7 +132,7 @@ export class DatasetService {
   }
 
   async getSampleData(datasetId) {
-    const results = await fetch(`${config.serverBase}/schena/dataset/sample/${datasetId}`);
+    const results = await fetch(`${config.serverBase}/schema/dataset/sample/${datasetId}`);
     if(results.status !== 200) {
       throw new Error('Something went wrong while retrieving sample data');
     } else {

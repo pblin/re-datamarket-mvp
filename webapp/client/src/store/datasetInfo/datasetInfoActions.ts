@@ -12,7 +12,9 @@ export enum DATASET_INFO_ACTIONS {
   CHANGE_BUY_DATASET_DIALOG = "CHANGE_BUY_DATASET_DIALOG",
   CHANGE_SEND_EMAIL_DIALOG = "CHANGE_SEND_EMAIL_DIALOG",
   UPDATE_DATASET = "UPDATE_DATASET",
+  UPDATE_SAMPLE_DATA = "UPDATE_SAMPLE_DATA",
   DATASET_UPDATED = "DATASET_UPDATED",
+  GET_SAMPLE_DATA_EMAIL = "GET_SAMPLE_DATA_EMAIL",
   GET_SAMPLE_DATA = "GET_SAMPLE_DATA",
   SEND_EMAIL = "SEND_EMAIL"
 };
@@ -54,8 +56,16 @@ export function changeSendEmailDialog(isOpen: boolean) {
   return {type: DATASET_INFO_ACTIONS.CHANGE_SEND_EMAIL_DIALOG, isOpen};
 }
 
-export function getSampleData(email, datasetId, datasetName, notify) {
-  return {type: DATASET_INFO_ACTIONS.GET_SAMPLE_DATA, email, datasetName, datasetId, notify};
+export function getSampleDataEmail(email, datasetId, datasetName, notify) {
+  return {type: DATASET_INFO_ACTIONS.GET_SAMPLE_DATA_EMAIL, email, datasetName, datasetId, notify};
+}
+
+export function getSampleData(datasetId) {
+  return {type: DATASET_INFO_ACTIONS.GET_SAMPLE_DATA, datasetId};
+}
+
+export function updateSampleData(sampleData) {
+  return {type: DATASET_INFO_ACTIONS.UPDATE_SAMPLE_DATA, sampleData};
 }
 
 export function sendEmail(emailInquiry: DatasetInquiryPayload, notify) {

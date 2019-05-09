@@ -11,6 +11,7 @@ import {
   getDatasetInfo,
   updateDataset,
   updateDatasetInfo,
+  getSampleDataEmail,
   getSampleData,
   changeSendEmailDialog,
   sendEmail
@@ -53,15 +54,20 @@ interface ComponentProps {
   action: any;
   canPublish: boolean;
   isPublished: boolean;
+  sampleData: any[];
 }
 
-class DatasetInfo extends React.Component<ComponentProps> {
+interface ComponentState {
+  filter: string;
+}
+
+class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
   constructor(props: any) {
     super(props);
 
     this.onMoreOptionsMenuChange = this.onMoreOptionsMenuChange.bind(this);
     this.buyDataset = this.buyDataset.bind(this);
-    this.getSampleData = this.getSampleData.bind(this);
+    this.getSampleDataEmail = this.getSampleDataEmail.bind(this);
     this.saveBasicInfo = this.saveBasicInfo.bind(this);
     this.handleBasicFormSubmit = this.handleBasicFormSubmit.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
@@ -72,19 +78,26 @@ class DatasetInfo extends React.Component<ComponentProps> {
     this.updateDataset = this.updateDataset.bind(this);
     this.onSend = this.onSend.bind(this);
     this.onSendEmailSubmit = this.onSendEmailSubmit.bind(this);
+    this.onFilterChange = this.onFilterChange.bind(this);
   }
 
   pageId: string;
   toolbarOptions: ToolbarOption[] = [
-    new ToolbarOption('Schema', 'schema')
+    new ToolbarOption('Schema', 'schema'),
+    new ToolbarOption('Sample Data', 'sampleData')
   ];
 
   buyDataset() {
     this.props.action.changeBuyDatasetDialog(true);
   }
 
-  getSampleData() {
+  getSampleDataEmail() {
     this.props.action.changeSampleDialog(true);
+  }
+
+  componentDidMount(): void {
+    //Set local state
+    this.setState({filter: 'schema'})
   }
 
   componentWillMount(): void {
@@ -126,7 +139,7 @@ class DatasetInfo extends React.Component<ComponentProps> {
   }
 
   onSend() {
-    this.props.action.getSampleData(
+    this.props.action.getSampleDataEmail(
       this.props.profile['primary_email'],
       this.props.dataset.id,
       this.props.dataset.name,
@@ -158,13 +171,68 @@ class DatasetInfo extends React.Component<ComponentProps> {
       this.props.enqueueSnackbar);
   }
 
+  onFilterChange(filter) {
+    console.log('The filter has changed');
+    this.setState({filter});
+    if(filter == 'sampleData') {
+      console.log('Getting Sample Data');
+      this.props.action.getSampleData(this.props.dataset.id);
+    }
+  }
+
+  renderMarketPlace() {
+    return (
+      <div className={"app-section-wrapper-90"}>
+        <Grid container spacing={16}>
+          <Grid item xs={12} sm={4}>
+            {this.props.isOwner &&
+            <BasicInfoOwnerCard
+              dataset={this.props.dataset}
+              onUpdate={this.onUpdate}
+              isPublished={this.props.isPublished}
+            />
+            }
+            {!this.props.isOwner &&
+            <BasicInfoCard
+              dataset={this.props.dataset}
+              onMoreOptions={this.onMoreOptionsMenuChange}
+              isMoreOptionsOpened={this.props.datasetInfo.moreOptionsOpened}
+              onBuy={this.buyDataset}
+              onGetSampleData={this.getSampleDataEmail}
+              handleSendEmail={() => this.props.action.changeSendEmailDialog(true)}
+            />
+            }
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <SchemaList
+              schemas={this.props.schema}
+              onSchemaChange={this.onSchemaChange}
+              schemaName={this.props.dataset.table_name}
+              canEdit={(!this.props.isPublished && this.props.isOwner)}
+            />
+          </Grid>
+        </Grid>
+      </div>
+    )
+  }
+
+  renderSampleData() {
+      return (
+        <Grid item xs={12} sm={8}>
+          <DynamicTable
+            data={this.props.sampleData}
+          />
+        </Grid>
+      )
+  }
+
   render() {
     return (
       <div className={"dataset-info-view"}>
         <MarketplaceToolbar
           toolbarOptions={this.toolbarOptions}
-          onSchemaFilterChange={() => {}}
-          schemaFilter={'schema'}
+          onSchemaFilterChange={this.onFilterChange}
+          schemaFilter={this.state && this.state.filter}
           hasPublish={this.props.isOwner}
           isPublished={this.props.isPublished}
           onSave={this.saveDataset}
@@ -173,42 +241,8 @@ class DatasetInfo extends React.Component<ComponentProps> {
           unPublish={this.unpublishDataset}
         />
         <Grid container justify={"center"}>
-          <div className={"app-section-wrapper-90"}>
-            <Grid container spacing={16}>
-              <Grid item xs={12} sm={4}>
-                {this.props.isOwner &&
-                  <BasicInfoOwnerCard
-                    dataset={this.props.dataset}
-                    onUpdate={this.onUpdate}
-                    isPublished={this.props.isPublished}
-                  />
-                }
-                {!this.props.isOwner &&
-                  <BasicInfoCard
-                    dataset={this.props.dataset}
-                    onMoreOptions={this.onMoreOptionsMenuChange}
-                    isMoreOptionsOpened={this.props.datasetInfo.moreOptionsOpened}
-                    onBuy={this.buyDataset}
-                    onGetSampleData={this.getSampleData}
-                    handleSendEmail={() => this.props.action.changeSendEmailDialog(true)}
-                  />
-                }
-              </Grid>
-              <Grid item xs={12} sm={8}>
-                <SchemaList
-                  schemas={this.props.schema}
-                  onSchemaChange={this.onSchemaChange}
-                  schemaName={this.props.dataset.table_name}
-                  canEdit={(!this.props.isPublished && this.props.isOwner)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={8}>
-                <DynamicTable
-                  data={[{test: 1234, test2: 'test', test3: true}]}
-                />
-              </Grid>
-            </Grid>
-          </div>
+          {this.state && this.state.filter == 'schema' && this.renderMarketPlace()}
+          {this.state && this.state.filter == 'sampleData' && this.renderSampleData()}
         </Grid>
         <BasicInfoModal
           onSave={this.saveBasicInfo}
@@ -240,9 +274,11 @@ class DatasetInfo extends React.Component<ComponentProps> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
+  console.log(state);
   return {
     dataset: datasetInfoSelector(state),
     datasetInfo: datasetSelector(state),
+    sampleData: datasetSelector(state).sampleData,
     schema: schemaSelector(state),
     isOwner: isOwner(state),
     profile: profileSelector(state),
@@ -266,6 +302,7 @@ function mapDispatchToProps(dispatch: any) {
         changeSampleDialog,
         changeBuyDatasetDialog,
         changeSendEmailDialog,
+        getSampleDataEmail: getSampleDataEmail,
         getSampleData,
         sendEmail,
         submit

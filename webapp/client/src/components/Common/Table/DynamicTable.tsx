@@ -38,7 +38,7 @@ const renderTableCells = (row, objProps) => {
   return <TableRow>
     {objProps.map((prop) => (
       <TableCell>
-        {row[prop].toString()}
+        {row[prop] && row[prop].toString()}
       </TableCell>
     ))}
   </TableRow>;
