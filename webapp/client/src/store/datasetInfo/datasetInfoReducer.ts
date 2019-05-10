@@ -4,6 +4,7 @@ interface DatasetInfoState {
   dataset: any,
   schema: any[],
   moreOptionsOpened: boolean,
+  sampleData: any[],
   isBasicFormOpen: boolean;
   isFileUploadOpen: boolean;
   isSampleDataOpen: boolean;
@@ -14,6 +15,7 @@ interface DatasetInfoState {
 const defaultState: DatasetInfoState = {
   dataset: {},
   schema: [],
+  sampleData: [],
   moreOptionsOpened: false,
   isBasicFormOpen: false,
   isFileUploadOpen: false,
@@ -59,6 +61,9 @@ const reducer = function(state=defaultState, action: any) {
     case DATASET_INFO_ACTIONS.DATASET_UPDATED:
       newState.dataset = {...newState.dataset};
       newState.dataset.stage = action.dataset.stage;
+      break;
+    case DATASET_INFO_ACTIONS.UPDATE_SAMPLE_DATA:
+      newState.sampleData = action.sampleData;
       break;
     default:
       return state;
