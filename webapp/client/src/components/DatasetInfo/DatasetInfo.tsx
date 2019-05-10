@@ -5,13 +5,11 @@ import {
   changeBasicInfoForm,
   changeBuyDatasetDialog,
   changeMoreOptionMenu,
-  changeSampleDialog,
   changeSchema,
   changeUploadDialog,
   getDatasetInfo,
   updateDataset,
   updateDatasetInfo,
-  getSampleDataEmail,
   getSampleData,
   changeSendEmailDialog,
   sendEmail
@@ -36,7 +34,6 @@ import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
 import BasicInfoModal from "./BasicInfoFormCard";
 import BasicInfoOwnerCard from './BasicInfoOwnerCard';
-import SampleDataDialog from "./SampleDataDialog";
 import BuyDatasetDialog from "./BuyDatasetDialog";
 import SendEmailDialog from "./SendEmailDialog";
 import {DatasetInquiryPayload} from "../../services/payloads/EmailPayload";
@@ -76,7 +73,6 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
     this.publishDataset = this.publishDataset.bind(this);
     this.unpublishDataset = this.unpublishDataset.bind(this);
     this.updateDataset = this.updateDataset.bind(this);
-    this.onSend = this.onSend.bind(this);
     this.onSendEmailSubmit = this.onSendEmailSubmit.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
   }
@@ -138,15 +134,6 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
     )
   }
 
-  onSend() {
-    this.props.action.getSampleDataEmail(
-      this.props.profile['primary_email'],
-      this.props.dataset.id,
-      this.props.dataset.name,
-      this.props.enqueueSnackbar
-    );
-  }
-
   saveDataset() {
     this.updateDataset(DATASET_STAGE.SAVED,`The Dataset was saved successfully` );
   }
@@ -172,10 +159,8 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
   }
 
   onFilterChange(filter) {
-    console.log('The filter has changed');
     this.setState({filter});
     if(filter == 'sampleData') {
-      console.log('Getting Sample Data');
       this.props.action.getSampleData(this.props.dataset.id);
     }
   }
@@ -250,12 +235,6 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
           isOpen={this.props.datasetInfo.isBasicFormOpen}
           onCancel={() => this.props.action.changeBasicInfoForm(false)}
         />
-        <SampleDataDialog
-          isOpen={this.props.datasetInfo.isSampleDataOpen}
-          onCancel={() => this.props.action.changeSampleDialog(false)}
-          onSend={this.onSend}
-          accessUrl={this.props.dataset['access_url']}
-        />
         <BuyDatasetDialog
           isOpen={this.props.datasetInfo.isBuyDatasetOpen}
           user={this.props.profile}
@@ -274,7 +253,6 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
 }
 
 function mapStateToProps(state: any, ownProps: any) {
-  console.log(state);
   return {
     dataset: datasetInfoSelector(state),
     datasetInfo: datasetSelector(state),
@@ -299,10 +277,8 @@ function mapDispatchToProps(dispatch: any) {
         changeBasicInfoForm,
         changeSchema,
         changeUploadDialog,
-        changeSampleDialog,
         changeBuyDatasetDialog,
         changeSendEmailDialog,
-        getSampleDataEmail: getSampleDataEmail,
         getSampleData,
         sendEmail,
         submit

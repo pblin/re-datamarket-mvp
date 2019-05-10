@@ -48,11 +48,6 @@ const BasicInfoCard = (
     onMoreOptions(false);
   };
 
-  const handleSampleData = () => {
-    onMoreOptions(false);
-    onGetSampleData();
-  };
-
   return(
     <Card>
       <CardHeader
@@ -90,9 +85,6 @@ const BasicInfoCard = (
           anchorEl={document.getElementById('card-more-options')}
         >
           <ClickAwayListener onClickAway={handleClose}>{/*TODO: Fix clickaway*/}
-            <MenuItem onClick={handleSampleData}>
-              <Typography>Get Sample Data</Typography>
-            </MenuItem>
             <MenuItem onClick={handleSendEmail}>
               <Typography>Send Email To The Owner</Typography>
             </MenuItem>

@@ -50,28 +50,29 @@ const renderToolbar = (data) => {
 
 const DynamicTable = ({data}) => {
   const dataProps = Downloader.extractFieldsFromData(data);
-
   return(
     <Grid container={true} justify={"center"}>
-      <Paper className={"scroll-paper"}>
-        {renderToolbar(data)}
-        <Table className={"common-table"}>
-          <TableHead>
-            <TableRow>
+      {data.length &&
+        <Paper className={"scroll-paper"}>
+          {renderToolbar(data)}
+          <Table className={"common-table"}>
+            <TableHead>
+              <TableRow>
                 {dataProps.map((prop) => (
                   <TableCell><Typography>{prop}</Typography></TableCell>
                 ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row) => (
-              <React.Fragment>
-                {renderTableCells(row, dataProps)}
-              </React.Fragment>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((row) => (
+                <React.Fragment>
+                  {renderTableCells(row, dataProps)}
+                </React.Fragment>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      }
     </Grid>
   );
 };
