@@ -22,7 +22,7 @@ const proxy = require('http-proxy-middleware');
 if(HTTPS_ON == 'YES') {
     app.use(proxy('/api', {
         target: `${HTTPS_API_URL}`,
-        secure: process.env.NODE_ENV == 'production' ? true: false,
+        secure: false,
         changeOrigin: true,
         pathRewrite: {'^/api' : ''}
     }));
