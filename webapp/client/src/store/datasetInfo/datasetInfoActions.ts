@@ -16,7 +16,8 @@ export enum DATASET_INFO_ACTIONS {
   DATASET_UPDATED = "DATASET_UPDATED",
   GET_SAMPLE_DATA_EMAIL = "GET_SAMPLE_DATA_EMAIL",
   GET_SAMPLE_DATA = "GET_SAMPLE_DATA",
-  SEND_EMAIL = "SEND_EMAIL"
+  SEND_EMAIL = "SEND_EMAIL",
+  BUY_DATASET = "BUY_DATASET"
 };
 
 export function getDatasetInfo(datasetId: string) {
@@ -70,6 +71,10 @@ export function updateSampleData(sampleData) {
 
 export function sendEmail(emailInquiry: DatasetInquiryPayload, notify) {
   return {type: DATASET_INFO_ACTIONS.SEND_EMAIL, emailInquiry, notify}
+}
+
+export function buyDataset(token, dataset, user) {
+  return {type: DATASET_INFO_ACTIONS.BUY_DATASET, token, dataset, user};
 }
 
 export function updateDatasetInfo(dataset) {

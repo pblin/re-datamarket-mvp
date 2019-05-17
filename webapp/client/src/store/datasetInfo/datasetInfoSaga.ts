@@ -3,6 +3,8 @@ import {DatasetService} from "../../services/DatasetService";
 import {changeSampleDialog, changeSendEmailDialog, DATASET_INFO_ACTIONS, updateSampleData} from "./datasetInfoActions";
 import {DATASET_FORM_ACTIONS} from "../datasetForm/actions";
 import {EmailService} from "../../services/EmailService";
+import {StripeService} from "../../services/StripeService";
+import {OrderPayload} from "../../services/payloads/OrderPayload";
 
 export function* GetDatasetInfo(action) {
   let datasetId = action.datasetId;
@@ -76,12 +78,38 @@ export function* SendEmail(action) {
   }
 }
 
+export function* buyDataset(action) {
+  const {token, dataset, user} = action;
+  const price = Number(dataset.price_high * 100);
+  const body = {
+    amount: price,
+    description: dataset.description,
+    product: dataset.id,
+    stripeTokenType: token.type,
+    stripeEmail: token.email,
+    stripeToken: token.id,
+    token: token
+  };
+
+  //TODO: Make these services singletons
+  const stripeService = new StripeService();
+  const emailService = new EmailService();
+
+  yield stripeService.checkout(body, user.id);
+  yield emailService.retrieveReciept(token.email, dataset.id, dataset.name, price / 100);
+
+  const orderPayload = new OrderPayload(user.id, dataset.id, price / 100, 'USD', '', new Date());
+
+  console.log(orderPayload);
+}
+
 export function* watchDatasetInfo() {
   yield takeLatest(DATASET_INFO_ACTIONS.GET_DATASET_INFO, GetDatasetInfo);
   yield takeLatest(DATASET_FORM_ACTIONS.UPDATE_DATASET, DatasetFormUpdated);
   yield takeLatest(DATASET_INFO_ACTIONS.GET_SAMPLE_DATA_EMAIL, GetSampleDataEmail);
   yield takeLatest(DATASET_INFO_ACTIONS.GET_SAMPLE_DATA, GetSampleData);
-  yield takeLatest(DATASET_INFO_ACTIONS.SEND_EMAIL, SendEmail)
+  yield takeLatest(DATASET_INFO_ACTIONS.SEND_EMAIL, SendEmail);
+  yield takeLatest(DATASET_INFO_ACTIONS.BUY_DATASET, buyDataset);
 }
 
 export function datasetInfoSagas() {

@@ -2,7 +2,6 @@ import {STRIPECHECKOUT} from "../components/ConfigEnv";
 
 export class StripeService {
   async checkout(body, userId) {
-    try {
       const results = await fetch(`${STRIPECHECKOUT}/${userId}`, {
         method: 'POST',
         headers: {
@@ -11,10 +10,9 @@ export class StripeService {
         body: JSON.stringify(body)
       });
 
-      return results;
-    } catch (e) {
-      //TODO: Do Something Else
-      //alert('Payment Error');
-    }
+      console.log('stripe results');
+      console.log(results);
+
+      return results.json();
   }
 }

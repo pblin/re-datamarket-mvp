@@ -9,6 +9,7 @@ import {datasetFormSagas} from "./datasetForm/datasetFormSaga";
 import {profileSagas} from "./profile/profileSaga";
 import {marketplaceSagas} from "./marketplace/marketplaceSaga";
 import {datasetInfoSagas} from "./datasetInfo/datasetInfoSaga";
+import {orderSagas} from "./orders/orderSaga";
 
 //Reducers
 import FileState from "./file/reducers";
@@ -17,6 +18,7 @@ import ProfileState from "./profile/profileReducer";
 import MarketplaceState from './marketplace/marketplaceReducer';
 import AppState from './app/appReducer';
 import DatasetInfoState from './datasetInfo/datasetInfoReducer';
+import OrderState from './orders/ordersReducer';
 
 import {reducer as formReducer} from 'redux-form';
 
@@ -52,6 +54,7 @@ export class AppStore {
       MarketplaceState,
       DatasetInfoState,
       AppState,
+      OrderState,
       form: formReducer
     });
 
@@ -62,7 +65,8 @@ export class AppStore {
         ...datasetFormSagas(),
         ...profileSagas(),
         ...marketplaceSagas(),
-        ...datasetInfoSagas()
+        ...datasetInfoSagas(),
+        ...orderSagas()
       ])
     }
 

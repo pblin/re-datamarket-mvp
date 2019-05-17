@@ -26,7 +26,8 @@ const BuyDatasetDialog = ({isOpen = false, onCancel, dataset, user}) => {
 
     const stripeService = new StripeService();
     const emailService = new EmailService();
-    await stripeService.checkout(body, user.id);
+    const res = await stripeService.checkout(body, user.id);
+    console.log(res);
 
     await emailService.retrieveReciept(token.email, dataset.id, dataset.name, price / 100);
   };
