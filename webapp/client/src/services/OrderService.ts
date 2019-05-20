@@ -1,7 +1,7 @@
 import {config} from "./ServiceConfig";
 import {OrderPayload} from "./payloads/OrderPayload";
 
-export class OrderService {
+class OrderService {
   baseUrl: string;
   constructor() {
       this.baseUrl = location.protocol+'//'+location.hostname + ":9000";

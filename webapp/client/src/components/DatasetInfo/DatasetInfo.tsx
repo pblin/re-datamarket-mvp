@@ -10,6 +10,7 @@ import {
   getDatasetInfo,
   updateDataset,
   updateDatasetInfo,
+  buyDataset,
   getSampleData,
   changeSendEmailDialog,
   sendEmail
@@ -240,6 +241,7 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
           user={this.props.profile}
           dataset={this.props.dataset}
           onCancel={() => this.props.action.changeBuyDatasetDialog(false)}
+          onBuy={this.props.action.buyDataset}
         />
         <SendEmailDialog
           isOpen={this.props.datasetInfo.isSendEmailOpen}
@@ -281,6 +283,7 @@ function mapDispatchToProps(dispatch: any) {
         changeSendEmailDialog,
         getSampleData,
         sendEmail,
+        buyDataset,
         submit
       }, dispatch)
   };

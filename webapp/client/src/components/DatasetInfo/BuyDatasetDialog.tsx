@@ -8,12 +8,12 @@ import {
 import Button from "@material-ui/core/Button";
 import StripeCheckout from "react-stripe-checkout";
 import {STRIPETOKEN} from '../ConfigEnv';
-import {StripeService} from "../../services/StripeService";
-import {EmailService} from "../../services/EmailService";
+//import {StripeService} from "../../services/StripeService";
+//import {EmailService} from "../../services/EmailService";
 
-const BuyDatasetDialog = ({isOpen = false, onCancel, dataset, user}) => {
+const BuyDatasetDialog = ({isOpen = false, onCancel, dataset, user, onBuy}) => {
   const onToken = async (token) => {
-    const price = Number(dataset.price_high * 100);
+    /*const price = Number(dataset.price_high * 100);
     const body = {
       amount: price,
       description: dataset.description,
@@ -29,7 +29,10 @@ const BuyDatasetDialog = ({isOpen = false, onCancel, dataset, user}) => {
     const res = await stripeService.checkout(body, user.id);
     console.log(res);
 
-    await emailService.retrieveReciept(token.email, dataset.id, dataset.name, price / 100);
+    await emailService.retrieveReciept(token.email, dataset.id, dataset.name, price / 100);*/
+
+    //Will kickoff the buy dataset saga
+    onBuy(token, dataset, user);
   };
 
   return(

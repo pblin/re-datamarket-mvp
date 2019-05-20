@@ -5,6 +5,7 @@ import {DATASET_FORM_ACTIONS} from "../datasetForm/actions";
 import {EmailService} from "../../services/EmailService";
 import {StripeService} from "../../services/StripeService";
 import {OrderPayload} from "../../services/payloads/OrderPayload";
+import OrderService from "../../services/OrderService";
 
 export function* GetDatasetInfo(action) {
   let datasetId = action.datasetId;
@@ -79,6 +80,7 @@ export function* SendEmail(action) {
 }
 
 export function* buyDataset(action) {
+  //TODO: wrap all in try catch block
   const {token, dataset, user} = action;
   const price = Number(dataset.price_high * 100);
   const body = {
@@ -95,12 +97,20 @@ export function* buyDataset(action) {
   const stripeService = new StripeService();
   const emailService = new EmailService();
 
-  yield stripeService.checkout(body, user.id);
+  const coResults = yield stripeService.checkout(body, user.id);
   yield emailService.retrieveReciept(token.email, dataset.id, dataset.name, price / 100);
 
-  const orderPayload = new OrderPayload(user.id, dataset.id, price / 100, 'USD', '', new Date());
+  const orderPayload = new OrderPayload(
+    user.id,
+    dataset.id,
+    price / 100,
+    'USD',
+    coResults.ref,
+    coResults.timestamp
+  );
 
   console.log(orderPayload);
+  OrderService.postOrder(orderPayload);
 }
 
 export function* watchDatasetInfo() {
