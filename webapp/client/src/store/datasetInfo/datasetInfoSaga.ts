@@ -103,6 +103,7 @@ export function* buyDataset(action) {
   const orderPayload = new OrderPayload(
     user.id,
     dataset.id,
+    dataset.name,
     price / 100,
     'USD',
     coResults.ref,

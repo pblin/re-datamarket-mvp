@@ -208,6 +208,7 @@ function mapDispatchToProps(dispatch: any) {
     }, dispatch)
   };
 }
+
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(MarketplaceV2)
 );

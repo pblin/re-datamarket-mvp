@@ -17,10 +17,11 @@ class OrderService {
   }
 
   async postOrder(order: OrderPayload) {
-      const {dataset_id, buyer_id, order_timestamp, payment_txn_ref, pricing_unit, trade} = order;
+      const {dataset_id, buyer_id, order_timestamp, payment_txn_ref, pricing_unit, trade, dataset_name} = order;
 
       const body = {
           dataset_id,
+          dataset_name,
           buyer_id,
           order_timestamp,
           payment_txn_ref,
@@ -38,7 +39,7 @@ class OrderService {
       if(results.status !== 200) {
           return [];
       } else {
-          return results.json();
+          return results;
       }
   }
 }

@@ -7,9 +7,6 @@ function* GetOrders() {
   const state = yield select();
   const {id} = profileSelector(state);
 
-  console.log('Get Orders');
-  console.log(id);
-
   const orders = yield OrderService.getOrderHistory(id);
 
   yield put(setOrders(orders));

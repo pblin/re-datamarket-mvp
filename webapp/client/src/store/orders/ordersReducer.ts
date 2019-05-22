@@ -13,9 +13,9 @@ const reducer = function(state=defaultState, action: any) {
 
   switch(action.type) {
     case ORDER_ACTIONS.SET_ORDERS:
+      newState.orders = action.orders;
       break;
     default:
-      newState.orders = action.orders;
       return state;
   }
   return newState;
