@@ -4,6 +4,13 @@
   margin-bottom: 20px;
 }
 
+.StripeCheckout {
+  width: 100% !important;
+  margin-top: 10px;
+  font-family: $app-font-main;
+  background: $secondary-main !important;
+}
+
 .dataset-info-view .info-panel {
   border: 1px solid #dedfe0;
   box-sizing: border-box;
