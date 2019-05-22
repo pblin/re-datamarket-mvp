@@ -10,6 +10,7 @@ import DatasetManager from "../components/DatasetManager/DatasetManager";
 import MarketplaceV2 from "../components/Marketplace/MarketplaceV2";
 import App from '../components/App/App';
 import DatasetInfo from "../components/DatasetInfo/DatasetInfo";
+import OrderHistoryPage from "../components/OrderHistory/OrderHistoryPage";
 
 const auth = new WebAuthentication();
 
@@ -75,6 +76,12 @@ const Routes: SFC<{}> = () => {
             <PrivateRoute
               path="/dataset/:id"
               component={DatasetInfo}
+              auth={auth}
+              authenticated={auth.authenticated}
+            />
+            <PrivateRoute
+              path="/order/history"
+              component={OrderHistoryPage}
               auth={auth}
               authenticated={auth.authenticated}
             />

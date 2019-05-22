@@ -17,6 +17,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import {bindActionCreators} from "redux";
 import autobind from 'autobind-decorator';
@@ -126,7 +127,8 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   appLinks: AppLink[] = [
     new AppLink('Marketplace', '/marketplace', (<DashboardIcon/>)),
     new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
-    new AppLink('News', 'https://medium.com/rebloc', (<NotificationsIcon/>), 'global')
+    new AppLink('News', 'https://medium.com/rebloc', (<NotificationsIcon/>), 'global'),
+    new AppLink('Order History', '/order/history', <CreditCardIcon/>)
   ];
 
   userAppLinks: AppLink[] = [

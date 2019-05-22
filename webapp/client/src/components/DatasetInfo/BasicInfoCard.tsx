@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   Avatar,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -10,10 +9,12 @@ import {
   Menu,
   MenuItem,
   Divider,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PersonIcon from "@material-ui/icons/Person";
+import StripeCheckout from "react-stripe-checkout";
+import {STRIPETOKEN} from "../ConfigEnv";
 
 const BasicInfoCard = (
   {
@@ -22,7 +23,8 @@ const BasicInfoCard = (
     onMoreOptions,
     onBuy,
     onGetSampleData,
-    handleSendEmail
+    handleSendEmail,
+    user
   }) => {
   const renderSearchTerms = (terms: any[]) => {
     if(!terms) {
@@ -48,6 +50,10 @@ const BasicInfoCard = (
     onMoreOptions(false);
   };
 
+  const onToken = async (token) => {
+    onBuy(token, dataset, user);
+  };
+
   return(
     <Card>
       <CardHeader
@@ -71,14 +77,18 @@ const BasicInfoCard = (
         <Typography className={"card-content-sub-desc"}>{dataset['num_of_records']}</Typography>
         <Divider/>
         <Typography className={"card-content-price"}> {renderPrice(dataset['price_high'])}</Typography>
-          <Button
-            color={"secondary"}
-            variant={"contained"}
-            className={"dataset-buy"}
-            onClick={onBuy}
-          >
-            Buy
-          </Button>
+        <StripeCheckout
+          name="Rebloc"
+          description={'checkout'}
+          panelLabel={`Pay ${dataset['price_high']}$`}
+          amount={0} //Amount in cents $9.99
+          token={onToken}
+          label="Buy"
+          locale="auto"
+          stripeKey={STRIPETOKEN}
+          image="https://www.rebloc.io/img/favicon.png" //Pop-in header image
+          billingAddress={false}
+        />
       </CardContent>
         <Menu
           open={isMoreOptionsOpened}

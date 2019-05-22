@@ -10,6 +10,7 @@ import {
   getDatasetInfo,
   updateDataset,
   updateDatasetInfo,
+  buyDataset,
   getSampleData,
   changeSendEmailDialog,
   sendEmail
@@ -34,7 +35,6 @@ import {DATASET_STAGE} from "../Common/CommonTypes";
 import {withSnackbar} from "notistack";
 import BasicInfoModal from "./BasicInfoFormCard";
 import BasicInfoOwnerCard from './BasicInfoOwnerCard';
-import BuyDatasetDialog from "./BuyDatasetDialog";
 import SendEmailDialog from "./SendEmailDialog";
 import {DatasetInquiryPayload} from "../../services/payloads/EmailPayload";
 import DynamicTable from '../Common/Table/DynamicTable';
@@ -182,9 +182,10 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
               dataset={this.props.dataset}
               onMoreOptions={this.onMoreOptionsMenuChange}
               isMoreOptionsOpened={this.props.datasetInfo.moreOptionsOpened}
-              onBuy={this.buyDataset}
+              onBuy={this.props.action.buyDataset}
               onGetSampleData={this.getSampleDataEmail}
               handleSendEmail={() => this.props.action.changeSendEmailDialog(true)}
+              user={this.props.profile}
             />
             }
           </Grid>
@@ -235,12 +236,6 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
           isOpen={this.props.datasetInfo.isBasicFormOpen}
           onCancel={() => this.props.action.changeBasicInfoForm(false)}
         />
-        <BuyDatasetDialog
-          isOpen={this.props.datasetInfo.isBuyDatasetOpen}
-          user={this.props.profile}
-          dataset={this.props.dataset}
-          onCancel={() => this.props.action.changeBuyDatasetDialog(false)}
-        />
         <SendEmailDialog
           isOpen={this.props.datasetInfo.isSendEmailOpen}
           onCancel={() => {this.props.action.changeSendEmailDialog(false)}}
@@ -281,6 +276,7 @@ function mapDispatchToProps(dispatch: any) {
         changeSendEmailDialog,
         getSampleData,
         sendEmail,
+        buyDataset,
         submit
       }, dispatch)
   };
