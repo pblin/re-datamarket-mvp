@@ -12,13 +12,16 @@ export class ProfileService {
 
   async updateProfile(email: string, profile: any) {
     const body = {
-      primaryEmail: email,
-      secondaryEmail: profile.secondaryEmail,
-      firstName: profile.firstName,
-      lastName: profile.lastName,
+      primary_email: email,
+      secondary_email: profile.secondaryEmail,
+      first_name: profile.firstName,
+      last_name: profile.lastName,
       address: profile.address,
-      phone: profile.phone
+      phone: profile.phone,
+      id: profile.id || null
     };
+
+    console.log(profile);
 
     const results = await fetch(`${config.serverBase}/profile`, {
       method: 'POST',
