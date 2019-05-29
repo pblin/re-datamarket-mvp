@@ -9,9 +9,6 @@ export const datasetSelector = state => state.DatasetInfoState;
 
 export const isPublished = createSelector([datasetInfoSelector],
   (dataset) => {
-    console.log('STAGE EEE');
-    console.log(dataset);
-    console.log(dataset.stage);
     if(dataset.stage == DATASET_STAGE.PUBLISHED) {
       return true;
     } else {
