@@ -11,6 +11,7 @@ import MarketplaceV2 from "../components/Marketplace/MarketplaceV2";
 import App from '../components/App/App';
 import DatasetInfo from "../components/DatasetInfo/DatasetInfo";
 import OrderHistoryPage from "../components/OrderHistory/OrderHistoryPage";
+import EmailVerificationPage from "../components/EmailVerification/EmailVerificationPage";
 
 const auth = new WebAuthentication();
 
@@ -82,6 +83,12 @@ const Routes: SFC<{}> = () => {
             <PrivateRoute
               path="/order/history"
               component={OrderHistoryPage}
+              auth={auth}
+              authenticated={auth.authenticated}
+            />
+            <Route
+              path="/VerificationPage"
+              component={EmailVerificationPage}
               auth={auth}
               authenticated={auth.authenticated}
             />
