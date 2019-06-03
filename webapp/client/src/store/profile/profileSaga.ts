@@ -16,20 +16,16 @@ function* GetProfile(action) {
 function* ConfirmEmail(action) {
   try {
     const results = yield EmailService.verifyEmail(action.email, action.code);
-
-    console.log('the results');
-    console.log(results);
-    //TODO: Add action creator here
     if(results) {
       const profile = JSON.parse(localStorage.getItem ('profile'));
       profile['primary_email_verified'] = true;
       localStorage.setItem('profile', JSON.stringify(profile));
       yield put({type: PROFILE_ACTIONS.SET_PROFILE, profile, email: action.email});
+      action.notify('Your email was verified', {variant: 'success'});
     }
 
   } catch(e) {
-    console.log('WENT WRONG');
-    //TODO: Add creator here
+    action.notify('Your email was not verified', {variant: 'error'});
   }
 }
 

@@ -14,8 +14,8 @@ export function updateProfile(email, profile, notify) {
   return {type: PROFILE_ACTIONS.UPDATE_PROFILE, email, profile, notify};
 }
 
-export function verifyEmail(email, code) {
-  return {type: PROFILE_ACTIONS.CONFIRM_EMAIL, email, code}
+export function verifyEmail(email, code, notify) {
+  return {type: PROFILE_ACTIONS.CONFIRM_EMAIL, email, code, notify}
 }
 
 export function resendVerification(email) {

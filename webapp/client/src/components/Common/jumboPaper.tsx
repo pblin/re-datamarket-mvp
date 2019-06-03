@@ -8,10 +8,10 @@ const JumboPaper = ({title, content, buttonText, handleClick}) => {
   return(
     <Grid container={true} justify={"center"}>
       <Paper className={"jumbo-paper"} elevation={1}>
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Typography variant="h4" className={"jumbo-title"}>{title}</Typography>
         </Grid>
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Typography variant="h6" className={"jumbo-title"}>{content}</Typography>
         </Grid>
         <Button className={"jumbo-button"} onClick={handleClick}>{buttonText}</Button>
