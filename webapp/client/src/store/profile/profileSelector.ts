@@ -15,3 +15,18 @@ export const isProfileSet = createSelector([profileSelector],
     return true;
   }
 );
+
+export const isEmailVerified = createSelector(
+  [profileSelector],
+  (profile) => {
+      if(!profile) {
+        return false;
+      }
+
+      if(profile['primary_email_verfied'] == true) {
+        return true;
+      }
+
+      return false;
+   }
+);

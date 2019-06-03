@@ -21,8 +21,6 @@ export class ProfileService {
       id: profile.id || null
     };
 
-    console.log(profile);
-
     const results = await fetch(`${config.serverBase}/profile`, {
       method: 'POST',
       headers: {
@@ -32,5 +30,25 @@ export class ProfileService {
     });
 
     return results.json();
+  }
+
+  async resendVerification(email: string) {
+    const body = {
+      primary_email: email
+    };
+
+    const response = await fetch(`${config.serverBase}/profile`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if(response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Something went wrong resending the verification email')
+    }
   }
 }

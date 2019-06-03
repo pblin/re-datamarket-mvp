@@ -32,6 +32,20 @@ export class WebAuthentication implements Auth0Authentication {
     scope: 'openid openid profile email'
   });
 
+  get isUserVerified(): boolean {
+    const profile = JSON.parse(localStorage.getItem('profile'));
+
+    if(!profile) {
+      return false;
+    }
+
+    if(profile['primary_email_verified'] == true) {
+      return true;
+    }
+
+    return false;
+  }
+
   get authenticated(): boolean {
     // Check whether the current time is past the
     // access token's expiry time
@@ -65,7 +79,7 @@ export class WebAuthentication implements Auth0Authentication {
 
     localStorage.setItem ('profile', JSON.stringify(profile));
     AppStore.getInstance().store.dispatch({type: PROFILE_ACTIONS.GET_PROFILE});
-  } 
+  }
 
   @autobind
   setSession(authResult: Auth0DecodedHash): void {

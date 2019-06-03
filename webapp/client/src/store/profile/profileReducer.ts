@@ -15,7 +15,7 @@ const reducer = function(state=defaultState, action: any) {
 
   switch(action.type) {
     case PROFILE_ACTIONS.SET_PROFILE:
-      newState.profile = JSON.parse(action.profile);
+      newState.profile = action.profile;
       newState.email = action.email;
       break;
     default:

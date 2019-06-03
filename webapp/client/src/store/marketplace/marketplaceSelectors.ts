@@ -10,9 +10,6 @@ export const getPurchasableDatasets = createSelector(
   datasetSelector,
   profileSelector,
   (datasets, profile) => {
-      console.log('Getting purchasable datasets');
-      console.log(datasets);
-      console.log(profile);
       let filteredDatasets = datasets.filter((dataset) => {
         return dataset.dataset_owner_id != profile.id;
       });

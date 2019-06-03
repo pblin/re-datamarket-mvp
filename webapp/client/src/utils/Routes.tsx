@@ -12,6 +12,7 @@ import App from '../components/App/App';
 import DatasetInfo from "../components/DatasetInfo/DatasetInfo";
 import OrderHistoryPage from "../components/OrderHistory/OrderHistoryPage";
 import EmailVerificationPage from "../components/EmailVerification/EmailVerificationPage";
+import EmailVerificationRequired from "../components/EmailVerification/EmailVerificationRequiredContainer";
 
 const auth = new WebAuthentication();
 
@@ -28,6 +29,24 @@ const PrivateRoute = ({component: Component, authenticated, ...rest}) => {
       render={(props) => authenticated === true
         ? <Component {...props} auth={rest.auth}/>
         : <Redirect to={{pathname: '/home', state: {from: props.location}}} />}
+    />
+  )
+};
+
+const PrivateVerifiedRoute = ({component: Component, authenticated, ...rest}) => {
+  return (
+    <Route
+      {...rest}
+      render={(props) => {
+        if(authenticated === false) {
+          return (<Redirect to={{pathname: '/home', state: {from: props.location}}} />)
+        }
+        if(!auth.isUserVerified) {
+          return <EmailVerificationRequired/>
+        }
+        console.log('here')
+        return (<Component {...props} auth={rest.auth}/>);
+      }}
     />
   )
 };
@@ -50,37 +69,37 @@ const Routes: SFC<{}> = () => {
               auth={auth}
               authenticated={auth.authenticated}
             />
-            <PrivateRoute
+            <PrivateVerifiedRoute
               path="/dataexplorer"
               component={DataMap}
               auth={auth}
               authenticated={auth.authenticated}
             />
-            <PrivateRoute
+            <PrivateVerifiedRoute
               path="/profile"
               component={Customer}
               auth={auth}
               authenticated={auth.authenticated}
             />
-            <PrivateRoute
+            <PrivateVerifiedRoute
               path="/dataset-manager"
               component={DatasetManager}
               auth={auth}
               authenticated={auth.authenticated}
             />
-            <PrivateRoute
+            <PrivateVerifiedRoute
               path="/marketplace"
               component={MarketplaceV2}
               auth={auth}
               authenticated={auth.authenticated}
             />
-            <PrivateRoute
+            <PrivateVerifiedRoute
               path="/dataset/:id"
               component={DatasetInfo}
               auth={auth}
               authenticated={auth.authenticated}
             />
-            <PrivateRoute
+            <PrivateVerifiedRoute
               path="/order/history"
               component={OrderHistoryPage}
               auth={auth}
