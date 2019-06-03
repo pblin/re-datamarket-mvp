@@ -2,12 +2,13 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {withSnackbar} from "notistack";
 import EmailVerificationRequired from './EmailVerificationRequired';
-import {profileSelector} from "../../store/profile/profileSelector";
+import {profileSelector, wasVerificationSent} from "../../store/profile/profileSelector";
 import {resendVerification} from "../../store/profile/profileActions";
 
 const mapStateToProps = (state: any) => {
   return {
-    profile: profileSelector(state)
+    profile: profileSelector(state),
+    wasVerificationSent: wasVerificationSent(state)
   }
 };
 

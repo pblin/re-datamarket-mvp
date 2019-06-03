@@ -1,17 +1,21 @@
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import EmailVerification from './EmailVerification';
-import {verifyEmail} from "../../store/profile/profileActions";
+import {verifyEmail, checkProfile} from "../../store/profile/profileActions";
+import {getProfileStatus} from "../../store/profile/profileSelector";
 
 const mapStateToProps = (state: any) => {
-  return {}
+  return {
+    profileStatus: getProfileStatus(state)
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(
       {
-        verifyEmail
+        verifyEmail,
+        checkProfile
       },
       dispatch
     )

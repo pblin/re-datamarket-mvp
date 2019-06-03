@@ -46,7 +46,7 @@ export class ProfileService {
     });
 
     if(response.ok) {
-      return response.json();
+      return true;
     } else {
       throw new Error('Something went wrong resending the verification email')
     }
