@@ -11,7 +11,7 @@ describe('Marketplace State', () => {
 
   it("Should set initial state", () => {
     let initialState = store.getState();
-    expect(initialState.schemaFilter).toBe('all');
+    expect(initialState.schemaFilter).toBe('purchasable');
     expect(initialState.datasets).toEqual([]);
     expect(initialState.userDatasets).toEqual([]);
     expect(initialState.datasetDialog.open).toBe(false);
