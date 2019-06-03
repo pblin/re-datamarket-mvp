@@ -19,7 +19,7 @@ import SchemaList from "./SchemaList";
 import {
   confirmDeleteDialogSelector,
   datasetDialogSelector,
-  MarketplaceSelector,
+  getPurchasableDatasets,
   marketplaceSelector
 } from "../../store/marketplace/marketplaceSelectors";
 import {Grid, Button, Dialog, DialogContent, DialogActions, DialogTitle} from "@material-ui/core";
@@ -42,6 +42,7 @@ interface ComponentProps {
   confirmDeleteDialog: any;
   marketplace: any;
   actions: any;
+  purchasableDatasets: any[];
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps> {
@@ -57,7 +58,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   toolbarOptions: ToolbarOption[] = [
-    new ToolbarOption('All', 'all'),
+    new ToolbarOption('Purchasable', 'purchasable'),
     new ToolbarOption('OWNED BY ME',  'ownedByMe')
   ];
 
@@ -105,7 +106,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     if(!this.props.isProfileSet) {
       return null;
     }
-    if(this.props.schemaFilter == 'all' || (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
+    if(this.props.schemaFilter == 'purchasable' || (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
       return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
         Add
         <AddIcon/>
@@ -126,21 +127,20 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-start"}>
-              {this.props.schemaFilter == 'all' &&
+              { (this.props.schemaFilter == 'all' || this.props.schemaFilter == 'purchasable') &&
                 <FilterMenu
                   placeholder={"Search Marketplace"}
                   searchVal={this.props.marketplace.search}
                   onSearch={this.onSearch}
                   onSearchChange={this.onSearchChange}/>
               }
-              {
-                this.renderAddButton()
-              }
+              {this.renderAddButton()}
             </Grid>
             <Grid item xs={12} sm={12}>
-              {this.props.schemaFilter == 'all' &&
+              {
+                this.props.schemaFilter=='purchasable' &&
                 <SchemaList
-                  schemas={this.props.datasets}
+                  schemas={this.props.purchasableDatasets}
                   history={this.props.history}
                 />
               }
@@ -190,7 +190,8 @@ function mapStateToProps(state: any, ownProps: any) {
     userDatasets: marketplaceSelector(state).userDatasets,
     datasetDialog: datasetDialogSelector(state),
     confirmDeleteDialog: confirmDeleteDialogSelector(state),
-    marketplace: MarketplaceSelector(state)
+    marketplace: marketplaceSelector(state),
+    purchasableDatasets: getPurchasableDatasets(state)
   }
 }
 
@@ -210,5 +211,6 @@ function mapDispatchToProps(dispatch: any) {
 }
 
 export default withRouter(
+  //@ts-ignore
   connect(mapStateToProps, mapDispatchToProps)(MarketplaceV2)
 );

@@ -11,7 +11,7 @@ interface MarketplaceState {
 }
 
 const defaultState: MarketplaceState = {
-  schemaFilter: 'all',
+  schemaFilter: 'purchasable',
   datasets: [],
   userDatasets: [],
   datasetDialog: {

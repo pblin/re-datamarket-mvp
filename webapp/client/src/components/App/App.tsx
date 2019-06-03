@@ -165,6 +165,8 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   @autobind
   handleProfileMenuClickAway(itemPressed) {
+    console.log('handle profile menu click away');
+    console.log(itemPressed);
     switch(itemPressed) {
       case 'clickAway':
         this.props.actions.updateProfileMenuOpen(false);

@@ -68,7 +68,11 @@ class Customer extends React.Component<Props> {
   }
 
   handleProfileSubmit(values) {
-    this.props.updateProfile(this.props.email, values, this.props.enqueueSnackbar);
+    this.props.updateProfile(
+      this.props.email,
+      Object.assign({}, values, {id: this.props.profile && this.props.profile.id }),
+      this.props.enqueueSnackbar
+    );
   }
 
   render() {

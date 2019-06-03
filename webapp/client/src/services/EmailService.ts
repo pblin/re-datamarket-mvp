@@ -69,4 +69,28 @@ export class EmailService {
 
     return body;
   }
+
+  async verifyEmail(email: string, code: string) {
+    const url = `${this.baseUrl}/profile/verify/${email}`;
+
+    const body = {
+      code
+    };
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if(response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Something went wrong with verifying the email');
+    }
+  }
 }
+
+export default new EmailService();
