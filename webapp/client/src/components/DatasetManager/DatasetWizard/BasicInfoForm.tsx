@@ -177,6 +177,7 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
               items={this.state.countrySuggestions}
               propToFilter={'name'}
               onSuggestionSelected={this.onCountrySelect}
+              gridProps={{xs: 4, item: true}}
             />
             <Field
               label="Name(Required)"

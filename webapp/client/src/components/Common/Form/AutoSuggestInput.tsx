@@ -1,10 +1,17 @@
 import * as React from "react";
 import AutoSuggest from "react-autosuggest";
+import {
+  Grid,
+  Paper,
+  TextField,
+  MenuItem
+} from "@material-ui/core";
 
 interface ComponentProps {
     items: any[];
     propToFilter: string;
     inputProps: any;
+    gridProps: any;
     onSuggestionSelected: Function;
 }
 
@@ -47,8 +54,15 @@ export default class AutoSuggestInput extends React.Component<ComponentProps, Co
     }
 
     //TODO: Pass component through component props
-    renderSuggestion(suggestion: any) {
-      return (<div>{suggestion[this.props.propToFilter]}</div>)
+    renderSuggestion(suggestion: any,  { query, isHighlighted }) {
+      //TODO: Add this later
+      //const matches = match(suggestion.label, query);
+      //const parts = parse(suggestion.label, matches);
+      return (
+        <MenuItem selected={isHighlighted} component="div">
+            <div>{suggestion[this.props.propToFilter]}</div>
+        </MenuItem>
+      )
     }
 
     onSuggestionsFetchRequested(value: any) {
@@ -84,6 +98,25 @@ export default class AutoSuggestInput extends React.Component<ComponentProps, Co
       this.props.onSuggestionSelected(suggestion);
     };
 
+    renderInputComponent = (inputProps) => {
+      const { classes, inputRef = () => {}, ref, ...other } = inputProps;
+      return (
+        <TextField
+          fullWidth={true}
+          InputProps={{
+            inputRef: node => {
+              ref(node);
+              inputRef(node);
+            },
+            classes: {
+              input: classes && classes.input || '',
+            },
+          }}
+          {...other}
+        />
+      )
+    };
+
     render() {
       const { suggestions, value } = this.state;
 
@@ -97,15 +130,23 @@ export default class AutoSuggestInput extends React.Component<ComponentProps, Co
         this.props.inputProps);
 
       return (
-        <AutoSuggest
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={this.getSuggestionValue}
-          renderSuggestion={this.renderSuggestion}
-          inputProps={inputProps}
-          onSuggestionSelected={this.onSuggestionSelected}
-        />
+        <Grid {...this.props.gridProps}>
+          <AutoSuggest
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={this.getSuggestionValue}
+            renderSuggestion={this.renderSuggestion}
+            inputProps={inputProps}
+            onSuggestionSelected={this.onSuggestionSelected}
+            renderInputComponent={this.renderInputComponent}
+            renderSuggestionsContainer={options => (
+              <Paper {...options.containerProps} square>
+                {options.children}
+              </Paper>
+            )}
+          />
+        </Grid>
       );
     }
 }
