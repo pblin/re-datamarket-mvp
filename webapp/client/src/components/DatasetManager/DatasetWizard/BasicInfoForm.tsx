@@ -6,12 +6,26 @@ import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
 import "./DatasetWizard.scss";
 import {ERROR_TYPE} from "../../Common/Error/ErrorType";
 import {datasetInfoSelector} from "../../../store/datasetInfo/datasetInfoSelector";
+import AutoSuggestInput from '../../Common/Form/AutoSuggestInput';
+
+import csc from 'country-state-city';
+console.log(csc.getAllCountries());
+//console.log(csc.getStatesOfCountry('231'));
+//console.log(csc.getCitiesOfState('3970'));
+//console.log(csc.getCityById('46280'));
 
 interface BasicFormProps {
   handleSubmit: any;
   pristine: boolean;
   invalid: boolean;
   mode?: string;
+  change: Function;
+}
+
+interface BasicInfoState {
+  countrySuggestions: any[];
+  stateSuggestions: any[];
+  citySuggestions: any[];
 }
 /* Redo search terms with https://material-ui.com/demos/autocomplete/ */
 /* https://stackoverflow.com/questions/23618744/rendering-comma-separated-list-of-links */
@@ -26,6 +40,7 @@ const renderSelectField = ({input, label, meta, custom}) => {
         margin="normal"
         variant={'standard'}
         label={label}
+        disabled={custom.disabled || false}
         select
         error={meta.touched && meta.error != undefined}
         {...input}
@@ -121,11 +136,48 @@ const renderGrid = (mode, orig, newSize = 12) => {
   return newSize;
 };
 
-class BasicInfoForm extends Component<BasicFormProps> {
+class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      countrySuggestions: [],
+      stateSuggestions: [],
+      citySuggestions: []
+    };
+  }
+
+  componentDidMount(): void {
+    this.setState({
+      countrySuggestions: csc.getAllCountries()
+    });
+  }
+
+  onCountrySelect = (value) => {
+    console.log('COUNTRY SELECTED');
+    console.log(value);
+    console.log(this.props);
+    this.props.change('country2', value['name']);
+    console.log(csc.getStatesOfCountry(value.id));
+    this.setState({
+      stateSuggestions: csc.getStatesOfCountry(value.id)
+    })
+  };
+
   render() {
+    console.log('basic info country suggestions');
+    console.log(this.state.countrySuggestions);
+
     return (
-        <form onSubmit={this.props.handleSubmit} className={this.props.mode == 'card' ? 'card-mode': ''}>
+        <form onSubmit={this.props.handleSubmit}
+              autoComplete={"off"}
+              className={this.props.mode == 'card' ? 'card-mode': ''}>
           <Grid spacing={24} container={true} >
+            <AutoSuggestInput
+              inputProps={{}}
+              items={this.state.countrySuggestions}
+              propToFilter={'name'}
+              onSuggestionSelected={this.onCountrySelect}
+            />
             <Field
               label="Name(Required)"
               component={renderTextField}
@@ -151,13 +203,29 @@ class BasicInfoForm extends Component<BasicFormProps> {
               label="Country"
               component={renderSelectField}
               name="country"
-              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 6), options: ['USA']} }
+              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 4), options: ['USA']} }
             />
             <Field
               label="State"
               component={renderSelectField}
               name="state_province"
-              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 6), options: ['New York']} }
+              custom={ {
+                gridXs: 12,
+                gridSm: renderGrid(this.props.mode, 4, 4),
+                options: ['New York'],
+                disabled: !(this.state.stateSuggestions.length > 0)
+              }}
+            />
+            <Field
+              label="City"
+              component={renderSelectField}
+              name="city"
+              custom={ {
+                gridXs: 12,
+                gridSm: renderGrid(this.props.mode, 4, 4),
+                options: ['New York'],
+                disabled: !(this.state.citySuggestions.length > 0)
+              }}
             />
             <Field
               label="Sample Api Key"

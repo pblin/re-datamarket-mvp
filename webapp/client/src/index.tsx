@@ -11,6 +11,10 @@ import {SnackbarProvider} from "notistack";
 import {AppEventEmitter} from "./utils/AppEventEmitter";
 import registerServiceWorker, {unregister} from "./registerServiceWorker";
 
+//https://www.npmjs.com/package/country-state-city
+
+console.log('Here are all countries');
+
 const theme = createMuiTheme({
   typography: {
     fontFamily: "Roboto",
