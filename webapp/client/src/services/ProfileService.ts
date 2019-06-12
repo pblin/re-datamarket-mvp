@@ -11,7 +11,10 @@ export class ProfileService {
   }
 
   async updateProfile(email: string, profile: any) {
-    const body = {
+    //TODO: Remove this once profile service doesnt require all fields
+    let profileStored = JSON.parse(localStorage.getItem ('profile'));
+
+    const body = Object.assign({}, profileStored, {
       primary_email: email,
       secondary_email: profile.secondaryEmail,
       first_name: profile.firstName,
@@ -19,7 +22,7 @@ export class ProfileService {
       address: profile.address,
       phone: profile.phone,
       id: profile.id || null
-    };
+    });
 
     const results = await fetch(`${config.serverBase}/profile`, {
       method: 'POST',

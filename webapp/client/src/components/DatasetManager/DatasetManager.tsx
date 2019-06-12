@@ -1,16 +1,6 @@
 import * as React from "react";
-import {connect} from "react-redux";
 import {DatasetWizard} from "./DatasetWizard/DatasetWizard";
-import {
-  changeDisplaySchemaError,
-  nextStep,
-  prevStep,
-  resetForm,
-  updateDatasetForm,
-  saveDatasetForm
-} from "../../store/datasetForm/actions";
 import BasicInfoFrom from './DatasetWizard/BasicInfoForm';
-import { submit, destroy } from 'redux-form';
 import {
   Button,
   Grid,
@@ -19,22 +9,10 @@ import {
   DialogContent,
   DialogTitle
 } from "@material-ui/core";
-import {
-  basicInfo,
-  datasetFormSelector,
-  getWizardSteps,
-  schemaSelector
-} from "../../store/datasetForm/datasetFormSelectors";
 import {SchemaUpload} from "./DatasetWizard/SchemaUpload";
-import {getFileState} from "../../store/file/fileSelectors";
-import {uploadSchema} from "../Util/SchemaValidator";
-import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import {withRouter} from "react-router";
-import {changeDialogState} from "../../store/marketplace/marketplaceActions";
-import {datasetDialogSelector} from "../../store/marketplace/marketplaceSelectors";
 import SchemaList from "./SchemaList/SchemaList";
 import {DATASET_STAGE} from "../Common/CommonTypes";
-import {bindActionCreators} from "redux";
 
 interface ComponentProps {
   file: any[],
@@ -72,6 +50,10 @@ class DatasetManager extends React.Component<ComponentProps> {
     this.handleClose = this.handleClose.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
     this.cleanup = this.cleanup.bind(this);
+  }
+
+  componentDidMount(): void {
+    this.props.actions.getTopics();
   }
 
   onSchemaFileChange(fileId: string, file: File) {
@@ -238,40 +220,6 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 }
 
-function mapStateToProps(state: any, ownProps: any) {
-        console.log(state);
-  return {
-    schemaFile: Object.assign({}, getFileState(state).files.find(file => file.fileId == 'schemaFile')),
-    wizard: state.DatasetFormState.wizard,
-    basicInfo: basicInfo(state),
-    schema: Object.assign([], schemaSelector(state)),
-    schemaName: datasetFormSelector(state).schemaName,
-    displaySchemaError: state.DatasetFormState.displayNoSchemaError,
-    profile: profileSelector(state),
-    isProfileSet: isProfileSet(state),
-    datasetDialog: datasetDialogSelector(state),
-    datasetForm: state.DatasetFormState,
-    steps: getWizardSteps(state),
-  }
-}
-
-function mapDispatchToProps(dispatch: any) {
-  return {
-    onFileUpload: (fileId: string) => dispatch({ type: "FILE_UPLOADED", fileId: fileId, validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST' }),
-    onFileChangeAndUpload: (file: any, fileId: string) => dispatch({type: "FILE_CHANGED_AND_UPLOADED", validator: uploadSchema, callbackAction: 'LOAD_SCHEMA_LIST', file, fileId}),
-    actions: bindActionCreators({
-      nextStep,
-      prevStep,
-      changeDisplaySchemaError,
-      changeDialogState,
-      updateDatasetForm,
-      saveDatasetForm,
-      resetForm,
-      submit,
-      destroy
-    }, dispatch)
-  };
-}
 export default withRouter(
-   connect(mapStateToProps, mapDispatchToProps)(DatasetManager)
+  DatasetManager
 );

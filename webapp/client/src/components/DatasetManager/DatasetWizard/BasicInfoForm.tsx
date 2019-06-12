@@ -9,7 +9,7 @@ import {datasetInfoSelector} from "../../../store/datasetInfo/datasetInfoSelecto
 import AutoSuggestInput from '../../Common/Form/AutoSuggestInput';
 
 import csc from 'country-state-city';
-console.log(csc.getAllCountries());
+//console.log(csc.getAllCountries());
 //console.log(csc.getStatesOfCountry('231'));
 //console.log(csc.getCitiesOfState('3970'));
 //console.log(csc.getCityById('46280'));
@@ -153,32 +153,18 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
   }
 
   onCountrySelect = (value) => {
-    console.log('COUNTRY SELECTED');
-    console.log(value);
-    console.log(this.props);
-    this.props.change('country2', value['name']);
-    console.log(csc.getStatesOfCountry(value.id));
+    this.props.change('country', value['name']);
     this.setState({
       stateSuggestions: csc.getStatesOfCountry(value.id)
     })
   };
 
   render() {
-    console.log('basic info country suggestions');
-    console.log(this.state.countrySuggestions);
-
     return (
         <form onSubmit={this.props.handleSubmit}
               autoComplete={"off"}
               className={this.props.mode == 'card' ? 'card-mode': ''}>
           <Grid spacing={24} container={true} >
-            <AutoSuggestInput
-              inputProps={{}}
-              items={this.state.countrySuggestions}
-              propToFilter={'name'}
-              onSuggestionSelected={this.onCountrySelect}
-              gridProps={{xs: 4, item: true}}
-            />
             <Field
               label="Name(Required)"
               component={renderTextField}
@@ -201,11 +187,25 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
               custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4), placeholder: "Term1,Term2,Term3"} }
             />
             <Field
+              label="Endpoint"
+              component={renderTextField}
+              name="access_url"
+              type="text"
+              custom={ {gridXs: 12, gridSm: 8, placeholder: "http://{DATASET ENDPOINT}"} }
+            />
+            <AutoSuggestInput
+              inputProps={{}}
+              items={this.state.countrySuggestions}
+              propToFilter={'name'}
+              onSuggestionSelected={this.onCountrySelect}
+              gridProps={{xs: 4, item: true}}
+            />
+            {/*<Field
               label="Country"
               component={renderSelectField}
               name="country"
               custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 4), options: ['USA']} }
-            />
+            />*/}
             <Field
               label="State"
               component={renderSelectField}
@@ -241,13 +241,6 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
               name="enc_data_key"
               type="text"
               custom={ {gridXs: 12, gridSm: 6, placeholder: "Provide a sample access data key"} }
-            />
-            <Field
-              label="Endpoint"
-              component={renderTextField}
-              name="access_url"
-              type="text"
-              custom={ {gridXs: 12, gridSm: 12, placeholder: "http://{DATASET ENDPOINT}"} }
             />
             <Field
               label="# of records"

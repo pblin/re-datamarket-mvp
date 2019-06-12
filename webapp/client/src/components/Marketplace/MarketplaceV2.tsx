@@ -1,34 +1,15 @@
 import * as React from "react";
-import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import './marketplace.scss';
-import {
-  changeConfirmDialogState,
-  changeDialogState,
-  changeSearch,
-  getUserDatasets,
-  updateSchemaFilter,
-  searchDatasets,
-  deleteDataset,
-  getAllDatasets
-} from "../../store/marketplace/marketplaceActions";
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
-import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import SchemaList from "./SchemaList";
-import {
-  confirmDeleteDialogSelector,
-  datasetDialogSelector,
-  getPurchasableDatasets,
-  marketplaceSelector
-} from "../../store/marketplace/marketplaceSelectors";
 import {Grid, Button, Dialog, DialogContent, DialogActions, DialogTitle} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserDatasetList from "./UserDatasetList";
-import DatasetManager from '../DatasetManager/DatasetManager'
+import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
 import FilterMenu from "../Common/Filter/FilterMenu";
-import {bindActionCreators} from "redux";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -45,7 +26,11 @@ interface ComponentProps {
   purchasableDatasets: any[];
 }
 
-class MarketplaceV2 extends React.Component<ComponentProps> {
+interface ComponentState {
+  purchasedDatasetsRetrieved: boolean;
+}
+
+class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   constructor(props: any) {
     super(props);
     this.handleSchemaChange = this.handleSchemaChange.bind(this);
@@ -59,7 +44,8 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
 
   toolbarOptions: ToolbarOption[] = [
     new ToolbarOption('Purchasable', 'purchasable'),
-    new ToolbarOption('OWNED BY ME',  'ownedByMe')
+    new ToolbarOption('OWNED BY ME',  'ownedByMe'),
+    new ToolbarOption('PURCHASED', 'purchased')
   ];
 
   componentDidMount() {
@@ -68,6 +54,9 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   handleSchemaChange(val) {
+    if(val == 'purchased') {
+      console.log('PURCHASED PURCHASED PURCHASED');
+    }
     this.props.actions.updateSchemaFilter(val);
   }
 
@@ -161,7 +150,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 />
               }
             </Grid>
-            <DatasetManager/>
+            <DatasetManagerContainer/>
             <Dialog open={this.props.confirmDeleteDialog.open} maxWidth={"sm"} fullWidth={true}>
               <DialogTitle>
                 {this.props.confirmDeleteDialog.dataset.name}
@@ -181,36 +170,6 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 }
 
-function mapStateToProps(state: any, ownProps: any) {
-  return {
-    schemaFilter: marketplaceSelector(state).schemaFilter,
-    profile: profileSelector(state),
-    isProfileSet: isProfileSet(state),
-    datasets: marketplaceSelector(state).datasets,
-    userDatasets: marketplaceSelector(state).userDatasets,
-    datasetDialog: datasetDialogSelector(state),
-    confirmDeleteDialog: confirmDeleteDialogSelector(state),
-    marketplace: marketplaceSelector(state),
-    purchasableDatasets: getPurchasableDatasets(state)
-  }
-}
-
-function mapDispatchToProps(dispatch: any) {
-  return {
-    actions: bindActionCreators({
-      updateSchemaFilter,
-      changeDialogState,
-      changeSearch,
-      changeConfirmDialogState,
-      getUserDatasets,
-      searchDatasets,
-      deleteDataset,
-      getAllDatasets
-    }, dispatch)
-  };
-}
-
 export default withRouter(
-  //@ts-ignore
-  connect(mapStateToProps, mapDispatchToProps)(MarketplaceV2)
+  MarketplaceV2
 );
