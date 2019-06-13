@@ -37,6 +37,7 @@ interface ComponentProps {
   schemaName: string;
   steps: any[];
   actions: any;
+  topics: any[];
 }
 
 class DatasetManager extends React.Component<ComponentProps> {
@@ -130,7 +131,10 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 
   renderBasicInfoForm() {
-    return <BasicInfoFrom onSubmit={this.handleBasicFormSubmit}/>
+    return <BasicInfoFrom
+              onSubmit={this.handleBasicFormSubmit}
+              topics={this.props.topics}
+           />
   }
 
   renderSchemaUpload() {

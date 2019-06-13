@@ -22,6 +22,7 @@ import {
 import {getTopics} from "../../store/common/commonActions";
 import {changeDialogState} from "../../store/marketplace/marketplaceActions";
 import { submit, destroy } from 'redux-form';
+import {getTopicsSelector} from "../../store/common/commonSelectors";
 
 function mapStateToProps(state: any) {
   console.log(state);
@@ -37,6 +38,7 @@ function mapStateToProps(state: any) {
     datasetDialog: datasetDialogSelector(state),
     datasetForm: state.DatasetFormState,
     steps: getWizardSteps(state),
+    topics: getTopicsSelector(state)
   }
 }
 

@@ -18,27 +18,27 @@ const ProfileMenu = ({profile, open, onClickAway}) => {
   };
 
   return(
-          <Menu  anchorEl={document.getElementById('avatar')}
-                 open={open}>
-            <ClickAwayListener onClickAway={() => handleClose('clickAway')}>
-              <MenuList>
-                {(profile['first_name'] && profile['last_name']) && (
-                  <div>
-                    <MenuItem>
-                      <Typography>Signed in as {profile['first_name']} {profile['last_name']}</Typography>
-                    </MenuItem>
-                    <Divider />
-                  </div>
-                )}
-                <MenuItem onClick={() => handleClose('profile')}>
-                  <Typography><Link to="/profile">My Profile</Link></Typography>
+      <Menu  anchorEl={document.getElementById('avatar')}
+             open={open}>
+        <ClickAwayListener onClickAway={() => handleClose('clickAway')}>
+          <MenuList>
+            {(profile['first_name'] && profile['last_name']) && (
+              <div>
+                <MenuItem>
+                  <Typography>Signed in as {profile['first_name']} {profile['last_name']}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => handleClose('logout')}>
-                  <Typography>Logout</Typography>
-                </MenuItem>
-              </MenuList>
-            </ClickAwayListener>
-          </Menu>
+                <Divider />
+              </div>
+            )}
+            <MenuItem onClick={() => handleClose('profile')}>
+              <Typography><Link to="/profile">My Profile</Link></Typography>
+            </MenuItem>
+            <MenuItem onClick={() => handleClose('logout')}>
+              <Typography>Logout</Typography>
+            </MenuItem>
+          </MenuList>
+        </ClickAwayListener>
+      </Menu>
   );
 };
 

@@ -19,6 +19,7 @@ interface BasicFormProps {
   pristine: boolean;
   invalid: boolean;
   mode?: string;
+  topics?: any[];
   change: Function;
 }
 
@@ -48,7 +49,7 @@ const renderSelectField = ({input, label, meta, custom}) => {
         helperText={helperText}
       >
         {custom.options.map(option => {
-          return (<MenuItem key={option} value={option}>{option}</MenuItem>)
+          return (<MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)
         })}
       </TextField>
     </Grid>
@@ -159,6 +160,15 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
     })
   };
 
+  mapTopics = (topic) => {
+    return {label: topic.name, value: topic.description};
+  };
+
+  mapStates = (state) => {
+    console.log(state);
+    return {label: state.name, value: state.name};
+  };
+
   render() {
     return (
         <form onSubmit={this.props.handleSubmit}
@@ -187,6 +197,16 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
               custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4), placeholder: "Term1,Term2,Term3"} }
             />
             <Field
+              label="Category"
+              component={renderSelectField}
+              name="topic"
+              custom={ {
+                gridXs: 12,
+                gridSm: renderGrid(this.props.mode, 4, 4),
+                options: this.props.topics.map(this.mapTopics)
+              }}
+            />
+            <Field
               label="Endpoint"
               component={renderTextField}
               name="access_url"
@@ -213,11 +233,11 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
               custom={ {
                 gridXs: 12,
                 gridSm: renderGrid(this.props.mode, 4, 4),
-                options: ['New York'],
+                options: this.state.stateSuggestions.map(this.mapStates),
                 disabled: !(this.state.stateSuggestions.length > 0)
               }}
             />
-            <Field
+            {/*<Field
               label="City"
               component={renderSelectField}
               name="city"
@@ -227,7 +247,7 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
                 options: ['New York'],
                 disabled: !(this.state.citySuggestions.length > 0)
               }}
-            />
+            />*/}
             <Field
               label="Sample Api Key"
               component={renderTextField}

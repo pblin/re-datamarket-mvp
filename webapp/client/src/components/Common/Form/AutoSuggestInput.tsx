@@ -23,6 +23,7 @@ interface ComponentState {
 //TODO: ADD ERROR HANDING
 //TODO: Updatable
 //TODO: Call update only if contained within list
+//TODO: Empty Value Callback
 export default class AutoSuggestInput extends React.Component<ComponentProps, ComponentState> {
     constructor(props) {
       super(props);
