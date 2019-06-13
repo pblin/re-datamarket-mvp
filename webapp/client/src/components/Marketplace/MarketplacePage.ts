@@ -7,6 +7,9 @@ import {
   getPurchasableDatasets,
   marketplaceSelector
 } from "../../store/marketplace/marketplaceSelectors";
+import {getOrders} from "../../store/orders/orderActions";
+import {getFilteredOrders} from "../../store/orders/orderSelectors";
+
 import {
   isProfileSet,
   profileSelector
@@ -22,7 +25,8 @@ import {
   updateSchemaFilter
 } from "../../store/marketplace/marketplaceActions";
 
-function mapStateToProps(state: any, ownProps: any) {
+function mapStateToProps(state: any) {
+  const purchasedDatasets = getFilteredOrders(state);
   return {
     schemaFilter: marketplaceSelector(state).schemaFilter,
     profile: profileSelector(state),
@@ -32,7 +36,8 @@ function mapStateToProps(state: any, ownProps: any) {
     datasetDialog: datasetDialogSelector(state),
     confirmDeleteDialog: confirmDeleteDialogSelector(state),
     marketplace: marketplaceSelector(state),
-    purchasableDatasets: getPurchasableDatasets(state)
+    purchasableDatasets: getPurchasableDatasets(state),
+    purchasedDatasets: purchasedDatasets && purchasedDatasets.bought || []
   }
 }
 
@@ -46,7 +51,8 @@ function mapDispatchToProps(dispatch: any) {
       getUserDatasets,
       searchDatasets,
       deleteDataset,
-      getAllDatasets
+      getAllDatasets,
+      getOrders
     }, dispatch)
   };
 }

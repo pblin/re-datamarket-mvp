@@ -10,6 +10,7 @@ import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
 import FilterMenu from "../Common/Filter/FilterMenu";
+import DatasetList from "./DatasetList";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -24,6 +25,7 @@ interface ComponentProps {
   marketplace: any;
   actions: any;
   purchasableDatasets: any[];
+  purchasedDatasets: any;
 }
 
 interface ComponentState {
@@ -40,6 +42,10 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     this.confirmDelete = this.confirmDelete.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onSearch = this.onSearch.bind(this);
+
+    this.state = {
+      purchasedDatasetsRetrieved: false
+    }
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -56,6 +62,9 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   handleSchemaChange(val) {
     if(val == 'purchased') {
       console.log('PURCHASED PURCHASED PURCHASED');
+      if(!this.state.purchasedDatasetsRetrieved) {
+        this.props.actions.getOrders();
+      }
     }
     this.props.actions.updateSchemaFilter(val);
   }
@@ -95,7 +104,8 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     if(!this.props.isProfileSet) {
       return null;
     }
-    if(this.props.schemaFilter == 'purchasable' || (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
+    if(this.props.schemaFilter == 'purchasable' ||
+      (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
       return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
         Add
         <AddIcon/>
@@ -148,6 +158,11 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
                   buttonText={"Create Profile"}
                   handleClick={() => {this.props.history.push('/profile')}}
                 />
+              }
+              {this.props.schemaFilter == 'purchased' &&
+                <DatasetList datasets={this.props.purchasedDatasets} handleClick={
+                  (dataset) => {this.props.history.push(`/dataset/${dataset.dataset_id}`)}
+                }/>
               }
             </Grid>
             <DatasetManagerContainer/>
