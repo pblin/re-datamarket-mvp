@@ -3,7 +3,7 @@
 -- DROP VIEW marketplace.field_in_schema;
 
 CREATE OR REPLACE VIEW marketplace.field_in_schema AS
- SELECT data_source_detail.id AS dataset_id,
+ SELECT id AS dataset_id,
     data_source_detail.name AS dataset_name,
     data_source_detail.country,
     data_source_detail.state_province,
@@ -11,10 +11,10 @@ CREATE OR REPLACE VIEW marketplace.field_in_schema AS
     data_source_detail.topic,
     each_dataset.value ->> 'name'::text AS field_name,
     each_dataset.value ->> 'type'::text AS field_type,
-	each_dataset.value->> 'label'::text AS field_label,
+    each_dataset.value ->> 'label'::text AS field_label,
     each_dataset.value ->> 'description'::text AS field_description
    FROM marketplace.data_source_detail
-     CROSS JOIN LATERAL jsonb_array_elements(data_source_detail.schema) each_dataset(value);
+     CROSS JOIN LATERAL jsonb_array_elements(schema) each_dataset(value);
 
 ALTER TABLE marketplace.field_in_schema
     OWNER TO reblocadmin;
