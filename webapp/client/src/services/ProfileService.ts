@@ -12,12 +12,13 @@ export class ProfileService {
 
   async updateProfile(email: string, profile: any) {
     const body = {
-      primaryEmail: email,
-      secondaryEmail: profile.secondaryEmail,
-      firstName: profile.firstName,
-      lastName: profile.lastName,
+      primary_email: email,
+      secondary_email: profile.secondaryEmail,
+      first_name: profile.firstName,
+      last_name: profile.lastName,
       address: profile.address,
-      phone: profile.phone
+      phone: profile.phone,
+      id: profile.id || null
     };
 
     const results = await fetch(`${config.serverBase}/profile`, {
@@ -29,5 +30,25 @@ export class ProfileService {
     });
 
     return results.json();
+  }
+
+  async resendVerification(email: string) {
+    const body = {
+      primary_email: email
+    };
+
+    const response = await fetch(`${config.serverBase}/profile`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if(response.ok) {
+      return true;
+    } else {
+      throw new Error('Something went wrong resending the verification email')
+    }
   }
 }
