@@ -18,9 +18,8 @@ CREATE TABLE marketplace.data_source_detail
     num_of_records integer,
     price_low numeric,
     price_high numeric,
-    pricing_unit character varying(4),
     json_schema text COLLATE pg_catalog."default",
-    stage integer,
+    stage integer DEFAULT 1,
     table_name text COLLATE pg_catalog."default",
     sample_hash text COLLATE pg_catalog."default",
     data_hash text COLLATE pg_catalog."default",
@@ -29,6 +28,12 @@ CREATE TABLE marketplace.data_source_detail
     enc_data_key text COLLATE pg_catalog."default",
     access_url text COLLATE pg_catalog."default",
     api_key text COLLATE pg_catalog."default",
+    pricing_unit character varying(4) COLLATE pg_catalog."default" DEFAULT 'usd'::character varying,
+    data_compression character varying(6) COLLATE pg_catalog."default" DEFAULT 'gzip'::character varying,
+    asset_token_address text COLLATE pg_catalog."default",
+    city text[] COLLATE pg_catalog."default",
+    topic text[] COLLATE pg_catalog."default",
+    schema jsonb,
     CONSTRAINT data_source_detail_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -49,11 +54,56 @@ COMMENT ON COLUMN marketplace.data_source_detail.id
 COMMENT ON COLUMN marketplace.data_source_detail.stage
     IS 'stage of dataset ';
 
--- Index: fki_data_source_owner_fkey
+-- Index: city_idx
 
--- DROP INDEX marketplace.fki_data_source_owner_fkey;
+-- DROP INDEX marketplace.city_idx;
 
-CREATE INDEX fki_data_source_owner_fkey
+CREATE INDEX city_idx
+    ON marketplace.data_source_detail USING gin
+    (city COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
+
+-- Index: data_source_owner_idx
+
+-- DROP INDEX marketplace.data_source_owner_idx;
+
+CREATE INDEX data_source_owner_idx
     ON marketplace.data_source_detail USING btree
     (dataset_owner_id)
+    TABLESPACE pg_default;
+
+-- Index: region_idx
+
+-- DROP INDEX marketplace.region_idx;
+
+CREATE INDEX region_idx
+    ON marketplace.data_source_detail USING gin
+    (((state_province || ' '::text) || country) COLLATE pg_catalog."default" gin_trgm_ops)
+    TABLESPACE pg_default;
+
+-- Index: schema_idx
+
+-- DROP INDEX marketplace.schema_idx;
+
+CREATE INDEX schema_idx
+    ON marketplace.data_source_detail USING gin
+    (schema)
+    TABLESPACE pg_default;
+
+-- Index: search_term_idx
+
+-- DROP INDEX marketplace.search_term_idx;
+
+CREATE INDEX search_term_idx
+    ON marketplace.data_source_detail USING gin
+    (search_terms COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
+
+-- Index: topic_idx
+
+-- DROP INDEX marketplace.topic_idx;
+
+CREATE INDEX topic_idx
+    ON marketplace.data_source_detail USING gin
+    (topic COLLATE pg_catalog."default")
     TABLESPACE pg_default;
