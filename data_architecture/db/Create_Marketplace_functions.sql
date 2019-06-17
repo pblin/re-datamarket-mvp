@@ -2,12 +2,15 @@ create function marketplace.search_dataset(topics text, terms text, cities text,
 returns setof marketplace.data_source_detail as $$
 
 select * from marketplace.data_source_detail 
-where ( terms = '' OR terms % ANY (search_terms) )
+where ( terms = '' OR terms % ANY (search_terms) 
+		OR terms %> ( name || ' ' || description ) OR terms %> (state_province || ' ' || country) 
+		OR terms % ANY (city) )
 AND ( topics = '' OR topics % ANY (topic) )
-AND ( ( cities = '' OR cities % ANY (city) ) and (region = ''  or region <% ( state_province || ' ' || country ) ))
+AND ( cities = '' OR ( cities % ANY (city)  
+					   and (region = ''  or region <% (state_province || ' ' || country ))
+					 ))
 
 $$ language sql stable;
-
 
 create function marketplace.search_dataset_schema (fields text, topics text, cities text, region text)
 returns setof marketplace.field_in_schema as $$
