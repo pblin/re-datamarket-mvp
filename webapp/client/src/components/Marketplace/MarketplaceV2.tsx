@@ -4,11 +4,20 @@ import './marketplace.scss';
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
 import SchemaList from "./SchemaList";
-import {Grid, Button, Dialog, DialogContent, DialogActions, DialogTitle} from "@material-ui/core";
+import {
+  Grid,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+  SwipeableDrawer
+} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
+import SearchBar from "../Common/Filter/SearchBar";
 import FilterMenu from "../Common/Filter/FilterMenu";
 import DatasetList from "./DatasetList";
 
@@ -117,6 +126,14 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   render() {
     return (
       <div className={"marketplace"}>
+        <SwipeableDrawer
+          onClose={()=>{}}
+          onOpen={()=>{}}
+          open={true}
+          anchor={'right'}
+        >
+          <FilterMenu/>
+        </SwipeableDrawer>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}
           schemaFilter={this.props.schemaFilter}
@@ -127,7 +144,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-start"}>
               { (this.props.schemaFilter == 'all' || this.props.schemaFilter == 'purchasable') &&
-                <FilterMenu
+                <SearchBar
                   placeholder={"Search Marketplace"}
                   searchVal={this.props.marketplace.search}
                   onSearch={this.onSearch}
