@@ -122,8 +122,40 @@ export class DatasetService {
     }
   }
 
-  async searchDatasets(terms) {
-    const results = await fetch(`${config.serverBase}/marketplace/search?terms=${terms}`);
+  async searchDatasets(terms, filters) {
+    let url = `${config.serverBase}/marketplace/search`;
+    let filterCount = 0;
+    let region = '';
+
+    if(terms != '') {
+        filterCount++;
+        url += `?terms=${terms}`
+    }
+
+    if(filters.selectedCountry) {
+      region += `${filters.selectedCountry}`;
+    }
+
+    if(filters.selectedState) {
+      region += `,${filters.selectedState}`;
+    }
+
+    if(region) {
+      url += `${filterCount === 0 ? '?' : '&'}region=${region}`;
+      filterCount++;
+    }
+
+    //TODO: Make Multi-Selected
+    if(filters.selectedCity) {
+      url += `${filterCount === 0 ? '?' : '&'}cities=${filters.selectedCity}`;
+      filterCount++;
+    }
+
+    if(filters.topics && filters.topics.length) {
+      url += `${filterCount === 0 ? '?' : '&'}topics=${filters.topics.join(',')}`;
+    }
+
+    const results = await fetch(url);
     if(results.status !== 200) {
       return [];
     } else {

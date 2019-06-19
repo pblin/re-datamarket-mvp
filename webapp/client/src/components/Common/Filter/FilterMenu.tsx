@@ -118,12 +118,16 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
       }
     }
 
-    this.props.onApply({
-      selectedCity: selectedCity && selectedCity.name || '',
-      selectedState: selectedState && selectedState.name || '',
-      selectedCountry: selectedCountry && selectedCountry.name || '',
-      topics
-    })
+    if(!selectedCity && !selectedState && !selectedCountry && !topics.length) {
+      this.props.onApply({});
+    } else {
+      this.props.onApply({
+        selectedCity: selectedCity && selectedCity.name || '',
+        selectedState: selectedState && selectedState.name || '',
+        selectedCountry: selectedCountry && selectedCountry.name || '',
+        topics
+      });
+    }
   };
 
   resetFilters = () => {

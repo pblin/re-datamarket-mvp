@@ -21,6 +21,7 @@ import JumboPaper from "../Common/jumboPaper";
 import SearchBar from "../Common/Filter/SearchBar";
 import FilterMenu from "../Common/Filter/FilterMenu";
 import DatasetList from "./DatasetList";
+import {isEmpty} from "../../utils/ObjectHelper";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -41,6 +42,8 @@ interface ComponentProps {
 interface ComponentState {
   purchasedDatasetsRetrieved: boolean;
   filterDrawerOpen: boolean;
+  search: string;
+  filters: any;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
@@ -56,7 +59,9 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
 
     this.state = {
       purchasedDatasetsRetrieved: false,
-      filterDrawerOpen: false
+      filterDrawerOpen: false,
+      search: '',
+      filters: {}
     }
   }
 
@@ -104,8 +109,13 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   }
 
   onSearch(search: string) {
-    if(search != '') {
-      this.props.actions.searchDatasets(search);
+    //Set search in component state
+    this.setState({
+      search
+    });
+
+    if(search != '' || !isEmpty(this.state.filters)) {
+      this.props.actions.searchDatasets(search, this.state.filters);
     } else {
       this.props.actions.getAllDatasets();
     }
@@ -139,10 +149,16 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   }
 
   onFilter = (filters) => {
-    console.log('The following filters are applied');
-    console.log(filters);
+    this.setState({filters});
+    if(this.state.search != '' || !isEmpty(filters)) {
+      this.props.actions.searchDatasets(this.state.search, filters);
+    } else {
+      this.props.actions.getAllDatasets();
+    }
   };
 
+  //TODO: NO Filters Match
+  //TODO: Filter BreadCrumb
   render() {
     return (
       <div className={"marketplace"}>
