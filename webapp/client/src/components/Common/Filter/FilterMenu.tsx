@@ -239,8 +239,9 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
       <Grid container>
         <Paper className={"filter-menu-container"}>
           <Grid item xs={12}>
-            <Typography variant={"h6"} className={"filter-header"}>Filter Your Results</Typography>
+            {/*TODO: Align Button and text */}
             <IconButton onClick={this.props.onClose}><ChevronLeftIcon/></IconButton>
+            <Typography variant={"h6"} className={"filter-header"}>Filter Your Results</Typography>
           </Grid>
           {this.renderFilters()}
           <Button

@@ -167,6 +167,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
           open={this.state.filterDrawerOpen}
           anchor={'left'}
           variant={"persistent"}
+          className={"filter-drawer"}
         >
           <FilterMenu onApply={this.onFilter}
                       onClose={() => this.setState({filterDrawerOpen: false})}/>

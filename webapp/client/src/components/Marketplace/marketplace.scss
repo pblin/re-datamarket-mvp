@@ -121,3 +121,11 @@
   background: #3f51b5;
   color: #fff;
 }
+
+.filter-drawer {
+  width: 350px;
+
+  & > div {
+    width: 350px;
+  }
+}
