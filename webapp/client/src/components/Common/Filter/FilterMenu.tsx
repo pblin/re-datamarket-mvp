@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -19,6 +20,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CategoryIcon from "@material-ui/icons/Category";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import csc from 'country-state-city';
 import './filterMenu.scss';
 import {connect} from "react-redux";
@@ -28,6 +30,7 @@ import {getTopicsSelector} from "../../../store/common/commonSelectors";
 
 interface ComponentProps {
   onApply: Function;
+  onClose: any;
   actions: any;
   topics: any[];
 }
@@ -233,6 +236,7 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
         <Paper className={"filter-menu-container"}>
           <Grid item xs={12}>
             <Typography variant={"h6"} className={"filter-header"}>Filter Your Results</Typography>
+            <IconButton onClick={this.props.onClose}><ChevronLeftIcon/></IconButton>
           </Grid>
           {this.renderFilters()}
           <Button
@@ -257,8 +261,6 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
 
 //TODO: Make this into a container
 const mapStateToProps = (state) => {
-  console.log('container here');
-  console.log(getTopicsSelector(state));
   return {
     topics: getTopicsSelector(state) || []
   }

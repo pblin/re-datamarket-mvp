@@ -11,9 +11,10 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
-  SwipeableDrawer
+  Drawer
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import FilterIcon from "@material-ui/icons/FilterList";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
@@ -39,6 +40,7 @@ interface ComponentProps {
 
 interface ComponentState {
   purchasedDatasetsRetrieved: boolean;
+  filterDrawerOpen: boolean;
 }
 
 class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
@@ -53,7 +55,8 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     this.onSearch = this.onSearch.bind(this);
 
     this.state = {
-      purchasedDatasetsRetrieved: false
+      purchasedDatasetsRetrieved: false,
+      filterDrawerOpen: false
     }
   }
 
@@ -70,7 +73,6 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
 
   handleSchemaChange(val) {
     if(val == 'purchased') {
-      console.log('PURCHASED PURCHASED PURCHASED');
       if(!this.state.purchasedDatasetsRetrieved) {
         this.props.actions.getOrders();
       }
@@ -123,6 +125,19 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     return null;
   }
 
+  renderFilterButton() {
+    if(this.props.schemaFilter == 'purchasable') {
+      return (<Button
+        variant="contained"
+        onClick={() => this.setState({filterDrawerOpen: true})}
+        className="add-schema">
+        Filter <FilterIcon/>
+      </Button>);
+    }
+
+    return null;
+  }
+
   onFilter = (filters) => {
     console.log('The following filters are applied');
     console.log(filters);
@@ -131,14 +146,15 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   render() {
     return (
       <div className={"marketplace"}>
-        <SwipeableDrawer
+        <Drawer
           onClose={()=>{}}
-          onOpen={()=>{}}
-          open={true}
-          anchor={'right'}
+          open={this.state.filterDrawerOpen}
+          anchor={'left'}
+          variant={"persistent"}
         >
-          <FilterMenu onApply={this.onFilter}/>
-        </SwipeableDrawer>
+          <FilterMenu onApply={this.onFilter}
+                      onClose={() => this.setState({filterDrawerOpen: false})}/>
+        </Drawer>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}
           schemaFilter={this.props.schemaFilter}
@@ -156,6 +172,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
                   onSearchChange={this.onSearchChange}/>
               }
               {this.renderAddButton()}
+              {this.renderFilterButton()}
             </Grid>
             <Grid item xs={12} sm={12}>
               {
