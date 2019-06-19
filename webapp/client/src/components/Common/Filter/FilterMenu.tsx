@@ -1,11 +1,14 @@
 import * as React from "react";
 import {
   Button,
+  Checkbox,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   Paper,
   FormControl,
+  FormControlLabel,
+  FormGroup,
   Grid,
   InputLabel,
   MenuItem,
@@ -18,8 +21,17 @@ import LocationIcon from '@material-ui/icons/LocationOn';
 import CategoryIcon from "@material-ui/icons/Category";
 import csc from 'country-state-city';
 import './filterMenu.scss';
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {getTopics} from "../../../store/common/commonActions";
+import {getTopicsSelector} from "../../../store/common/commonSelectors";
 
-interface ComponentProps {}
+interface ComponentProps {
+  onApply: Function;
+  actions: any;
+  topics: any[];
+}
+
 interface ComponentState {
   countryList: any[];
   stateList: any[];
@@ -27,44 +39,89 @@ interface ComponentState {
   selectedCountry: any;
   selectedState: any;
   selectedCity: any;
+  selectedTopics: any;
 }
 
 export class FilterMenu extends React.Component<ComponentProps, ComponentState> {
   constructor(props) {
     super(props);
+    console.log(csc.getAllCountries());
     this.state = {
-      countryList: csc.getAllCountries(),
+      countryList: csc.getAllCountries().filter(this.filterCountries),
       cityList: [],
       stateList: [],
       selectedCity: '',
       selectedState: '',
-      selectedCountry: ''
+      selectedCountry: '',
+      selectedTopics: {}
     }
   }
 
-  //TODO: Reset
+  //For now this app will only provide 2 countries
+  filterCountries(country) {
+    return country.name == "United States" || country.name == "Canada"
+  }
+
+  componentDidMount(): void {
+    this.props.actions.getTopics();
+  }
+
   onCountrySelect = (event) => {
     const country = event.target.value;
 
-    console.log(country.name);
-
     this.setState({
       selectedCountry: country,
-      stateList: csc.getStatesOfCountry(country.id)
+      stateList: csc.getStatesOfCountry(country.id),
+      cityList: [],
+      selectedState: ''
     })
   };
 
-  //TODO: Reset
   onStateSelect = (event) => {
     const state = event.target.value;
 
     this.setState({
       selectedState: state,
+      selectedCity: '',
       cityList: csc.getCitiesOfState(state.id)
     });
   };
 
-  //TODO: OnCitySelect
+  onCitySelect = (event) => {
+    const city = event.target.value;
+
+    this.setState({
+      selectedCity: city
+    });
+  };
+
+  onTopicSelect = (event, name) => {
+    const {selectedTopics} = this.state;
+    const newTopic = {};
+    newTopic[name] = event.target.checked;
+    this.setState({
+      selectedTopics: Object.assign({}, selectedTopics, newTopic)
+    });
+  };
+
+  applyFilters = () => {
+    const {selectedCity, selectedState, selectedCountry, selectedTopics} = this.state;
+
+    const topics = [];
+
+    for (let k in selectedTopics) {
+      if(selectedTopics[k]) {
+        topics.push(k)
+      }
+    }
+
+    this.props.onApply({
+      selectedCity: selectedCity && selectedCity.name || '',
+      selectedState: selectedState && selectedState.name || '',
+      selectedCountry: selectedCountry && selectedCountry.name || '',
+      topics
+    })
+  };
 
   resetFilters = () => {
     this.setState({
@@ -72,9 +129,28 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
       stateList: [],
       selectedCity: '',
       selectedState: '',
-      selectedCountry: ''
+      selectedCountry: '',
+      selectedTopics: {}
     })
   };
+
+  renderTopicCheckboxes() {
+    const {topics} = this.props;
+
+    return (<FormGroup>
+      {topics.map((topic) => {
+        const isChecked = this.state.selectedTopics[topic.name];
+        console.log(this.state.selectedTopics);
+        return (<FormControl>
+          <FormControlLabel
+            control={<Checkbox checked={isChecked || false}/>}
+            onChange={(e) => this.onTopicSelect(e, topic.name)}
+            label={topic.name}
+          />
+        </FormControl>)
+      })}
+    </FormGroup>);
+  }
 
   renderFilters() {
     return (
@@ -120,7 +196,7 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
                   <InputLabel htmlFor={"city-filter"}>City</InputLabel>
                   <Select
                     input={<OutlinedInput labelWidth={120} id={"city-filter"}/>}
-                    onChange={()=>{}}
+                    onChange={this.onCitySelect}
                     value={this.state.selectedCity}
                   >
                     {this.state.cityList.map(city =>
@@ -142,6 +218,9 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
                 <CategoryIcon/><span>CATEGORIES</span>
               </Typography>
             </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              {this.renderTopicCheckboxes()}
+            </ExpansionPanelDetails>
           </ExpansionPanel>
         </Grid>
       </React.Fragment>
@@ -159,6 +238,7 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
           <Button
             variant={"outlined"}
             color={"primary"}
+            onClick={this.applyFilters}
             className={"filter-cta"}>
             Apply Filters
           </Button>
@@ -175,4 +255,21 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
   }
 }
 
-export default FilterMenu;
+//TODO: Make this into a container
+const mapStateToProps = (state) => {
+  console.log('container here');
+  console.log(getTopicsSelector(state));
+  return {
+    topics: getTopicsSelector(state) || []
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators({
+      getTopics
+    }, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterMenu);

@@ -123,6 +123,11 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     return null;
   }
 
+  onFilter = (filters) => {
+    console.log('The following filters are applied');
+    console.log(filters);
+  };
+
   render() {
     return (
       <div className={"marketplace"}>
@@ -132,7 +137,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
           open={true}
           anchor={'right'}
         >
-          <FilterMenu/>
+          <FilterMenu onApply={this.onFilter}/>
         </SwipeableDrawer>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}
