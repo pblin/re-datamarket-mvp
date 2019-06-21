@@ -1,5 +1,21 @@
-create function marketplace.search_dataset(topics text, terms text, cities text, region text, ctn text)
-returns setof marketplace.data_source_detail as $$
+-- FUNCTION: marketplace.search_dataset(integer, text, text, text, text, text)
+
+-- DROP FUNCTION marketplace.search_dataset(integer, text, text, text, text, text);
+
+CREATE OR REPLACE FUNCTION marketplace.search_dataset(
+	purchased_by integer,
+	topics text,
+	terms text,
+	cities text,
+	region text,
+	ctn text)
+    RETURNS SETOF marketplace.data_source_detail 
+    LANGUAGE 'sql'
+
+    COST 100
+    STABLE 
+    ROWS 1000
+AS $BODY$
 
 	select * from marketplace.data_source_detail 
 	where ( terms = '' OR terms % ANY (search_terms) 
@@ -9,12 +25,34 @@ returns setof marketplace.data_source_detail as $$
 	AND ( cities = '' OR cities % ANY (city) ) 
 	AND ( region = '' OR region <% state_province ) 
 	AND ( ctn = '' OR ctn <% country )
+	AND (purchased_by = 0 
+				or id in (select dataset_id from marketplace.order_book where buyer_id = purchased_by))
+
+$BODY$;
+
+ALTER FUNCTION marketplace.search_dataset(integer, text, text, text, text, text)
+    OWNER TO reblocadmin;
 
 
-$$ language sql stable;
 
-create function marketplace.search_dataset_schema(purchased_by integer, fields text, topics text, cities text, region text, ctn text)
-returns setof marketplace.field_in_schema as $$
+-- FUNCTION: marketplace.search_dataset_schema(integer, text, text, text, text, text)
+
+-- DROP FUNCTION marketplace.search_dataset_schema(integer, text, text, text, text, text);
+
+CREATE OR REPLACE FUNCTION marketplace.search_dataset_schema(
+	purchased_by integer,
+	fields text,
+	topics text,
+	cities text,
+	region text,
+	ctn text)
+    RETURNS SETOF marketplace.field_in_schema 
+    LANGUAGE 'sql'
+
+    COST 100
+    STABLE 
+    ROWS 1000
+AS $BODY$
 
 	select * from marketplace.field_in_schema
 		where fields %> field_label 
@@ -22,8 +60,12 @@ returns setof marketplace.field_in_schema as $$
 			and (cities = '' or cities % any (city))
 			and (region = '' or region %> (state_province))
 			and (ctn = '' or ctn %> (country))
-			and (purchased_by = 0 
-				or purchased_by in (select buyer_id from marketplace.order_book))
+			AND (purchased_by = 0 
+				or dataset_id in (select dataset_id from marketplace.order_book where buyer_id = purchased_by))
 											  
-$$ language sql stable;
+$BODY$;
+
+ALTER FUNCTION marketplace.search_dataset_schema(integer, text, text, text, text, text)
+    OWNER TO reblocadmin;
+
 
