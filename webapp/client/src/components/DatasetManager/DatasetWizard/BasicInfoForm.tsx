@@ -6,12 +6,21 @@ import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
 import "./DatasetWizard.scss";
 import {ERROR_TYPE} from "../../Common/Error/ErrorType";
 import {datasetInfoSelector} from "../../../store/datasetInfo/datasetInfoSelector";
+import csc from 'country-state-city';
 
 interface BasicFormProps {
   handleSubmit: any;
   pristine: boolean;
   invalid: boolean;
   mode?: string;
+  topics?: any[];
+  change: Function;
+}
+
+interface BasicInfoState {
+  countrySuggestions: any[];
+  stateSuggestions: any[];
+  citySuggestions: any[];
 }
 /* Redo search terms with https://material-ui.com/demos/autocomplete/ */
 /* https://stackoverflow.com/questions/23618744/rendering-comma-separated-list-of-links */
@@ -26,14 +35,16 @@ const renderSelectField = ({input, label, meta, custom}) => {
         margin="normal"
         variant={'standard'}
         label={label}
+        disabled={custom.disabled || false}
+        onChange={custom.onChange}
         select
         error={meta.touched && meta.error != undefined}
         {...input}
         fullWidth
         helperText={helperText}
       >
-        {custom.options.map(option => {
-          return (<MenuItem key={option} value={option}>{option}</MenuItem>)
+        {custom.options.map((option, index) => {
+          return (<MenuItem key={`${option.value}${index}`} value={option.value}>{option.label}</MenuItem>)
         })}
       </TextField>
     </Grid>
@@ -121,10 +132,48 @@ const renderGrid = (mode, orig, newSize = 12) => {
   return newSize;
 };
 
-class BasicInfoForm extends Component<BasicFormProps> {
+class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      countrySuggestions: [],
+      stateSuggestions: [],
+      citySuggestions: []
+    };
+  }
+
+  componentDidMount(): void {
+    this.setState({
+      countrySuggestions: csc.getAllCountries()
+    });
+  }
+
+  onCountrySelect = (value) => {
+    //this.props.change('country', value['name']);
+    console.log('On Country Select');
+    console.log(value);
+    this.setState({
+      stateSuggestions: csc.getStatesOfCountry(value.id)
+    })
+  };
+
+  mapTopics = (topic) => {
+    return {label: topic.name, value: topic.description};
+  };
+
+  mapStates = (state) => {
+    return {label: state.name, value: state};
+  };
+
+  mapCountries = (country) => {
+    return {label: country.name, value: country};
+  };
+
   render() {
     return (
-        <form onSubmit={this.props.handleSubmit} className={this.props.mode == 'card' ? 'card-mode': ''}>
+        <form onSubmit={this.props.handleSubmit}
+              autoComplete={"off"}
+              className={this.props.mode == 'card' ? 'card-mode': ''}>
           <Grid spacing={24} container={true} >
             <Field
               label="Name(Required)"
@@ -148,16 +197,44 @@ class BasicInfoForm extends Component<BasicFormProps> {
               custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4), placeholder: "Term1,Term2,Term3"} }
             />
             <Field
+              label="Category"
+              component={renderSelectField}
+              name="topic"
+              custom={ {
+                gridXs: 12,
+                gridSm: renderGrid(this.props.mode, 4, 4),
+                options: this.props.topics.map(this.mapTopics)
+              }}
+            />
+            <Field
+              label="Endpoint"
+              component={renderTextField}
+              name="access_url"
+              type="text"
+              custom={ {gridXs: 12, gridSm: 8, placeholder: "http://{DATASET ENDPOINT}"} }
+            />
+            <Field
               label="Country"
               component={renderSelectField}
               name="country"
-              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 6), options: ['USA']} }
+              custom={ {
+                gridXs: 12,
+                onChange: this.onCountrySelect,
+                gridSm: renderGrid(this.props.mode, 4, 4),
+                options: this.state.countrySuggestions.map(this.mapCountries),
+                disabled: !(this.state.countrySuggestions.length > 0)
+              }}
             />
             <Field
               label="State"
               component={renderSelectField}
               name="state_province"
-              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 6), options: ['New York']} }
+              custom={ {
+                gridXs: 12,
+                gridSm: renderGrid(this.props.mode, 4, 4),
+                options: this.state.stateSuggestions.map(this.mapStates),
+                disabled: !(this.state.stateSuggestions.length > 0)
+              }}
             />
             <Field
               label="Sample Api Key"
@@ -172,13 +249,6 @@ class BasicInfoForm extends Component<BasicFormProps> {
               name="enc_data_key"
               type="text"
               custom={ {gridXs: 12, gridSm: 6, placeholder: "Provide a sample access data key"} }
-            />
-            <Field
-              label="Endpoint"
-              component={renderTextField}
-              name="access_url"
-              type="text"
-              custom={ {gridXs: 12, gridSm: 12, placeholder: "http://{DATASET ENDPOINT}"} }
             />
             <Field
               label="# of records"

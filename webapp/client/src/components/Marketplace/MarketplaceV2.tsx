@@ -1,34 +1,26 @@
 import * as React from "react";
-import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import './marketplace.scss';
-import {
-  changeConfirmDialogState,
-  changeDialogState,
-  changeSearch,
-  getUserDatasets,
-  updateSchemaFilter,
-  searchDatasets,
-  deleteDataset,
-  getAllDatasets
-} from "../../store/marketplace/marketplaceActions";
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
-import {isProfileSet, profileSelector} from "../../store/profile/profileSelector";
 import SchemaList from "./SchemaList";
 import {
-  confirmDeleteDialogSelector,
-  datasetDialogSelector,
-  getPurchasableDatasets,
-  marketplaceSelector
-} from "../../store/marketplace/marketplaceSelectors";
-import {Grid, Button, Dialog, DialogContent, DialogActions, DialogTitle} from "@material-ui/core";
+  Grid,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+  Drawer
+} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import FilterIcon from "@material-ui/icons/FilterList";
 import UserDatasetList from "./UserDatasetList";
-import DatasetManager from '../DatasetManager/DatasetManager'
+import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
 import FilterMenu from "../Common/Filter/FilterMenu";
-import {bindActionCreators} from "redux";
+import DatasetList from "./DatasetList";
+import {isEmpty} from "../../utils/ObjectHelper";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -43,9 +35,17 @@ interface ComponentProps {
   marketplace: any;
   actions: any;
   purchasableDatasets: any[];
+  purchasedDatasets: any;
 }
 
-class MarketplaceV2 extends React.Component<ComponentProps> {
+interface ComponentState {
+  purchasedDatasetsRetrieved: boolean;
+  filterDrawerOpen: boolean;
+  search: string;
+  filters: any;
+}
+
+class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   constructor(props: any) {
     super(props);
     this.handleSchemaChange = this.handleSchemaChange.bind(this);
@@ -54,12 +54,19 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.onConfirmationClose = this.onConfirmationClose.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
-    this.onSearch = this.onSearch.bind(this);
+
+    this.state = {
+      purchasedDatasetsRetrieved: false,
+      filterDrawerOpen: false,
+      search: '',
+      filters: {}
+    }
   }
 
   toolbarOptions: ToolbarOption[] = [
     new ToolbarOption('Purchasable', 'purchasable'),
-    new ToolbarOption('OWNED BY ME',  'ownedByMe')
+    new ToolbarOption('OWNED BY ME',  'ownedByMe'),
+    new ToolbarOption('PURCHASED', 'purchased')
   ];
 
   componentDidMount() {
@@ -68,6 +75,11 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 
   handleSchemaChange(val) {
+    if(val == 'purchased') {
+      if(!this.state.purchasedDatasetsRetrieved) {
+        this.props.actions.getOrders();
+      }
+    }
     this.props.actions.updateSchemaFilter(val);
   }
 
@@ -89,24 +101,17 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     this.props.actions.changeConfirmDialogState(false, {name: ''});
   }
 
-  //Filter menu
+  //Filter menu TODO: Possibly Remove This
   onSearchChange(e) {
     this.props.actions.changeSearch(e.target.value);
-  }
-
-  onSearch(search: string) {
-    if(search != '') {
-      this.props.actions.searchDatasets(search);
-    } else {
-      this.props.actions.getAllDatasets();
-    }
   }
 
   renderAddButton() {
     if(!this.props.isProfileSet) {
       return null;
     }
-    if(this.props.schemaFilter == 'purchasable' || (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
+    if(this.props.schemaFilter == 'purchasable' ||
+      (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
       return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
         Add
         <AddIcon/>
@@ -115,9 +120,43 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
     return null;
   }
 
+  renderFilterButton() {
+    if(this.props.schemaFilter == 'purchasable') {
+      return (<Button
+        variant="contained"
+        onClick={() => this.setState({filterDrawerOpen: true})}
+        className="add-schema">
+        Advanced Search <FilterIcon/>
+      </Button>);
+    }
+
+    return null;
+  }
+
+  onFilter = (filters) => {
+    this.setState({filters});
+    if(this.state.search != '' || !isEmpty(filters)) {
+      this.props.actions.searchDatasets(filters);
+    } else {
+      this.props.actions.getAllDatasets();
+    }
+  };
+
+  //TODO: NO Filters Match
+  //TODO: Filter BreadCrumb
   render() {
     return (
       <div className={"marketplace"}>
+        <Drawer
+          onClose={()=>{}}
+          open={this.state.filterDrawerOpen}
+          anchor={'left'}
+          variant={"persistent"}
+          className={"filter-drawer"}
+        >
+          <FilterMenu onApply={this.onFilter}
+                      onClose={() => this.setState({filterDrawerOpen: false})}/>
+        </Drawer>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}
           schemaFilter={this.props.schemaFilter}
@@ -126,14 +165,8 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
         />
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
-            <Grid container={true} justify={"flex-start"}>
-              { (this.props.schemaFilter == 'all' || this.props.schemaFilter == 'purchasable') &&
-                <FilterMenu
-                  placeholder={"Search Marketplace"}
-                  searchVal={this.props.marketplace.search}
-                  onSearch={this.onSearch}
-                  onSearchChange={this.onSearchChange}/>
-              }
+            <Grid container={true} justify={"flex-end"}>
+              {this.renderFilterButton()}
               {this.renderAddButton()}
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -142,6 +175,7 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                 <SchemaList
                   schemas={this.props.purchasableDatasets}
                   history={this.props.history}
+                  onFilter={() => this.setState({filterDrawerOpen: true})}
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
@@ -160,8 +194,13 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
                   handleClick={() => {this.props.history.push('/profile')}}
                 />
               }
+              {this.props.schemaFilter == 'purchased' &&
+                <DatasetList datasets={this.props.purchasedDatasets} handleClick={
+                  (dataset) => {this.props.history.push(`/dataset/${dataset.dataset_id}`)}
+                }/>
+              }
             </Grid>
-            <DatasetManager/>
+            <DatasetManagerContainer/>
             <Dialog open={this.props.confirmDeleteDialog.open} maxWidth={"sm"} fullWidth={true}>
               <DialogTitle>
                 {this.props.confirmDeleteDialog.dataset.name}
@@ -181,36 +220,6 @@ class MarketplaceV2 extends React.Component<ComponentProps> {
   }
 }
 
-function mapStateToProps(state: any, ownProps: any) {
-  return {
-    schemaFilter: marketplaceSelector(state).schemaFilter,
-    profile: profileSelector(state),
-    isProfileSet: isProfileSet(state),
-    datasets: marketplaceSelector(state).datasets,
-    userDatasets: marketplaceSelector(state).userDatasets,
-    datasetDialog: datasetDialogSelector(state),
-    confirmDeleteDialog: confirmDeleteDialogSelector(state),
-    marketplace: marketplaceSelector(state),
-    purchasableDatasets: getPurchasableDatasets(state)
-  }
-}
-
-function mapDispatchToProps(dispatch: any) {
-  return {
-    actions: bindActionCreators({
-      updateSchemaFilter,
-      changeDialogState,
-      changeSearch,
-      changeConfirmDialogState,
-      getUserDatasets,
-      searchDatasets,
-      deleteDataset,
-      getAllDatasets
-    }, dispatch)
-  };
-}
-
 export default withRouter(
-  //@ts-ignore
-  connect(mapStateToProps, mapDispatchToProps)(MarketplaceV2)
+  MarketplaceV2
 );

@@ -83,12 +83,14 @@ class Customer extends React.Component<Props> {
           <Grid container={true} justify={'center'}>
             <div className={classes.container}>
               <CustomerForm onSubmit={this.handleProfileSubmit}/>
-              <Button color="secondary"
-                      className={classes.button}
-                      variant={"contained"}
-                      onClick={this.props.submitProfileForm}>
+              <Grid item xs={12}>
+                <Button color="secondary"
+                        className={classes.button}
+                        variant={"contained"}
+                        onClick={this.props.submitProfileForm}>
                   Save
-              </Button>
+                </Button>
+              </Grid>
             </div>
           </Grid>
       );
