@@ -16,6 +16,7 @@
 
 .add-schema {
   margin-bottom: 10px !important;
+  margin-right: 5px !important;
 }
 
 .schema-list {
@@ -120,4 +121,12 @@
 .marketplace-dialog .dialog-toolbar {
   background: #3f51b5;
   color: #fff;
+}
+
+.filter-drawer {
+  width: 350px;
+
+  & > div {
+    width: 350px;
+  }
 }

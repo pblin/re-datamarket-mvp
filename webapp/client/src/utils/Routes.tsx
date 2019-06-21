@@ -1,16 +1,16 @@
 import React, { SFC } from 'react';
 import { Callback, DashboardPage, Customer } from '../components';
 import Home from '../pages/Home';
-import DataMap from '../pages/DatasetExplorer';
+import DataExplorerPage from "../components/DataExplorer/DataExplorerPage";
 import { Route, RouteComponentProps, Redirect } from 'react-router';
 import { Router } from 'react-router-dom';
 import { WebAuthentication } from '../auth/WebAuthentication';
 import history from './history';
 import DatasetManager from "../components/DatasetManager/DatasetManager";
-import MarketplaceV2 from "../components/Marketplace/MarketplaceV2";
 import App from '../components/App/App';
 import DatasetInfo from "../components/DatasetInfo/DatasetInfo";
 import OrderHistoryPage from "../components/OrderHistory/OrderHistoryPage";
+import MarketplacePage from '../components/Marketplace/MarketplacePage';
 import EmailVerificationPage from "../components/EmailVerification/EmailVerificationPage";
 import EmailVerificationRequired from "../components/EmailVerification/EmailVerificationRequiredContainer";
 
@@ -44,7 +44,6 @@ const PrivateVerifiedRoute = ({component: Component, authenticated, ...rest}) =>
         if(!auth.isUserVerified) {
           return <EmailVerificationRequired/>
         }
-        console.log('here')
         return (<Component {...props} auth={rest.auth}/>);
       }}
     />
@@ -71,7 +70,7 @@ const Routes: SFC<{}> = () => {
             />
             <PrivateVerifiedRoute
               path="/dataexplorer"
-              component={DataMap}
+              component={DataExplorerPage}
               auth={auth}
               authenticated={auth.authenticated}
             />
@@ -89,7 +88,7 @@ const Routes: SFC<{}> = () => {
             />
             <PrivateVerifiedRoute
               path="/marketplace"
-              component={MarketplaceV2}
+              component={MarketplacePage}
               auth={auth}
               authenticated={auth.authenticated}
             />

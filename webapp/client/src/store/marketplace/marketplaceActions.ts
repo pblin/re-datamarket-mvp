@@ -45,6 +45,6 @@ export function deleteDataset(datasetId) {
   return {type: MARKETPLACE_ACTIONS.DELETE_DATASET, datasetId };
 }
 
-export function searchDatasets(terms) {
-  return {type: MARKETPLACE_ACTIONS.SEARCH_DATASETS, terms};
+export function searchDatasets(filters) {
+  return {type: MARKETPLACE_ACTIONS.SEARCH_DATASETS, filters};
 }
