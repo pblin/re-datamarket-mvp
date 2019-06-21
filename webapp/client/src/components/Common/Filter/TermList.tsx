@@ -1,11 +1,7 @@
 import * as React from "react";
 import {Chip, Paper, Typography} from "@material-ui/core";
 
-const handleTermDelete = () => {
-
-};
-
-export const TermList = ({terms}) => {
+export const TermList = ({terms, onDelete}) => {
   return (
     <Paper className={"term-list"}>
       {terms.length == 0 && <Typography variant={"subheading"}>No Search Terms Applied</Typography>}
@@ -16,7 +12,7 @@ export const TermList = ({terms}) => {
           variant={"outlined"}
           color={"primary"}
           className={"term-item"}
-          onDelete={handleTermDelete}
+          onDelete={() => onDelete(term)}
         />
       )}
     </Paper>

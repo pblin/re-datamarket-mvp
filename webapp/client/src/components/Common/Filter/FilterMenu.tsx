@@ -92,6 +92,12 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
     }
   };
 
+  deleteTerm = (term) => {
+    this.setState((state) => ({
+      terms: [...state.terms.filter(t => t != term)],
+    }));
+  };
+
   onCountrySelect = (event) => {
     const country = event.target.value;
 
@@ -213,7 +219,7 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
                       <AddIcon/>
                     </IconButton>
                   </Paper>
-                  <TermList terms={this.state.terms}/>
+                  <TermList terms={this.state.terms} onDelete={this.deleteTerm} />
                 </Grid>
               </Grid>
             </ExpansionPanelDetails>
