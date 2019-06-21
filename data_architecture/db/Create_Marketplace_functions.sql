@@ -13,15 +13,15 @@ returns setof marketplace.data_source_detail as $$
 
 $$ language sql stable;
 
-create function marketplace.search_dataset_schema (fields text, topics text, cities text, state text, country text)
+create function marketplace.search_dataset_schema (fields text, topics text, cities text, region text, ctn text)
 returns setof marketplace.field_in_schema as $$
 
 	select * from marketplace.field_in_schema
 		where fields %> field_label 
 			and (topics = '' or topics % any (topic))
 			and (cities = '' or cities % any (city))
-			and (state = '' or state %> (state_province))
-			and (country = '' or country %> (country))
+			and (region = '' or region %> (state_province))
+			and (ctn = '' or ctn %> (country))
 											  
 $$ language sql stable;
 
