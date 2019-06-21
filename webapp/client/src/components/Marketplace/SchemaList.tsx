@@ -14,15 +14,24 @@ import AlbumIcon from "@material-ui/icons/Album";
 import LocationIcon from "@material-ui/icons/AddLocation";
 import DollarIcon from "@material-ui/icons/AttachMoney";
 import AttachmentIcon from "@material-ui/icons/Attachment";
+import JumboPaper from "../Common/jumboPaper";
 
-const SchemaList = ({schemas, history}) => {
+const SchemaList = ({schemas, history, onFilter = () => {}}) => {
   const handleClick = (schema) => {
     history.push(`/dataset/${schema.id}`);
   };
   
   return(
     <div>
-      {schemas.map((schema, index) => (
+      {schemas.length == 0 && <JumboPaper
+        title={"No Results Found"}
+        content={"No Results Found for the selected filters. Please try applying different filters."}
+        buttonText={"Change Filters"}
+        handleClick={onFilter}
+      />}
+      {schemas.length > 0 &&
+        <React.Fragment>
+        {schemas.map((schema, index) => (
           <ExpansionPanel key={`schema${index}`} expanded={false} className={"schema-panel"}>
             <ExpansionPanelSummary className={"schema-list"} onClick={() => handleClick(schema)}>
               <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
@@ -74,7 +83,9 @@ const SchemaList = ({schemas, history}) => {
               </Grid>
             </ExpansionPanelSummary>
           </ExpansionPanel>
-      ))}
+        ))}
+        </React.Fragment>
+      }
     </div>
   );
 };

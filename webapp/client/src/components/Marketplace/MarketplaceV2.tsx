@@ -126,7 +126,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
         variant="contained"
         onClick={() => this.setState({filterDrawerOpen: true})}
         className="add-schema">
-        Filter <FilterIcon/>
+        Advanced Search <FilterIcon/>
       </Button>);
     }
 
@@ -165,7 +165,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
         />
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
-            <Grid container={true} justify={"flex-start"}>
+            <Grid container={true} justify={"flex-end"}>
               {this.renderFilterButton()}
               {this.renderAddButton()}
             </Grid>
@@ -175,6 +175,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
                 <SchemaList
                   schemas={this.props.purchasableDatasets}
                   history={this.props.history}
+                  onFilter={() => this.setState({filterDrawerOpen: true})}
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&

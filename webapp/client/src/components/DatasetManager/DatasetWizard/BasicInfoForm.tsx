@@ -6,13 +6,7 @@ import {ReduxFormValidator} from "../../Common/Error/ReduxFormValidator";
 import "./DatasetWizard.scss";
 import {ERROR_TYPE} from "../../Common/Error/ErrorType";
 import {datasetInfoSelector} from "../../../store/datasetInfo/datasetInfoSelector";
-import AutoSuggestInput from '../../Common/Form/AutoSuggestInput';
-
 import csc from 'country-state-city';
-//console.log(csc.getAllCountries());
-//console.log(csc.getStatesOfCountry('231'));
-//console.log(csc.getCitiesOfState('3970'));
-//console.log(csc.getCityById('46280'));
 
 interface BasicFormProps {
   handleSubmit: any;
@@ -42,14 +36,15 @@ const renderSelectField = ({input, label, meta, custom}) => {
         variant={'standard'}
         label={label}
         disabled={custom.disabled || false}
+        onChange={custom.onChange}
         select
         error={meta.touched && meta.error != undefined}
         {...input}
         fullWidth
         helperText={helperText}
       >
-        {custom.options.map(option => {
-          return (<MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)
+        {custom.options.map((option, index) => {
+          return (<MenuItem key={`${option.value}${index}`} value={option.value}>{option.label}</MenuItem>)
         })}
       </TextField>
     </Grid>
@@ -154,7 +149,9 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
   }
 
   onCountrySelect = (value) => {
-    this.props.change('country', value['name']);
+    //this.props.change('country', value['name']);
+    console.log('On Country Select');
+    console.log(value);
     this.setState({
       stateSuggestions: csc.getStatesOfCountry(value.id)
     })
@@ -165,8 +162,11 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
   };
 
   mapStates = (state) => {
-    console.log(state);
-    return {label: state.name, value: state.name};
+    return {label: state.name, value: state};
+  };
+
+  mapCountries = (country) => {
+    return {label: country.name, value: country};
   };
 
   render() {
@@ -213,19 +213,18 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
               type="text"
               custom={ {gridXs: 12, gridSm: 8, placeholder: "http://{DATASET ENDPOINT}"} }
             />
-            <AutoSuggestInput
-              inputProps={{}}
-              items={this.state.countrySuggestions}
-              propToFilter={'name'}
-              onSuggestionSelected={this.onCountrySelect}
-              gridProps={{xs: 4, item: true}}
-            />
-            {/*<Field
+            <Field
               label="Country"
               component={renderSelectField}
               name="country"
-              custom={ {gridXs: 12, gridSm: renderGrid(this.props.mode, 4, 4), options: ['USA']} }
-            />*/}
+              custom={ {
+                gridXs: 12,
+                onChange: this.onCountrySelect,
+                gridSm: renderGrid(this.props.mode, 4, 4),
+                options: this.state.countrySuggestions.map(this.mapCountries),
+                disabled: !(this.state.countrySuggestions.length > 0)
+              }}
+            />
             <Field
               label="State"
               component={renderSelectField}
@@ -237,17 +236,6 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
                 disabled: !(this.state.stateSuggestions.length > 0)
               }}
             />
-            {/*<Field
-              label="City"
-              component={renderSelectField}
-              name="city"
-              custom={ {
-                gridXs: 12,
-                gridSm: renderGrid(this.props.mode, 4, 4),
-                options: ['New York'],
-                disabled: !(this.state.citySuggestions.length > 0)
-              }}
-            />*/}
             <Field
               label="Sample Api Key"
               component={renderTextField}
