@@ -13,7 +13,7 @@ returns setof marketplace.data_source_detail as $$
 
 $$ language sql stable;
 
-create function marketplace.search_dataset_schema (fields text, topics text, cities text, region text, ctn text)
+create function marketplace.search_dataset_schema(purchased_by integer, fields text, topics text, cities text, region text, ctn text)
 returns setof marketplace.field_in_schema as $$
 
 	select * from marketplace.field_in_schema
@@ -22,6 +22,8 @@ returns setof marketplace.field_in_schema as $$
 			and (cities = '' or cities % any (city))
 			and (region = '' or region %> (state_province))
 			and (ctn = '' or ctn %> (country))
+			and (purchased_by = 0 
+				or purchased_by in (select buyer_id from marketplace.order_book))
 											  
 $$ language sql stable;
 
