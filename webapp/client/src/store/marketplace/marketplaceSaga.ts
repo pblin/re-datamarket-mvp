@@ -35,10 +35,10 @@ export function* DeleteDataset(action) {
 }
 
 export function* SearchDatasets(action) {
-  const {terms, filters} = action;
+  const {filters} = action;
   const datasetService = new DatasetService();
 
-  const datasets = yield datasetService.searchDatasets(terms, filters);
+  const datasets = yield datasetService.searchDatasets(filters);
   yield put({type: MARKETPLACE_ACTIONS.DATASETS_SEARCHED, datasets})
 }
 

@@ -122,26 +122,22 @@ export class DatasetService {
     }
   }
 
-  async searchDatasets(terms, filters) {
+  async searchDatasets(filters) {
     let url = `${config.serverBase}/marketplace/search`;
     let filterCount = 0;
-    let region = '';
 
-    if(terms != '') {
+    if(filters.terms.length) {
         filterCount++;
-        url += `?terms=${terms}`
+        url += `?terms=${filters.terms.join(',')}`
     }
 
     if(filters.selectedCountry) {
-      region += `${filters.selectedCountry}`;
+      url += `${filterCount === 0 ? '?' : '&'}country=${filters.selectedCountry}`;
+      filterCount++;
     }
 
     if(filters.selectedState) {
-      region += `,${filters.selectedState}`;
-    }
-
-    if(region) {
-      url += `${filterCount === 0 ? '?' : '&'}region=${region}`;
+      url += `${filterCount === 0 ? '?' : '&'}state=${filters.selectedState}`;
       filterCount++;
     }
 

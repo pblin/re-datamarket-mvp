@@ -17,9 +17,6 @@ const SearchBar = ({placeholder, onSearchChange, searchVal, onSearch}) => {
 
   return(
     <Paper elevation={1} className={"filter-menu"}>
-      {/*<IconButton aria-label="Menu">
-        <MenuIcon />
-      </IconButton>*/}
       <InputBase placeholder={placeholder} onChange={onSearchChange} value={searchVal} onKeyPress={handleKeyPress} className={"search"}/>
       <IconButton aria-label="Search" onClick={handleSearchClick}>
         <SearchIcon />

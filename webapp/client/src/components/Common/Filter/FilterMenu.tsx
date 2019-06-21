@@ -11,6 +11,7 @@ import {
   FormGroup,
   Grid,
   IconButton,
+  InputBase,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -21,12 +22,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CategoryIcon from "@material-ui/icons/Category";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import AddIcon from "@material-ui/icons/Add";
 import csc from 'country-state-city';
 import './filterMenu.scss';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {getTopics} from "../../../store/common/commonActions";
 import {getTopicsSelector} from "../../../store/common/commonSelectors";
+import {TermList} from "./TermList";
 
 interface ComponentProps {
   onApply: Function;
@@ -35,6 +38,7 @@ interface ComponentProps {
   topics: any[];
 }
 
+//TODO: Move To Redux Store
 interface ComponentState {
   countryList: any[];
   stateList: any[];
@@ -43,6 +47,8 @@ interface ComponentState {
   selectedState: any;
   selectedCity: any;
   selectedTopics: any;
+  addTermInput: string;
+  terms: any[];
 }
 
 export class FilterMenu extends React.Component<ComponentProps, ComponentState> {
@@ -56,18 +62,35 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
       selectedCity: '',
       selectedState: '',
       selectedCountry: '',
-      selectedTopics: {}
+      selectedTopics: {},
+      addTermInput: '',
+      terms: []
     }
   }
 
   //For now this app will only provide 2 countries
   filterCountries(country) {
-    return country.name == "United States" || country.name == "Canada"
+    return country.name == "United States" || country.name == "Canada";
   }
 
   componentDidMount(): void {
     this.props.actions.getTopics();
   }
+
+  handleTermKeyPress = (e) => {
+    if(e.which == 13) {
+      this.addTerm(this.state.addTermInput);
+    }
+  };
+
+  addTerm = (term) => {
+    if(term) {
+      this.setState((state) => ({
+        terms: [...state.terms.filter(t => t != term), term],
+        addTermInput: ''
+      }));
+    }
+  };
 
   onCountrySelect = (event) => {
     const country = event.target.value;
@@ -108,7 +131,7 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
   };
 
   applyFilters = () => {
-    const {selectedCity, selectedState, selectedCountry, selectedTopics} = this.state;
+    const {selectedCity, selectedState, selectedCountry, selectedTopics, terms} = this.state;
 
     const topics = [];
 
@@ -118,14 +141,15 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
       }
     }
 
-    if(!selectedCity && !selectedState && !selectedCountry && !topics.length) {
+    if(!selectedCity && !selectedState && !selectedCountry && !topics.length && !terms.length) {
       this.props.onApply({});
     } else {
       this.props.onApply({
         selectedCity: selectedCity && selectedCity.name || '',
         selectedState: selectedState && selectedState.name || '',
         selectedCountry: selectedCountry && selectedCountry.name || '',
-        topics
+        topics,
+        terms
       });
     }
   };
@@ -137,7 +161,8 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
       selectedCity: '',
       selectedState: '',
       selectedCountry: '',
-      selectedTopics: {}
+      selectedTopics: {},
+      terms: []
     })
   };
 
@@ -163,6 +188,36 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
     return (
       <React.Fragment>
         <Grid item xs={12}>
+          <ExpansionPanel className={"filter-item"}>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1c-content"
+            >
+              <Typography
+                className="filter-menu-title">
+                <LocationIcon/><span>SEARCH TERMS</span>
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Grid container>
+                <Grid xs={12}>
+                  <Paper elevation={2}>
+                    <InputBase
+                      placeholder={"Add Search Terms"}
+                      className={"filter-input"}
+                      onKeyPress={this.handleTermKeyPress}
+                      value={this.state.addTermInput}
+                      onChange={(e) => this.setState({addTermInput: e.target.value})}
+                    />
+                    <IconButton onClick={() => this.addTerm(this.state.addTermInput)}>
+                      <AddIcon/>
+                    </IconButton>
+                  </Paper>
+                  <TermList terms={this.state.terms}/>
+                </Grid>
+              </Grid>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
           <ExpansionPanel className={"filter-item"}>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon />}

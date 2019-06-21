@@ -18,7 +18,6 @@ import FilterIcon from "@material-ui/icons/FilterList";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
-import SearchBar from "../Common/Filter/SearchBar";
 import FilterMenu from "../Common/Filter/FilterMenu";
 import DatasetList from "./DatasetList";
 import {isEmpty} from "../../utils/ObjectHelper";
@@ -55,7 +54,6 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     this.onConfirmationClose = this.onConfirmationClose.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
-    this.onSearch = this.onSearch.bind(this);
 
     this.state = {
       purchasedDatasetsRetrieved: false,
@@ -103,22 +101,9 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     this.props.actions.changeConfirmDialogState(false, {name: ''});
   }
 
-  //Filter menu
+  //Filter menu TODO: Possibly Remove This
   onSearchChange(e) {
     this.props.actions.changeSearch(e.target.value);
-  }
-
-  onSearch(search: string) {
-    //Set search in component state
-    this.setState({
-      search
-    });
-
-    if(search != '' || !isEmpty(this.state.filters)) {
-      this.props.actions.searchDatasets(search, this.state.filters);
-    } else {
-      this.props.actions.getAllDatasets();
-    }
   }
 
   renderAddButton() {
@@ -151,7 +136,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   onFilter = (filters) => {
     this.setState({filters});
     if(this.state.search != '' || !isEmpty(filters)) {
-      this.props.actions.searchDatasets(this.state.search, filters);
+      this.props.actions.searchDatasets(filters);
     } else {
       this.props.actions.getAllDatasets();
     }
@@ -181,15 +166,8 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-start"}>
-              { (this.props.schemaFilter == 'all' || this.props.schemaFilter == 'purchasable') &&
-                <SearchBar
-                  placeholder={"Search Marketplace"}
-                  searchVal={this.props.marketplace.search}
-                  onSearch={this.onSearch}
-                  onSearchChange={this.onSearchChange}/>
-              }
-              {this.renderAddButton()}
               {this.renderFilterButton()}
+              {this.renderAddButton()}
             </Grid>
             <Grid item xs={12} sm={12}>
               {
