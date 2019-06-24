@@ -21,6 +21,7 @@ import AppState from './app/appReducer';
 import DatasetInfoState from './datasetInfo/datasetInfoReducer';
 import OrderState from './orders/ordersReducer';
 import Common from './common/commonReducer';
+import Filters from "./filters/filterReducer";
 
 import {reducer as formReducer} from 'redux-form';
 
@@ -58,6 +59,7 @@ export class AppStore {
       AppState,
       OrderState,
       Common,
+      Filters,
       form: formReducer
     });
 
