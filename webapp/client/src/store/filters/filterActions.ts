@@ -8,7 +8,10 @@ export enum FILTER_ACTIONS {
   LOAD_COUNTRIES = "LOAD_COUNTRIES",
   RESET_FILTERS = "RESET_FILTERS",
   ADD_TERM = "ADD_TERM",
-  DELETE_TERM = "DELETE_TERM"
+  DELETE_TERM = "DELETE_TERM",
+  DELETE_LOCATION = "DELETE_LOCATION",
+  DELETE_TERMS = "DELETE_TERMS",
+  DELETE_TOPICS = "DELETE_TOPICS"
 };
 
 
@@ -38,6 +41,24 @@ export const selectCity = (city) => {
 export const resetFilters = () => {
   return {
     type: FILTER_ACTIONS.RESET_FILTERS
+  }
+};
+
+export const deleteTopics = () => {
+  return {
+    type: FILTER_ACTIONS.DELETE_TOPICS
+  }
+};
+
+export const deleteLocation = () => {
+  return {
+    type: FILTER_ACTIONS.DELETE_LOCATION
+  }
+};
+
+export const deleteTerms = () => {
+  return {
+    type: FILTER_ACTIONS.DELETE_TERMS
   }
 };
 

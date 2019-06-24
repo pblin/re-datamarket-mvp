@@ -48,16 +48,31 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case FILTER_ACTIONS.RESET_FILTERS:
       newState.cityList = [];
+      newState.stateList = [];
       newState.selectedCity = '';
       newState.selectedState = '';
       newState.selectedCountry = '';
       newState.terms = [];
+      newState.selectedTopics = [];
       break;
     case FILTER_ACTIONS.ADD_TERM:
       newState.terms = [...state.terms.filter(t => t != action.term), action.term];
       break;
     case FILTER_ACTIONS.DELETE_TERM:
       newState.terms = [...state.terms.filter(t => t != action.term)];
+      break;
+    case FILTER_ACTIONS.DELETE_TERMS:
+      newState.terms = [];
+      break;
+    case FILTER_ACTIONS.DELETE_LOCATION:
+      newState.selectedCity = '';
+      newState.selectedState = '';
+      newState.selectedCountry = '';
+      newState.cityList = [];
+      newState.stateList = [];
+      break;
+    case FILTER_ACTIONS.DELETE_TOPICS:
+      newState.selectedTopics = [];
       break;
     default:
       return state;
