@@ -47,6 +47,15 @@ interface ComponentProps {
   actions: any;
   topics: any[];
   filters: any;
+  disableLocation?: boolean;
+  disableTerms?: boolean;
+  disableTopics?: boolean;
+  disableSchemaField?: boolean;
+  searchTermText?: string;
+  searchTermTitle?: string;
+  searchTermEmpty?: string;
+  searchName?: string;
+  hideClose?: boolean;
 }
 
 interface ComponentState {
@@ -57,13 +66,18 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
   constructor(props) {
     super(props);
     this.state = {
-      addTermInput: ''
+      addTermInput: '',
     }
   }
 
   componentDidMount(): void {
     this.props.actions.getTopics();
     this.props.actions.loadCountries();
+  }
+
+  componentWillUnmount(): void {
+    //Reset the filters when the component unmounts
+    this.props.actions.resetFilters();
   }
 
   handleTermKeyPress = (e) => {
@@ -150,106 +164,139 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
     </FormGroup>);
   }
 
+  renderSearchTermFilter() {
+    if(!this.props.disableTerms) {
+      return (
+        <ExpansionPanel className={"filter-item"}>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1c-content"
+          >
+            <Typography
+              className="filter-menu-title">
+              <LocationIcon/><span>{`${this.props.searchTermTitle || 'SEARCH TERMS'}`}</span>
+            </Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Grid container>
+              <Grid xs={12}>
+                <Paper elevation={2}>
+                  <InputBase
+                    placeholder={`${this.props.searchTermText || 'Add Search Terms'}`}
+                    className={"filter-input"}
+                    onKeyPress={this.handleTermKeyPress}
+                    value={this.state.addTermInput}
+                    onChange={(e) => this.setState({addTermInput: e.target.value})}
+                  />
+                  <IconButton onClick={() => this.addTerm(this.state.addTermInput)}>
+                    <AddIcon/>
+                  </IconButton>
+                </Paper>
+                <TermList
+                  terms={this.props.filters.terms}
+                  onDelete={this.deleteTerm}
+                  emptyText={this.props.searchTermEmpty}
+                  name={this.props.searchName}
+                />
+              </Grid>
+            </Grid>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      )
+    }
+
+    return <React.Fragment/>;
+  }
+
+  renderLocationFilter() {
+    if(!this.props.disableLocation) {
+      return (
+        <ExpansionPanel className={"filter-item"}>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1c-content"
+          >
+            <Typography
+              className="filter-menu-title">
+              <LocationIcon/><span>LOCATION</span>
+            </Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Grid container>
+              <Grid item xs={12}>
+                <FormControl variant={"outlined"} className={"filter-menu-control"}>
+                  <InputLabel htmlFor={"country-filter"}>Country</InputLabel>
+                  <Select
+                    input={<OutlinedInput labelWidth={120} id={"country-filter"}/>}
+                    onChange={this.onCountrySelect}
+                    value={this.props.filters.selectedCountry}
+                  >
+                    {this.props.filters.countryList.map(country =>
+                      <MenuItem value={country}>{country.name}</MenuItem>)}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <FormControl variant={"outlined"} className={"filter-menu-control"}>
+                <InputLabel htmlFor={"state-filter"}>State/Province</InputLabel>
+                <Select
+                  input={<OutlinedInput labelWidth={120} id={"state-filter"}/>}
+                  onChange={this.onStateSelect}
+                  value={this.props.filters.selectedState}
+                >
+                  {this.props.filters.stateList.map(state =>
+                    <MenuItem value={state}>{state.name}</MenuItem>)}
+                </Select>
+              </FormControl>
+              <FormControl variant={"outlined"} className={"filter-menu-control"}>
+                <InputLabel htmlFor={"city-filter"}>City</InputLabel>
+                <Select
+                  input={<OutlinedInput labelWidth={120} id={"city-filter"}/>}
+                  onChange={this.onCitySelect}
+                  value={this.props.filters.selectedCity}
+                >
+                  {this.props.filters.cityList.map(city =>
+                    <MenuItem value={city}>{city.name}</MenuItem>)}
+                </Select>
+              </FormControl>
+            </Grid>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      )
+    }
+
+    return <React.Fragment />;
+  }
+
+  renderTopicFilter() {
+     if(!this.props.disableTopics) {
+       return (
+         <ExpansionPanel className={"filter-item"}>
+           <ExpansionPanelSummary
+             expandIcon={<ExpandMoreIcon />}
+             aria-controls="panel1c-content"
+           >
+             <Typography
+               className="filter-menu-title">
+               <CategoryIcon/><span>CATEGORIES</span>
+             </Typography>
+           </ExpansionPanelSummary>
+           <ExpansionPanelDetails>
+             {this.renderTopicCheckboxes()}
+           </ExpansionPanelDetails>
+         </ExpansionPanel>
+       )
+     }
+
+     return <React.Fragment />;
+  }
+
   renderFilters() {
     return (
       <React.Fragment>
         <Grid item xs={12}>
-          <ExpansionPanel className={"filter-item"}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1c-content"
-            >
-              <Typography
-                className="filter-menu-title">
-                <LocationIcon/><span>SEARCH TERMS</span>
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Grid container>
-                <Grid xs={12}>
-                  <Paper elevation={2}>
-                    <InputBase
-                      placeholder={"Add Search Terms"}
-                      className={"filter-input"}
-                      onKeyPress={this.handleTermKeyPress}
-                      value={this.state.addTermInput}
-                      onChange={(e) => this.setState({addTermInput: e.target.value})}
-                    />
-                    <IconButton onClick={() => this.addTerm(this.state.addTermInput)}>
-                      <AddIcon/>
-                    </IconButton>
-                  </Paper>
-                  <TermList terms={this.props.filters.terms} onDelete={this.deleteTerm} />
-                </Grid>
-              </Grid>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel className={"filter-item"}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1c-content"
-            >
-              <Typography
-                className="filter-menu-title">
-                <LocationIcon/><span>LOCATION</span>
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Grid container>
-                <Grid item xs={12}>
-                  <FormControl variant={"outlined"} className={"filter-menu-control"}>
-                    <InputLabel htmlFor={"country-filter"}>Country</InputLabel>
-                    <Select
-                      input={<OutlinedInput labelWidth={120} id={"country-filter"}/>}
-                      onChange={this.onCountrySelect}
-                      value={this.props.filters.selectedCountry}
-                    >
-                      {this.props.filters.countryList.map(country =>
-                        <MenuItem value={country}>{country.name}</MenuItem>)}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <FormControl variant={"outlined"} className={"filter-menu-control"}>
-                  <InputLabel htmlFor={"state-filter"}>State/Province</InputLabel>
-                  <Select
-                    input={<OutlinedInput labelWidth={120} id={"state-filter"}/>}
-                    onChange={this.onStateSelect}
-                    value={this.props.filters.selectedState}
-                  >
-                    {this.props.filters.stateList.map(state =>
-                      <MenuItem value={state}>{state.name}</MenuItem>)}
-                  </Select>
-                </FormControl>
-                <FormControl variant={"outlined"} className={"filter-menu-control"}>
-                  <InputLabel htmlFor={"city-filter"}>City</InputLabel>
-                  <Select
-                    input={<OutlinedInput labelWidth={120} id={"city-filter"}/>}
-                    onChange={this.onCitySelect}
-                    value={this.props.filters.selectedCity}
-                  >
-                    {this.props.filters.cityList.map(city =>
-                      <MenuItem value={city}>{city.name}</MenuItem>)}
-                  </Select>
-                </FormControl>
-              </Grid>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </Grid>
-        <Grid item xs={12}>
-          <ExpansionPanel className={"filter-item"}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1c-content"
-            >
-              <Typography
-                className="filter-menu-title">
-                <CategoryIcon/><span>CATEGORIES</span>
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              {this.renderTopicCheckboxes()}
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+          {this.renderSearchTermFilter()}
+          {this.renderLocationFilter()}
+          {this.renderTopicFilter()}
         </Grid>
       </React.Fragment>
     )
@@ -261,7 +308,7 @@ export class FilterMenu extends React.Component<ComponentProps, ComponentState> 
         <Paper className={"filter-menu-container"}>
           <Grid item xs={12}>
             {/*TODO: Align Button and text */}
-            <IconButton onClick={this.props.onClose}><ChevronLeftIcon/></IconButton>
+            {!this.props.hideClose && <IconButton onClick={this.props.onClose}><ChevronLeftIcon/></IconButton>}
             <Typography variant={"h6"} className={"filter-header"}>Filter Your Results</Typography>
           </Grid>
           {this.renderFilters()}

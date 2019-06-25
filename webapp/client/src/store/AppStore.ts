@@ -11,10 +11,12 @@ import {marketplaceSagas} from "./marketplace/marketplaceSaga";
 import {datasetInfoSagas} from "./datasetInfo/datasetInfoSaga";
 import {orderSagas} from "./orders/orderSaga";
 import {commonSagas} from "./common/commonSaga";
+import {dataExplorerSagas} from "./dataExplorer/dataExplorerSaga";
 
 //Reducers
 import FileState from "./file/reducers";
 import DatasetFormState from "./datasetForm/reducers";
+import DataExplorer from "./dataExplorer/dataExplorerReducer";
 import ProfileState from "./profile/profileReducer";
 import MarketplaceState from './marketplace/marketplaceReducer';
 import AppState from './app/appReducer';
@@ -60,6 +62,7 @@ export class AppStore {
       OrderState,
       Common,
       Filters,
+      DataExplorer,
       form: formReducer
     });
 
@@ -72,7 +75,8 @@ export class AppStore {
         ...marketplaceSagas(),
         ...datasetInfoSagas(),
         ...orderSagas(),
-        ...commonSagas()
+        ...commonSagas(),
+        ...dataExplorerSagas()
       ])
     }
 
