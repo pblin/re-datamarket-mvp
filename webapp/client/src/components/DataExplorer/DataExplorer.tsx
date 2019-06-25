@@ -9,6 +9,7 @@ import NotificationLabel from "../Common/NotificationLabel";
 import "./dataExplorer.scss";
 import {isEmpty} from "../../utils/ObjectHelper";
 import SchemaFieldTable from "./SchemaFieldTable";
+import FilterBreadCrumbs from '../Common/Filter/FilterBreadCrumbs';
 
 interface ComponentProps {
   actions: any;
@@ -51,6 +52,8 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
           hasPublish={false}
         />
         <Grid container justify={"center"} className={"data-explorer"}>
+          <Grid item xs={12} className={"page-section"}>
+          </Grid>
           <Grid item xs={12} sm={4} className={"page-section"}>
             <FilterMenu
              onClose={()=>{}}
@@ -63,6 +66,7 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
             {
               this.props.toolbarFilter == 'all' &&
                 <React.Fragment>
+                  <FilterBreadCrumbs/>
                   {(this.props.fields.length == 0) &&
                   <NotificationLabel type={"warning"}>
                     <Typography>No results found. Try searching with different filters.</Typography>
@@ -70,16 +74,19 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
                   }
                   {
                     (this.props.fields.length > 0) &&
-                    <SchemaFieldTable
-                      schemaFields={this.props.fields}
-                      history={this.props.history}
-                    />
+                    <React.Fragment>
+                      <SchemaFieldTable
+                        schemaFields={this.props.fields}
+                        history={this.props.history}
+                      />
+                    </React.Fragment>
                   }
                 </React.Fragment>
             }
             {
               this.props.toolbarFilter == 'ownedByMe' &&
                 <React.Fragment>
+                  <FilterBreadCrumbs/>
                   {(this.props.ownedFields.length == 0) &&
                     <NotificationLabel type={"warning"}>
                       <Typography>No results found. Try searching with different filters.</Typography>
@@ -87,10 +94,12 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
                   }
                   {
                     (this.props.ownedFields.length > 0) &&
-                    <SchemaFieldTable
-                      schemaFields={this.props.ownedFields}
-                      history={this.props.history}
-                    />
+                    <React.Fragment>
+                      <SchemaFieldTable
+                        schemaFields={this.props.ownedFields}
+                        history={this.props.history}
+                      />
+                    </React.Fragment>
                   }
                 </React.Fragment>
             }

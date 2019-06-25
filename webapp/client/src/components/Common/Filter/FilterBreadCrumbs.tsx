@@ -4,6 +4,7 @@ import {Chip} from "@material-ui/core";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {deleteLocation, deleteTerms, deleteTopics} from "../../../store/filters/filterActions";
+import "./filterMenu.scss";
 
 interface ComponentProps{
   filters: any;
@@ -45,7 +46,7 @@ export class FilterBreadCrumbs extends React.Component<ComponentProps> {
   }
 
   render() {
-    return (<React.Fragment>{this.renderBreadCrumbs()}</React.Fragment>);
+    return (<div className={"filter-bread-crumbs"}>{this.renderBreadCrumbs()}</div>);
   }
 }
 
