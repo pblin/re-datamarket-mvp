@@ -19,6 +19,7 @@ import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
 import FilterMenu from "../Common/Filter/FilterMenu";
+import FilterBreadCrumbs from "../Common/Filter/FilterBreadCrumbs";
 import DatasetList from "./DatasetList";
 import {isEmpty} from "../../utils/ObjectHelper";
 
@@ -165,9 +166,10 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
         />
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
-            <Grid container={true} justify={"flex-end"}>
+            <Grid container={true} justify={"flex-start"}>
               {this.renderFilterButton()}
               {this.renderAddButton()}
+              <FilterBreadCrumbs/>
             </Grid>
             <Grid item xs={12} sm={12}>
               {

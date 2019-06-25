@@ -27,7 +27,6 @@ export const isProfileSet = createSelector([profileSelector],
 export const getProfileStatus = createSelector(
   [tempProfileSelector],
   (profile) => {
-    console.log(profile);
     if(profile == 'verified') {
       return PROFILE_STATUS.VERIFIED;
     }
