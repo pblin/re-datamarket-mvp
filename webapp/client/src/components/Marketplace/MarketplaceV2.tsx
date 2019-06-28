@@ -221,5 +221,6 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
 }
 
 export default withRouter(
+  // @ts-ignore
   MarketplaceV2
 );

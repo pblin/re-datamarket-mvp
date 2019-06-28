@@ -2,6 +2,23 @@
 # yarn lockfile v1
 
 
+"@rauschma/stringio@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@rauschma/stringio/-/stringio-1.4.0.tgz#0b667bea726652a10a48dfc1dadc89e0ec51e269"
+  integrity sha512-3uor2f/MXZkmX5RJf8r+OC3WvZVzpSme0yyL0rQDPEnatE02qRcqwEwnsgpgriEck0S/n4vWtUd6tTtrJwk45Q==
+  dependencies:
+    "@types/node" "^10.0.3"
+
+"@types/node@^10.0.3":
+  version "10.14.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.10.tgz#e491484c6060af8d461e12ec81c0da8a3282b8de"
+  integrity sha512-V8wj+w2YMNvGuhgl/MA5fmTxgjmVHVoasfIaxMMZJV6Y8Kk+Ydpi1z2whoShDCJ2BuNVoqH/h1hrygnBxkrw/Q==
+
+"@types/node@^11.13.6":
+  version "11.13.15"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.15.tgz#699afb07a91adced2d6183a0ad156bf82542fc7d"
+  integrity sha512-x6ypl5Uzly+j23hbxmMzf12Eb4lOhIEqQz0HuczpTUa1KIx1GpbN/o4E3aAED20UoEsdK0wvyY8QcffuWSLDkw==
+
 "@types/node@^8.0.24":
   version "8.10.45"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.45.tgz#4c49ba34106bc7dced77ff6bae8eb6543cde8351"
@@ -723,6 +740,14 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
   integrity sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
+
+node-ts@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/node-ts/-/node-ts-5.0.1.tgz#5d7e59e27a64b79d3374980d95c4e7c8f317b64f"
+  integrity sha512-+u5t5SIMDg8g1xF7Qj6nVMt61Pl6mgRFGN4Lf8gzuuz/iDcgmn4u4hUw6xtyC0xe1xemcSXD2QoI6OJpYBkuvQ==
+  dependencies:
+    "@rauschma/stringio" "^1.4.0"
+    "@types/node" "^11.13.6"
 
 object-copy@^0.1.0:
   version "0.1.0"

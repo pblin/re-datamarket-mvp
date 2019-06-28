@@ -8,7 +8,7 @@ CREATE OR REPLACE FUNCTION marketplace.search_dataset(
 	terms text,
 	cities text,
 	region text,
-	ctn text)
+	cn text)
     RETURNS SETOF marketplace.data_source_detail 
     LANGUAGE 'sql'
 
@@ -24,7 +24,7 @@ AS $BODY$
 	AND ( topics = '' OR topics % ANY (topic) )
 	AND ( cities = '' OR cities % ANY (city) ) 
 	AND ( region = '' OR region <% state_province ) 
-	AND ( ctn = '' OR ctn <% country )
+	AND ( cn = '' OR cn <% country )
 	AND (purchased_by = 0 
 				or id in (select dataset_id from marketplace.order_book where buyer_id = purchased_by))
 
@@ -45,7 +45,7 @@ CREATE OR REPLACE FUNCTION marketplace.search_dataset_schema(
 	topics text,
 	cities text,
 	region text,
-	ctn text)
+	cn text)
     RETURNS SETOF marketplace.field_in_schema 
     LANGUAGE 'sql'
 
@@ -59,7 +59,7 @@ AS $BODY$
 			and (topics = '' or topics % any (topic))
 			and (cities = '' or cities % any (city))
 			and (region = '' or region %> (state_province))
-			and (ctn = '' or ctn %> (country))
+			and (cn = '' or cn %> (country))
 			AND (purchased_by = 0 
 				or dataset_id in (select dataset_id from marketplace.order_book where buyer_id = purchased_by))
 											  

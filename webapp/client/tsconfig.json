@@ -34,6 +34,9 @@
     "strict": true,
     "resolveJsonModule": true,
     "noEmit": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "isolatedModules": true
   },
   "include": [
