@@ -224,6 +224,7 @@ class DatasetManager extends React.Component<ComponentProps> {
   }
 }
 
+//@ts-ignore
 export default withRouter(
   // @ts-ignore
   DatasetManager

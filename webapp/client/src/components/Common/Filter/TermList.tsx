@@ -1,11 +1,11 @@
 import * as React from "react";
 import {Chip, Paper, Typography} from "@material-ui/core";
 
-export const TermList = ({terms, onDelete}) => {
+export const TermList = ({terms, onDelete, emptyText = 'No Search Terms Applied', name='Terms'}) => {
   return (
     <Paper className={"term-list"}>
-      {terms.length == 0 && <Typography variant={"subheading"}>No Search Terms Applied</Typography>}
-      {terms.length > 0 && <Typography variant={"subheading"}>Terms</Typography>}
+      {terms.length == 0 && <Typography variant={"subheading"}>{emptyText}</Typography>}
+      {terms.length > 0 && <Typography variant={"subheading"}>{name}</Typography>}
       {terms.map((term) =>
         <Chip
           label={`${term}`}
