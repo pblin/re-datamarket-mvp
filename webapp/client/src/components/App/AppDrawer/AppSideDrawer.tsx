@@ -1,0 +1,198 @@
+import * as React from "react";
+//import AppSideDrawerClasses from './AppSideDrawerStyles';
+import {
+  Divider,
+  Drawer,
+  withStyles,
+  Theme,
+  List,
+  ListItem
+} from "@material-ui/core";
+import {Link} from "react-router-dom";
+import Logo from "../../../img/rebloc_logo.svg";
+import {AppLink} from "../AppLink";
+import {withRouter} from "react-router";
+import cx from "classnames";
+
+//ICONS
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import ExploreIcon from "@material-ui/icons/Explore";
+import CreditCardIcon from '@material-ui/icons/CreditCard';
+import HomeIcon from "@material-ui/icons/Home";
+import PersonIcon from "@material-ui/icons/Person";
+
+interface AppProps {
+  width: number;
+  classes?: any;
+  history?: any;
+}
+
+class AppSideDrawer extends React.Component <AppProps> {
+  classes: any;
+
+  appLinks: AppLink[] = [
+    new AppLink('Home', '/', (<HomeIcon/>)),
+    new AppLink('Marketplace', '/marketplace', (<DashboardIcon/>)),
+    new AppLink('Data Explorer', '/dataexplorer', (<ExploreIcon/>)),
+    new AppLink('News', 'https://medium.com/rebloc', (<NotificationsIcon/>), 'global'),
+    new AppLink('Order History', '/order/history', <CreditCardIcon/>),
+    new AppLink('Profie', '/profile', (<PersonIcon/>)),
+  ];
+
+  constructor(props) {
+    super(props);
+    //this.classes = AppSideDrawerClasses();
+  }
+
+  renderLinks(props) {
+    const pathname = this.props &&
+      this.props.history &&
+      this.props.history.location &&
+      this.props.history.location.pathname;
+
+    return (
+      <List>
+        {this.appLinks.map((link, index) => {
+
+          const classNames = cx({
+            [props.classes.linkListItem]: true,
+            [props.classes.activeLinkItem]: (pathname == link.url)
+          });
+
+          return (
+            <React.Fragment>
+              {link.type == 'app' &&
+              <ListItem button key={`link-item${index}`} className={pathname == link.url ? props.classes.borderLinkItem : ''}>
+                <Link to={link.url}>
+                  <div className={classNames}>{link.title}</div>
+                </Link>
+              </ListItem>
+              }
+              {link.type == 'global' &&
+              <ListItem button key={`link-item${index}`}>
+                <a href={link.url}>
+                  <div className={classNames}>{link.title}</div>
+                </a>
+              </ListItem>
+              }
+            </React.Fragment>
+          )})}
+      </List>
+    )
+  }
+
+  renderLogos(props) {
+    const pathname = this.props &&
+      this.props.history &&
+      this.props.history.location &&
+      this.props.history.location.pathname;
+
+    return (
+      <List>
+        {this.appLinks.map((link, index) => {
+          const classNames = cx({
+            [props.classes.iconListItem]: true,
+            [props.classes.activeIconItem]: (pathname == link.url)
+          });
+
+          return (
+            <ListItem alignItems={"center"} key={`icon${index}`} className={classNames}>
+              <div>{link.icon}</div>
+            </ListItem>
+          )})}
+      </List>
+    )
+  }
+
+  render() {
+    console.log('current history');
+    console.log(this.props.history);
+    const styles = (theme: Theme) => ({
+      toolbar: {
+        ...theme.mixins.toolbar,
+        padding: "10px 0 0 40px",
+        backgroundColor: theme.palette.primary.main
+      },
+      drawerPaper: {
+        width: this.props.width,
+        overflow: "hidden"
+      },
+      drawer: {
+        width: 0,
+        flexShrink: 0,
+      },
+      logo: {
+        height: 30
+      },
+      appLinkLogoContainer: {
+      },
+      logoContainer: {
+        width: 40,
+        borderRight: "1px solid black",
+      },
+      drawerContainer: {
+        display: "flex",
+        flexDirection: "row" as "row",
+        height: "100%",
+        minHeight: "100%"
+      },
+      iconListItem: {
+        paddingLeft: 7,
+        paddingRight: 0,
+        color: theme.palette.primary.light
+      },
+      activeIconItem: {
+        color: "#f05e2a", //TODO: theme it
+      },
+      linkListItem: {
+        lineHeight: "30px",
+        display: "inline-block",
+        position: "relative" as "relative",
+        bottom: 2,
+        fontSize: 18,
+        color: theme.palette.primary.light
+      },
+      activeLinkItem: {
+        color: "#f05e2a" //TODO: theme it
+      },
+      borderLinkItem: {
+        borderLeft: "3px solid #f05e2a" //TODO: Theme it
+      }
+    });
+
+    const content = (props) => (
+      <Drawer
+        open={true}
+        variant="permanent"
+        anchor="left"
+        classes={{
+          paper: props.classes.drawerPaper || ''
+        }}
+        className={props.classes.drawer || ''}
+      >
+        <div className={props.classes.toolbar || ''}>
+          <Link to={"/home"}><img src={Logo} className={props.classes.logo}/></Link>
+        </div>
+        <Divider/>
+
+        <div className={props.classes.drawerContainer}>
+          <div className={props.classes.logoContainer}>
+            {this.renderLogos(props)}
+          </div>
+          <div className={props.classes.linkContainer}>
+            {this.renderLinks(props)}
+          </div>
+        </div>
+      </Drawer>
+   );
+
+    const StyledComponent = withStyles(styles)(content);
+
+    return (
+      <StyledComponent/>
+    )
+  }
+}
+
+export default withRouter(AppSideDrawer);

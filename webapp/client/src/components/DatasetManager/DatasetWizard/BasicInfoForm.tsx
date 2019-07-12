@@ -174,7 +174,7 @@ class BasicInfoForm extends Component<BasicFormProps, BasicInfoState> {
         <form onSubmit={this.props.handleSubmit}
               autoComplete={"off"}
               className={this.props.mode == 'card' ? 'card-mode': ''}>
-          <Grid spacing={24} container={true} >
+          <Grid spacing={8} container={true} >
             <Field
               label="Name(Required)"
               component={renderTextField}

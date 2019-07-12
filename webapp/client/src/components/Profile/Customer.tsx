@@ -21,10 +21,6 @@ const styles = (theme: Theme ) => createStyles ({
     marginTop: '30px',
     flexWrap: 'wrap',
   },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
   dense: {
     marginTop: 16,
   },

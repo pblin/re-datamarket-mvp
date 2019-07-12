@@ -23,7 +23,7 @@ const OrderItem = ({order, history, filter, onSendEmail}) => {
   return(
     <Grid container className={"order-item-container"}>
       <Grid item xs={8}>
-        <Grid container spacing={24}>
+        <Grid container spacing={8}>
           <Grid xs={12} item className={"title-container"}>
             {filter === 'bought' && <Typography variant={"h6"}>Purchased {order['order_timestamp']} </Typography>}
             {filter === 'sold' && <Typography variant={"h6"}>Sold {order['order_timestamp']} </Typography>}

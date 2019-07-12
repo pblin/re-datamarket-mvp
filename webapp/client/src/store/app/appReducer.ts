@@ -1,11 +1,13 @@
 import {APP_ACTIONS} from "./appActions";
 
 interface AppState {
-  profileMenuOpen: boolean
+  profileMenuOpen: boolean,
+  appDrawerWidth: number
 }
 
 const defaultState: AppState = {
   profileMenuOpen: false,
+  appDrawerWidth: 240
 };
 
 const reducer = function(state=defaultState, action: any) {
