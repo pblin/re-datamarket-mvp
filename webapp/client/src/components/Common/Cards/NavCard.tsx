@@ -27,6 +27,11 @@ const styles = (theme) => ({
       fontSize: 20,
       marginRight: 5,
       color: AppVars.lightGray
+    },
+    "&.hovered": {
+      "& svg": {
+        color: `${AppVars.reblocOrange}`
+      }
     }
   },
   title: {
@@ -44,6 +49,11 @@ const styles = (theme) => ({
       fontSize: "80px",
       marginTop: 20,
       color: AppVars.lightGray
+    },
+    "&.hovered": {
+      "& svg": {
+        color: `${AppVars.reblocOrange}`
+      }
     }
   },
   content: {
@@ -51,26 +61,53 @@ const styles = (theme) => ({
   }
 });
 
-const NavCard = ({title, TitleIcon, classes, content, ContentIcon, history, navTo}) => {
-  console.log('HERE ARE THE STYLES');
-  console.log(classes);
-  return (
-    <Card className={classes.navCard} onClick={() => history.push(navTo)}>
-      <CardContent>
-        <Icon classes={{root: classes.titleIcon}} fontSize={"inherit"}>{TitleIcon}</Icon>
-        <div className={classes.title}>
-          <Typography>
-            <span>{title}</span>
-          </Typography>
-        </div>
-        <div className={classes.contentIconContainer}>
-          <Icon classes={{root: classes.contentIcon}} fontSize={"inherit"}>
-            {ContentIcon}
-          </Icon>
-        </div>
-        <Typography className={classes.content}>{content}</Typography>
-      </CardContent>
-    </Card>);
-};
+interface componentProps {
+  title: string,
+  TitleIcon: any,
+  classes: any,
+  content: string,
+  ContentIcon: any,
+  history: any,
+  navTo: string
+}
+
+interface componentState {
+  hovered: boolean;
+}
+class NavCard extends React.Component <componentProps, componentState> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      hovered: false
+    }
+  }
+  render() {
+    const {classes, history, navTo, TitleIcon, ContentIcon, title, content} = this.props;
+
+    return (
+      <Card
+        className={classes.navCard}
+        onClick={() => history.push(navTo)}
+        onMouseEnter={() => this.setState({hovered: true})}
+        onMouseLeave={() => this.setState({hovered: false})}
+      >
+        <CardContent>
+          <Icon classes={{root: `${classes.titleIcon} ${this.state.hovered ? 'hovered': ''}`}} fontSize={"inherit"}>{TitleIcon}</Icon>
+          <div className={classes.title}>
+            <Typography>
+              <span>{title}</span>
+            </Typography>
+          </div>
+          <div className={classes.contentIconContainer}>
+            <Icon classes={{root: `${classes.contentIcon} ${this.state.hovered ? 'hovered': ''}`}} fontSize={"inherit"}>
+              {ContentIcon}
+            </Icon>
+          </div>
+          <Typography className={classes.content}>{content}</Typography>
+        </CardContent>
+      </Card>);
+  }
+}
 
 export default withRouter(withStyles(styles)(NavCard));
