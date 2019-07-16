@@ -2,21 +2,15 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
-  //Drawer,
   CssBaseline,
   AppBar,
   Toolbar,
- // List,
- // Divider,
   IconButton,
- // ListItem,
   withStyles,
   Theme,
 } from "@material-ui/core";
 
 import MenuIcon from '@material-ui/icons/Menu';
-//import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-//import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import {bindActionCreators} from "redux";
@@ -181,7 +175,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     }
 
     return (
-        <div className={classes.root}>
+        <React.Fragment>
           <CssBaseline />
           <AppBar
             className={classes.appBar}
@@ -209,48 +203,9 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             width={240}
             isResponsiveMenuOpen={open}
             onResponsiveMenuClose={this.handleDrawerClose}
+            authenticated
           />
-          {/*<Drawer
-            className={classes.drawer}
-            variant="persistent"
-            anchor="left"
-            open={open}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            <div className={classes.drawerHeader}>
-              <IconButton onClick={this.handleDrawerClose}>
-                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-              </IconButton>
-            </div>
-            <Divider />
-            <List>
-                {this.appLinks.map((link, index) => (
-                    <>
-                      {link.type == 'app' &&
-                          <ListItem button key={`link-item${index}`} onClick={this.handleDrawerClose} className="app-link">
-                            <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
-                          </ListItem>
-                      }
-                      {link.type == 'global' &&
-                      <ListItem button key={`link-item${index}`} onClick={this.handleDrawerClose} className="app-link">
-                        <a href={link.url}>{link.icon} <div>{link.title}</div></a>
-                      </ListItem>
-                      }
-                    </>
-                ))}
-            </List>
-            <Divider />
-            <List>
-              {this.userAppLinks.map((link, index) => (
-                <ListItem button key={`link-item-user${index}`} onClick={this.handleDrawerClose} className="app-link">
-                  <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>*/}
-        </div>
+        </React.Fragment>
     );
   }
 }

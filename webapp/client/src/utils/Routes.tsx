@@ -57,7 +57,7 @@ const Routes: SFC<{}> = () => {
       <Router history={history}>
         <div style={{display: "flex"}}>
           <App auth={auth}/>
-          <main role="main">
+          <main role="main" style={{width: "100%", marginTop: 64, padding: 20}}>
             <Route path="/" exact={true} render={props => <Home auth={auth} {...props} />} />
             <Route
               path="/home"

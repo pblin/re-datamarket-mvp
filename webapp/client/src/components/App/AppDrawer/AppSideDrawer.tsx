@@ -1,5 +1,4 @@
 import * as React from "react";
-//import AppSideDrawerClasses from './AppSideDrawerStyles';
 import {
   Divider,
   Drawer,
@@ -31,6 +30,7 @@ interface AppProps {
   onResponsiveMenuClose: any;
   classes?: any;
   history?: any;
+  authenticated: boolean;
 }
 
 class AppSideDrawer extends React.Component <AppProps> {
@@ -47,7 +47,11 @@ class AppSideDrawer extends React.Component <AppProps> {
 
   constructor(props) {
     super(props);
-    //this.classes = AppSideDrawerClasses();
+
+    props.history.listen(() => {
+      console.log("ROUTE CHANGED");
+      this.forceUpdate();
+    })
   }
 
   renderLinks(props) {
@@ -124,7 +128,7 @@ class AppSideDrawer extends React.Component <AppProps> {
         overflow: "hidden"
       },
       drawer: {
-        width: 0,
+        width: this.props.width,
         flexShrink: 0,
       },
       logo: {
@@ -167,63 +171,65 @@ class AppSideDrawer extends React.Component <AppProps> {
     });
 
     const content = (props) => {
-      console.log(props);
-      console.log(this.props);
-      return (
-        <React.Fragment>
-          <Hidden xsDown>
-            <Drawer
-              open={true}
-              variant="permanent"
-              anchor="left"
-              classes={{
-                paper: props.classes.drawerPaper || ''
-              }}
-              className={props.classes.drawer || ''}
-            >
-              <div className={props.classes.toolbar || ''}>
-                <Link to={"/home"}><img src={Logo} className={props.classes.logo}/></Link>
-              </div>
-              <Divider/>
+      if(this.props.authenticated) {
+        return (
+          <React.Fragment>
+            <Hidden xsDown>
+              <Drawer
+                open={true}
+                variant="permanent"
+                anchor="left"
+                classes={{
+                  paper: props.classes.drawerPaper || ''
+                }}
+                className={props.classes.drawer || ''}
+              >
+                <div className={props.classes.toolbar || ''}>
+                  <Link to={"/home"}><img src={Logo} className={props.classes.logo}/></Link>
+                </div>
+                <Divider/>
 
-              <div className={props.classes.drawerContainer}>
-                <div className={props.classes.logoContainer}>
-                  {this.renderLogos(props)}
+                <div className={props.classes.drawerContainer}>
+                  <div className={props.classes.logoContainer}>
+                    {this.renderLogos(props)}
+                  </div>
+                  <div className={props.classes.linkContainer}>
+                    {this.renderLinks(props)}
+                  </div>
                 </div>
-                <div className={props.classes.linkContainer}>
-                  {this.renderLinks(props)}
+              </Drawer>
+            </Hidden>
+            <Hidden smUp>
+              <Drawer
+                open={this.props.isResponsiveMenuOpen}
+                variant="temporary"
+                anchor="left"
+                classes={{
+                  paper: props.classes.drawerPaper || ''
+                }}
+                className={props.classes.drawer || ''}
+              >
+                <div>
+                  <IconButton onClick={this.props.onResponsiveMenuClose}>
+                    <ChevronLeftIcon/>
+                  </IconButton>
                 </div>
-              </div>
-            </Drawer>
-          </Hidden>
-          <Hidden smUp>
-            <Drawer
-              open={this.props.isResponsiveMenuOpen}
-              variant="temporary"
-              anchor="left"
-              classes={{
-                paper: props.classes.drawerPaper || ''
-              }}
-              className={props.classes.drawer || ''}
-            >
-              <div>
-                <IconButton onClick={this.props.onResponsiveMenuClose}>
-                  <ChevronLeftIcon/>
-                </IconButton>
-              </div>
-              <Divider/>
-              <div className={props.classes.drawerContainer}>
-                <div className={props.classes.logoContainer}>
-                  {this.renderLogos(props)}
+                <Divider/>
+                <div className={props.classes.drawerContainer}>
+                  <div className={props.classes.logoContainer}>
+                    {this.renderLogos(props)}
+                  </div>
+                  <div className={props.classes.linkContainer}>
+                    {this.renderLinks(props)}
+                  </div>
                 </div>
-                <div className={props.classes.linkContainer}>
-                  {this.renderLinks(props)}
-                </div>
-              </div>
-            </Drawer>
-          </Hidden>
-        </React.Fragment>
-      )
+              </Drawer>
+            </Hidden>
+          </React.Fragment>
+        )
+      } else {
+         return;
+      }
    };
 
     const StyledComponent = withStyles(styles)(content);

@@ -8,6 +8,7 @@ import history from "../utils/history";
 import {connect} from "react-redux";
 import {isProfileSet, profileSelector} from "../store/profile/profileSelector";
 import {getProfile} from "../store/profile/profileActions";
+import {Divider, Typography} from "@material-ui/core";
 
 interface HomeProps {
   auth: Auth0Authentication;
@@ -44,19 +45,25 @@ class Home extends React.Component<HomeProps> {
   renderJumboPaper() {
     if(!this.props.isProfileSet && this.props.auth.authenticated) {
       return (
-        <JumboPaper
-          title={"Welcome to ReBloc,"}
-          content={"Please create a profile to continue."}
-          handleClick={this.navToProfile}
-          buttonText={"Create Profile"}/>
+        <React.Fragment>
+          <JumboPaper
+            title={"Welcome to ReBloc,"}
+            content={"Please create a profile to continue."}
+            handleClick={this.navToProfile}
+            buttonText={"Create Profile"}/>
+        </React.Fragment>
       )
     } else if(this.props.isProfileSet && this.props.auth.authenticated) {
        return (
-         <JumboPaper
-           title={`Welcome back to ReBloc, ${this.props.profile['first_name']} ${this.props.profile['last_name']}`}
-           content={`Please visit the marketplace.`}
-           handleClick={this.navToMarketplace}
-           buttonText={"Go To The Marketplace"}/>
+         <React.Fragment>
+           <Typography variant={"h4"}>{`Welcome back to Rebloc, ${this.props.profile['first_name']} ${this.props.profile['last_name']}`}</Typography>
+           <Divider/>
+           <JumboPaper
+             title={`Welcome back to ReBloc, ${this.props.profile['first_name']} ${this.props.profile['last_name']}`}
+             content={`Please visit the marketplace.`}
+             handleClick={this.navToMarketplace}
+             buttonText={"Go To The Marketplace"}/>
+         </React.Fragment>
        )
     }
 
