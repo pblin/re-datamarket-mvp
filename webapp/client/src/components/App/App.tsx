@@ -2,21 +2,21 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
-  Drawer,
+  //Drawer,
   CssBaseline,
   AppBar,
   Toolbar,
-  List,
-  Divider,
+ // List,
+ // Divider,
   IconButton,
-  ListItem,
+ // ListItem,
   withStyles,
   Theme,
 } from "@material-ui/core";
 
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+//import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+//import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import {bindActionCreators} from "redux";
@@ -37,6 +37,7 @@ import {updateProfileMenuOpen} from "../../store/app/appActions";
 import {appSelector} from "../../store/app/appSelector";
 import {getProfile} from "../../store/profile/profileActions";
 import {profileSelector} from "../../store/profile/profileSelector";
+import AppSideDrawer from "./AppDrawer/AppSideDrawer";
 
 const drawerWidth = 240;
 
@@ -126,6 +127,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   handleDrawerClose = () => {
+    console.log('Closing the drawer');
     this.setState({ open: false });
   };
 
@@ -158,7 +160,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     const { open } = this.state;
     const { authenticated } = this.props.auth;
     let profile = localStorage.getItem('profile');
@@ -203,7 +205,12 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
               onClickAway={this.handleProfileMenuClickAway}
               profile={profileObj}/>
           </AppBar>
-          <Drawer
+          <AppSideDrawer
+            width={240}
+            isResponsiveMenuOpen={open}
+            onResponsiveMenuClose={this.handleDrawerClose}
+          />
+          {/*<Drawer
             className={classes.drawer}
             variant="persistent"
             anchor="left"
@@ -242,7 +249,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
                 </ListItem>
               ))}
             </List>
-          </Drawer>
+          </Drawer>*/}
         </div>
     );
   }

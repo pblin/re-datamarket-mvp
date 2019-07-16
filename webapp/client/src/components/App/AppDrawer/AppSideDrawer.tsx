@@ -3,6 +3,8 @@ import * as React from "react";
 import {
   Divider,
   Drawer,
+  Hidden,
+  IconButton,
   withStyles,
   Theme,
   List,
@@ -21,9 +23,12 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import HomeIcon from "@material-ui/icons/Home";
 import PersonIcon from "@material-ui/icons/Person";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 interface AppProps {
   width: number;
+  isResponsiveMenuOpen: boolean;
+  onResponsiveMenuClose: any;
   classes?: any;
   history?: any;
 }
@@ -161,31 +166,65 @@ class AppSideDrawer extends React.Component <AppProps> {
       }
     });
 
-    const content = (props) => (
-      <Drawer
-        open={true}
-        variant="permanent"
-        anchor="left"
-        classes={{
-          paper: props.classes.drawerPaper || ''
-        }}
-        className={props.classes.drawer || ''}
-      >
-        <div className={props.classes.toolbar || ''}>
-          <Link to={"/home"}><img src={Logo} className={props.classes.logo}/></Link>
-        </div>
-        <Divider/>
+    const content = (props) => {
+      console.log(props);
+      console.log(this.props);
+      return (
+        <React.Fragment>
+          <Hidden xsDown>
+            <Drawer
+              open={true}
+              variant="permanent"
+              anchor="left"
+              classes={{
+                paper: props.classes.drawerPaper || ''
+              }}
+              className={props.classes.drawer || ''}
+            >
+              <div className={props.classes.toolbar || ''}>
+                <Link to={"/home"}><img src={Logo} className={props.classes.logo}/></Link>
+              </div>
+              <Divider/>
 
-        <div className={props.classes.drawerContainer}>
-          <div className={props.classes.logoContainer}>
-            {this.renderLogos(props)}
-          </div>
-          <div className={props.classes.linkContainer}>
-            {this.renderLinks(props)}
-          </div>
-        </div>
-      </Drawer>
-   );
+              <div className={props.classes.drawerContainer}>
+                <div className={props.classes.logoContainer}>
+                  {this.renderLogos(props)}
+                </div>
+                <div className={props.classes.linkContainer}>
+                  {this.renderLinks(props)}
+                </div>
+              </div>
+            </Drawer>
+          </Hidden>
+          <Hidden smUp>
+            <Drawer
+              open={this.props.isResponsiveMenuOpen}
+              variant="temporary"
+              anchor="left"
+              classes={{
+                paper: props.classes.drawerPaper || ''
+              }}
+              className={props.classes.drawer || ''}
+            >
+              <div>
+                <IconButton onClick={this.props.onResponsiveMenuClose}>
+                  <ChevronLeftIcon/>
+                </IconButton>
+              </div>
+              <Divider/>
+              <div className={props.classes.drawerContainer}>
+                <div className={props.classes.logoContainer}>
+                  {this.renderLogos(props)}
+                </div>
+                <div className={props.classes.linkContainer}>
+                  {this.renderLinks(props)}
+                </div>
+              </div>
+            </Drawer>
+          </Hidden>
+        </React.Fragment>
+      )
+   };
 
     const StyledComponent = withStyles(styles)(content);
 
