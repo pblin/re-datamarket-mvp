@@ -90,6 +90,10 @@
   margin-top: 30px;
 }
 
+.content-container {
+  padding: $content-padding;
+}
+
 /* App Wide CSS CLASSES */
 .grow {
   flex-grow: 1;

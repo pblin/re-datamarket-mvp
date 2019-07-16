@@ -8,7 +8,16 @@ import history from "../utils/history";
 import {connect} from "react-redux";
 import {isProfileSet, profileSelector} from "../store/profile/profileSelector";
 import {getProfile} from "../store/profile/profileActions";
-import {Divider, Typography} from "@material-ui/core";
+import {Divider, Grid, Hidden, Typography} from "@material-ui/core";
+import NavCard from "../components/Common/Cards/NavCard";
+
+//Icons
+import LockIcon from "@material-ui/icons/Lock";
+import StoreIcon from "@material-ui/icons/Store";
+import PageViewIcon from "@material-ui/icons/PageviewOutlined";
+import AddIcon from "@material-ui/icons/AddCircleOutline";
+import StorageIcon from "@material-ui/icons/Storage";
+import ExploreIcon from "@material-ui/icons/ExploreOutlined";
 
 interface HomeProps {
   auth: Auth0Authentication;
@@ -16,6 +25,7 @@ interface HomeProps {
   profile: any;
   isProfileSet: boolean;
 }
+
 class Home extends React.Component<HomeProps> {
   @autobind
   login() {
@@ -42,6 +52,33 @@ class Home extends React.Component<HomeProps> {
     history.push('/marketplace');
   }
 
+  renderNavCards() {
+    return (
+      <React.Fragment>
+        <NavCard
+          title={"SECURELY CONNECT YOUR DATA"}
+          TitleIcon={<LockIcon/>}
+          content={'Rebloc will index your existing data without requiring it to be uploaded'}
+          ContentIcon={<AddIcon/>}
+          navTo={'/connections'}
+        />
+        <NavCard
+          title={"BROWSE THE MARKETPLACE"}
+          TitleIcon={<StoreIcon/>}
+          content={'Rebloc provides a marketplace to browse and sell datasets'}
+          ContentIcon={<PageViewIcon/>}
+          navTo={'/marketplace'}
+        />
+        <NavCard
+          title={"EXPLORE YOUR DATA"}
+          TitleIcon={<StorageIcon/>}
+          content={'Combine your own data with other schemas, and explore the possibilities'}
+          ContentIcon={<ExploreIcon/>}
+          navTo={'/dataexplorer'}
+        />
+      </React.Fragment>
+    )
+  }
   renderJumboPaper() {
     if(!this.props.isProfileSet && this.props.auth.authenticated) {
       return (
@@ -58,11 +95,16 @@ class Home extends React.Component<HomeProps> {
          <React.Fragment>
            <Typography variant={"h4"}>{`Welcome back to Rebloc, ${this.props.profile['first_name']} ${this.props.profile['last_name']}`}</Typography>
            <Divider/>
-           <JumboPaper
-             title={`Welcome back to ReBloc, ${this.props.profile['first_name']} ${this.props.profile['last_name']}`}
-             content={`Please visit the marketplace.`}
-             handleClick={this.navToMarketplace}
-             buttonText={"Go To The Marketplace"}/>
+           <Hidden xsDown>
+             <Grid container spacing={2} justify={"flex-start"}>
+               {this.renderNavCards()}
+             </Grid>
+           </Hidden>
+           <Hidden smUp>
+             <Grid container spacing={2} justify={"center"}>
+               {this.renderNavCards()}
+             </Grid>
+           </Hidden>
          </React.Fragment>
        )
     }
@@ -72,7 +114,7 @@ class Home extends React.Component<HomeProps> {
   render() {
     const { authenticated } = this.props.auth;
     return (
-      <div>
+      <div className={`${authenticated ? 'content-container': ''}`}>
         {!authenticated && (
         <section className="top">
 

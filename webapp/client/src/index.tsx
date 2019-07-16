@@ -10,31 +10,32 @@ import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import {SnackbarProvider} from "notistack";
 import {AppEventEmitter} from "./utils/AppEventEmitter";
 import registerServiceWorker, {unregister} from "./registerServiceWorker";
+import AppVars from "./styles/appVars";
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: "Roboto",
+    fontFamily: AppVars.mainFont,
   },
   overrides: {
     MuiStepIcon: {
       active: {
-        color: '#6996B6 !important'
+        color: `${AppVars.secondaryMain} !important'`
       }
     }
   },
   palette: {
     primary: {
-      main: '#47494D',
-      light: '#6B6D70',
-      dark: '#313335',
-      contrastText: '#FFF'
+      main: AppVars.primaryMain,
+      light: AppVars.primaryLight,
+      dark: AppVars.primaryDark,
+      contrastText: AppVars.mainFont
     },
     secondary: {
-      main: '#6996B6',
-      light: '#87ABC4',
-      dark: '#49697F',
-      contrastText: '#FFF'
-    },
+      main: AppVars.secondaryMain,
+      light: AppVars.secondaryLight,
+      dark: AppVars.secondaryDark,
+      contrastText: AppVars.secondaryText
+    }
   }
 });
 

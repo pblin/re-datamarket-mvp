@@ -203,7 +203,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
             width={240}
             isResponsiveMenuOpen={open}
             onResponsiveMenuClose={this.handleDrawerClose}
-            authenticated
+            authenticated={authenticated}
           />
         </React.Fragment>
     );

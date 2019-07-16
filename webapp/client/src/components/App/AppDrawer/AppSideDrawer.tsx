@@ -115,8 +115,6 @@ class AppSideDrawer extends React.Component <AppProps> {
   }
 
   render() {
-    console.log('current history');
-    console.log(this.props.history);
     const styles = (theme: Theme) => ({
       toolbar: {
         ...theme.mixins.toolbar,
@@ -228,7 +226,7 @@ class AppSideDrawer extends React.Component <AppProps> {
           </React.Fragment>
         )
       } else {
-         return;
+         return <React.Fragment />;
       }
    };
 
