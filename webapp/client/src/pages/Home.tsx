@@ -12,10 +12,10 @@ import {Divider, Grid, Hidden, Typography} from "@material-ui/core";
 import NavCard from "../components/Common/Cards/NavCard";
 
 //Icons
-import LockIcon from "@material-ui/icons/Lock";
+//import LockIcon from "@material-ui/icons/Lock";
 import StoreIcon from "@material-ui/icons/Store";
 import PageViewIcon from "@material-ui/icons/PageviewOutlined";
-import AddIcon from "@material-ui/icons/AddCircleOutline";
+//import AddIcon from "@material-ui/icons/AddCircleOutline";
 import StorageIcon from "@material-ui/icons/Storage";
 import ExploreIcon from "@material-ui/icons/ExploreOutlined";
 
@@ -55,13 +55,13 @@ class Home extends React.Component<HomeProps> {
   renderNavCards() {
     return (
       <React.Fragment>
-        <NavCard
+        {/*<NavCard
           title={"SECURELY CONNECT YOUR DATA"}
           TitleIcon={<LockIcon/>}
           content={'Rebloc will index your existing data without requiring it to be uploaded'}
           ContentIcon={<AddIcon/>}
           navTo={'/connections'}
-        />
+        />*/}
         <NavCard
           title={"BROWSE THE MARKETPLACE"}
           TitleIcon={<StoreIcon/>}

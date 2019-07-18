@@ -28,7 +28,7 @@ const theme = createMuiTheme({
       main: AppVars.primaryMain,
       light: AppVars.primaryLight,
       dark: AppVars.primaryDark,
-      contrastText: AppVars.mainFont
+      contrastText: AppVars.primaryText
     },
     secondary: {
       main: AppVars.secondaryMain,

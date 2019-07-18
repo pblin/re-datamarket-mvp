@@ -36,12 +36,8 @@ const SchemaList = ({schemas, history, onFilter = () => {}}) => {
             <ExpansionPanelSummary className={"schema-list"} onClick={() => handleClick(schema)}>
               <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
                 <Grid item xs={10} sm={7} >
-                  <div className={"fake-image"}>
-                    <p>70 x 70</p>
-                  </div>
                   <Typography className={"header"} variant={"subtitle1"}>{schema.name}</Typography>
                   <Typography className={"sub-header"} variant={"subtitle2"}>{schema.description}</Typography>
-                  <Typography className={"description"}><b>ProfileName</b> <span>Date goes here</span></Typography>
                 </Grid>
                 <Hidden xsDown>
                   <Grid item xs={1}>

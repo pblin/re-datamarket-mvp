@@ -74,6 +74,14 @@
    margin-top: 30px;
  }
 
+.section-wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+}
+
 .app-section-wrapper-lg {
   width: 80%;
   display: flex;
