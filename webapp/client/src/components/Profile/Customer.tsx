@@ -76,7 +76,7 @@ class Customer extends React.Component<Props> {
     const { authenticated } = this.props.auth;
     if ( authenticated) {
       return (
-          <React.Fragment>
+          <div className={"content-container"}>
             <Typography variant={"h4"}>Manage Your Profile</Typography>
             <Divider/>
             <Grid container={true} justify={'center'}>
@@ -92,7 +92,7 @@ class Customer extends React.Component<Props> {
                 </Grid>
               </div>
             </Grid>
-          </React.Fragment>
+          </div>
       );
     } else {
         // @ts-ignore

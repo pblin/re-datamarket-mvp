@@ -79,6 +79,8 @@ class Home extends React.Component<HomeProps> {
       </React.Fragment>
     )
   }
+
+  //TODO: Profile Not Set
   renderJumboPaper() {
     if(!this.props.isProfileSet && this.props.auth.authenticated) {
       return (

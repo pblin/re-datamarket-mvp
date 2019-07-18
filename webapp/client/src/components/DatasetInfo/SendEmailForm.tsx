@@ -80,7 +80,7 @@ class SendEmailForm extends Component<SendEmailProps> {
   render() {
     return (
       <form onSubmit={this.props.onSubmit}>
-        <Grid spacing={8} container={true} >
+        <Grid spacing={2} container={true} >
           <Field
             label="Email Subject"
             component={renderTextField}

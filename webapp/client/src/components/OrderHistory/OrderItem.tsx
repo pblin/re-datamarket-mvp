@@ -18,20 +18,13 @@ const convertNumToFixedNum = (num) => {
 };
 
 const OrderItem = ({order, history, filter, onSendEmail}) => {
-  console.log('OrderItem');
-  console.log(order);
   return(
     <Grid container className={"order-item-container"}>
       <Grid item xs={8}>
-        <Grid container spacing={8}>
+        <Grid container spacing={2}>
           <Grid xs={12} item className={"title-container"}>
             {filter === 'bought' && <Typography variant={"h6"}>Purchased {order['order_timestamp']} </Typography>}
             {filter === 'sold' && <Typography variant={"h6"}>Sold {order['order_timestamp']} </Typography>}
-          </Grid>
-          <Grid xs={2} item>
-            <div className="image-container">
-              <Typography className={""}> 10 * 10 </Typography>
-            </div>
           </Grid>
           <Grid xs={10} item>
             <Typography
@@ -41,7 +34,6 @@ const OrderItem = ({order, history, filter, onSendEmail}) => {
               {order['dataset_name']}
             </Typography>
             <Typography>{order['dataset_description']}</Typography>
-            <Typography>Sold By: [PROFILE NAME] </Typography>
             <Typography className={"price-text"}>{convertNumToFixedNum(order.trade)}</Typography>
           </Grid>
         </Grid>
