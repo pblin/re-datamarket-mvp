@@ -166,7 +166,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
           hasPublish={false}
         />
         <Grid container={true} justify={'center'}>
-          <div className={"section-wrapper"}>
+          <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-start"}>
               {this.renderFilterButton()}
               {this.renderAddButton()}

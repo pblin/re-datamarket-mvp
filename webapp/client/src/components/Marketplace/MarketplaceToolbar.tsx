@@ -1,9 +1,19 @@
 import * as React from "react";
-import {Button, FormControl, Hidden, MenuItem, Select, Toolbar} from "@material-ui/core";
+import {Button, FormControl, Hidden, MenuItem, Select, Theme, Toolbar, withStyles} from "@material-ui/core";
+
+const styles = (theme: Theme) => ({
+  highlight: {
+    color: theme.palette.primary.dark
+  },
+  option: {
+    color: theme.palette.primary.light
+  }
+});
 
 const MarketplaceToolbar = (
   {
     onSchemaFilterChange,
+    classes,
     schemaFilter,
     toolbarOptions,
     hasPublish,
@@ -28,8 +38,8 @@ const MarketplaceToolbar = (
         <div className={"filter-container"}>
           {toolbarOptions.map((option, index) => (
             <Button onClick={() => handleButtonClick(option.value)} key={`toolbarOption${index}`}>
-              {schemaFilter == option.value && <strong>{option.label}</strong>}
-              {schemaFilter != option.value && <span>{option.label}</span>}
+              {schemaFilter == option.value && <strong className={classes.highlight}>{option.label}</strong>}
+              {schemaFilter != option.value && <span className={classes.option}>{option.label}</span>}
             </Button>
           ))}
         </div>
@@ -59,4 +69,4 @@ const MarketplaceToolbar = (
   );
 };
 
-export default MarketplaceToolbar;
+export default withStyles(styles)(MarketplaceToolbar);

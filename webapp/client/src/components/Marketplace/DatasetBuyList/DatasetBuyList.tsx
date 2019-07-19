@@ -41,7 +41,9 @@ const styles = {
   dataRow: {
     border: 'none',
     '& td': {
-      border: 'none'
+      borderTop: 'none',
+      borderLeft: 'none',
+      borderRight: 'none'
     }
   },
   card: {
