@@ -17,17 +17,10 @@ CREATE OR REPLACE FUNCTION marketplace.search_dataset(
     ROWS 1000
 AS $BODY$
 
-	select *
-	from marketplace.data_source_detail		  
-	where ( terms = '' OR 
-		    ((select to_tsvector(name) || ' ' || 
-			         to_tsvector(coalesce(description,' '))  || ' ' || 
-					 to_tsvector(state_province) || ' ' || 
-			     	 array_to_tsvector(topic) || ' ' || 
-					 array_to_tsvector(search_terms) || ' ' ||
-					 array_to_tsvector(city) ) @@ to_tsquery(terms)) 
-	OR terms %> (state_province || ' ' || country) 
-	OR terms % ANY (city) )
+	select * from marketplace.data_source_detail 
+	where ( terms = '' OR terms % ANY (search_terms) 
+			OR terms %> ( name || ' ' || description ) OR terms %> (state_province || ' ' || country) 
+			OR terms % ANY (city) )
 	AND ( topics = '' OR topics % ANY (topic) )
 	AND ( cities = '' OR cities % ANY (city) ) 
 	AND ( region = '' OR region <% state_province ) 
@@ -52,7 +45,7 @@ CREATE OR REPLACE FUNCTION marketplace.search_dataset_schema(
 	topics text,
 	cities text,
 	region text,
-	ctn text)
+	cn text)
     RETURNS SETOF marketplace.field_in_schema 
     LANGUAGE 'sql'
 
@@ -61,25 +54,12 @@ CREATE OR REPLACE FUNCTION marketplace.search_dataset_schema(
     ROWS 1000
 AS $BODY$
 
-	select dataset_id,
-		   dataset_name,
-		   country,
-		   state_province,
-		   city,
-		   topic,
-		   dataset_owner_id,
-		   field_name,
-		   field_type,
-		   field_label,
-		   field_description
-	from marketplace.field_in_schema, 
-		 to_tsvector(coalesce(field_label,' ')) t1, 
-		 to_tsvector(coalesce(field_description,' ')) t2
-		where (t1 @@ to_tsquery(fields) OR t2 @@ to_tsquery(fields)) 
+	select * from marketplace.field_in_schema
+		where fields %> field_label 
 			and (topics = '' or topics % any (topic))
 			and (cities = '' or cities % any (city))
 			and (region = '' or region %> (state_province))
-			and (ctn = '' or ctn %> (country))
+			and (cn = '' or cn %> (country))
 			AND (purchased_by = 0 
 				or dataset_id in (select dataset_id from marketplace.order_book where buyer_id = purchased_by))
 											  
