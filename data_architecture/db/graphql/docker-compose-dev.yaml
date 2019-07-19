@@ -1,21 +1,22 @@
 version: '3.6'
 services:
-  postgres:
+  postgres-dev:
     image: postgres
     restart: always
     volumes:
-    - db_data:/var/lib/postgresql/data
-  graphql-engine:
+    - db_data:/home/berlion/postgresql/devdata
+  graphql-engine-dev:
     image: hasura/graphql-engine:v1.0.0-beta.2
     ports:
     - "8089:8080"
     depends_on:
-    - "postgres"
+    - "postgres-dev"
     restart: always
     environment:
       # HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+      HASURA_GRAPHQL_DATABASE_URL: postgres://reblocadmin%40rebloc-dev-db:ReblocWe1c0me@rebloc-dev-db.postgres.database.azure.com:5432/rebloc_db
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## uncomment next line to set an access key
-      HASURA_GRAPHQL_ACCESS_KEY: 
+      HASURA_GRAPHQL_ACCESS_KEY: 77f44b9024fd19a6674a62d98939f4e7f1b77f64eac4c7559414c46bdaec494c
 volumes:
-  db_data:
+   db_data:
