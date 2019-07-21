@@ -19,7 +19,7 @@ import FilterIcon from "@material-ui/icons/FilterList";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
-import FilterMenu from "../Common/Filter/FilterMenu";
+import FilterMenu from "../Common/Filter/FIlterMenuV2";
 import FilterBreadCrumbs from "../Common/Filter/FilterBreadCrumbs";
 import DatasetList from "./DatasetList";
 import {isEmpty} from "../../utils/ObjectHelper";
@@ -156,8 +156,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
           variant={"persistent"}
           className={"filter-drawer"}
         >
-          <FilterMenu onApply={this.onFilter}
-                      onClose={() => this.setState({filterDrawerOpen: false})}/>
+          <FilterMenu />
         </Drawer>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}
