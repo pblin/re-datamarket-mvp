@@ -4,19 +4,43 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import {
   Grid,
-  Hidden,
+  Button,
+  Divider,
   ExpansionPanel,
+  ExpansionPanelActions,
+  ExpansionPanelDetails,
   ExpansionPanelSummary,
-  Tooltip,
-  Typography
+  Typography, Theme, withStyles
 } from "@material-ui/core";
-import AlbumIcon from "@material-ui/icons/Album";
-import LocationIcon from "@material-ui/icons/AddLocation";
-import DollarIcon from "@material-ui/icons/AttachMoney";
-import AttachmentIcon from "@material-ui/icons/Attachment";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import JumboPaper from "../Common/jumboPaper";
+import Moment from 'moment';
 
-const SchemaList = ({schemas, history, onFilter = () => {}}) => {
+const styles = (theme: Theme) => ({
+  headerPanel: {
+    border: 'none',
+    boxShadow: 'none'
+  },
+  summaryPanel: {
+    '&:hover': {
+      cursor: 'none'
+    },
+    '& svg': {
+      display: 'none'
+    }
+  },
+  title: {
+    fontWeight: 'bold' as 'bold'
+  },
+  btn: {
+    marginTop: '0px'
+  },
+  fake: {
+    width: '24px'
+  }
+});
+
+const SchemaList = ({schemas, history, onFilter = () => {}, classes}) => {
   const handleClick = (schema) => {
     history.push(`/dataset/${schema.id}`);
   };
@@ -31,16 +55,25 @@ const SchemaList = ({schemas, history, onFilter = () => {}}) => {
       />}
       {schemas.length > 0 &&
         <React.Fragment>
+          <ExpansionPanel expanded={false} className={classes.headerPanel}>
+            <ExpansionPanelSummary className={classes.summary} expandIcon={<span className={classes.fake}/>}>
+              <Grid container>
+                <Grid item xs={7}>Dataset Name</Grid>
+                <Grid item xs={2}>Tags</Grid>
+                <Grid item xs={3}>Date Modified</Grid>
+              </Grid>
+            </ExpansionPanelSummary>
+          </ExpansionPanel>
         {schemas.map((schema, index) => (
-          <ExpansionPanel key={`schema${index}`} expanded={false} className={"schema-panel"}>
-            <ExpansionPanelSummary className={"schema-list"} onClick={() => handleClick(schema)}>
+          <ExpansionPanel key={`schema${index}`} className={"schema-panel"}>
+            <ExpansionPanelSummary className={"schema-list"} expandIcon={<ExpandMoreIcon/>}>
               <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
-                <Grid item xs={10} sm={7} >
+                <Grid item xs={7}>
                   <Typography className={"header"} variant={"subtitle1"}>{schema.name}</Typography>
-                  <Typography className={"sub-header"} variant={"subtitle2"}>{schema.description}</Typography>
+                  {/*<Typography className={"sub-header"} variant={"subtitle2"}>{schema.description}</Typography>*/}
                 </Grid>
-                <Hidden xsDown>
-                  <Grid item xs={1}>
+                {/*<Hidden xsDown>*/}
+                  <Grid item xs={2}>
                     {schema['search_terms'].map((tag) => (
                       <Typography
                         key={`tag-${tag}-${index * Math.random()}`}
@@ -49,35 +82,49 @@ const SchemaList = ({schemas, history, onFilter = () => {}}) => {
                       </Typography>
                     ))}
                   </Grid>
-                  <Grid item xs={4}>
-                    <Grid container>
-                      <Grid item xs={6}>
-                        <Tooltip title={"Number of records"} placement={"top-start"}>
-                          <Typography variant={"body2"} className={"descriptor"}><AlbumIcon/> {schema["num_of_records"]} </Typography>
-                        </Tooltip>
-                        <Tooltip title={"Country"} placement={"top-start"}>
-                          <Typography variant={"body2"} className={"descriptor"}><LocationIcon/> {schema["country"]} </Typography>
-                        </Tooltip>
-                        <Tooltip title={"State/Province"} placement={"top-start"}>
-                          <Typography variant={"body2"} className={"descriptor"}><LocationIcon/> {schema["state_province"]} </Typography>
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Tooltip title={"File Type"} placement={"top-start"}>
-                          <Typography variant={"body2"} className={"descriptor"}><AttachmentIcon/> JSON </Typography>
-                        </Tooltip>
-                        <Tooltip title={"High Asking Price"} placement={"top-start"}>
-                          <Typography variant={"body2"} className={"descriptor money"}><DollarIcon/> {schema["price_high"]} </Typography>
-                        </Tooltip>
-                        <Tooltip title={"Low Asking Price"} placement={"top-start"}>
-                          <Typography variant={"body2"} className={"descriptor money"}><DollarIcon/> {schema["price_low"]} </Typography>
-                        </Tooltip>
-                      </Grid>
-                    </Grid>
+                  <Grid item xs={3}>
+                      <Typography variant={"body2"}> {Moment(schema['date_modified']).format('MMMM Do YYYY')}</Typography>
                   </Grid>
-                </Hidden>
+                {/*</Hidden>*/}
               </Grid>
             </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Grid container spacing={1}>
+                <Grid item xs={3}><Typography className={classes.title}>Description</Typography></Grid>
+                <Grid item xs={9}><Typography>{schema.description}</Typography></Grid>
+
+                <Grid item xs={3}><Typography className={classes.title}>Number Of Records</Typography></Grid>
+                <Grid item xs={9}><Typography>{schema['num_of_records']}</Typography></Grid>
+
+                <Grid item xs={3}><Typography className={classes.title}>Country</Typography></Grid>
+                <Grid item xs={9}><Typography>{schema['country']}</Typography></Grid>
+
+                <Grid item xs={3}><Typography className={classes.title}>State/Province</Typography></Grid>
+                <Grid item xs={9}><Typography>{schema['state_province']}</Typography></Grid>
+
+                <Grid item xs={3}><Typography className={classes.title}>City</Typography></Grid>
+                <Grid item xs={9}><Typography>{schema['city']}</Typography></Grid>
+
+                <Grid item xs={3}><Typography className={classes.title}>Date Created</Typography></Grid>
+                <Grid item xs={9}><Typography>{Moment(schema['date_created']).format('MMMM Do YYYY')}</Typography></Grid>
+
+                <Grid item xs={3}><Typography className={classes.title}>Date Modified</Typography></Grid>
+                <Grid item xs={9}><Typography>{Moment(schema['date_modified']).format('MMMM Do YYYY')}</Typography></Grid>
+              </Grid>
+            </ExpansionPanelDetails>
+            <Divider/>
+            <ExpansionPanelActions>
+              <Grid container justify={'flex-start'}>
+                <Button
+                  color={"secondary"}
+                  variant={"text"}
+                  className={classes.btn}
+                  onClick={() => handleClick(schema)}
+                >
+                  View Dataset
+                </Button>
+              </Grid>
+            </ExpansionPanelActions>
           </ExpansionPanel>
         ))}
         </React.Fragment>
@@ -86,4 +133,4 @@ const SchemaList = ({schemas, history, onFilter = () => {}}) => {
   );
 };
 
-export default SchemaList;
+export default withStyles(styles)(SchemaList);

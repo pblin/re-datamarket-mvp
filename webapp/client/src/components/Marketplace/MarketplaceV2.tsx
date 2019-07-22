@@ -3,8 +3,8 @@ import {withRouter} from "react-router";
 import './marketplace.scss';
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
-//import SchemaList from "./SchemaList";
-import DatasetBuyList from './DatasetBuyList/DatasetBuyList';
+import SchemaList from "./SchemaList";
+//import DatasetBuyList from './DatasetBuyList/DatasetBuyList';
 import {
   Grid,
   Button,
@@ -175,8 +175,9 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
             <Grid item xs={12} sm={12}>
               {
                 this.props.schemaFilter == 'purchasable' &&
-                <DatasetBuyList
-                  datasets={this.props.purchasableDatasets}
+                <SchemaList
+                  schemas={this.props.purchasableDatasets}
+                  history={this.props.history}
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
