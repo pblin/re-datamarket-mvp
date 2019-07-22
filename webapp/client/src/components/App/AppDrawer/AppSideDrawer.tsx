@@ -130,7 +130,9 @@ class AppSideDrawer extends React.Component <AppProps> {
         flexShrink: 0,
       },
       logo: {
-        height: 30
+        height: 30,
+        marginTop: '7px',
+        marginLeft: '15px'
       },
       appLinkLogoContainer: {
       },

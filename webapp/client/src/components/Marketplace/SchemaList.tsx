@@ -13,6 +13,7 @@ import {
   Typography, Theme, withStyles
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import FilterIcon from "@material-ui/icons/FilterList";
 import JumboPaper from "../Common/jumboPaper";
 import Moment from 'moment';
 
@@ -23,11 +24,9 @@ const styles = (theme: Theme) => ({
   },
   summaryPanel: {
     '&:hover': {
-      cursor: 'none'
+      cursor: 'default'
     },
-    '& svg': {
-      display: 'none'
-    }
+    cursor: 'default !important'
   },
   title: {
     fontWeight: 'bold' as 'bold'
@@ -35,8 +34,10 @@ const styles = (theme: Theme) => ({
   btn: {
     marginTop: '0px'
   },
-  fake: {
-    width: '24px'
+  filter: {
+    '&:hover': {
+      color: theme.palette.primary.dark
+    }
   }
 });
 
@@ -56,7 +57,10 @@ const SchemaList = ({schemas, history, onFilter = () => {}, classes}) => {
       {schemas.length > 0 &&
         <React.Fragment>
           <ExpansionPanel expanded={false} className={classes.headerPanel}>
-            <ExpansionPanelSummary className={classes.summary} expandIcon={<span className={classes.fake}/>}>
+            <ExpansionPanelSummary
+              className={classes.summaryPanel}
+              expandIcon={<FilterIcon onClick={onFilter} className={classes.filter}/>}
+            >
               <Grid container>
                 <Grid item xs={7}>Dataset Name</Grid>
                 <Grid item xs={2}>Tags</Grid>
@@ -70,9 +74,7 @@ const SchemaList = ({schemas, history, onFilter = () => {}, classes}) => {
               <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
                 <Grid item xs={7}>
                   <Typography className={"header"} variant={"subtitle1"}>{schema.name}</Typography>
-                  {/*<Typography className={"sub-header"} variant={"subtitle2"}>{schema.description}</Typography>*/}
                 </Grid>
-                {/*<Hidden xsDown>*/}
                   <Grid item xs={2}>
                     {schema['search_terms'].map((tag) => (
                       <Typography
@@ -85,7 +87,6 @@ const SchemaList = ({schemas, history, onFilter = () => {}, classes}) => {
                   <Grid item xs={3}>
                       <Typography variant={"body2"}> {Moment(schema['date_modified']).format('MMMM Do YYYY')}</Typography>
                   </Grid>
-                {/*</Hidden>*/}
               </Grid>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>

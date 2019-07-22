@@ -15,7 +15,6 @@ import {
   Drawer
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import FilterIcon from "@material-ui/icons/FilterList";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
@@ -111,26 +110,12 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     if(!this.props.isProfileSet) {
       return null;
     }
-    if(this.props.schemaFilter == 'purchasable' ||
-      (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
+    if((this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
       return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
         Add
         <AddIcon/>
       </Button>
     }
-    return null;
-  }
-
-  renderFilterButton() {
-    if(this.props.schemaFilter == 'purchasable') {
-      return (<Button
-        variant="contained"
-        onClick={() => this.setState({filterDrawerOpen: true})}
-        className="add-schema">
-        Advanced Search <FilterIcon/>
-      </Button>);
-    }
-
     return null;
   }
 
@@ -168,7 +153,6 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-start"}>
-              {this.renderFilterButton()}
               {this.renderAddButton()}
               <FilterBreadCrumbs/>
             </Grid>
@@ -178,6 +162,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
                 <SchemaList
                   schemas={this.props.purchasableDatasets}
                   history={this.props.history}
+                  onFilter={() => this.setState({filterDrawerOpen: true})}
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
