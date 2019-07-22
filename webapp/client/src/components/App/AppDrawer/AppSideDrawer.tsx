@@ -70,7 +70,7 @@ class AppSideDrawer extends React.Component <AppProps> {
           });
 
           return (
-            <React.Fragment>
+            <div key={`app-link${index}`}>
               {link.type == 'app' &&
               <ListItem button key={`link-item${index}`} className={pathname == link.url ? props.classes.borderLinkItem : ''}>
                 <Link to={link.url}>
@@ -85,7 +85,7 @@ class AppSideDrawer extends React.Component <AppProps> {
                 </a>
               </ListItem>
               }
-            </React.Fragment>
+            </div>
           )})}
       </List>
     )

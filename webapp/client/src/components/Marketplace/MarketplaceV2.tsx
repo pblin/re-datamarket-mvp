@@ -22,7 +22,6 @@ import JumboPaper from "../Common/jumboPaper";
 import FilterMenu from "../Common/Filter/FIlterMenuV2";
 import FilterBreadCrumbs from "../Common/Filter/FilterBreadCrumbs";
 import DatasetList from "./DatasetList";
-import {isEmpty} from "../../utils/ObjectHelper";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -135,10 +134,9 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     return null;
   }
 
-  onFilter = (filters) => {
-    this.setState({filters});
-    if(this.state.search != '' || !isEmpty(filters)) {
-      this.props.actions.searchDatasets(filters);
+  onSearchTermChange = (terms) => {
+    if(terms.length) {
+      this.props.actions.searchDatasets(terms);
     } else {
       this.props.actions.getAllDatasets();
     }
@@ -156,7 +154,10 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
           variant={"persistent"}
           className={"filter-drawer"}
         >
-          <FilterMenu />
+          <FilterMenu
+            onClose={() => this.setState({filterDrawerOpen: false})}
+            onSearchTermChange={this.onSearchTermChange}
+          />
         </Drawer>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}

@@ -11,7 +11,8 @@ export enum FILTER_ACTIONS {
   DELETE_TERM = "DELETE_TERM",
   DELETE_LOCATION = "DELETE_LOCATION",
   DELETE_TERMS = "DELETE_TERMS",
-  DELETE_TOPICS = "DELETE_TOPICS"
+  DELETE_TOPICS = "DELETE_TOPICS",
+  UPDATE_FACTSETS = "UPDATE_FACTSETS"
 };
 
 
@@ -82,6 +83,15 @@ export const deleteTerm = (term) => {
   return {
     type: FILTER_ACTIONS.DELETE_TERM,
     term
+  }
+};
+
+export const updateFactsets = (factsets) => {
+  const {geoFactsets, topicFactsets} = factsets;
+  return {
+    type: FILTER_ACTIONS.UPDATE_FACTSETS,
+    geoFactsets,
+    topicFactsets
   }
 };
 

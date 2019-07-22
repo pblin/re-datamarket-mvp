@@ -14,6 +14,8 @@ import {
   withStyles
 } from "@material-ui/core";
 
+import Moment from 'moment';
+
 //Icons
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import TablePaginationActions from "./TablePaginationActions";
@@ -78,8 +80,8 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datasets.map((dataset) => (
-                  <React.Fragment>
+                {datasets.map((dataset, index) => (
+                  <React.Fragment key={`dataset${index}`}>
                     <TableRow
                       className={classes.dataRow}
                       onClick={() => this.setState({datasetDialogOpen: !this.state.datasetDialogOpen})}
@@ -88,7 +90,7 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
                         {dataset.name}
                       </TableCell>
                       <TableCell>
-                        {dataset['date_modified']}
+                        {Moment(dataset['date_modified']).format('MMMM Do YYYY')}
                       </TableCell>
                       <TableCell>
                         {dataset['price_high']}

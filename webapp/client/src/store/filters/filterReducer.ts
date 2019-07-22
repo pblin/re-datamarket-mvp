@@ -9,6 +9,10 @@ interface FiltersState {
   selectedState: any;
   selectedTopics: any;
   terms: any[];
+
+  //Factsets
+  geoFactsets: any;
+  topicFactsets: any[];
 }
 
 const defaultState: FiltersState = {
@@ -19,7 +23,11 @@ const defaultState: FiltersState = {
   selectedCountry: '',
   selectedState: '',
   selectedTopics: {},
-  terms: []
+  terms: [],
+
+  //factsets
+  geoFactsets: {},
+  topicFactsets: []
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -73,6 +81,10 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case FILTER_ACTIONS.DELETE_TOPICS:
       newState.selectedTopics = [];
+      break;
+    case FILTER_ACTIONS.UPDATE_FACTSETS:
+      newState.topicFactsets = action.topicFactsets;
+      newState.geoFactsets = action.geoFactsets;
       break;
     default:
       return state;

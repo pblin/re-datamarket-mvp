@@ -122,34 +122,8 @@ export class DatasetService {
     }
   }
 
-  async searchDatasets(filters) {
-    let url = `${config.serverBase}/marketplace/search`;
-    let filterCount = 0;
-
-    if(filters.terms.length) {
-        filterCount++;
-        url += `?terms=${filters.terms.join(',')}`
-    }
-
-    if(filters.selectedCountry) {
-      url += `${filterCount === 0 ? '?' : '&'}country=${filters.selectedCountry}`;
-      filterCount++;
-    }
-
-    if(filters.selectedState) {
-      url += `${filterCount === 0 ? '?' : '&'}state=${filters.selectedState}`;
-      filterCount++;
-    }
-
-    //TODO: Make Multi-Selected
-    if(filters.selectedCity) {
-      url += `${filterCount === 0 ? '?' : '&'}cities=${filters.selectedCity}`;
-      filterCount++;
-    }
-
-    if(filters.topics && filters.topics.length) {
-      url += `${filterCount === 0 ? '?' : '&'}topics=${filters.topics.join(',')}`;
-    }
+  async searchDatasets(terms) {
+    let url = `${config.serverBase}/marketplace/search?terms=${terms.join(',')}`;
 
     const results = await fetch(url);
     if(results.status !== 200) {
