@@ -1,128 +1,149 @@
-import * as React from 'react';
+import * as React from "react";
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 import {
-  Collapse,
   Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TablePagination,
-  TableRow,
-  //Slide,
+  Button,
+  Divider,
+  ExpansionPanel,
+  ExpansionPanelActions,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Typography,
+  Theme,
   withStyles
 } from "@material-ui/core";
-
+import TypographyList from "./TypographyList";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import FilterIcon from "@material-ui/icons/FilterList";
+import JumboPaper from "../../Common/jumboPaper";
 import Moment from 'moment';
 
-//Icons
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import TablePaginationActions from "./TablePaginationActions";
+const styles = (theme: Theme) => ({
+  headerPanel: {
+    border: 'none',
+    boxShadow: 'none'
+  },
+  summaryPanel: {
+    '&:hover': {
+      cursor: 'default'
+    },
+    cursor: 'default !important'
+  },
+  title: {
+    fontWeight: 'bold' as 'bold'
+  },
+  btn: {
+    marginTop: '0px'
+  },
+  filter: {
+    '&:hover': {
+      color: theme.palette.primary.dark
+    }
+  }
+});
 
 interface ComponentProps {
-  datasets: any[],
-  classes: any
+  datasets: any[];
+  history: any;
+  onFilter: any;
+  classes: any;
 }
 interface ComponentState {
-  datasetDialogOpen: boolean
+  searchTermsOpened: {}
 }
 
-const styles = {
-  overlay: {
-    position: 'absolute' as 'absolute',
-    backgroundColor: 'blue',
-    top: 0,
-    right: 0,
-    height: 100,
-    width: '50%'
-  },
-  table: {
-    position: 'relative' as 'relative'
-  },
-  dataRow: {
-    border: 'none',
-    '& td': {
-      borderTop: 'none',
-      borderLeft: 'none',
-      borderRight: 'none'
-    }
-  },
-  card: {
-    border: "1px solid black"
-  }
-};
-
 class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
-  constructor(props) {
-    super(props);
-    this.state = {
-      datasetDialogOpen: false
-    }
-  }
+  handleClick = (dataset) => {
+    this.props.history.push(`/dataset/${dataset.id}`);
+  };
 
   render() {
-    const {datasets, classes} = this.props;
-    //const {datasetDialogOpen} = this.state;
-    //const tableGridSize = datasetDialogOpen ? 8: 12;
+    const {datasets, onFilter, classes} = this.props;
 
-    return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Paper className={classes.table}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Last Modified</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {datasets.map((dataset, index) => (
-                  <React.Fragment key={`dataset${index}`}>
-                    <TableRow
-                      className={classes.dataRow}
-                      onClick={() => this.setState({datasetDialogOpen: !this.state.datasetDialogOpen})}
-                    >
-                      <TableCell>
-                        {dataset.name}
-                      </TableCell>
-                      <TableCell>
-                        {Moment(dataset['date_modified']).format('MMMM Do YYYY')}
-                      </TableCell>
-                      <TableCell>
-                        {dataset['price_high']}
-                      </TableCell>
-                      <TableCell>
-                        <ExpandMore/>
-                      </TableCell>
-                    </TableRow>
-                    <Collapse in={this.state.datasetDialogOpen}>
-                      <div>Test Data</div>
-                    </Collapse>
-                  </React.Fragment>
-                ))}
-              </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    onChangePage = {() => {}}
-                    page={0}
-                    rowsPerPage={10}
-                    ActionsComponent={TablePaginationActions}
-                    colSpan={3}
-                    count={datasets.length}
-                  />
-                </TableRow>
-              </TableFooter>
-            </Table>
-          </Paper>
-        </Grid>
-      </Grid>
+    return(
+      <div>
+        {datasets.length == 0 && <JumboPaper
+          title={"No Results Found"}
+          content={"No Results Found for the selected filters. Please try applying different filters."}
+          buttonText={"Change Filters"}
+          handleClick={onFilter}
+        />}
+        {datasets.length > 0 &&
+        <React.Fragment>
+          <ExpansionPanel expanded={false} className={classes.headerPanel}>
+            <ExpansionPanelSummary
+              className={classes.summaryPanel}
+              expandIcon={<FilterIcon onClick={onFilter} className={classes.filter}/>}
+            >
+              <Grid container>
+                <Grid item xs={7}>Dataset Name</Grid>
+                <Grid item xs={2}>Tags</Grid>
+                <Grid item xs={3}>Date Modified</Grid>
+              </Grid>
+            </ExpansionPanelSummary>
+          </ExpansionPanel>
+          {datasets.map((dataset, index) => (
+            <ExpansionPanel key={`schema${index}`} className={"schema-panel"}>
+              <ExpansionPanelSummary className={"schema-list"} expandIcon={<ExpandMoreIcon/>}>
+                <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
+                  <Grid item xs={7}>
+                    <Typography className={"header"} variant={"subtitle1"}>{dataset.name}</Typography>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TypographyList limit={3} terms={dataset['search_terms']}/>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Typography variant={"body2"}> {Moment(dataset['date_modified']).format('MMMM Do YYYY')}</Typography>
+                  </Grid>
+                </Grid>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid container spacing={1}>
+                  <Grid item xs={3}><Typography className={classes.title}>Description</Typography></Grid>
+                  <Grid item xs={9}><Typography>{dataset.description}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>Number Of Records</Typography></Grid>
+                  <Grid item xs={9}><Typography>{dataset['num_of_records']}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>Country</Typography></Grid>
+                  <Grid item xs={9}><Typography>{dataset['country']}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>State/Province</Typography></Grid>
+                  <Grid item xs={9}><Typography>{dataset['state_province']}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>City</Typography></Grid>
+                  <Grid item xs={9}><Typography>{dataset['city']}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>Date Created</Typography></Grid>
+                  <Grid item xs={9}><Typography>{Moment(dataset['date_created']).format('MMMM Do YYYY')}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>Date Modified</Typography></Grid>
+                  <Grid item xs={9}><Typography>{Moment(dataset['date_modified']).format('MMMM Do YYYY')}</Typography></Grid>
+                </Grid>
+              </ExpansionPanelDetails>
+              <Divider/>
+              <ExpansionPanelActions>
+                <Grid container justify={'flex-start'}>
+                  <Button
+                    color={"secondary"}
+                    variant={"text"}
+                    className={classes.btn}
+                    onClick={() => this.handleClick(dataset)}
+                  >
+                    View Dataset
+                  </Button>
+                </Grid>
+              </ExpansionPanelActions>
+            </ExpansionPanel>
+          ))}
+        </React.Fragment>
+        }
+      </div>
     );
   }
-};
+
+}
 
 export default withStyles(styles)(DatasetBuyList);

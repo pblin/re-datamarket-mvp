@@ -24,6 +24,7 @@ export default {
 
   // Other Colors
   lightGray: "#CCCCCC",
+  faintGray: "#F0F0F0",
   reblocOrange: "#f05e2a",
   reblocWhite: "#FFF",
 

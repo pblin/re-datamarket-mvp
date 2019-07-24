@@ -1,9 +1,11 @@
 import * as React from "react";
 import {Button, FormControl, Hidden, MenuItem, Select, Theme, Toolbar, withStyles} from "@material-ui/core";
+import appVars from "../../styles/appVars";
 
 const styles = (theme: Theme) => ({
   highlight: {
-    color: theme.palette.primary.dark
+    color: theme.palette.primary.dark,
+    background: appVars.faintGray
   },
   option: {
     color: theme.palette.primary.light
@@ -35,9 +37,12 @@ const MarketplaceToolbar = (
   return(
     <Toolbar className="marketplace-toolbar">
       <Hidden xsDown>
-        <div className={"filter-container"}>
+        <div className={`filter-container`}>
           {toolbarOptions.map((option, index) => (
-            <Button onClick={() => handleButtonClick(option.value)} key={`toolbarOption${index}`}>
+            <Button
+              onClick={() => handleButtonClick(option.value)} key={`toolbarOption${index}`}
+              className={schemaFilter == option.value ? classes.highlight: ''}
+            >
               {schemaFilter == option.value && <strong className={classes.highlight}>{option.label}</strong>}
               {schemaFilter != option.value && <span className={classes.option}>{option.label}</span>}
             </Button>
