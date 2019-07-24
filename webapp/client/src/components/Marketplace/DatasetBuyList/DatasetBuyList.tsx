@@ -19,6 +19,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FilterIcon from "@material-ui/icons/FilterList";
 import JumboPaper from "../../Common/jumboPaper";
 import Moment from 'moment';
+import appVars from "../../../styles/appVars";
 
 const styles = (theme: Theme) => ({
   headerPanel: {
@@ -41,6 +42,10 @@ const styles = (theme: Theme) => ({
     '&:hover': {
       color: theme.palette.primary.dark
     }
+  },
+  price: {
+    color: appVars.dollarBill,
+    fontWeight: 'bold' as 'bold'
   }
 });
 
@@ -78,9 +83,9 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
               expandIcon={<FilterIcon onClick={onFilter} className={classes.filter}/>}
             >
               <Grid container>
-                <Grid item xs={7}>Dataset Name</Grid>
-                <Grid item xs={2}>Tags</Grid>
-                <Grid item xs={3}>Date Modified</Grid>
+                <Grid item xs={6}>Dataset Name</Grid>
+                <Grid item xs={3}>Tags</Grid>
+                <Grid item xs={3}>Categories</Grid>
               </Grid>
             </ExpansionPanelSummary>
           </ExpansionPanel>
@@ -88,19 +93,22 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
             <ExpansionPanel key={`schema${index}`} className={"schema-panel"}>
               <ExpansionPanelSummary className={"schema-list"} expandIcon={<ExpandMoreIcon/>}>
                 <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
-                  <Grid item xs={7}>
+                  <Grid item xs={6}>
                     <Typography className={"header"} variant={"subtitle1"}>{dataset.name}</Typography>
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={3}>
                     <TypographyList limit={3} terms={dataset['search_terms']}/>
                   </Grid>
                   <Grid item xs={3}>
-                    <Typography variant={"body2"}> {Moment(dataset['date_modified']).format('MMMM Do YYYY')}</Typography>
+                      <TypographyList limit={3} terms={dataset['topic']}/>
                   </Grid>
                 </Grid>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid container spacing={1}>
+                  <Grid item xs={3}><Typography className={classes.title}>Asking Price</Typography></Grid>
+                  <Grid item xs={9}><Typography className={classes.price}>{`$${dataset['price_high']}`}</Typography></Grid>
+
                   <Grid item xs={3}><Typography className={classes.title}>Description</Typography></Grid>
                   <Grid item xs={9}><Typography>{dataset.description}</Typography></Grid>
 
