@@ -3,9 +3,9 @@ import {DATA_EXPLORER_ACTIONS} from "./dataExplorerActions";
 import SchemaService from "../../services/SchemaService";
 
 export function* SchemaSearch(action) {
-  const {filters} = action;
-  const schemaFields = yield SchemaService.searchSchemaFields(filters);
-  yield put({type: DATA_EXPLORER_ACTIONS.SET_SCHEMA_FIELDS, schemaFields})
+  const {terms} = action;
+  const schemaFields = yield SchemaService.searchSchemaFields(terms);
+  yield put({type: DATA_EXPLORER_ACTIONS.SET_SCHEMA_FIELDS, schemaFields: schemaFields.datasets})
 }
 
 export function* watchDataExplorer() {

@@ -1,15 +1,13 @@
 import * as React from "react";
 import {withRouter} from "react-router";
 import {withSnackbar} from "notistack";
-import {Grid, Typography} from "@material-ui/core";
+import {Drawer, Grid, Typography} from "@material-ui/core";
 import MarketplaceToolbar from "../Marketplace/MarketplaceToolbar";
 import {ToolbarOption} from "../Marketplace/ToolbarOption";
-import FilterMenu from "../Common/Filter/FilterMenu";
 import NotificationLabel from "../Common/NotificationLabel";
 import "./dataExplorer.scss";
-import {isEmpty} from "../../utils/ObjectHelper";
-import SchemaFieldTable from "./SchemaFieldTable";
-import FilterBreadCrumbs from '../Common/Filter/FilterBreadCrumbs';
+import SchemaFieldTable from "./SchemaFieldTable/SchemaFieldTable";
+import FilterMenu from '../Common/Filter/FIlterMenuV2';
 
 interface ComponentProps {
   actions: any;
@@ -20,11 +18,15 @@ interface ComponentProps {
 }
 
 interface ComponentState {
+  filterDrawerOpen: boolean;
 }
 
 class DataExplorer extends React.Component<ComponentProps, ComponentState> {
   constructor(props: any) {
     super(props);
+    this.state = {
+      filterDrawerOpen: false
+    }
   }
 
   toolbarOptions: ToolbarOption[] = [
@@ -32,10 +34,8 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
     new ToolbarOption('OWNED BY ME',  'ownedByMe'),
   ];
 
-  onFilter = (filters) => {
-    if(!isEmpty(filters)) {
-      this.props.actions.schemaSearch(filters);
-    }
+  onFilter = (terms) => {
+    this.props.actions.schemaSearch(terms);
   };
 
   changeFilter = (filter) => {
@@ -51,42 +51,33 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
           toolbarOptions={this.toolbarOptions}
           hasPublish={false}
         />
+        <Drawer
+          onClose={()=>{}}
+          open={this.state.filterDrawerOpen}
+          anchor={'left'}
+          variant={"persistent"}
+          className={"filter-drawer"}
+        >
+          <FilterMenu
+            onClose={() => this.setState({filterDrawerOpen: false})}
+            onSearchTermChange={this.onFilter}
+          />
+        </Drawer>
         <Grid container justify={"center"} className={"data-explorer"}>
-          <Grid item xs={12} className={"page-section"}>
-          </Grid>
-          <Grid item xs={12} sm={4} className={"page-section"}>
-            <FilterMenu
-             onClose={()=>{}}
-             onApply={this.onFilter}
-             hideClose={true}
-             disableTopics={true}
-            />
-          </Grid>
-          <Grid xs={12} sm={7} className={"page-section"}>
+          <Grid xs={12} sm={12} className={"page-section"}>
             {
               this.props.toolbarFilter == 'all' &&
                 <React.Fragment>
-                  <FilterBreadCrumbs/>
-                  {(this.props.fields.length == 0) &&
-                  <NotificationLabel type={"warning"}>
-                    <Typography>No results found. Try searching with different filters.</Typography>
-                  </NotificationLabel>
-                  }
-                  {
-                    (this.props.fields.length > 0) &&
-                    <React.Fragment>
-                      <SchemaFieldTable
-                        schemaFields={this.props.fields}
-                        history={this.props.history}
-                      />
-                    </React.Fragment>
-                  }
+                    <SchemaFieldTable
+                      schemaFields={this.props.fields}
+                      history={this.props.history}
+                      onFilter={() => {this.setState({filterDrawerOpen: true})}}
+                    />
                 </React.Fragment>
             }
             {
               this.props.toolbarFilter == 'ownedByMe' &&
                 <React.Fragment>
-                  <FilterBreadCrumbs/>
                   {(this.props.ownedFields.length == 0) &&
                     <NotificationLabel type={"warning"}>
                       <Typography>No results found. Try searching with different filters.</Typography>
@@ -98,6 +89,7 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
                       <SchemaFieldTable
                         schemaFields={this.props.ownedFields}
                         history={this.props.history}
+                        onFilter={() => {}}
                       />
                     </React.Fragment>
                   }

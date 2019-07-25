@@ -4,10 +4,10 @@ export enum DATA_EXPLORER_ACTIONS {
   CHANGE_TOOLBAR_FILTER = "CHANGE_TOOLBAR_FILTER"
 };
 
-export const schemaSearch = (filters) => {
+export const schemaSearch = (terms) => {
   return {
     type: DATA_EXPLORER_ACTIONS.SCHEMA_SEARCH,
-    filters
+    terms
   }
 };
 
