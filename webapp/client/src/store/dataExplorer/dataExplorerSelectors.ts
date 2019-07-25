@@ -10,7 +10,7 @@ export const getFilteredFields = createSelector(
   getFilteredIndexes,
   (fields, areFiltersApplied, indexes) => {
     if(!areFiltersApplied) {
-      return fields;
+      return fields || [];
     } else {
       const newFields = [];
       for(let i = 0; i < indexes.length; i++) {
@@ -24,6 +24,6 @@ export const getFilteredFields = createSelector(
 export const getOwnedByMeFields = createSelector(
   [getFilteredFields, profileSelector],
   (fields, profile) => {
-    return fields.filter(field => field.dataset_owner_id == profile.id)
+    return fields && fields.filter(field => field.dataset_owner_id == profile.id) || []
   }
 );

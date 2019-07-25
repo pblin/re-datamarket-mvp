@@ -14,6 +14,15 @@ interface ComponentState {
 const styles = (theme: Theme) => ({
   moreButton: {
     padding: 0
+  },
+  searchTag: {
+    marginBottom: "0px",
+    fontWeight: "bolder" as "bolder",
+    color: theme.palette.secondary.main,
+    lineHeight: "16px",
+    "&:hover": {
+      textDecoration: "underline"
+    }
   }
 });
 
@@ -28,7 +37,7 @@ class TypographyList  extends React.Component<ComponentProps, ComponentState>{
   renderTerm(term) {
     return (
       <Typography
-        className={"search-tag"}
+        className={this.props.classes.searchTag}
         variant={"body2"}>{term}
       </Typography>
     )

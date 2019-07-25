@@ -1,10 +1,9 @@
 import * as React from "react";
 import {withRouter} from "react-router";
 import {withSnackbar} from "notistack";
-import {Drawer, Grid, Typography} from "@material-ui/core";
+import {Drawer, Grid} from "@material-ui/core";
 import MarketplaceToolbar from "../Marketplace/MarketplaceToolbar";
 import {ToolbarOption} from "../Marketplace/ToolbarOption";
-import NotificationLabel from "../Common/NotificationLabel";
 import "./dataExplorer.scss";
 import SchemaFieldTable from "./SchemaFieldTable/SchemaFieldTable";
 import FilterMenu from '../Common/Filter/FIlterMenuV2';
@@ -78,21 +77,11 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
             {
               this.props.toolbarFilter == 'ownedByMe' &&
                 <React.Fragment>
-                  {(this.props.ownedFields.length == 0) &&
-                    <NotificationLabel type={"warning"}>
-                      <Typography>No results found. Try searching with different filters.</Typography>
-                    </NotificationLabel>
-                  }
-                  {
-                    (this.props.ownedFields.length > 0) &&
-                    <React.Fragment>
                       <SchemaFieldTable
                         schemaFields={this.props.ownedFields}
                         history={this.props.history}
-                        onFilter={() => {}}
+                        onFilter={() => {this.setState({filterDrawerOpen: true})}}
                       />
-                    </React.Fragment>
-                  }
                 </React.Fragment>
             }
           </Grid>

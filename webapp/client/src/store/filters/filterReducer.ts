@@ -59,14 +59,7 @@ const reducer = function(state=defaultState, action: any) {
       newState.selectedTopics = Object.assign({}, state.selectedTopics, action.topic);
       break;
     case FILTER_ACTIONS.RESET_FILTERS:
-      newState.cityList = [];
-      newState.stateList = [];
-      newState.selectedCity = '';
-      newState.selectedState = '';
-      newState.selectedCountry = '';
-      newState.terms = [];
-      newState.selectedTopics = [];
-      break;
+      return defaultState;
     case FILTER_ACTIONS.ADD_TERM:
       newState.terms = [...state.terms.filter(t => t != action.term), action.term];
       break;

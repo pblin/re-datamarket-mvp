@@ -18,7 +18,7 @@ import {FilterSearchDefinition} from "./FilterSearchDefinition";
 
 //Filter Icons
 import CheckIcon from "@material-ui/icons/Check";
-import {updateGeoFilters} from "../../../store/filters/filterActions";
+import {updateGeoFilters, resetFilters} from "../../../store/filters/filterActions";
 import{bindActionCreators} from "redux";
 
 interface ComponentProps {
@@ -115,6 +115,7 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
 
   resetFilters = () => {
     //TODO: RESET THE FILTERS
+    this.props.actions.resetFilters();
   };
 
   //TODO: Move to utility class
@@ -127,6 +128,13 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
   onPanelFilter = (filter, level) => {
      console.log(filter);
      this.props.actions.updateGeoFilters(filter.datasetIndex);
+  };
+
+  onSearchChange = (terms) => {
+    if(terms.length == 0) {
+      this.resetFilters();
+    }
+    this.props.onSearchTermChange(terms);
   };
 
   render() {
@@ -148,7 +156,7 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
           </div>
         </div>
         <Divider></Divider>
-        <ChipInput onChange={this.props.onSearchTermChange}/>
+        <ChipInput onChange={this.onSearchChange}/>
         <div className={classes.filterContainer}>
           {!areFiltersApplied &&
             <div><Typography className={classes.noFilterContainer}>No Filters Applied</Typography></div>
@@ -180,7 +188,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators({
-      updateGeoFilters
+      updateGeoFilters,
+      resetFilters
     }, dispatch)
   };
 };
