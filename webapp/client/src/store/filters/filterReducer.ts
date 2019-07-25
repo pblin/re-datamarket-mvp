@@ -13,6 +13,8 @@ interface FiltersState {
   //Factsets
   geoFactsets: any;
   topicFactsets: any[];
+  filterIndexes: any[];
+  areGeoFiltersApplied: boolean;
 }
 
 const defaultState: FiltersState = {
@@ -27,7 +29,9 @@ const defaultState: FiltersState = {
 
   //factsets
   geoFactsets: {},
-  topicFactsets: []
+  topicFactsets: [],
+  filterIndexes: [],
+  areGeoFiltersApplied: false
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -85,6 +89,10 @@ const reducer = function(state=defaultState, action: any) {
     case FILTER_ACTIONS.UPDATE_FACTSETS:
       newState.topicFactsets = action.topicFactsets;
       newState.geoFactsets = action.geoFactsets;
+      break;
+    case FILTER_ACTIONS.UPDATE_GEO_FILTERS:
+      newState.areGeoFiltersApplied = true;
+      newState.filterIndexes = action.indexes;
       break;
     default:
       return state;

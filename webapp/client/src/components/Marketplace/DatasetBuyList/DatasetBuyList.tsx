@@ -112,6 +112,9 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
                   <Grid item xs={3}><Typography className={classes.title}>Description</Typography></Grid>
                   <Grid item xs={9}><Typography>{dataset.description}</Typography></Grid>
 
+                  <Grid item xs={3}><Typography className={classes.title}>Delivery Method</Typography></Grid>
+                  <Grid item xs={9}><Typography>{dataset.delivery_method}</Typography></Grid>
+
                   <Grid item xs={3}><Typography className={classes.title}>Number Of Records</Typography></Grid>
                   <Grid item xs={9}><Typography>{dataset['num_of_records']}</Typography></Grid>
 

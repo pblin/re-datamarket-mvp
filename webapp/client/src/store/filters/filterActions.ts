@@ -12,7 +12,8 @@ export enum FILTER_ACTIONS {
   DELETE_LOCATION = "DELETE_LOCATION",
   DELETE_TERMS = "DELETE_TERMS",
   DELETE_TOPICS = "DELETE_TOPICS",
-  UPDATE_FACTSETS = "UPDATE_FACTSETS"
+  UPDATE_FACTSETS = "UPDATE_FACTSETS",
+  UPDATE_GEO_FILTERS = "UPDATE_GEO_FILTERS"
 };
 
 
@@ -97,6 +98,10 @@ export const updateFactsets = (factsets) => {
 
 export const loadCountries = () => {
   return {type: FILTER_ACTIONS.LOAD_COUNTRIES, countries: csc.getAllCountries().filter(filterCountries)};
+};
+
+export const updateGeoFilters = (indexes) => {
+  return {type: FILTER_ACTIONS.UPDATE_GEO_FILTERS, indexes}
 };
 
 const filterCountries = (country) => {
