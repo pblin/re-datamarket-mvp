@@ -32,6 +32,9 @@ const styles = (theme: Theme) => ({
     border: 'none',
     boxShadow: 'none'
   },
+  title: {
+    fontWeight: 'bold' as 'bold'
+  }
 });
 
 interface ComponentProps {
@@ -48,7 +51,7 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState>{
   };
 
   render() {
-    const {schemaFields, onFilter, classes} = this.props;
+    const {schemaFields, onFilter, classes, history} = this.props;
 
     return(
       <div>
@@ -66,10 +69,9 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState>{
               expandIcon={<FilterIcon onClick={onFilter} className={classes.filter}/>}
             >
               <Grid container>
-                <Grid item xs={3}>Field Name</Grid>
-                <Grid item xs={4}>Description</Grid>
-                <Grid item xs={2}>Type</Grid>
-                <Grid item xs={3}>Dataset</Grid>
+                <Grid item xs={5}>Field Name</Grid>
+                <Grid item xs={3}>Type</Grid>
+                <Grid item xs={4}>Dataset</Grid>
               </Grid>
             </ExpansionPanelSummary>
           </ExpansionPanel>
@@ -77,23 +79,33 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState>{
             <ExpansionPanel key={`schema${index}`} className={"schema-panel"}>
               <ExpansionPanelSummary className={"schema-list"} expandIcon={<ExpandMoreIcon/>}>
                 <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
+                  <Grid item xs={5}>
+                    <Typography className={"header"} variant={"subtitle1"}>{schemaField.field_label}</Typography>
+                  </Grid>
                   <Grid item xs={3}>
-                    <Typography className={"header"} variant={"subtitle1"}>{schemaField.field_name}</Typography>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Typography className={"header"} variant={"subtitle1"}>{schemaField.field_description}</Typography>
-                  </Grid>
-                  <Grid item xs={2}>
                     <Typography className={"header"} variant={"subtitle1"}>{schemaField.field_type}</Typography>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={4}>
                     <Typography className={"header"} variant={"subtitle1"}>{schemaField.dataset_name}</Typography>
                   </Grid>
                 </Grid>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid container spacing={1}>
-                  Details Here
+                  <Grid item xs={3}><Typography className={classes.title}>Description</Typography></Grid>
+                  <Grid item xs={9}><Typography>{schemaField.field_description}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>Database Field Name</Typography></Grid>
+                  <Grid item xs={9}><Typography>{schemaField.field_name}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>Country</Typography></Grid>
+                  <Grid item xs={9}><Typography>{schemaField.country}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>State/Province</Typography></Grid>
+                  <Grid item xs={9}><Typography>{schemaField.state_province}</Typography></Grid>
+
+                  <Grid item xs={3}><Typography className={classes.title}>City</Typography></Grid>
+                  <Grid item xs={9}><Typography>{schemaField.city.join(' ')}</Typography></Grid>
                 </Grid>
               </ExpansionPanelDetails>
               <Divider/>
@@ -103,7 +115,7 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState>{
                     color={"secondary"}
                     variant={"text"}
                     className={classes.btn}
-                    onClick={() => {}}
+                    onClick={() => {history.push(`/dataset/${schemaField['dataset_id']}`)}}
                   >
                     View Dataset
                   </Button>
