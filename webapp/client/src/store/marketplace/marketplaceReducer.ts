@@ -59,10 +59,6 @@ const reducer = function(state=defaultState, action: any) {
     case MARKETPLACE_ACTIONS.CHANGE_SEARCH:
       newState.search = action.search;
       break;
-    case MARKETPLACE_ACTIONS.DATASETS_SEARCHED:
-      newState.datasets = [...state.datasets];
-      newState.datasets = action.datasets;
-      break;
     case DATASET_FORM_ACTIONS.DATASET_SAVED:
       newState.userDatasets = [action.dataset, ...state.userDatasets];
       break;

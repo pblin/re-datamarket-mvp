@@ -13,6 +13,7 @@ import OrderHistoryPage from "../components/OrderHistory/OrderHistoryPage";
 import MarketplacePage from '../components/Marketplace/MarketplacePage';
 import EmailVerificationPage from "../components/EmailVerification/EmailVerificationPage";
 import EmailVerificationRequired from "../components/EmailVerification/EmailVerificationRequiredContainer";
+//import AppSideDrawer from "../components/App/AppDrawer/AppSideDrawer";
 
 const auth = new WebAuthentication();
 
@@ -54,10 +55,10 @@ const Routes: SFC<{}> = () => {
   return (
     <div>
       <Router history={history}>
-        <div>
+        <div style={{display: "flex"}}>
           <App auth={auth}/>
-          <Route path="/" exact={true} render={props => <Home auth={auth} {...props} />} />
-          <main role="main">
+          <main role="main" style={{width: "100%", marginTop: 64}}>
+            <Route path="/" exact={true} render={props => <Home auth={auth} {...props} />} />
             <Route
               path="/home"
               render={(props) => <Home auth={auth} {...props} />}

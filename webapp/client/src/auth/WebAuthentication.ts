@@ -65,7 +65,7 @@ export class WebAuthentication implements Auth0Authentication {
         this.setSession(result);
         AppEventEmitter.getInstance().emit('authenticated');
       } else if (e) {
-        history.push('/home');
+        history.push('/');
         //TODO: CREATE LOGGER FOT THE APPLICATION
         console.error(e);
       }
@@ -96,7 +96,7 @@ export class WebAuthentication implements Auth0Authentication {
     this.findUser(idTokenPayload.email);
 
     // navigate to the home route
-    history.push('/home');
+    history.push('/');
   }
 
   @autobind

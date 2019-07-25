@@ -3,7 +3,7 @@ import {withRouter} from "react-router";
 import './marketplace.scss';
 import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
-import SchemaList from "./SchemaList";
+import DatasetBuyList from "./DatasetBuyList/DatasetBuyList";
 import {
   Grid,
   Button,
@@ -14,14 +14,12 @@ import {
   Drawer
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import FilterIcon from "@material-ui/icons/FilterList";
 import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
-import FilterMenu from "../Common/Filter/FilterMenu";
+import FilterMenu from "../Common/Filter/FIlterMenuV2";
 import FilterBreadCrumbs from "../Common/Filter/FilterBreadCrumbs";
 import DatasetList from "./DatasetList";
-import {isEmpty} from "../../utils/ObjectHelper";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -111,8 +109,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     if(!this.props.isProfileSet) {
       return null;
     }
-    if(this.props.schemaFilter == 'purchasable' ||
-      (this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
+    if((this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
       return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
         Add
         <AddIcon/>
@@ -121,23 +118,9 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     return null;
   }
 
-  renderFilterButton() {
-    if(this.props.schemaFilter == 'purchasable') {
-      return (<Button
-        variant="contained"
-        onClick={() => this.setState({filterDrawerOpen: true})}
-        className="add-schema">
-        Advanced Search <FilterIcon/>
-      </Button>);
-    }
-
-    return null;
-  }
-
-  onFilter = (filters) => {
-    this.setState({filters});
-    if(this.state.search != '' || !isEmpty(filters)) {
-      this.props.actions.searchDatasets(filters);
+  onSearchTermChange = (terms) => {
+    if(terms.length) {
+      this.props.actions.searchDatasets(terms);
     } else {
       this.props.actions.getAllDatasets();
     }
@@ -155,8 +138,10 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
           variant={"persistent"}
           className={"filter-drawer"}
         >
-          <FilterMenu onApply={this.onFilter}
-                      onClose={() => this.setState({filterDrawerOpen: false})}/>
+          <FilterMenu
+            onClose={() => this.setState({filterDrawerOpen: false})}
+            onSearchTermChange={this.onSearchTermChange}
+          />
         </Drawer>
         <MarketplaceToolbar
           onSchemaFilterChange={this.handleSchemaChange}
@@ -167,15 +152,14 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
         <Grid container={true} justify={'center'}>
           <div className={"app-section-wrapper"}>
             <Grid container={true} justify={"flex-start"}>
-              {this.renderFilterButton()}
               {this.renderAddButton()}
               <FilterBreadCrumbs/>
             </Grid>
             <Grid item xs={12} sm={12}>
               {
-                this.props.schemaFilter=='purchasable' &&
-                <SchemaList
-                  schemas={this.props.purchasableDatasets}
+                this.props.schemaFilter == 'purchasable' &&
+                <DatasetBuyList
+                  datasets={this.props.purchasableDatasets}
                   history={this.props.history}
                   onFilter={() => this.setState({filterDrawerOpen: true})}
                 />

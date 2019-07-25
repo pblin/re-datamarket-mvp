@@ -168,7 +168,7 @@ class DatasetInfo extends React.Component<ComponentProps, ComponentState> {
   renderMarketPlace() {
     return (
       <div className={"app-section-wrapper-90"}>
-        <Grid container spacing={16}>
+        <Grid container spacing={8}>
           <Grid item xs={12} sm={4}>
             {this.props.isOwner &&
             <BasicInfoOwnerCard

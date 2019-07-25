@@ -60,7 +60,7 @@ export default class AutoSuggestInput extends React.Component<ComponentProps, Co
       //const matches = match(suggestion.label, query);
       //const parts = parse(suggestion.label, matches);
       return (
-        <MenuItem selected={isHighlighted} component="div">
+        <MenuItem selected={isHighlighted}>
             <div>{suggestion[this.props.propToFilter]}</div>
         </MenuItem>
       )

@@ -1,6 +1,7 @@
 import {takeLatest, put} from 'redux-saga/effects';
 import {DatasetService} from "../../services/DatasetService";
 import {MARKETPLACE_ACTIONS, userDatasetsRetrieved} from "./marketplaceActions";
+import {updateFactsets} from "../filters/filterActions";
 
 export function* GetUserDatasets() {
   let profile = JSON.parse(localStorage.getItem ('profile'));
@@ -38,8 +39,9 @@ export function* SearchDatasets(action) {
   const {filters} = action;
   const datasetService = new DatasetService();
 
-  const datasets = yield datasetService.searchDatasets(filters);
-  yield put({type: MARKETPLACE_ACTIONS.DATASETS_SEARCHED, datasets})
+  const result = yield datasetService.searchDatasets(filters);
+  yield put({type: MARKETPLACE_ACTIONS.DATASETS_RETRIEVED, datasets: result.datasets});
+  yield put(updateFactsets({geoFactsets: result.geoFactsets, topicFactsets: result.topicFactsets}));
 }
 
 export function* watchMarketplace() {
