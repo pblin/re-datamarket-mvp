@@ -67,13 +67,20 @@
 /* WRAPPER */
 
 .app-section-wrapper {
-   width: 80%;
-   max-width: 800px;
+   width: 95%;
    display: flex;
    flex-wrap: wrap;
    justify-content: center;
    margin-top: 30px;
  }
+
+.section-wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+}
 
 .app-section-wrapper-lg {
   width: 80%;
@@ -89,6 +96,10 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 30px;
+}
+
+.content-container {
+  padding: $content-padding;
 }
 
 /* App Wide CSS CLASSES */

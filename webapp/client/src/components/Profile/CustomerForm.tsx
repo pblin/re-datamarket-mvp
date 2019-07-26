@@ -64,7 +64,7 @@ class CustomerForm extends Component<CustomerFormProps> {
   render() {
     return (
       <form onSubmit={this.props.onSubmit}>
-      <Grid spacing={24} container={true} >
+      <Grid spacing={4} container={true} >
         <Field
           label="First Name"
           component={renderTextField}

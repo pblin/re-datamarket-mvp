@@ -9,6 +9,12 @@ interface FiltersState {
   selectedState: any;
   selectedTopics: any;
   terms: any[];
+
+  //Factsets
+  geoFactsets: any;
+  topicFactsets: any[];
+  filterIndexes: any[];
+  areGeoFiltersApplied: boolean;
 }
 
 const defaultState: FiltersState = {
@@ -19,7 +25,13 @@ const defaultState: FiltersState = {
   selectedCountry: '',
   selectedState: '',
   selectedTopics: {},
-  terms: []
+  terms: [],
+
+  //factsets
+  geoFactsets: {},
+  topicFactsets: [],
+  filterIndexes: [],
+  areGeoFiltersApplied: false
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -47,14 +59,7 @@ const reducer = function(state=defaultState, action: any) {
       newState.selectedTopics = Object.assign({}, state.selectedTopics, action.topic);
       break;
     case FILTER_ACTIONS.RESET_FILTERS:
-      newState.cityList = [];
-      newState.stateList = [];
-      newState.selectedCity = '';
-      newState.selectedState = '';
-      newState.selectedCountry = '';
-      newState.terms = [];
-      newState.selectedTopics = [];
-      break;
+      return defaultState;
     case FILTER_ACTIONS.ADD_TERM:
       newState.terms = [...state.terms.filter(t => t != action.term), action.term];
       break;
@@ -73,6 +78,14 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case FILTER_ACTIONS.DELETE_TOPICS:
       newState.selectedTopics = [];
+      break;
+    case FILTER_ACTIONS.UPDATE_FACTSETS:
+      newState.topicFactsets = action.topicFactsets;
+      newState.geoFactsets = action.geoFactsets;
+      break;
+    case FILTER_ACTIONS.UPDATE_GEO_FILTERS:
+      newState.areGeoFiltersApplied = true;
+      newState.filterIndexes = action.indexes;
       break;
     default:
       return state;

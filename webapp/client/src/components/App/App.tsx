@@ -2,21 +2,15 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
-  Drawer,
   CssBaseline,
   AppBar,
   Toolbar,
-  List,
-  Divider,
   IconButton,
-  ListItem,
   withStyles,
   Theme,
 } from "@material-ui/core";
 
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import { Auth0Authentication } from '../../auth/Auth0Authentication';
 import {bindActionCreators} from "redux";
@@ -37,6 +31,7 @@ import {updateProfileMenuOpen} from "../../store/app/appActions";
 import {appSelector} from "../../store/app/appSelector";
 import {getProfile} from "../../store/profile/profileActions";
 import {profileSelector} from "../../store/profile/profileSelector";
+import AppSideDrawer from "./AppDrawer/AppSideDrawer";
 
 const drawerWidth = 240;
 
@@ -50,21 +45,13 @@ const styles = (theme: Theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    background: '#47494d'
+    background: '#47494d',
   },
   marginLeft50: {
     marginLeft: "50px"
   },
   appLogo: {
     height: '26px'
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   },
   menuButton: {
     marginLeft: 12,
@@ -85,22 +72,6 @@ const styles = (theme: Theme) => ({
   },
   avatar: {
     marginRight: "50px"
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3,
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
   },
 });
 
@@ -165,8 +136,6 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
 
   @autobind
   handleProfileMenuClickAway(itemPressed) {
-    console.log('handle profile menu click away');
-    console.log(itemPressed);
     switch(itemPressed) {
       case 'clickAway':
         this.props.actions.updateProfileMenuOpen(false);
@@ -182,7 +151,7 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     const { open } = this.state;
     const { authenticated } = this.props.auth;
     let profile = localStorage.getItem('profile');
@@ -203,11 +172,11 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
     }
 
     return (
-        <div className={classes.root}>
+        <React.Fragment>
           <CssBaseline />
           <AppBar
             className={classes.appBar}
-            position={"static"}
+            position={"fixed"}
           >
             <Toolbar disableGutters={!open}>
               {authenticated && (<IconButton
@@ -227,52 +196,13 @@ class PersistentDrawerLeft extends React.Component <AppProps> {
               onClickAway={this.handleProfileMenuClickAway}
               profile={profileObj}/>
           </AppBar>
-          <Drawer
-            className={classes.drawer}
-            variant="persistent"
-            anchor="left"
-            open={open}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            <div className={classes.drawerHeader}>
-              <IconButton onClick={this.handleDrawerClose}>
-                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-              </IconButton>
-            </div>
-            <Divider />
-            <List>
-                {this.appLinks.map((link, index) => (
-                    <>
-                      {link.type == 'app' &&
-                          <ListItem button key={`link-item${index}`} onClick={this.handleDrawerClose} className="app-link">
-                            <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
-                          </ListItem>
-                      }
-                      {link.type == 'global' &&
-                      <ListItem button key={`link-item${index}`} onClick={this.handleDrawerClose} className="app-link">
-                        <a href={link.url}>{link.icon} <div>{link.title}</div></a>
-                      </ListItem>
-                      }
-                    </>
-                ))}
-            </List>
-            <Divider />
-            <List>
-              {this.userAppLinks.map((link, index) => (
-                <ListItem button key={`link-item-user${index}`} onClick={this.handleDrawerClose} className="app-link">
-                  <Link to={link.url}>{link.icon} <div>{link.title}</div></Link>
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
-          <main
-            className={classes.content}
-          >
-            <div className={classes.drawerHeader} />
-          </main>
-        </div>
+          <AppSideDrawer
+            width={240}
+            isResponsiveMenuOpen={open}
+            onResponsiveMenuClose={this.handleDrawerClose}
+            authenticated={authenticated}
+          />
+        </React.Fragment>
     );
   }
 }

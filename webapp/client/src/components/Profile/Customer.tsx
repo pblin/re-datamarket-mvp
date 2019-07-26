@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 import CustomerForm from "./CustomerForm";
 import {getProfile, updateProfile} from "../../store/profile/profileActions";
 import {emailSelector, profileSelector} from "../../store/profile/profileSelector";
-import {Grid} from "@material-ui/core";
+import {Grid, Typography, Divider} from "@material-ui/core";
 import {withSnackbar} from "notistack";
 
 // @ts-ignore
@@ -20,10 +20,6 @@ const styles = (theme: Theme ) => createStyles ({
     width: '80%',
     marginTop: '30px',
     flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
   },
   dense: {
     marginTop: 16,
@@ -80,19 +76,23 @@ class Customer extends React.Component<Props> {
     const { authenticated } = this.props.auth;
     if ( authenticated) {
       return (
-          <Grid container={true} justify={'center'}>
-            <div className={classes.container}>
-              <CustomerForm onSubmit={this.handleProfileSubmit}/>
-              <Grid item xs={12}>
-                <Button color="secondary"
-                        className={classes.button}
-                        variant={"contained"}
-                        onClick={this.props.submitProfileForm}>
-                  Save
-                </Button>
-              </Grid>
-            </div>
-          </Grid>
+          <div className={"content-container"}>
+            <Typography variant={"h4"}>Manage Your Profile</Typography>
+            <Divider/>
+            <Grid container={true} justify={'center'}>
+              <div className={classes.container}>
+                <CustomerForm onSubmit={this.handleProfileSubmit}/>
+                <Grid item xs={12}>
+                  <Button color="secondary"
+                          className={classes.button}
+                          variant={"contained"}
+                          onClick={this.props.submitProfileForm}>
+                    Save
+                  </Button>
+                </Grid>
+              </div>
+            </Grid>
+          </div>
       );
     } else {
         // @ts-ignore
