@@ -240,4 +240,5 @@ class AppSideDrawer extends React.Component <AppProps> {
   }
 }
 
+//@ts-ignore
 export default withRouter(AppSideDrawer);
