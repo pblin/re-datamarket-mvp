@@ -138,3 +138,76 @@ $BODY$;
 
 ALTER FUNCTION marketplace.search_dataset_schema(integer, integer, text, text, text, text, text)
     OWNER TO reblocadmin;
+
+
+-- FUNCTION: marketplace.search_dataset_object(integer, integer, text, text, text, text)
+
+DROP FUNCTION marketplace.search_dataset_object(integer, integer, text, text, text, text);
+
+CREATE OR REPLACE FUNCTION marketplace.search_dataset_object(
+	purchased_by integer,
+	user_id integer,
+	fields text,
+	in_city_county text,
+	in_region text,
+	ctn text)
+    RETURNS SETOF marketplace.object_dataset_view 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    STABLE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+IF user_id < 0 THEN
+	RETURN query ( 
+		select 
+		   object_name,
+           field_name,
+		   field_label,
+           field_description,
+           field_category,
+           country,
+           state_province,
+           city,
+           dataset_name,
+		   topic,
+           dataset_id,
+		   dataset_owner_id
+		from marketplace.object_dataset_view,to_tsvector(coalesce(field_label,' ')) t1
+		where (t1 @@ to_tsquery(fields))
+		and (in_city_county = '' or in_city_county %> any(city))
+		and (in_region = '' or in_region %> state_province)
+		and (ctn = '' or ctn %> country)
+		and (purchased_by = 0 or dataset_id in (select dataset_id from marketplace.order_book where buyer_id = purchased_by))
+	);
+ELSE
+	RETURN query ( 
+		select 
+		   object_name,
+           field_name,
+		   field_label,
+           field_description,
+           field_category,
+           country,
+           state_province,
+           city,
+           dataset_name,
+		   topic,
+           dataset_id,
+		   dataset_owner_id
+		from marketplace.object_dataset_view, to_tsvector(coalesce(field_label,' ')) t1
+		where (t1 @@ to_tsquery(fields))
+		and (in_city_county = '' or in_city_county %> any(city))
+		and (in_region = '' or in_region %> state_province)
+		and (ctn = '' or ctn %> country)
+		and (purchased_by = 0 
+			 or dataset_id in (select dataset_id from marketplace.order_book where buyer_id = purchased_by)
+			 or dataset_owner_id = user_id)
+		);
+END IF;
+END;
+$BODY$;
+
+ALTER FUNCTION marketplace.search_dataset_object(integer, integer, text, text, text, text)
+    OWNER TO reblocadmin;
