@@ -139,10 +139,9 @@ $BODY$;
 ALTER FUNCTION marketplace.search_dataset_schema(integer, integer, text, text, text, text, text)
     OWNER TO reblocadmin;
 
-
 -- FUNCTION: marketplace.search_dataset_object(integer, integer, text, text, text, text)
 
-DROP FUNCTION marketplace.search_dataset_object(integer, integer, text, text, text, text);
+-- DROP FUNCTION marketplace.search_dataset_object(integer, integer, text, text, text, text);
 
 CREATE OR REPLACE FUNCTION marketplace.search_dataset_object(
 	purchased_by integer,
@@ -175,7 +174,7 @@ IF user_id < 0 THEN
            dataset_id,
 		   dataset_owner_id
 		from marketplace.object_dataset_view,to_tsvector(coalesce(field_label,' ')) t1
-		where (t1 @@ to_tsquery(fields))
+		where (fields = '' or t1 @@ to_tsquery(fields))
 		and (in_city_county = '' or in_city_county %> any(city))
 		and (in_region = '' or in_region %> state_province)
 		and (ctn = '' or ctn %> country)
@@ -197,7 +196,7 @@ ELSE
            dataset_id,
 		   dataset_owner_id
 		from marketplace.object_dataset_view, to_tsvector(coalesce(field_label,' ')) t1
-		where (t1 @@ to_tsquery(fields))
+		where (fields = '' or t1 @@ to_tsquery(fields))
 		and (in_city_county = '' or in_city_county %> any(city))
 		and (in_region = '' or in_region %> state_province)
 		and (ctn = '' or ctn %> country)
