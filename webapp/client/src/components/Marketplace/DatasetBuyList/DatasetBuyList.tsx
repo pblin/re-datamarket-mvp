@@ -1,7 +1,4 @@
 import * as React from "react";
-import 'primereact/resources/themes/nova-light/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
 import {
   Grid,
   Button,
@@ -17,9 +14,11 @@ import {
 import TypographyList from "./TypographyList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FilterIcon from "@material-ui/icons/FilterList";
+//import TrashIcon from "@material-ui/icons/Delete";
 import JumboPaper from "../../Common/jumboPaper";
 import Moment from 'moment';
 import appVars from "../../../styles/appVars";
+import DatasetTypography from "./DatasetTypography";
 
 const styles = (theme: Theme) => ({
   headerPanel: {
@@ -54,6 +53,7 @@ interface ComponentProps {
   history: any;
   onFilter: any;
   classes: any;
+  isUser: boolean;
 }
 interface ComponentState {
   searchTermsOpened: {}
@@ -65,8 +65,8 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
   };
 
   render() {
-    const {datasets, onFilter, classes} = this.props;
-
+    const {datasets, onFilter, classes, isUser} = this.props;
+  console.log(isUser);
     return(
       <div>
         {datasets.length == 0 && <JumboPaper
@@ -80,7 +80,7 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
           <ExpansionPanel expanded={false} className={classes.headerPanel}>
             <ExpansionPanelSummary
               className={classes.summaryPanel}
-              expandIcon={<FilterIcon onClick={onFilter} className={classes.filter}/>}
+              expandIcon={!isUser ? <FilterIcon onClick={onFilter} className={classes.filter}/> : <React.Fragment/>}
             >
               <Grid container>
                 <Grid item xs={6}>Dataset Name</Grid>
@@ -107,25 +107,27 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
               <ExpansionPanelDetails>
                 <Grid container spacing={1}>
                   <Grid item xs={3}><Typography className={classes.title}>Asking Price</Typography></Grid>
-                  <Grid item xs={9}><Typography className={classes.price}>{`$${dataset['price_high']}`}</Typography></Grid>
+                  <Grid item xs={9}>
+                    <DatasetTypography className={classes.price} text={dataset['price_high']} pre={'$'}/>
+                  </Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Description</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset.description}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset.description}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Delivery Method</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset.delivery_method}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset.delivery_method}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Number Of Records</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset['num_of_records']}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset['num_of_records']}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Country</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset['country']}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset.country}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>State/Province</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset['state_province']}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset['state_province']}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>City</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset['city']}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset.city}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Date Created</Typography></Grid>
                   <Grid item xs={9}><Typography>{Moment(dataset['date_created']).format('MMMM Do YYYY')}</Typography></Grid>
@@ -143,7 +145,8 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
                     className={classes.btn}
                     onClick={() => this.handleClick(dataset)}
                   >
-                    View Dataset
+                    {!isUser && <React.Fragment>View Dataset</React.Fragment>}
+                    {isUser && <React.Fragment>Manage Dataset</React.Fragment>}
                   </Button>
                 </Grid>
               </ExpansionPanelActions>
