@@ -9,7 +9,7 @@ import {
   ExpansionPanelSummary,
   Typography,
   Theme,
-  withStyles
+  withStyles, TablePagination
 } from "@material-ui/core";
 import TypographyList from "./TypographyList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -56,16 +56,42 @@ interface ComponentProps {
   isUser: boolean;
 }
 interface ComponentState {
-  searchTermsOpened: {}
+  pageNumber: number;
+  rowsPerPage: number;
 }
 
 class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      pageNumber: 0,
+      rowsPerPage: 10
+    }
+  }
+
   handleClick = (dataset) => {
     this.props.history.push(`/dataset/${dataset.id}`);
   };
 
+  handleChangePage = (event: unknown, newPage: number) => {
+    console.log('Setting the new page number to ' + newPage);
+    this.setState({
+      pageNumber: newPage
+    })
+  }
+
+  handleChangeRowsPerPage = (event: any) => {
+    this.setState({
+      pageNumber: 0,
+      rowsPerPage: +event.target.value
+    })
+  };
+
   render() {
     const {datasets, onFilter, classes, isUser} = this.props;
+    const {pageNumber, rowsPerPage} = this.state;
   console.log(isUser);
     return(
       <div>
@@ -89,7 +115,9 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
               </Grid>
             </ExpansionPanelSummary>
           </ExpansionPanel>
-          {datasets.map((dataset, index) => (
+          {datasets
+            .slice(pageNumber * rowsPerPage, pageNumber * rowsPerPage + rowsPerPage)
+            .map((dataset, index) => (
             <ExpansionPanel key={`schema${index}`} className={"schema-panel"}>
               <ExpansionPanelSummary className={"schema-list"} expandIcon={<ExpandMoreIcon/>}>
                 <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
@@ -154,6 +182,21 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
           ))}
         </React.Fragment>
         }
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
+          component="div"
+          count={datasets.length}
+          rowsPerPage={rowsPerPage}
+          page={pageNumber}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onChangePage={this.handleChangePage}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        />
       </div>
     );
   }
