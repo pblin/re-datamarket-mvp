@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Chip,
   Grid,
   Button,
   Divider,
@@ -45,6 +46,11 @@ const styles = (theme: Theme) => ({
   price: {
     color: appVars.dollarBill,
     fontWeight: 'bold' as 'bold'
+  },
+  header: {
+    display: 'inline-block',
+    paddingRight: '5px',
+    fontWeight: 'bold' as 'bold'
   }
 });
 
@@ -88,10 +94,20 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
     })
   };
 
+  renderChips = (dataset) => {
+    if(dataset.stage == 2) {
+      return <Chip label={"Saved"} className={"save-chip"}/>;
+    } else if(dataset.stage == 3) {
+      return <Chip label={"Published"} className={"published-chip"} />  ;
+    }
+  };
+
   render() {
     const {datasets, onFilter, classes, isUser} = this.props;
     const {pageNumber, rowsPerPage} = this.state;
 
+    console.log('dataset buy list');
+    console.log(datasets);
     return(
       <div>
         {datasets.length == 0 && <JumboPaper
@@ -121,7 +137,8 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
               <ExpansionPanelSummary className={"schema-list"} expandIcon={<ExpandMoreIcon/>}>
                 <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
                   <Grid item xs={6}>
-                    <Typography className={"header"} variant={"subtitle1"}>{dataset.name}</Typography>
+                    <Typography className={classes.header} variant={"subtitle1"}>{dataset.name}</Typography>
+                    {isUser && this.renderChips(dataset)}
                   </Grid>
                   <Grid item xs={3}>
                     <TypographyList limit={3} terms={dataset['search_terms']}/>
