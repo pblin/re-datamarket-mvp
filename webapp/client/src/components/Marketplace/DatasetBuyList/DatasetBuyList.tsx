@@ -76,11 +76,10 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
   };
 
   handleChangePage = (event: unknown, newPage: number) => {
-    console.log('Setting the new page number to ' + newPage);
     this.setState({
       pageNumber: newPage
     })
-  }
+  };
 
   handleChangeRowsPerPage = (event: any) => {
     this.setState({
@@ -92,7 +91,7 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
   render() {
     const {datasets, onFilter, classes, isUser} = this.props;
     const {pageNumber, rowsPerPage} = this.state;
-  console.log(isUser);
+
     return(
       <div>
         {datasets.length == 0 && <JumboPaper

@@ -16,11 +16,7 @@ export const getFilteredDatasets = createSelector(
       return datasets;
     } else {
       const newDatasets = [];
-      console.log('filter indexes', indexes);
       for(let i = 0; i < indexes.length; i++) {
-        console.log(indexes);
-        console.log(indexes[i]);
-        console.log(datasets[indexes[i]]);
         newDatasets.push(datasets[indexes[i]]);
       }
       return newDatasets;

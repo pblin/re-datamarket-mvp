@@ -12,6 +12,7 @@ import {datasetInfoSagas} from "./datasetInfo/datasetInfoSaga";
 import {orderSagas} from "./orders/orderSaga";
 import {commonSagas} from "./common/commonSaga";
 import {dataExplorerSagas} from "./dataExplorer/dataExplorerSaga";
+import {filterSagas} from "./filters/filterSaga";
 
 //Reducers
 import FileState from "./file/reducers";
@@ -76,7 +77,8 @@ export class AppStore {
         ...datasetInfoSagas(),
         ...orderSagas(),
         ...commonSagas(),
-        ...dataExplorerSagas()
+        ...dataExplorerSagas(),
+        ...filterSagas()
       ])
     }
 

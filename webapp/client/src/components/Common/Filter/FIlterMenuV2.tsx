@@ -18,7 +18,7 @@ import {FilterSearchDefinition} from "./FilterSearchDefinition";
 
 //Filter Icons
 import CheckIcon from "@material-ui/icons/Check";
-import {updateGeoFilters, resetFilters} from "../../../store/filters/filterActions";
+import {updateGeoFilters, resetFilters, updateFilters} from "../../../store/filters/filterActions";
 import{bindActionCreators} from "redux";
 
 interface ComponentProps {
@@ -78,7 +78,8 @@ const styles = (theme: Theme) => ({
     height: '100%',
     justifyContent: 'center',
     width: '100%',
-    borderLeft: `5px solid ${appVars.reblocOrange}`
+    borderLeft: `5px solid ${appVars.reblocOrange}`,
+    overflowY: 'auto' as 'auto'
   },
   noFilterContainer: {
     position: 'relative' as 'relative',
@@ -126,8 +127,10 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
   };
 
   onPanelFilter = (filter, level) => {
+     console.log('On Panel Filter');
      console.log(filter);
-     this.props.actions.updateGeoFilters(filter.datasetIndex);
+     //this.props.actions.updateGeoFilters(filter.datasetIndex);
+     this.props.actions.updateFilters(filter.datasetIndex, level, filter.name);
   };
 
   onSearchChange = (terms) => {
@@ -139,7 +142,7 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
 
   render() {
     const {classes, areFiltersApplied} = this.props;
-    const {geoFactsets} = this.props.filters;
+    const {geoFactsets, levels} = this.props.filters;
     return (
       <div className={classes.filterMenuContainer}>
         <div className={classes.toolbar}>
@@ -166,10 +169,8 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
               options={geoFactsets}
               props={this.filterSearchDefinitions}
               onFilter={this.onPanelFilter}
-            >
-              <div>test</div>
-
-            </FilterPanel>
+              levels={levels}
+            />
           }
         </div>
       </div>
@@ -189,7 +190,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators({
       updateGeoFilters,
-      resetFilters
+      resetFilters,
+      updateFilters
     }, dispatch)
   };
 };

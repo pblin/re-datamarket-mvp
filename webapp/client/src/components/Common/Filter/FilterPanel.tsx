@@ -7,7 +7,7 @@ import {
   Theme,
   withStyles
 } from "@material-ui/core";
-//import appVars from "../../../styles/appVars";
+import appVars from "../../../styles/appVars";
 
 //icons
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -29,6 +29,10 @@ const styles = (theme: Theme) => ({
   },
   filterLabel: {
     fontSize: '20px'
+  },
+  highlightedFilterLabel: {
+    fontSize: '20px',
+    color: appVars.reblocOrange
   },
   countChip: {
     minWidth: '40px',
@@ -65,10 +69,12 @@ const FilterPanel = ({
                        classes,
                        children = <React.Fragment></React.Fragment>,
                        level=0,
+                       levels =[],
                        props=[] }) => {
   const shouldShow = level < props.length;
 
   const filters = !shouldShow ? []: options[props[level].propertyToSearch];
+  const valToMatch = levels[level];
 
   return(<div className={classes.parent}>
     {shouldShow &&
@@ -79,7 +85,9 @@ const FilterPanel = ({
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
               <div className={classes.filterLabelContainer}>
                 {props[level].icon}
-                <span className={classes.filterLabel}>{capitalizeWords(filter.name)}</span>
+                <span className={filter.name != valToMatch ? classes.filterLabel: classes.highlightedFilterLabel}>
+                  {capitalizeWords(filter.name)}
+                </span>
               </div>
               <div className={classes.chipContainer}>
                 <Chip label={filter.count} className={classes.countChip}/>
@@ -91,6 +99,7 @@ const FilterPanel = ({
                 onFilter={onFilter}
                 level={(level + 1)}
                 props={props}
+                levels={levels}
               />
             </ExpansionPanelDetails>
           </ExpansionPanel>
