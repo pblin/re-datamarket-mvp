@@ -14,6 +14,12 @@ interface ComponentProps{
 //TODO: Capitalize labels
 //TODO: Write delete filter functionality
 export class FilterBreadCrumbs extends React.Component<ComponentProps> {
+  capitalizeWords = (word) => {
+    let words = word.split(' ');
+    words = words.map((w) => w.substring(0,1).toUpperCase() + w.substring(1));
+    return words.join(' ');
+  };
+
   renderBreadCrumbs() {
     const {levels} = this.props.filters;
 
@@ -22,25 +28,25 @@ export class FilterBreadCrumbs extends React.Component<ComponentProps> {
     return <React.Fragment>
       {country && (
         <Chip
-          label={`Selected Country: ${country.value}`}
+          label={`Selected Country: ${this.capitalizeWords(country.value)}`}
           onDelete={() => this.props.actions.deleteFilters(0)}
         />
       )}
       {state && (
         <Chip
-          label={`Selected State: ${state.value}`}
+          label={`Selected State: ${this.capitalizeWords(state.value)}`}
           onDelete={() => this.props.actions.deleteFilters(1)}
         />
       )}
       {city && (
         <Chip
-          label={`Selected City: ${city.value}`}
+          label={`Selected City: ${this.capitalizeWords(city.value)}`}
           onDelete={() => this.props.actions.deleteFilters(2)}
         />
       )}
       {topic && (
         <Chip
-          label={`Selected Topic: ${topic.value}`}
+          label={`Selected Topic: ${this.capitalizeWords(topic.value)}`}
           onDelete={() => this.props.actions.deleteFilters(3)}
         />
       )}

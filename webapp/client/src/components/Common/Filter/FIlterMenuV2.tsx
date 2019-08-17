@@ -119,7 +119,6 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
     this.props.actions.resetFilters();
   };
 
-  //TODO: Move to utility class
   capitalizeWords = (word) => {
     let words = word.split(' ');
     words = words.map((w) => w.substring(0,1).toUpperCase() + w.substring(1));
@@ -127,9 +126,6 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
   };
 
   onPanelFilter = (filter, level) => {
-     console.log('On Panel Filter');
-     console.log(filter);
-     //this.props.actions.updateGeoFilters(filter.datasetIndex);
      this.props.actions.updateFilters(filter.datasetIndex, level, filter.name);
   };
 
