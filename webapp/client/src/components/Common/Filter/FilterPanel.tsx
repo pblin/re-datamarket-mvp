@@ -21,7 +21,7 @@ const styles = (theme: Theme) => ({
     '& svg': {
       marginRight: '5px'
     },
-    width: '100%'
+    width: '100%',
   },
   filterLabelContainer: {
     width: '85%',

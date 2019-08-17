@@ -4,16 +4,14 @@ import {bindActionCreators} from "redux";
 import {schemaSearch, changeToolbarFilter} from "../../store/dataExplorer/dataExplorerActions";
 import {
   dataExplorerSelector,
-  getFilteredFields,
-  getOwnedByMeFields
+  getFilteredFields
 } from "../../store/dataExplorer/dataExplorerSelectors";
 
 const mapStateToProps = (state: any) => {
   const {toolbarFilter} = dataExplorerSelector(state);
   return {
     fields: getFilteredFields(state),
-    toolbarFilter,
-    ownedFields: getOwnedByMeFields(state)
+    toolbarFilter
   }
 };
 

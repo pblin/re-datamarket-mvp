@@ -70,8 +70,8 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState>{
               expandIcon={<FilterIcon onClick={onFilter} className={classes.filter}/>}
             >
               <Grid container>
-                <Grid item xs={4}>Field Name</Grid>
-                <Grid item xs={2}>Type</Grid>
+                <Grid item xs={3}>Field Name</Grid>
+                <Grid item xs={3}>Description</Grid>
                 <Grid item xs={3}>Categories</Grid>
                 <Grid item xs={3}>Dataset</Grid>
               </Grid>
@@ -81,11 +81,11 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState>{
             <ExpansionPanel key={`schema${index}`} className={"schema-panel"}>
               <ExpansionPanelSummary className={"schema-list"} expandIcon={<ExpandMoreIcon/>}>
                 <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
-                  <Grid item xs={4}>
-                    <Typography className={"header"} variant={"subtitle1"}>{schemaField.field_label}</Typography>
+                  <Grid item xs={3}>
+                    <Typography className={"header"} variant={"subtitle1"}>{schemaField.field_name}</Typography>
                   </Grid>
-                  <Grid item xs={2}>
-                    <Typography className={"header"} variant={"subtitle1"}>{schemaField.field_type}</Typography>
+                  <Grid item xs={3}>
+                    <Typography>{schemaField.field_description}</Typography>
                   </Grid>
                   <Grid item xs={3}>
                     <TypographyList terms={schemaField.topic} limit={3}/>

@@ -1,4 +1,5 @@
 import {FILTER_ACTIONS} from "./filterActions";
+import {DATA_EXPLORER_ACTIONS} from "../dataExplorer/dataExplorerActions";
 
 interface FiltersState {
   countryList: any[];
@@ -90,6 +91,10 @@ const reducer = function(state=defaultState, action: any) {
       newState.areGeoFiltersApplied = true;
       newState.filterIndexes = action.indexes;
       newState.levels = action.levels;
+      break;
+    case DATA_EXPLORER_ACTIONS.SET_SCHEMA_FIELDS:
+      newState.areGeoFiltersApplied = false;
+      newState.levels = [];
       break;
     default:
       return state;

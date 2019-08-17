@@ -5,7 +5,7 @@ import {Drawer, Grid} from "@material-ui/core";
 import MarketplaceToolbar from "../Marketplace/MarketplaceToolbar";
 import {ToolbarOption} from "../Marketplace/ToolbarOption";
 import "./dataExplorer.scss";
-import SchemaFieldTable from "./SchemaFieldTable/SchemaFieldTable";
+import SchemaFieldTable from "./SchemaFieldTable";
 import FilterMenu from '../Common/Filter/FIlterMenuV2';
 
 interface ComponentProps {
@@ -29,9 +29,13 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
   }
 
   toolbarOptions: ToolbarOption[] = [
-    new ToolbarOption('All', 'all'),
-    new ToolbarOption('OWNED BY ME',  'ownedByMe'),
+    new ToolbarOption('All', 'all')
   ];
+
+  componentDidMount(): void {
+    //Get all objects
+    this.onFilter('');
+  }
 
   onFilter = (terms) => {
     this.props.actions.schemaSearch(terms);
@@ -63,25 +67,15 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
           />
         </Drawer>
         <Grid container justify={"center"} className={"data-explorer"}>
-          <Grid xs={12} sm={12} className={"page-section"}>
+          <Grid xs={12} sm={12} className={"page-section"} spacing={1}>
             {
               this.props.toolbarFilter == 'all' &&
                 <React.Fragment>
                     <SchemaFieldTable
+                      onFilter={() => this.setState({filterDrawerOpen: true})}
                       schemaFields={this.props.fields}
                       history={this.props.history}
-                      onFilter={() => {this.setState({filterDrawerOpen: true})}}
                     />
-                </React.Fragment>
-            }
-            {
-              this.props.toolbarFilter == 'ownedByMe' &&
-                <React.Fragment>
-                      <SchemaFieldTable
-                        schemaFields={this.props.ownedFields}
-                        history={this.props.history}
-                        onFilter={() => {this.setState({filterDrawerOpen: true})}}
-                      />
                 </React.Fragment>
             }
           </Grid>

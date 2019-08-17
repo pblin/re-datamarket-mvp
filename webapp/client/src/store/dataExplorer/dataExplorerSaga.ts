@@ -6,7 +6,7 @@ import {updateFactsets} from "../filters/filterActions";
 export function* SchemaSearch(action) {
   const {terms} = action;
   const results = yield SchemaService.searchSchemaFields(terms);
-  yield put({type: DATA_EXPLORER_ACTIONS.SET_SCHEMA_FIELDS, schemaFields: results.datasets});
+  yield put({type: DATA_EXPLORER_ACTIONS.SET_SCHEMA_FIELDS, schemaFields: results.objects});
   yield put(updateFactsets({geoFactsets: results.geoFactsets, topicFactsets: results.topicFactsets}));
 }
 
