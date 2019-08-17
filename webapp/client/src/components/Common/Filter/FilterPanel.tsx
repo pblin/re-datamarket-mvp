@@ -74,7 +74,7 @@ const FilterPanel = ({
   const shouldShow = level < props.length;
 
   const filters = !shouldShow ? []: options[props[level].propertyToSearch];
-  const valToMatch = levels[level];
+  const valToMatch = levels[level] && levels[level].value;
 
   return(<div className={classes.parent}>
     {shouldShow &&

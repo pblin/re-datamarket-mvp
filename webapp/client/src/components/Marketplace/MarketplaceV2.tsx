@@ -122,9 +122,6 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
       this.props.actions.getAllDatasets();
     }
   };
-
-  //TODO: NO Filters Match
-  //TODO: Filter BreadCrumb
   render() {
     return (
       <div className={"marketplace"}>

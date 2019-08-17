@@ -3,7 +3,7 @@ import {getFilters} from "../../../store/filters/filterSelectors";
 import {Chip} from "@material-ui/core";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {deleteLocation, deleteTerms, deleteTopics} from "../../../store/filters/filterActions";
+import {deleteFilters} from "../../../store/filters/filterActions";
 import "./filterMenu.scss";
 
 interface ComponentProps{
@@ -11,38 +11,40 @@ interface ComponentProps{
   actions: any;
 }
 
+//TODO: Capitalize labels
+//TODO: Write delete filter functionality
 export class FilterBreadCrumbs extends React.Component<ComponentProps> {
   renderBreadCrumbs() {
-    const {selectedCountry, selectedState, selectedCity, selectedTopics} = this.props.filters;
-    const topics = [];
+    const {levels} = this.props.filters;
 
-    for (let k in selectedTopics) {
-      if(selectedTopics[k]) {
-        topics.push(k)
-      }
-    }
+    const [country, state, city, topic] = levels;
 
-    return (<React.Fragment>
-      {(this.props.filters.terms.length > 0) &&
+    return <React.Fragment>
+      {country && (
         <Chip
-          label={`Terms: ${this.props.filters.terms.join(',')}`}
-          onDelete={this.props.actions.deleteTerms}
+          label={`Selected Country: ${country.value}`}
+          onDelete={() => this.props.actions.deleteFilters(0)}
         />
-      }
-      {(selectedCountry) &&
-        <Chip label={`Location: ${selectedCountry.name},
-          ${selectedState.name || ''},
-          ${selectedCity.name || ''}`}
-          onDelete={this.props.actions.deleteLocation}
-        />
-      }
-      {(topics.length > 0) &&
+      )}
+      {state && (
         <Chip
-          label={`Categories: ${topics.join(',')}`}
-          onDelete={this.props.actions.deleteTopics}
+          label={`Selected State: ${state.value}`}
+          onDelete={() => this.props.actions.deleteFilters(1)}
         />
-      }
-    </React.Fragment>)
+      )}
+      {city && (
+        <Chip
+          label={`Selected City: ${city.value}`}
+          onDelete={() => this.props.actions.deleteFilters(2)}
+        />
+      )}
+      {topic && (
+        <Chip
+          label={`Selected Topic: ${topic.value}`}
+          onDelete={() => this.props.actions.deleteFilters(3)}
+        />
+      )}
+    </React.Fragment>
   }
 
   render() {
@@ -60,9 +62,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators({
-      deleteTopics,
-      deleteTerms,
-      deleteLocation
+      deleteFilters
     }, dispatch)
   };
 };

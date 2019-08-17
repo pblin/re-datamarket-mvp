@@ -15,7 +15,7 @@ interface FiltersState {
   topicFactsets: any[];
   filterIndexes: any[];
   areGeoFiltersApplied: boolean;
-  levels: string[];
+  levels: any[];
 }
 
 const defaultState: FiltersState = {
@@ -62,7 +62,7 @@ const reducer = function(state=defaultState, action: any) {
       newState.selectedTopics = Object.assign({}, state.selectedTopics, action.topic);
       break;
     case FILTER_ACTIONS.RESET_FILTERS:
-      return defaultState;
+      return Object.assign({}, defaultState, {geoFactsets: state.geoFactsets});
     case FILTER_ACTIONS.ADD_TERM:
       newState.terms = [...state.terms.filter(t => t != action.term), action.term];
       break;

@@ -14,7 +14,8 @@ export enum FILTER_ACTIONS {
   DELETE_TOPICS = "DELETE_TOPICS",
   UPDATE_FACTSETS = "UPDATE_FACTSETS",
   UPDATE_GEO_FILTERS = "UPDATE_GEO_FILTERS",
-  UPDATE_FILTERS = "UPDATE_FILTERSß"
+  UPDATE_FILTERS = "UPDATE_FILTERS",
+  DELETE_FILTERS = "DELETE_FILTERS"
 };
 
 
@@ -113,4 +114,8 @@ const filterCountries = (country) => {
 
 export const updateFilters = (indexes, level, value) => {
   return {type: FILTER_ACTIONS.UPDATE_FILTERS, indexes, level, value};
+};
+
+export const deleteFilters = (level) => {
+  return {type: FILTER_ACTIONS.DELETE_FILTERS, level};
 };
