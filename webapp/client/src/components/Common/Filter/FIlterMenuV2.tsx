@@ -2,7 +2,8 @@ import * as React from "react";
 import {connect} from "react-redux";
 import appVars from "../../../styles/appVars";
 import ChipInput from "../Form/ChipInput";
-import FilterPanel from "./FilterPanel";
+//import FilterPanel from "./FilterPanel";
+import FilterGroup from "./FilterGroup";
 import {Theme} from "@material-ui/core";
 import {
   Divider,
@@ -125,8 +126,12 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
     return words.join(' ');
   };
 
-  onPanelFilter = (filter, level) => {
-     this.props.actions.updateFilters(filter.datasetIndex, level, filter.name);
+  //onPanelFilter = (filter, level) => {
+  //   this.props.actions.updateFilters(filter.datasetIndex, level, filter.name);
+  //};
+
+  onFilter = (filter, level) => {
+    this.props.actions.updateFilters(filter.datasetIndex, level, filter.name);
   };
 
   onSearchChange = (terms) => {
@@ -160,14 +165,20 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
           {!areFiltersApplied &&
             <div><Typography className={classes.noFilterContainer}>No Filters Applied</Typography></div>
           }
-          {areFiltersApplied &&
+          {/*areFiltersApplied &&
             <FilterPanel
               options={geoFactsets}
               props={this.filterSearchDefinitions}
               onFilter={this.onPanelFilter}
               levels={levels}
             />
-          }
+          */}
+          <FilterGroup
+            options={geoFactsets}
+            onFilter={this.onFilter}
+            levels={levels}
+            filterSearchDefinitions={this.filterSearchDefinitions}
+          />
         </div>
       </div>
     )
