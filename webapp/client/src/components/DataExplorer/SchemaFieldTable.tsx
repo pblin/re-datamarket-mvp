@@ -1,5 +1,4 @@
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -17,9 +16,9 @@ import {
 import * as React from "react";
 import FilterBreadCrumbs from "../Common/Filter/FilterBreadCrumbs";
 import Downloader from "../Common/File/Downloader";
+import SplitButton from "../Common/Button/SplitButton";
 
 //Icons
-import FilterIcon from "@material-ui/icons/FilterList";
 import InfoIcon from "@material-ui/icons/Info";
 
 
@@ -46,6 +45,16 @@ const styles = (theme: Theme) => ({
   },
   title: {
     flex: '0 0 auto',
+    width: '800px',
+    '& svg': {
+      float: 'left' as 'left'
+    },
+    '& h6': {
+      float: 'left' as 'left'
+    }
+  },
+  actionContainer: {
+    width: '200px'
   }
 });
 
@@ -85,8 +94,24 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState> {
     })
   };
 
+  handleAction = (eventType: string) => {
+    console.log('Action Clicked', eventType);
+    const {onFilter, schemaFields} = this.props;
+    switch (eventType) {
+      case 'Filter':
+        onFilter();
+        break;
+      case 'Download CSV':
+        Downloader.downloadFileAsCSV('dataExplorer.csv', schemaFields);
+        break;
+      case 'Download JSON':
+        Downloader.downloadFile('dataExplorer.json', schemaFields);
+        break;
+    }
+  };
+
   render() {
-    const {classes, schemaFields, history, onFilter} = this.props;
+    const {classes, schemaFields, history} = this.props;
     const {rowsPerPage, pageNumber} = this.state;
 
     return (<Paper className={classes.container} elevation={0}>
@@ -102,22 +127,8 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState> {
           <FilterBreadCrumbs/>
         </div>
         <div className={classes.spacer}/>
-        <div>
-          <FilterIcon onClick={onFilter}/>
-          <Button
-            variant={"outlined"}
-            color={"secondary"}
-            onClick={() => {Downloader.downloadFile('dataExplorer.json', schemaFields)}}
-          >
-            Download JSON
-          </Button>
-          <Button
-            variant={"outlined"}
-            color={"secondary"}
-            onClick={() => {Downloader.downloadFileAsCSV('dataExplorer.csv', schemaFields)}}
-          >
-            Download CSV
-          </Button>
+        <div className={classes.actionContainer}>
+          <SplitButton handleClick={this.handleAction} options={['Filter', 'Download CSV', 'Download JSON']}/>
         </div>
       </Toolbar>
       <Table className={"schema-field-table"}>
