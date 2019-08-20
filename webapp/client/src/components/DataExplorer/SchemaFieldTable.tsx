@@ -34,6 +34,10 @@ const styles = (theme: Theme) => ({
       overflowY: 'auto' as 'auto'
     }
   },
+  header: {
+    fontWeight: 'bold' as 'bold',
+    color: 'black'
+  },
   description: {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap' as 'nowrap',
@@ -137,10 +141,10 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState> {
       <Table className={"schema-field-table"}>
         <TableHead>
           <TableRow>
-            <TableCell> <Typography>Table Name</Typography> </TableCell>
-            <TableCell> <Typography>Field Name</Typography> </TableCell>
-            <TableCell> <Typography>Description</Typography> </TableCell>
-            <TableCell> <Typography>Dataset</Typography> </TableCell>
+            <TableCell> <Typography className={classes.header}>Object Name</Typography> </TableCell>
+            <TableCell> <Typography className={classes.header}>Field Name</Typography> </TableCell>
+            <TableCell> <Typography className={classes.header}>Description</Typography> </TableCell>
+            <TableCell> <Typography className={classes.header}>Dataset</Typography> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

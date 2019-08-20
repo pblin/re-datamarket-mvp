@@ -70,7 +70,7 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
             onSearchTermChange={this.onFilter}
           />
         </Drawer>
-        <Grid container justify={"center"} className={"data-explorer"} spacing={1}>
+        <Grid container justify={"center"} className={"data-explorer"}>
           <Grid item xs={12} sm={12} className={"page-section"}>
             {
               this.props.toolbarFilter == 'all' &&

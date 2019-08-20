@@ -5,6 +5,7 @@ import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
 import DatasetBuyList from "./DatasetBuyList/DatasetBuyList";
 import {
+  Fab,
   Grid,
   Button,
   Dialog,
@@ -110,11 +111,10 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     if(!this.props.isProfileSet) {
       return null;
     }
-    if((this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
-      return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
-        Add
-        <AddIcon/>
-      </Button>
+    if((this.props.schemaFilter == 'ownedByMe')) {
+      return     <Fab color="secondary" aria-label="add" className={"fab"}  onClick={this.openDialog}>
+        <AddIcon />
+      </Fab>
     }
     return null;
   }

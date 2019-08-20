@@ -51,6 +51,10 @@ const styles = (theme: Theme) => ({
     display: 'inline-block',
     paddingRight: '5px',
     fontWeight: 'bold' as 'bold'
+  },
+  panelHeader: {
+    fontWeight: 'bold' as 'bold',
+    fontSize: '15px'
   }
 });
 
@@ -122,9 +126,9 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
               expandIcon={!isUser ? <FilterIcon onClick={onFilter} className={classes.filter}/> : <React.Fragment/>}
             >
               <Grid container>
-                <Grid item xs={6}>Dataset Name</Grid>
-                <Grid item xs={3}>Tags</Grid>
-                <Grid item xs={3}>Categories</Grid>
+                <Grid item xs={6} className={classes.panelHeader}>Dataset Name</Grid>
+                <Grid item xs={3} className={classes.panelHeader}>Tags</Grid>
+                <Grid item xs={3} className={classes.panelHeader}>Categories</Grid>
               </Grid>
             </ExpansionPanelSummary>
           </ExpansionPanel>
