@@ -106,8 +106,6 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
     const {datasets, onFilter, classes, isUser} = this.props;
     const {pageNumber, rowsPerPage} = this.state;
 
-    console.log('dataset buy list');
-    console.log(datasets);
     return(
       <div>
         {datasets.length == 0 && <JumboPaper

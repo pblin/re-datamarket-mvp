@@ -70,6 +70,10 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     this.props.actions.getUserDatasets();
   }
 
+  componentWillUnmount(): void {
+    this.props.actions.hardReset();
+  }
+
   handleSchemaChange(val) {
     if(val == 'purchased') {
       if(!this.state.purchasedDatasetsRetrieved) {
@@ -122,6 +126,7 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
       this.props.actions.getAllDatasets();
     }
   };
+
   render() {
     return (
       <div className={"marketplace"}>

@@ -7,6 +7,7 @@ export enum FILTER_ACTIONS {
   SELECT_TOPIC = "SELECT_TOPIC",
   LOAD_COUNTRIES = "LOAD_COUNTRIES",
   RESET_FILTERS = "RESET_FILTERS",
+  HARD_RESET = "HARD_RESET",
   ADD_TERM = "ADD_TERM",
   DELETE_TERM = "DELETE_TERM",
   DELETE_LOCATION = "DELETE_LOCATION",
@@ -119,3 +120,7 @@ export const updateFilters = (indexes, level, value) => {
 export const deleteFilters = (level) => {
   return {type: FILTER_ACTIONS.DELETE_FILTERS, level};
 };
+
+export const hardReset = () => {
+  return {type: FILTER_ACTIONS.HARD_RESET}
+}

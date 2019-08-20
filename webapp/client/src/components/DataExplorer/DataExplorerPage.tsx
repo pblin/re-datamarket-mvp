@@ -2,6 +2,7 @@ import {connect} from "react-redux";
 import DataExplorer from "./DataExplorer";
 import {bindActionCreators} from "redux";
 import {schemaSearch, changeToolbarFilter} from "../../store/dataExplorer/dataExplorerActions";
+import {resetFilters, hardReset} from "../../store/filters/filterActions";
 import {
   dataExplorerSelector,
   getFilteredFields
@@ -20,7 +21,9 @@ const mapDispatchToProps = (dispatch) => {
     actions: bindActionCreators(
       {
         schemaSearch,
-        changeToolbarFilter
+        changeToolbarFilter,
+        resetFilters,
+        hardReset
       },
       dispatch
     )

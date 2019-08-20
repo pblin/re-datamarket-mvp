@@ -64,6 +64,8 @@ const reducer = function(state=defaultState, action: any) {
       break;
     case FILTER_ACTIONS.RESET_FILTERS:
       return Object.assign({}, defaultState, {geoFactsets: state.geoFactsets});
+    case FILTER_ACTIONS.HARD_RESET:
+      return defaultState;
     case FILTER_ACTIONS.ADD_TERM:
       newState.terms = [...state.terms.filter(t => t != action.term), action.term];
       break;

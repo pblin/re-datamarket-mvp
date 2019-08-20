@@ -9,6 +9,10 @@ export const getFilteredFields = createSelector(
   areGeoFiltersApplied,
   getFilteredIndexes,
   (fields, areFiltersApplied, indexes) => {
+    if(!fields.length) {
+      return [];
+    }
+
     if(!areFiltersApplied) {
       return fields || [];
     } else {

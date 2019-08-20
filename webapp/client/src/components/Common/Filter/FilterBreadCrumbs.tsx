@@ -1,6 +1,6 @@
 import * as React from "react";
 import {getFilters} from "../../../store/filters/filterSelectors";
-import {Chip} from "@material-ui/core";
+import {Chip, Theme, withStyles} from "@material-ui/core";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {deleteFilters} from "../../../store/filters/filterActions";
@@ -9,10 +9,20 @@ import "./filterMenu.scss";
 interface ComponentProps{
   filters: any;
   actions: any;
+  classes: any;
 }
 
-//TODO: Capitalize labels
-//TODO: Write delete filter functionality
+const styles = (theme: Theme) => ({
+  chip: {
+    padding: '0 5px 0 5px',
+    marginRight: '5px'
+  },
+  breadCrumbs: {
+    margin: '5px',
+    clear: 'both' as 'both'
+  }
+});
+
 export class FilterBreadCrumbs extends React.Component<ComponentProps> {
   capitalizeWords = (word) => {
     let words = word.split(' ');
@@ -22,6 +32,7 @@ export class FilterBreadCrumbs extends React.Component<ComponentProps> {
 
   renderBreadCrumbs() {
     const {levels} = this.props.filters;
+    const {classes} = this.props;
 
     const [country, state, city, topic] = levels;
 
@@ -29,24 +40,28 @@ export class FilterBreadCrumbs extends React.Component<ComponentProps> {
       {country && (
         <Chip
           label={`Selected Country: ${this.capitalizeWords(country.value)}`}
+          className={classes.chip}
           onDelete={() => this.props.actions.deleteFilters(0)}
         />
       )}
       {state && (
         <Chip
           label={`Selected State: ${this.capitalizeWords(state.value)}`}
+          className={classes.chip}
           onDelete={() => this.props.actions.deleteFilters(1)}
         />
       )}
       {city && (
         <Chip
           label={`Selected City: ${this.capitalizeWords(city.value)}`}
+          className={classes.chip}
           onDelete={() => this.props.actions.deleteFilters(2)}
         />
       )}
       {topic && (
         <Chip
           label={`Selected Topic: ${this.capitalizeWords(topic.value)}`}
+          className={classes.chip}
           onDelete={() => this.props.actions.deleteFilters(3)}
         />
       )}
@@ -54,7 +69,7 @@ export class FilterBreadCrumbs extends React.Component<ComponentProps> {
   }
 
   render() {
-    return (<div className={"filter-bread-crumbs"}>{this.renderBreadCrumbs()}</div>);
+    return (<div className={this.props.classes.breadCrumbs}>{this.renderBreadCrumbs()}</div>);
   }
 }
 
@@ -73,4 +88,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterBreadCrumbs);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(FilterBreadCrumbs));

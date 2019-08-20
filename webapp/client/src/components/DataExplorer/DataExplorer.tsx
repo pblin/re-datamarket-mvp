@@ -37,6 +37,10 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
     this.onFilter('');
   }
 
+  componentWillUnmount(): void {
+    this.props.actions.hardReset();
+  }
+
   onFilter = (terms) => {
     this.props.actions.schemaSearch(terms);
   };
@@ -66,8 +70,8 @@ class DataExplorer extends React.Component<ComponentProps, ComponentState> {
             onSearchTermChange={this.onFilter}
           />
         </Drawer>
-        <Grid container justify={"center"} className={"data-explorer"}>
-          <Grid xs={12} sm={12} className={"page-section"} spacing={1}>
+        <Grid container justify={"center"} className={"data-explorer"} spacing={1}>
+          <Grid item xs={12} sm={12} className={"page-section"}>
             {
               this.props.toolbarFilter == 'all' &&
                 <React.Fragment>

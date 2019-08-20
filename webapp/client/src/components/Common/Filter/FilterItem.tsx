@@ -46,9 +46,10 @@ const FilterItem = ({title, options, selected, onSelect, objProp = "", classes})
         <FormLabel component={"legend"} className={classes.controlLabel}>{title}</FormLabel>
         <FormGroup>
           <Collapse in={options && options.length > 0}>
-            {options && options.map((option) => {
+            {options && options.map((option, index) => {
             return <FormControlLabel
                     className={classes.control}
+                    key={`filter-item${(Math.floor(Math.random() * index * 1000))}`}
                     control={<Checkbox
                     className={classes.checkbox}
                     checked={option[objProp] == selected}
@@ -64,38 +65,5 @@ const FilterItem = ({title, options, selected, onSelect, objProp = "", classes})
       </FormControl>
     </div>);
 };
-
-/*interface ComponentProps {
-  title: string;
-  options: any[];
-  selected: string;
-  onSelect: any;
-  objProp: string;
-}
-
-class FilterItem extends React.Component<ComponentProps> {]
-  render() {
-    const {title, options, selected, onSelect, objProp} = this.props;
-    return (
-      <div>
-        <FormControl>
-          <FormLabel component={"legend"}>{title}</FormLabel>
-          <FormGroup>
-            {options.length > 0 && options.map((option) => {
-              return <FormControlLabel
-                control={<Checkbox
-                  checked={option[objProp] == selected}
-                  onChange={() => onSelect(option)}
-                />}
-                label={option[objProp]}
-              />
-            })}
-
-          </FormGroup>
-        </FormControl>
-      </div>
-    )
-  }
-}  */
 
 export default withStyles(styles)(FilterItem);

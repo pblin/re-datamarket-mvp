@@ -20,6 +20,7 @@ import SplitButton from "../Common/Button/SplitButton";
 
 //Icons
 import InfoIcon from "@material-ui/icons/Info";
+import appVars from "../../styles/appVars";
 
 
 const styles = (theme: Theme) => ({
@@ -45,7 +46,6 @@ const styles = (theme: Theme) => ({
   },
   title: {
     flex: '0 0 auto',
-    width: '800px',
     '& svg': {
       float: 'left' as 'left'
     },
@@ -55,6 +55,9 @@ const styles = (theme: Theme) => ({
   },
   actionContainer: {
     width: '200px'
+  },
+  info: {
+    color: appVars.secondaryLight
   }
 });
 
@@ -119,7 +122,7 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState> {
         <div className={classes.title}>
           <Tooltip
             title={`A tool to search and inspect datasets that are mapped to standardized metadata model and metadata elements of the models.`}>
-            <InfoIcon/>
+            <InfoIcon className={classes.info}/>
            </Tooltip>
           <Typography variant="h6" id="tableTitle">
             Data Explorer

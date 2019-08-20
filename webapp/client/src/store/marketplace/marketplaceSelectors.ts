@@ -12,6 +12,9 @@ export const getFilteredDatasets = createSelector(
   areGeoFiltersApplied,
   getFilteredIndexes,
   (datasets, areFiltersApplied, indexes) => {
+    if(!datasets.length) {
+      return [];
+    }
     if(!areFiltersApplied) {
       return datasets;
     } else {
@@ -29,6 +32,9 @@ export const getPurchasableDatasets = createSelector(
   profileSelector,
   (datasets, profile) => {
     let filteredDatasets = datasets.filter((dataset) => {
+      if(!dataset) {
+        return false;
+      }
       return dataset.dataset_owner_id != profile.id;
     });
 
