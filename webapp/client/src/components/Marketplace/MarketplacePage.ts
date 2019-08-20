@@ -25,6 +25,8 @@ import {
   updateSchemaFilter
 } from "../../store/marketplace/marketplaceActions";
 
+import {resetFilters, hardReset} from "../../store/filters/filterActions";
+
 function mapStateToProps(state: any) {
   const purchasedDatasets = getFilteredOrders(state);
   return {
@@ -52,7 +54,9 @@ function mapDispatchToProps(dispatch: any) {
       searchDatasets,
       deleteDataset,
       getAllDatasets,
-      getOrders
+      getOrders,
+      resetFilters,
+      hardReset
     }, dispatch)
   };
 }

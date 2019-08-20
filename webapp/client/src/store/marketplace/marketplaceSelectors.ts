@@ -12,15 +12,14 @@ export const getFilteredDatasets = createSelector(
   areGeoFiltersApplied,
   getFilteredIndexes,
   (datasets, areFiltersApplied, indexes) => {
+    if(!datasets.length) {
+      return [];
+    }
     if(!areFiltersApplied) {
       return datasets;
     } else {
       const newDatasets = [];
-      console.log('filter indexes', indexes);
       for(let i = 0; i < indexes.length; i++) {
-        console.log(indexes);
-        console.log(indexes[i]);
-        console.log(datasets[indexes[i]]);
         newDatasets.push(datasets[indexes[i]]);
       }
       return newDatasets;
@@ -33,6 +32,9 @@ export const getPurchasableDatasets = createSelector(
   profileSelector,
   (datasets, profile) => {
     let filteredDatasets = datasets.filter((dataset) => {
+      if(!dataset) {
+        return false;
+      }
       return dataset.dataset_owner_id != profile.id;
     });
 

@@ -2,18 +2,17 @@ import {connect} from "react-redux";
 import DataExplorer from "./DataExplorer";
 import {bindActionCreators} from "redux";
 import {schemaSearch, changeToolbarFilter} from "../../store/dataExplorer/dataExplorerActions";
+import {resetFilters, hardReset} from "../../store/filters/filterActions";
 import {
   dataExplorerSelector,
-  getFilteredFields,
-  getOwnedByMeFields
+  getFilteredFields
 } from "../../store/dataExplorer/dataExplorerSelectors";
 
 const mapStateToProps = (state: any) => {
   const {toolbarFilter} = dataExplorerSelector(state);
   return {
     fields: getFilteredFields(state),
-    toolbarFilter,
-    ownedFields: getOwnedByMeFields(state)
+    toolbarFilter
   }
 };
 
@@ -22,7 +21,9 @@ const mapDispatchToProps = (dispatch) => {
     actions: bindActionCreators(
       {
         schemaSearch,
-        changeToolbarFilter
+        changeToolbarFilter,
+        resetFilters,
+        hardReset
       },
       dispatch
     )

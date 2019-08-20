@@ -47,12 +47,10 @@ class TypographyList  extends React.Component<ComponentProps, ComponentState>{
     const {limit, terms, classes} = this.props;
     const {remainderOpened} = this.state;
 
-    console.log('Here are the props', this.props);
-    if(terms.length > limit) {
+    if(terms && terms.length > limit) {
       const copy = [...terms];
       const remainingLength = copy.length - limit;
       const lower = copy.splice(0, limit);
-      //let shouldShow = false;
 
       return (
         <React.Fragment>
@@ -78,7 +76,7 @@ class TypographyList  extends React.Component<ComponentProps, ComponentState>{
 
     return (
       <React.Fragment>
-        {terms.map((term, index) =>(
+        {terms && terms.map((term, index) =>(
           <React.Fragment key={`tag-${term}-${index * Math.random()}`}>{this.renderTerm(term)}</React.Fragment>
         ))}
       </React.Fragment>

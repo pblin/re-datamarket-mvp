@@ -1,4 +1,5 @@
 import {FILTER_ACTIONS} from "./filterActions";
+import {DATA_EXPLORER_ACTIONS} from "../dataExplorer/dataExplorerActions";
 
 interface FiltersState {
   countryList: any[];
@@ -15,6 +16,7 @@ interface FiltersState {
   topicFactsets: any[];
   filterIndexes: any[];
   areGeoFiltersApplied: boolean;
+  levels: any[];
 }
 
 const defaultState: FiltersState = {
@@ -27,11 +29,13 @@ const defaultState: FiltersState = {
   selectedTopics: {},
   terms: [],
 
+
   //factsets
   geoFactsets: {},
   topicFactsets: [],
   filterIndexes: [],
-  areGeoFiltersApplied: false
+  areGeoFiltersApplied: false,
+  levels:[]
 };
 
 const reducer = function(state=defaultState, action: any) {
@@ -59,6 +63,8 @@ const reducer = function(state=defaultState, action: any) {
       newState.selectedTopics = Object.assign({}, state.selectedTopics, action.topic);
       break;
     case FILTER_ACTIONS.RESET_FILTERS:
+      return Object.assign({}, defaultState, {geoFactsets: state.geoFactsets});
+    case FILTER_ACTIONS.HARD_RESET:
       return defaultState;
     case FILTER_ACTIONS.ADD_TERM:
       newState.terms = [...state.terms.filter(t => t != action.term), action.term];
@@ -86,6 +92,11 @@ const reducer = function(state=defaultState, action: any) {
     case FILTER_ACTIONS.UPDATE_GEO_FILTERS:
       newState.areGeoFiltersApplied = true;
       newState.filterIndexes = action.indexes;
+      newState.levels = action.levels;
+      break;
+    case DATA_EXPLORER_ACTIONS.SET_SCHEMA_FIELDS:
+      newState.areGeoFiltersApplied = false;
+      newState.levels = [];
       break;
     default:
       return state;

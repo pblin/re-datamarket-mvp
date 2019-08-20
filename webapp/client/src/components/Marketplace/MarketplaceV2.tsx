@@ -5,6 +5,7 @@ import MarketplaceToolbar from './MarketplaceToolbar';
 import {ToolbarOption} from "./ToolbarOption";
 import DatasetBuyList from "./DatasetBuyList/DatasetBuyList";
 import {
+  Fab,
   Grid,
   Button,
   Dialog,
@@ -14,12 +15,10 @@ import {
   Drawer
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import UserDatasetList from "./UserDatasetList";
 import DatasetManagerContainer from '../DatasetManager/DatasetManagerContainer'
 import JumboPaper from "../Common/jumboPaper";
 import FilterMenu from "../Common/Filter/FIlterMenuV2";
 import FilterBreadCrumbs from "../Common/Filter/FilterBreadCrumbs";
-import DatasetList from "./DatasetList";
 
 interface ComponentProps {
   schemaFilter: string;
@@ -63,14 +62,17 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
   }
 
   toolbarOptions: ToolbarOption[] = [
-    new ToolbarOption('Purchasable', 'purchasable'),
-    new ToolbarOption('OWNED BY ME',  'ownedByMe'),
-    new ToolbarOption('PURCHASED', 'purchased')
+    new ToolbarOption('Buy', 'purchasable'),
+    new ToolbarOption('Sell',  'ownedByMe')
   ];
 
   componentDidMount() {
     this.props.actions.getAllDatasets();
     this.props.actions.getUserDatasets();
+  }
+
+  componentWillUnmount(): void {
+    this.props.actions.hardReset();
   }
 
   handleSchemaChange(val) {
@@ -109,11 +111,10 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     if(!this.props.isProfileSet) {
       return null;
     }
-    if((this.props.schemaFilter == 'ownedByMe') && this.props.userDatasets.length) {
-      return <Button variant="contained" color="secondary" className="add-schema" onClick={this.openDialog}>
-        Add
-        <AddIcon/>
-      </Button>
+    if((this.props.schemaFilter == 'ownedByMe')) {
+      return     <Fab color="secondary" aria-label="add" className={"fab"}  onClick={this.openDialog}>
+        <AddIcon />
+      </Fab>
     }
     return null;
   }
@@ -126,8 +127,6 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
     }
   };
 
-  //TODO: NO Filters Match
-  //TODO: Filter BreadCrumb
   render() {
     return (
       <div className={"marketplace"}>
@@ -161,15 +160,16 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
                 <DatasetBuyList
                   datasets={this.props.purchasableDatasets}
                   history={this.props.history}
+                  isUser={false}
                   onFilter={() => this.setState({filterDrawerOpen: true})}
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && this.props.isProfileSet) &&
-                <UserDatasetList
-                  schemas={this.props.userDatasets}
-                  onDeleteClick={this.handleOnDelete}
-                  onAddClicked={this.openDialog}
+                <DatasetBuyList
+                  datasets={this.props.userDatasets}
                   history={this.props.history}
+                  onFilter={() => {}}
+                  isUser={true}
                 />
               }
               {(this.props.schemaFilter == 'ownedByMe' && !this.props.isProfileSet) &&
@@ -179,11 +179,6 @@ class MarketplaceV2 extends React.Component<ComponentProps, ComponentState> {
                   buttonText={"Create Profile"}
                   handleClick={() => {this.props.history.push('/profile')}}
                 />
-              }
-              {this.props.schemaFilter == 'purchased' &&
-                <DatasetList datasets={this.props.purchasedDatasets} handleClick={
-                  (dataset) => {this.props.history.push(`/dataset/${dataset.dataset_id}`)}
-                }/>
               }
             </Grid>
             <DatasetManagerContainer/>

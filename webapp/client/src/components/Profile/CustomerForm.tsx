@@ -107,6 +107,20 @@ class CustomerForm extends Component<CustomerFormProps> {
           type="text"
           custom={ {helperText: "Address", gridXs: 12, gridSm: 12} }
         />
+        <Field
+          label="Wallet Address 1"
+          component={renderTextField}
+          name="walletAddress1"
+          type="text"
+          custom={ {helperText: "Wallet Address 1", gridXs: 12, gridSm: 6, disabled: true} }
+        />
+        <Field
+          label="Wallet Address 2"
+          component={renderTextField}
+          name="walletAddress2"
+          type="text"
+          custom={ {helperText: "Wallet Address 2", gridXs: 12, gridSm: 6, disabled: true} }
+        />
       </Grid>
     </form>
   );
@@ -128,7 +142,9 @@ function mapStateToProps(state) {
         primaryEmail: profile['primary_email'] || email,
         secondaryEmail: profile['secondary_email'],
         phone: profile['phone'],
-        address: profile['address']
+        address: profile['address'],
+        walletAddress1: profile['wallet_address_1'],
+        walletAddress2: profile['wallet_address_2']
       }
     }
 }

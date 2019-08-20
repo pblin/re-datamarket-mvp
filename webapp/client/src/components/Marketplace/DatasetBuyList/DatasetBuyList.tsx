@@ -1,8 +1,6 @@
 import * as React from "react";
-import 'primereact/resources/themes/nova-light/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
 import {
+  Chip,
   Grid,
   Button,
   Divider,
@@ -12,14 +10,16 @@ import {
   ExpansionPanelSummary,
   Typography,
   Theme,
-  withStyles
+  withStyles, TablePagination
 } from "@material-ui/core";
 import TypographyList from "./TypographyList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FilterIcon from "@material-ui/icons/FilterList";
+//import TrashIcon from "@material-ui/icons/Delete";
 import JumboPaper from "../../Common/jumboPaper";
 import Moment from 'moment';
 import appVars from "../../../styles/appVars";
+import DatasetTypography from "./DatasetTypography";
 
 const styles = (theme: Theme) => ({
   headerPanel: {
@@ -46,6 +46,15 @@ const styles = (theme: Theme) => ({
   price: {
     color: appVars.dollarBill,
     fontWeight: 'bold' as 'bold'
+  },
+  header: {
+    display: 'inline-block',
+    paddingRight: '5px',
+    fontWeight: 'bold' as 'bold'
+  },
+  panelHeader: {
+    fontWeight: 'bold' as 'bold',
+    fontSize: '15px'
   }
 });
 
@@ -54,18 +63,52 @@ interface ComponentProps {
   history: any;
   onFilter: any;
   classes: any;
+  isUser: boolean;
 }
 interface ComponentState {
-  searchTermsOpened: {}
+  pageNumber: number;
+  rowsPerPage: number;
 }
 
 class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      pageNumber: 0,
+      rowsPerPage: 10
+    }
+  }
+
   handleClick = (dataset) => {
     this.props.history.push(`/dataset/${dataset.id}`);
   };
 
+  handleChangePage = (event: unknown, newPage: number) => {
+    this.setState({
+      pageNumber: newPage
+    })
+  };
+
+  handleChangeRowsPerPage = (event: any) => {
+    this.setState({
+      pageNumber: 0,
+      rowsPerPage: +event.target.value
+    })
+  };
+
+  renderChips = (dataset) => {
+    if(dataset.stage == 2) {
+      return <Chip label={"Saved"} className={"save-chip"}/>;
+    } else if(dataset.stage == 3) {
+      return <Chip label={"Published"} className={"published-chip"} />  ;
+    }
+  };
+
   render() {
-    const {datasets, onFilter, classes} = this.props;
+    const {datasets, onFilter, classes, isUser} = this.props;
+    const {pageNumber, rowsPerPage} = this.state;
 
     return(
       <div>
@@ -80,21 +123,24 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
           <ExpansionPanel expanded={false} className={classes.headerPanel}>
             <ExpansionPanelSummary
               className={classes.summaryPanel}
-              expandIcon={<FilterIcon onClick={onFilter} className={classes.filter}/>}
+              expandIcon={!isUser ? <FilterIcon onClick={onFilter} className={classes.filter}/> : <React.Fragment/>}
             >
               <Grid container>
-                <Grid item xs={6}>Dataset Name</Grid>
-                <Grid item xs={3}>Tags</Grid>
-                <Grid item xs={3}>Categories</Grid>
+                <Grid item xs={6} className={classes.panelHeader}>Dataset Name</Grid>
+                <Grid item xs={3} className={classes.panelHeader}>Tags</Grid>
+                <Grid item xs={3} className={classes.panelHeader}>Categories</Grid>
               </Grid>
             </ExpansionPanelSummary>
           </ExpansionPanel>
-          {datasets.map((dataset, index) => (
+          {datasets
+            .slice(pageNumber * rowsPerPage, pageNumber * rowsPerPage + rowsPerPage)
+            .map((dataset, index) => (
             <ExpansionPanel key={`schema${index}`} className={"schema-panel"}>
               <ExpansionPanelSummary className={"schema-list"} expandIcon={<ExpandMoreIcon/>}>
                 <Grid container={true} justify={"flex-start"} className={"no-pad-right"}>
                   <Grid item xs={6}>
-                    <Typography className={"header"} variant={"subtitle1"}>{dataset.name}</Typography>
+                    <Typography className={classes.header} variant={"subtitle1"}>{dataset.name}</Typography>
+                    {isUser && this.renderChips(dataset)}
                   </Grid>
                   <Grid item xs={3}>
                     <TypographyList limit={3} terms={dataset['search_terms']}/>
@@ -107,25 +153,27 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
               <ExpansionPanelDetails>
                 <Grid container spacing={1}>
                   <Grid item xs={3}><Typography className={classes.title}>Asking Price</Typography></Grid>
-                  <Grid item xs={9}><Typography className={classes.price}>{`$${dataset['price_high']}`}</Typography></Grid>
+                  <Grid item xs={9}>
+                    <DatasetTypography className={classes.price} text={dataset['price_high']} pre={'$'}/>
+                  </Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Description</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset.description}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset.description}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Delivery Method</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset.delivery_method}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset.delivery_method}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Number Of Records</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset['num_of_records']}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset['num_of_records']}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Country</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset['country']}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset.country}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>State/Province</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset['state_province']}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset['state_province']}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>City</Typography></Grid>
-                  <Grid item xs={9}><Typography>{dataset['city']}</Typography></Grid>
+                  <Grid item xs={9}><DatasetTypography text={dataset.city}/></Grid>
 
                   <Grid item xs={3}><Typography className={classes.title}>Date Created</Typography></Grid>
                   <Grid item xs={9}><Typography>{Moment(dataset['date_created']).format('MMMM Do YYYY')}</Typography></Grid>
@@ -143,7 +191,8 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
                     className={classes.btn}
                     onClick={() => this.handleClick(dataset)}
                   >
-                    View Dataset
+                    {!isUser && <React.Fragment>View Dataset</React.Fragment>}
+                    {isUser && <React.Fragment>Manage Dataset</React.Fragment>}
                   </Button>
                 </Grid>
               </ExpansionPanelActions>
@@ -151,6 +200,21 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
           ))}
         </React.Fragment>
         }
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
+          component="div"
+          count={datasets.length}
+          rowsPerPage={rowsPerPage}
+          page={pageNumber}
+          backIconButtonProps={{
+            'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+            'aria-label': 'Next Page',
+          }}
+          onChangePage={this.handleChangePage}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        />
       </div>
     );
   }

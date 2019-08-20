@@ -1,52 +1,75 @@
 import * as React from "react";
 import {getFilters} from "../../../store/filters/filterSelectors";
-import {Chip} from "@material-ui/core";
+import {Chip, Theme, withStyles} from "@material-ui/core";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {deleteLocation, deleteTerms, deleteTopics} from "../../../store/filters/filterActions";
+import {deleteFilters} from "../../../store/filters/filterActions";
 import "./filterMenu.scss";
 
 interface ComponentProps{
   filters: any;
   actions: any;
+  classes: any;
 }
 
+const styles = (theme: Theme) => ({
+  chip: {
+    padding: '0 5px 0 5px',
+    marginRight: '5px'
+  },
+  breadCrumbs: {
+    margin: '5px',
+    clear: 'both' as 'both'
+  }
+});
+
 export class FilterBreadCrumbs extends React.Component<ComponentProps> {
+  capitalizeWords = (word) => {
+    let words = word.split(' ');
+    words = words.map((w) => w.substring(0,1).toUpperCase() + w.substring(1));
+    return words.join(' ');
+  };
+
   renderBreadCrumbs() {
-    const {selectedCountry, selectedState, selectedCity, selectedTopics} = this.props.filters;
-    const topics = [];
+    const {levels} = this.props.filters;
+    const {classes} = this.props;
 
-    for (let k in selectedTopics) {
-      if(selectedTopics[k]) {
-        topics.push(k)
-      }
-    }
+    const [country, state, city, topic] = levels;
 
-    return (<React.Fragment>
-      {(this.props.filters.terms.length > 0) &&
+    return <React.Fragment>
+      {country && (
         <Chip
-          label={`Terms: ${this.props.filters.terms.join(',')}`}
-          onDelete={this.props.actions.deleteTerms}
+          label={`Selected Country: ${this.capitalizeWords(country.value)}`}
+          className={classes.chip}
+          onDelete={() => this.props.actions.deleteFilters(0)}
         />
-      }
-      {(selectedCountry) &&
-        <Chip label={`Location: ${selectedCountry.name},
-          ${selectedState.name || ''},
-          ${selectedCity.name || ''}`}
-          onDelete={this.props.actions.deleteLocation}
-        />
-      }
-      {(topics.length > 0) &&
+      )}
+      {state && (
         <Chip
-          label={`Categories: ${topics.join(',')}`}
-          onDelete={this.props.actions.deleteTopics}
+          label={`Selected State: ${this.capitalizeWords(state.value)}`}
+          className={classes.chip}
+          onDelete={() => this.props.actions.deleteFilters(1)}
         />
-      }
-    </React.Fragment>)
+      )}
+      {city && (
+        <Chip
+          label={`Selected City: ${this.capitalizeWords(city.value)}`}
+          className={classes.chip}
+          onDelete={() => this.props.actions.deleteFilters(2)}
+        />
+      )}
+      {topic && (
+        <Chip
+          label={`Selected Topic: ${this.capitalizeWords(topic.value)}`}
+          className={classes.chip}
+          onDelete={() => this.props.actions.deleteFilters(3)}
+        />
+      )}
+    </React.Fragment>
   }
 
   render() {
-    return (<div className={"filter-bread-crumbs"}>{this.renderBreadCrumbs()}</div>);
+    return (<div className={this.props.classes.breadCrumbs}>{this.renderBreadCrumbs()}</div>);
   }
 }
 
@@ -60,11 +83,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators({
-      deleteTopics,
-      deleteTerms,
-      deleteLocation
+      deleteFilters
     }, dispatch)
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterBreadCrumbs);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(FilterBreadCrumbs));
