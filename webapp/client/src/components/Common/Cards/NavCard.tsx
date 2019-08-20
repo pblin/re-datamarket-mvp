@@ -110,4 +110,8 @@ class NavCard extends React.Component <componentProps, componentState> {
   }
 }
 
-export default withRouter(withStyles(styles)(NavCard));
+// @ts-ignore
+export default withRouter(
+  // @ts-ignore
+    withStyles(styles)(NavCard)
+  );
