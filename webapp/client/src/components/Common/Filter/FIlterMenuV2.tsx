@@ -2,7 +2,6 @@ import * as React from "react";
 import {connect} from "react-redux";
 import appVars from "../../../styles/appVars";
 import ChipInput from "../Form/ChipInput";
-//import FilterPanel from "./FilterPanel";
 import FilterGroup from "./FilterGroup";
 import {Theme} from "@material-ui/core";
 import {
@@ -15,11 +14,10 @@ import {
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import {areFiltersApplied, getFilters} from "../../../store/filters/filterSelectors";
 import {FilterSearchDefinition} from "./FilterSearchDefinition";
-//import {FilterSearchDefinition} from "./FilterSearchDefinition";
 
 //Filter Icons
 import CheckIcon from "@material-ui/icons/Check";
-import {updateGeoFilters, resetFilters, updateFilters} from "../../../store/filters/filterActions";
+import {updateGeoFilters, resetFilters, updateFilters, deleteFilters} from "../../../store/filters/filterActions";
 import{bindActionCreators} from "redux";
 
 interface ComponentProps {
@@ -116,7 +114,6 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
   ];
 
   resetFilters = () => {
-    //TODO: RESET THE FILTERS
     this.props.actions.resetFilters();
   };
 
@@ -126,12 +123,16 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
     return words.join(' ');
   };
 
-  //onPanelFilter = (filter, level) => {
-  //   this.props.actions.updateFilters(filter.datasetIndex, level, filter.name);
-  //};
-
   onFilter = (filter, level) => {
-    this.props.actions.updateFilters(filter.datasetIndex, level, filter.name);
+    const val = this.props.filters.levels &&
+      this.props.filters.levels[level] &&
+      this.props.filters.levels[level].value;
+
+    if(filter.name == val) {
+      this.props.actions.deleteFilters(level);
+    } else {
+      this.props.actions.updateFilters(filter.datasetIndex, level, filter.name);
+    }
   };
 
   onSearchChange = (terms) => {
@@ -165,20 +166,14 @@ export class FilterMenuV2 extends React.Component<ComponentProps, ComponentState
           {!areFiltersApplied &&
             <div><Typography className={classes.noFilterContainer}>No Filters Applied</Typography></div>
           }
-          {/*areFiltersApplied &&
-            <FilterPanel
+          {areFiltersApplied &&
+            <FilterGroup
               options={geoFactsets}
-              props={this.filterSearchDefinitions}
-              onFilter={this.onPanelFilter}
+              onFilter={this.onFilter}
               levels={levels}
+              filterSearchDefinitions={this.filterSearchDefinitions}
             />
-          */}
-          <FilterGroup
-            options={geoFactsets}
-            onFilter={this.onFilter}
-            levels={levels}
-            filterSearchDefinitions={this.filterSearchDefinitions}
-          />
+          }
         </div>
       </div>
     )
@@ -198,7 +193,8 @@ const mapDispatchToProps = (dispatch) => {
     actions: bindActionCreators({
       updateGeoFilters,
       resetFilters,
-      updateFilters
+      updateFilters,
+      deleteFilters
     }, dispatch)
   };
 };
