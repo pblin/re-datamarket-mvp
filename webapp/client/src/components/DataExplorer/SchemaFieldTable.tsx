@@ -21,7 +21,7 @@ import SplitButton from "../Common/Button/SplitButton";
 //Icons
 import InfoIcon from "@material-ui/icons/Info";
 import appVars from "../../styles/appVars";
-
+import Loader from "../Common/Loader/Loader";
 
 const styles = (theme: Theme) => ({
   container: {
@@ -192,4 +192,4 @@ class SchemaFieldTable extends React.Component<ComponentProps, ComponentState> {
   }
 }
 
-export default withStyles(styles)(SchemaFieldTable);
+export default Loader(withStyles(styles)(SchemaFieldTable));

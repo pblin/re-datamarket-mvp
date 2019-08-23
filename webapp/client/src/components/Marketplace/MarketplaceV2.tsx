@@ -34,6 +34,7 @@ interface ComponentProps {
   actions: any;
   purchasableDatasets: any[];
   purchasedDatasets: any;
+  loading: boolean;
 }
 
 interface ComponentState {

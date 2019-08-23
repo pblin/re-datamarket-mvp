@@ -16,10 +16,10 @@ import TypographyList from "./TypographyList";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FilterIcon from "@material-ui/icons/FilterList";
 //import TrashIcon from "@material-ui/icons/Delete";
-import JumboPaper from "../../Common/jumboPaper";
 import Moment from 'moment';
 import appVars from "../../../styles/appVars";
 import DatasetTypography from "./DatasetTypography";
+import Loader from "../../Common/Loader/Loader";
 
 const styles = (theme: Theme) => ({
   headerPanel: {
@@ -112,13 +112,6 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
 
     return(
       <div>
-        {datasets.length == 0 && <JumboPaper
-          title={"No Results Found"}
-          content={"No Results Found for the selected filters. Please try applying different filters."}
-          buttonText={"Change Filters"}
-          handleClick={onFilter}
-        />}
-        {datasets.length > 0 &&
         <React.Fragment>
           <ExpansionPanel expanded={false} className={classes.headerPanel}>
             <ExpansionPanelSummary
@@ -221,4 +214,4 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
 
 }
 
-export default withStyles(styles)(DatasetBuyList);
+export default Loader(withStyles(styles)(DatasetBuyList));
