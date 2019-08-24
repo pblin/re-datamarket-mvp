@@ -192,7 +192,6 @@ class DatasetBuyList extends React.Component<ComponentProps, ComponentState>{
             </ExpansionPanel>
           ))}
         </React.Fragment>
-        }
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100]}
           component="div"

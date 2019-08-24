@@ -35,8 +35,6 @@ function withLoader(Component: any) {
     render() {
       const {loading, ...props} = this.props;
 
-      console.log('is loading', loading);
-
       return loading ? this.renderLoader() : <Component {...props} />;
     }
   }
