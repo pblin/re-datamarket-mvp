@@ -5,9 +5,6 @@ import TopicService from '../../services/TopicService';
 function* GetTopics() {
   const topics = yield TopicService.getTopics();
 
-  console.log('Here are the topics');
-  console.log(topics);
-
   yield put(setTopics(topics));
 }
 

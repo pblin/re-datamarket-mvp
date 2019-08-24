@@ -9,6 +9,7 @@ import {
 } from "../../store/marketplace/marketplaceSelectors";
 import {getOrders} from "../../store/orders/orderActions";
 import {getFilteredOrders} from "../../store/orders/orderSelectors";
+import {setLoading} from "../../store/common/commonActions";
 
 import {
   isProfileSet,
@@ -26,6 +27,7 @@ import {
 } from "../../store/marketplace/marketplaceActions";
 
 import {resetFilters, hardReset} from "../../store/filters/filterActions";
+import {getLoadingSelector} from "../../store/common/commonSelectors";
 
 function mapStateToProps(state: any) {
   const purchasedDatasets = getFilteredOrders(state);
@@ -39,7 +41,8 @@ function mapStateToProps(state: any) {
     confirmDeleteDialog: confirmDeleteDialogSelector(state),
     marketplace: marketplaceSelector(state),
     purchasableDatasets: getPurchasableDatasets(state),
-    purchasedDatasets: purchasedDatasets && purchasedDatasets.bought || []
+    purchasedDatasets: purchasedDatasets && purchasedDatasets.bought || [],
+    loading: getLoadingSelector(state)
   }
 }
 
@@ -56,7 +59,8 @@ function mapDispatchToProps(dispatch: any) {
       getAllDatasets,
       getOrders,
       resetFilters,
-      hardReset
+      hardReset,
+      setLoading
     }, dispatch)
   };
 }

@@ -2,17 +2,21 @@ import {takeLatest, put} from 'redux-saga/effects';
 import {DatasetService} from "../../services/DatasetService";
 import {MARKETPLACE_ACTIONS, userDatasetsRetrieved} from "./marketplaceActions";
 import {updateFactsets} from "../filters/filterActions";
+import {setLoading} from "../common/commonActions";
 
 export function* GetUserDatasets() {
+  yield put(setLoading(true));
   let profile = JSON.parse(localStorage.getItem ('profile'));
 
   const datasetService = new DatasetService();
   if(profile.id) {
     const datasets = yield datasetService.getUserDatasets(profile.id);
 
-    yield put(userDatasetsRetrieved(datasets))
+    yield put(userDatasetsRetrieved(datasets));
+    yield put(setLoading(false));
   } else {
     yield put(userDatasetsRetrieved([]));
+    yield put(setLoading(false));
   }
 }
 
@@ -38,10 +42,12 @@ export function* DeleteDataset(action) {
 export function* SearchDatasets(action) {
   const {filters} = action;
   const datasetService = new DatasetService();
+  yield put(setLoading(true));
 
   const result = yield datasetService.searchDatasets(filters);
   yield put({type: MARKETPLACE_ACTIONS.DATASETS_RETRIEVED, datasets: result.datasets});
   yield put(updateFactsets({geoFactsets: result.geoFactsets, topicFactsets: result.topicFactsets}));
+  yield put(setLoading(false));
 }
 
 export function* watchMarketplace() {

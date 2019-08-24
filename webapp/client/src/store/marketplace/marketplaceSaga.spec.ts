@@ -41,8 +41,8 @@ describe('Marketplace Saga', () => {
       getState: () => ({ state: 'test' }),
     }, GetUserDatasets);
 
-    expect(dispatched[0].type).toBe(MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED);
-    expect(dispatched[0].datasets).toEqual([{test: 12345}]);
+    expect(dispatched[1].type).toBe(MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED);
+    expect(dispatched[1].datasets).toEqual([{test: 12345}]);
   });
 
   it("should get empty set for user datasets when profile is not set", async () => {
@@ -54,8 +54,8 @@ describe('Marketplace Saga', () => {
       getState: () => ({ state: 'test' }),
     }, GetUserDatasets);
 
-    expect(dispatched[0].type).toBe(MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED);
-    expect(dispatched[0].datasets).toEqual([]);
+    expect(dispatched[1].type).toBe(MARKETPLACE_ACTIONS.USER_DATASETS_RETRIEVED);
+    expect(dispatched[1].datasets).toEqual([]);
   });
 
   it('should watch marketplace', async() => {
