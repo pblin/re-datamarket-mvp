@@ -22,7 +22,7 @@
     "@types/styled-components": "^4.1.4",
     "@types/yup": "^0.26.4",
     "ajv": "^6.8.1",
-    "auth0-js": "^8.11.3",
+    "auth0-js": "^9.13.2",
     "autobind-decorator": "^2.1.0",
     "bootstrap": "4.0.0-beta.2",
     "country-state-city": "^1.0.0",
