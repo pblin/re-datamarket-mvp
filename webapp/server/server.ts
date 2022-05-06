@@ -48,9 +48,9 @@ app.get('/*', function (req, res) {
 //SET UP PROXY
 if (HTTPS_ON == 'YES') {
     const credentials = {
-        // key: fs.readFileSync(SSL_KEY),
-        // cert: fs.readFileSync(SSL_PEM),
-        pfx: fs.readFileSync(SSL_PFX),
+        key: fs.readFileSync(SSL_KEY),
+        cert: fs.readFileSync(SSL_PEM),
+        // pfx: fs.readFileSync(SSL_PFX),
         rejectUnauthorized: false,
         passphrase: KEY_PASS
     };
