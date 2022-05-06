@@ -1,0 +1,21 @@
+{
+  "main.css": "/static/css/main.155db1fb.chunk.css",
+  "main.js": "/static/js/main.160d88b7.chunk.js",
+  "main.js.map": "/static/js/main.160d88b7.chunk.js.map",
+  "static/css/1.d98deec1.chunk.css": "/static/css/1.d98deec1.chunk.css",
+  "static/js/1.4bba62d9.chunk.js": "/static/js/1.4bba62d9.chunk.js",
+  "static/js/1.4bba62d9.chunk.js.map": "/static/js/1.4bba62d9.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.229c360f.js",
+  "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
+  "static/media/index.css": "/static/media/roboto-latin-900italic.bc833e72.woff",
+  "static/media/theme.css": "/static/media/open-sans-v15-latin-300.60c86674.woff2",
+  "static/media/primereact.min.css": "/static/media/line.567f5738.gif",
+  "static/media/primeicons.css": "/static/media/primeicons.38d77552.svg",
+  "static/media/rebloc_logo.svg": "/static/media/rebloc_logo.4b472de4.svg",
+  "static/media/main.css": "/static/media/city_background_op.e56b262a.jpg",
+  "static/css/main.155db1fb.chunk.css.map": "/static/css/main.155db1fb.chunk.css.map",
+  "static/css/1.d98deec1.chunk.css.map": "/static/css/1.d98deec1.chunk.css.map",
+  "index.html": "/index.html",
+  "precache-manifest.17595df6cd92ddeddd49ac686aa0ee93.js": "/precache-manifest.17595df6cd92ddeddd49ac686aa0ee93.js",
+  "service-worker.js": "/service-worker.js"
+}
