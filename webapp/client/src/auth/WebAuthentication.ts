@@ -2,12 +2,12 @@ import autobind from 'autobind-decorator';
 import history from '../utils/history';
 import { AUTH_CONFIG } from './configuration';
 import { Auth0Authentication } from './Auth0Authentication';
-import {Auth0DecodedHash, WebAuth} from 'auth0-js';
+import { Auth0DecodedHash, WebAuth } from 'auth0-js';
 import 'graphql-request';
-import {AppStore} from "../store/AppStore";
-import {ProfileService} from "../services/ProfileService";
-import {PROFILE_ACTIONS} from "../store/profile/profileActions";
-import {AppEventEmitter} from "../utils/AppEventEmitter";
+import { AppStore } from '../store/AppStore';
+import { ProfileService } from '../services/ProfileService';
+import { PROFILE_ACTIONS } from '../store/profile/profileActions';
+import { AppEventEmitter } from '../utils/AppEventEmitter';
 
 /**
  * Web based Auth0 authentication
@@ -39,7 +39,8 @@ export class WebAuthentication implements Auth0Authentication {
       return false;
     }
 
-    if(profile['primary_email_verified'] == true) {
+    // tslint:disable-next-line:no-string-literal
+    if(profile['primary_email_verified'] === true) {
       return true;
     }
 
@@ -66,7 +67,7 @@ export class WebAuthentication implements Auth0Authentication {
         AppEventEmitter.getInstance().emit('authenticated');
       } else if (e) {
         history.push('/');
-        //TODO: CREATE LOGGER FOT THE APPLICATION
+        // TODO: CREATE LOGGER FOR THE APPLICATION
         console.error(e);
       }
     });
@@ -113,11 +114,11 @@ export class WebAuthentication implements Auth0Authentication {
     history.push('/home');
 
     let ssoLogOutUrl;
-    const baseUrl = location.protocol+'//'+location.hostname + ":3000";
-    if(process.env.NODE_ENV == 'development'){
-      ssoLogOutUrl = `https://rebloc.auth0.com/v2/logout?returnTo=${baseUrl}&client_id=${AUTH_CONFIG.clientId}`;
+    const baseUrl = location.protocol+'//'+location.hostname + ':3000';
+    if(process.env.NODE_ENV === 'development'){
+      ssoLogOutUrl = `https://godscoin.us.auth0.com/v2/logout?returnTo=${baseUrl}&client_id=${AUTH_CONFIG.clientId}`;
     } else {
-      ssoLogOutUrl = `https://rebloc.auth0.com/v2/logout?returnTo=${baseUrl}`;
+      ssoLogOutUrl = `https:/godscoin.us.auth0.com/v2/logout?returnTo=${baseUrl}`;
     }
 
     window.location.replace(ssoLogOutUrl);
