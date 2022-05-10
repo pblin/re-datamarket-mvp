@@ -9,7 +9,9 @@ function* GetProfile(action) {
 
   let profile = JSON.parse(localStorage.getItem ('profile'));
   let email = window.localStorage.getItem('email');
-
+  if (email == undefined) {
+    email = sessionStorage.getItem('email');
+  }
   yield put({type: PROFILE_ACTIONS.SET_PROFILE, profile, email});
 }
 

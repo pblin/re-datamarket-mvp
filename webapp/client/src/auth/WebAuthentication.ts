@@ -94,6 +94,7 @@ export class WebAuthentication implements Auth0Authentication {
     localStorage.setItem('authenticated', 'true');
     localStorage.setItem('idTokenPayload', JSON.stringify(idTokenPayload));
     localStorage.setItem('pendingProfileQuery', 'n');
+    sessionStorage.setItem('email', idTokenPayload.email);
     this.findUser(idTokenPayload.email);
 
     // navigate to the home route
