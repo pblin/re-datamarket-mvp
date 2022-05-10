@@ -8,7 +8,7 @@ const profileService = new ProfileService();
 function* GetProfile(action) {
 
   let profile = JSON.parse(localStorage.getItem ('profile'));
-  let email = localStorage.getItem('email');
+  let email = window.localStorage.getItem('email');
 
   yield put({type: PROFILE_ACTIONS.SET_PROFILE, profile, email});
 }
